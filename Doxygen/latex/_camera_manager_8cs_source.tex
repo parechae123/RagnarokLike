@@ -1,0 +1,70 @@
+\doxysection{Camera\+Manager.\+cs}
+\hypertarget{_camera_manager_8cs_source}{}\label{_camera_manager_8cs_source}\index{C:/Users/parec/RagnarokLike/HeoyoonPrivateProject/Assets/Player/Camera/CameraManager.cs@{C:/Users/parec/RagnarokLike/HeoyoonPrivateProject/Assets/Player/Camera/CameraManager.cs}}
+\mbox{\hyperlink{_camera_manager_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }System;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }System.Collections;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }System.Collections.Generic;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }Unity.VisualScripting;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }UnityEngine;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00007}\mbox{\hyperlink{class_camera_manager}{00007}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_camera_manager}{CameraManager}}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00008}00008\ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00009}00009\ \ \ \ \ \textcolor{keyword}{private}\ Camera\ \_camera;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00010}\mbox{\hyperlink{class_camera_manager_a2b570619aa9d8f75843c908940039266}{00010}}\ \ \ \ \ \textcolor{keyword}{public}\ Camera\ \mbox{\hyperlink{class_camera_manager_a2b570619aa9d8f75843c908940039266}{PlayerMainCamer}}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00011}00011\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00012}00012\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ }
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00013}00013\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00014}00014\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_camera\ ==\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00015}00015\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00016}00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_camera\ =\ Camera.main;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00017}00017\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_camera\ ==\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00018}00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00019}00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_camera\ =\ \textcolor{keyword}{new}\ GameObject(\textcolor{stringliteral}{"{}PlayerMainCamera"{}}).AddComponent<Camera>();}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00020}00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00021}00021\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00022}00022\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_camera;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00023}00023\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00024}00024\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00025}00025\ \ \ \ \ List<Transform>\ RotationTrackingTR\ =\ \textcolor{keyword}{new}\ List<Transform>();}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00026}00026\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_camera_manager}{CameraManager}}\ instance;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00027}\mbox{\hyperlink{class_camera_manager_a78e89f2dff392522251127d0f06e2f2e}{00027}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_camera_manager}{CameraManager}}\ \mbox{\hyperlink{class_camera_manager_a78e89f2dff392522251127d0f06e2f2e}{Instance}}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00028}00028\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00029}00029\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ }
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00030}00030\ \ \ \ \ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (instance\ ==\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ instance\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_camera_manager}{CameraManager}}();}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ instance;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00037}00037\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00038}00038\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00039}\mbox{\hyperlink{class_camera_manager_a894d53bb4551cb30def86e9733da2fd8}{00039}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_camera_manager_a894d53bb4551cb30def86e9733da2fd8}{RotateCamera}}(Vector3\ CameraRotDirection)}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00040}00040\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00042}00042\ \ \ \ \ \ \ \ \ PlayerMainCamer.transform.eulerAngles\ +=\ CameraRotDirection;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00043}00043\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_camera_manager_a5c0bee690f6c5329da3ad70c8b4d558d}{SetRotaionSync}}();}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00044}00044\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00045}\mbox{\hyperlink{class_camera_manager_a5c0bee690f6c5329da3ad70c8b4d558d}{00045}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_camera_manager_a5c0bee690f6c5329da3ad70c8b4d558d}{SetRotaionSync}}()}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00046}00046\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ RotationTrackingTR.Count;\ i++)}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ RotationTrackingTR[i].rotation\ =\ \mbox{\hyperlink{class_camera_manager_a2b570619aa9d8f75843c908940039266}{PlayerMainCamer}}.transform.rotation;}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00050}00050\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00051}00051\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00052}\mbox{\hyperlink{class_camera_manager_af311168bb3a23f5409de611d9e20408b}{00052}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_camera_manager_af311168bb3a23f5409de611d9e20408b}{AddTR}}(Transform\ tr)}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00053}00053\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ RotationTrackingTR.Add(tr);}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00055}00055\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00056}\mbox{\hyperlink{class_camera_manager_a27f67469e0c457076cb1be3e1c7b9efc}{00056}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_camera_manager_a27f67469e0c457076cb1be3e1c7b9efc}{RemoveTR}}(Transform\ tr)\ }
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00057}00057\ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00058}00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (RotationTrackingTR.Contains(tr))}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ RotationTrackingTR.Remove(tr);}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ Debug.Log(RotationTrackingTR.Count);}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00062}00062\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00063}00063\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_camera_manager_8cs_source_l00064}00064\ \}}
+
+\end{DoxyCode}

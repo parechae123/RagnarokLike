@@ -310,9 +310,6 @@ MonoBehaviour:
   wheelSpeed: 4
   height: 10
   playerTarget: {fileID: 1761570203}
-  cameraPosition: {x: 0, y: 0, z: 0}
-  TestPos: {x: 0, y: 0, z: 0}
-  cameraPosTest: {x: 0, y: 0, z: 1}
   cameraRotValue: 0
   rotationSensitivity: 0.1
 --- !u!1 &410087039
@@ -433,6 +430,51 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &507892592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 507892594}
+  - component: {fileID: 507892593}
+  m_Layer: 0
+  m_Name: GameObject (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &507892593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507892592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34fe251dbe52dfb44a8fe8223ac91bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StatOBJ: {fileID: 11400000, guid: 350c574dcc630fa44b42dd14459dad3b, type: 2}
+--- !u!4 &507892594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507892592}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.297043, y: 0.16919136, z: -3.59136}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,3 +857,4 @@ SceneRoots:
   - {fileID: 1408155197}
   - {fileID: 1761570203}
   - {fileID: 214949123}
+  - {fileID: 507892594}

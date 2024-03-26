@@ -1,0 +1,5 @@
+<map id="PlayerCam" name="PlayerCam">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,123,149,363"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="27,5,128,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,90,80,123,75,123,75,90"/>
+</map>

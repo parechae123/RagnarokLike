@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: playerSaves_PlayerStat
+  m_EditorClassIdentifier: Assembly-CSharp:Scriptables:PlayerStat
+  rawStat:
+    atk: 0
+    matk: 0
+    hit: 0
+    criticalChance: 0
+    deffence: 0
+    mDeffence: 0
+    flee: 9
+    aspd: 0
+    castingTime: 0
+  str: 0
+  agi: 0
+  vit: 0
+  intelligence: 0
+  dex: 0
+  luk: 9

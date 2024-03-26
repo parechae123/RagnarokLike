@@ -1,0 +1,36 @@
+\doxysection{Test\+SCR.\+cs}
+\hypertarget{_test_s_c_r_8cs_source}{}\label{_test_s_c_r_8cs_source}\index{C:/Users/parec/RagnarokLike/HeoyoonPrivateProject/Assets/TestSCR.cs@{C:/Users/parec/RagnarokLike/HeoyoonPrivateProject/Assets/TestSCR.cs}}
+\mbox{\hyperlink{_test_s_c_r_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }System.Collections;}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }System.Collections.Generic;}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }UnityEngine;}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00005}\mbox{\hyperlink{class_test_s_c_r}{00005}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_test_s_c_r}{TestSCR}}\ :\ MonoBehaviour}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00006}00006\ \{}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00007}00007\ \ \ \ \ \textcolor{comment}{//\ Start\ is\ called\ before\ the\ first\ frame\ update}}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00008}\mbox{\hyperlink{class_test_s_c_r_a166967f9c7fdd32d0ac8b4c8bc167150}{00008}}\ \ \ \ \ \textcolor{keyword}{public}\ Transform\ \mbox{\hyperlink{class_test_s_c_r_a166967f9c7fdd32d0ac8b4c8bc167150}{targetSTR}};}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00009}00009\ \ \ \ \ \textcolor{keywordtype}{void}\ Start()}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00010}00010\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00011}00011\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00012}00012\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00014}00014\ \ \ \ \ \textcolor{comment}{//\ Update\ is\ called\ once\ per\ frame}}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00015}00015\ \ \ \ \ \textcolor{keywordtype}{void}\ Update()}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00016}00016\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00017}00017\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Input.GetKeyDown(KeyCode.Space))\ }
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00018}00018\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00019}00019\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_camera_manager}{CameraManager}}.\mbox{\hyperlink{class_camera_manager_a78e89f2dff392522251127d0f06e2f2e}{Instance}}.\mbox{\hyperlink{class_camera_manager_a27f67469e0c457076cb1be3e1c7b9efc}{RemoveTR}}(\mbox{\hyperlink{class_test_s_c_r_a166967f9c7fdd32d0ac8b4c8bc167150}{targetSTR}});}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00020}00020\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00021}00021\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Input.GetKeyDown(KeyCode.Backspace))\ }
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00022}00022\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00023}00023\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_camera_manager}{CameraManager}}.\mbox{\hyperlink{class_camera_manager_a78e89f2dff392522251127d0f06e2f2e}{Instance}}.\mbox{\hyperlink{class_camera_manager_af311168bb3a23f5409de611d9e20408b}{AddTR}}(\mbox{\hyperlink{class_test_s_c_r_a166967f9c7fdd32d0ac8b4c8bc167150}{targetSTR}});}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00024}00024\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00025}00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Input.GetKey(KeyCode.Mouse1))}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00026}00026\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00027}00027\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_camera_manager}{CameraManager}}.\mbox{\hyperlink{class_camera_manager_a78e89f2dff392522251127d0f06e2f2e}{Instance}}.\mbox{\hyperlink{class_camera_manager_a894d53bb4551cb30def86e9733da2fd8}{RotateCamera}}(\textcolor{keyword}{new}\ Vector3(Input.GetAxis(\textcolor{stringliteral}{"{}Mouse\ X"{}}),\ 0,\ Input.GetAxis(\textcolor{stringliteral}{"{}Mouse\ Y"{}})));}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00029}00029\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_test_s_c_r_8cs_source_l00030}00030\ \}}
+
+\end{DoxyCode}

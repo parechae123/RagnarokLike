@@ -1,0 +1,78 @@
+\doxysection{Player\+Cam.\+cs}
+\hypertarget{_player_cam_8cs_source}{}\label{_player_cam_8cs_source}\index{C:/Users/parec/RagnarokLike/HeoyoonPrivateProject/Assets/Player/Camera/PlayerCam.cs@{C:/Users/parec/RagnarokLike/HeoyoonPrivateProject/Assets/Player/Camera/PlayerCam.cs}}
+\mbox{\hyperlink{_player_cam_8cs}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00001}00001\ \textcolor{keyword}{using\ }System;}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00002}00002\ \textcolor{keyword}{using\ }System.Collections;}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00003}00003\ \textcolor{keyword}{using\ }System.Collections.Generic;}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00004}00004\ \textcolor{keyword}{using\ }Unity.Mathematics;}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00005}00005\ \textcolor{keyword}{using\ }UnityEngine;}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00007}\mbox{\hyperlink{class_player_cam}{00007}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_player_cam}{PlayerCam}}\ :\ MonoBehaviour}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00008}00008\ \{}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00009}\mbox{\hyperlink{class_player_cam_a537ca68d42a7635d148e67369a954c3e}{00009}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{class_player_cam_a537ca68d42a7635d148e67369a954c3e}{distance}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00010}00010\ \ \ \ \ \textcolor{keywordtype}{float}\ Distance}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00011}00011\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00012}00012\ \ \ \ \ \ \ \ \ \textcolor{keyword}{get}\ }
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00013}00013\ \ \ \ \ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00014}00014\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_player_cam_a537ca68d42a7635d148e67369a954c3e}{distance}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00015}00015\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00016}00016\ \ \ \ \ \ \ \ \ \textcolor{keyword}{set}\ }
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00017}00017\ \ \ \ \ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00018}00018\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ >=\mbox{\hyperlink{class_player_cam_a2e2ee10a445ffe89fce4f1b712f46ced}{maxCameraDistance}})}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00019}00019\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00020}00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_player_cam_a537ca68d42a7635d148e67369a954c3e}{distance}}\ =\ \mbox{\hyperlink{class_player_cam_a2e2ee10a445ffe89fce4f1b712f46ced}{maxCameraDistance}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00021}00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00022}00022\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00023}00023\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (value\ <\ \mbox{\hyperlink{class_player_cam_a781ca8e91587e1d754d23c2362de8713}{minCameraDistance}})}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00024}00024\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00025}00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_player_cam_a537ca68d42a7635d148e67369a954c3e}{distance}}\ =\ \mbox{\hyperlink{class_player_cam_a781ca8e91587e1d754d23c2362de8713}{minCameraDistance}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00026}00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00027}00027\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_player_cam_a537ca68d42a7635d148e67369a954c3e}{distance}}\ =\ value;}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00029}00029\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00030}00030\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00031}\mbox{\hyperlink{class_player_cam_a2e2ee10a445ffe89fce4f1b712f46ced}{00031}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{class_player_cam_a2e2ee10a445ffe89fce4f1b712f46ced}{maxCameraDistance}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00032}\mbox{\hyperlink{class_player_cam_a781ca8e91587e1d754d23c2362de8713}{00032}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{class_player_cam_a781ca8e91587e1d754d23c2362de8713}{minCameraDistance}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00033}\mbox{\hyperlink{class_player_cam_ac969b57178c88d2eb3d168940cdbdf6e}{00033}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{class_player_cam_ac969b57178c88d2eb3d168940cdbdf6e}{wheelSpeed}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00034}\mbox{\hyperlink{class_player_cam_a20f85db15ed40a3ed2ca79d6cf3239ec}{00034}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{class_player_cam_a20f85db15ed40a3ed2ca79d6cf3239ec}{height}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00035}\mbox{\hyperlink{class_player_cam_a02a0c19dc03f1540480f969a3e1dcf98}{00035}}\ \ \ \ \ \textcolor{keyword}{public}\ Transform\ \mbox{\hyperlink{class_player_cam_a02a0c19dc03f1540480f969a3e1dcf98}{playerTarget}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00036}00036\ \ \ \ \ Vector3\ cameraNomalizedPos\ =\ \textcolor{keyword}{new}\ Vector3(0,0,1).normalized;}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00037}\mbox{\hyperlink{class_player_cam_a2522af1ced57170bc7337a622008daa8}{00037}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{class_player_cam_a2522af1ced57170bc7337a622008daa8}{cameraRotValue}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00038}\mbox{\hyperlink{class_player_cam_a81fda541b0e21547a02c4928ec3c014b}{00038}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{class_player_cam_a81fda541b0e21547a02c4928ec3c014b}{rotationSensitivity}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00039}00039\ \ \ \ \ \textcolor{keywordtype}{void}\ Start()}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00040}00040\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00041}00041\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00042}00042\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00044}00044\ \ \ \ \ \textcolor{comment}{//\ Update\ is\ called\ once\ per\ frame}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00045}00045\ \ \ \ \ \textcolor{keywordtype}{void}\ Update()}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00046}00046\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00047}00047\ \ \ \ \ \ \ \ \ Distance\ -\/=\ Input.GetAxis(\textcolor{stringliteral}{"{}Mouse\ ScrollWheel"{}})*\mbox{\hyperlink{class_player_cam_ac969b57178c88d2eb3d168940cdbdf6e}{wheelSpeed}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00048}00048\ \ \ \ \ \ \ \ \ transform.position\ =\ ((cameraNomalizedPos)*Distance)\ +\ (Vector3.up*\mbox{\hyperlink{class_player_cam_a20f85db15ed40a3ed2ca79d6cf3239ec}{height}})+\mbox{\hyperlink{class_player_cam_a02a0c19dc03f1540480f969a3e1dcf98}{playerTarget}}.position;}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00049}00049\ \ \ \ \ \ \ \ \ transform.eulerAngles\ =\ \ \textcolor{keyword}{new}\ Vector3((Mathf.Rad2Deg\ *\ Mathf.Atan2(GetXRotAxis(\mbox{\hyperlink{class_player_cam_a02a0c19dc03f1540480f969a3e1dcf98}{playerTarget}}.position,\ transform.position),\ \mbox{\hyperlink{class_player_cam_a02a0c19dc03f1540480f969a3e1dcf98}{playerTarget}}.position.y-\/transform.position.y))\ -\/\ 90,\ Mathf.Rad2Deg\ *\ Mathf.Atan2(\mbox{\hyperlink{class_player_cam_a02a0c19dc03f1540480f969a3e1dcf98}{playerTarget}}.position.x-\/transform.position.x,\ \mbox{\hyperlink{class_player_cam_a02a0c19dc03f1540480f969a3e1dcf98}{playerTarget}}.position.z-\/transform.position.z),\ 0);}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Input.GetKey(KeyCode.Mouse1))}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00051}00051\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_player_cam_a2522af1ced57170bc7337a622008daa8}{cameraRotValue}}\ +=\ Input.GetAxis(\textcolor{stringliteral}{"{}Mouse\ X"{}})*\mbox{\hyperlink{class_player_cam_a81fda541b0e21547a02c4928ec3c014b}{rotationSensitivity}};}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ cameraNomalizedPos\ =\ GetCircle(\mbox{\hyperlink{class_player_cam_a2522af1ced57170bc7337a622008daa8}{cameraRotValue}});}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00054}00054\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00056}00056\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00057}00057\ \ \ \ \ Vector3\ GetCircle(\textcolor{keywordtype}{float}\ num)}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00058}00058\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00059}00059\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00060}00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ Vector3(MathF.Sin(num),0,\ MathF.Cos(num)).normalized;}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00061}00061\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00062}00062\ \ \ \ \ \textcolor{keywordtype}{float}\ GetXRotAxis(Vector3\ target,\ Vector3\ cam)}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00063}00063\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00064}00064\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ output\ =\ Vector2.Distance(\textcolor{keyword}{new}\ Vector2(target.x,\ target.z),\ \textcolor{keyword}{new}\ Vector2(cam.x,\ cam.z));}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ output;}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00066}00066\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00067}00067\ \textcolor{comment}{/*\ \ \ \ float\ OneDimensionDIstance(float\ a,float\ b)}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00068}00068\ \textcolor{comment}{\ \ \ \ \{}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00069}00069\ \textcolor{comment}{\ \ \ \ \ \ \ \ float\ tempNum\ =\ a-\/b;}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00070}00070\ \textcolor{comment}{\ \ \ \ \ \ \ \ return\ Mathf.Sqrt(tempNum*tempNum);}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00071}00071\ \textcolor{comment}{\ \ \ \ \}*/}}
+\DoxyCodeLine{\Hypertarget{_player_cam_8cs_source_l00072}00072\ \}}
+
+\end{DoxyCode}
