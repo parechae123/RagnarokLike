@@ -1,7 +1,6 @@
 {
-  "name": "y",
+  "name": "-y",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,10 +12,13 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "keypress": "^0.2.1",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "package.json": "^2.0.1",
     "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "ws": "^8.16.0"
-  }
+  },
+  "description": ""
 }
