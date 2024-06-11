@@ -8,19 +8,19 @@ public class SocketTest : MonoBehaviour
     public SocketIOUnity socket;
     public string ServerURL = "http://localhost:3000";
     // Start is called before the first frame update
-    void Start()
-    {
-        SetSocket(ServerURL);
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            socket.Emit("InputSomeThing","ClaToServer");
+            socket.Emit("chat message", "ClaToServer");
             Debug.Log("흠");
         }
+    }
+
+    void Start()
+    {
+        SetSocket(ServerURL);
     }
 
     public void SetSocket(string URL)
@@ -32,9 +32,9 @@ public class SocketTest : MonoBehaviour
         };
         socket = tempIO;
         socket.Connect();
-        socket.On("InputSomeThing", (msg) =>
+        socket.On("chat message", (msg) =>
         {
-            Debug.Log("지금 내 클라에서 누름");
+            Debug.Log(msg);
         });
     }
 }
