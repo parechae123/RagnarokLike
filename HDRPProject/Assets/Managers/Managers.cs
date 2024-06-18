@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -59,45 +60,56 @@ public class Node
     private void CreateTile(byte floor)
     {
         // MeshFilter 컴포넌트를 가진 새로운 게임 오브젝트 생성
-        MeshFilter thisTile = new GameObject().AddComponent<MeshFilter>();
-        thisTile.AddComponent<MeshRenderer>().material = isMoveableTile ? Resources.Load<Material>("WalkAbleTileMaterial") : Resources.Load<Material>("TileMaterial");
-        // 새로 생성한 게임 오브젝트의 위치 설정
-        thisTile.transform.position = new Vector3(nodeCenterPosition.x, floor, nodeCenterPosition.y);
-
-        // Mesh 객체 생성
-        Mesh mesh = new Mesh();
-        // Mesh의 정점(vertex) 설정
-        mesh.vertices = new Vector3[4]
-        {
-        new Vector3(-0.5f, floor, -0.5f),   // 왼쪽 아래
-        new Vector3(-0.5f, floor, 0.5f),    // 왼쪽 위
-        new Vector3(0.5f, floor, -0.5f),    // 오른쪽 아래
-        new Vector3(0.5f, floor, 0.5f),      // 오른쪽 위
-        };
-        // UV 좌표 설정
-        mesh.uv = new Vector2[4]
-        {
-            new Vector2(0, 0),   // 왼쪽 아래
-            new Vector2(0, 1),   // 왼쪽 위
-            new Vector2(1, 0),   // 오른쪽 아래
-            new Vector2(1, 1)   // 오른쪽 위
-        };
-
-        // Mesh의 삼각형(triangles) 설정
-        mesh.triangles = new int[6]
-        {
-            1, 3, 2,    // 첫 번째 삼각형 (왼쪽 아래 -> 왼쪽 위 -> 오른쪽 아래)
-             1, 2, 0     // 두 번째 삼각형 (오른쪽 아래 -> 왼쪽 위 -> 오른쪽 위)
-        };
-
-        // 생성한 Mesh를 MeshFilter에 할당하여 오브젝트에 그림을 입힘
-        thisTile.mesh = mesh;
-    } 
+        //동적생성 맵을 원한다면 batch Static되어있는 오브젝트로 사용해야함, GPU 인스턴싱 Batch때문임
+        GameObject tempGOBJ = GameObject.Instantiate(Resources.Load<GameObject>("WalkAbleTile"));
+/*        tempGOBJ.GetComponent<MeshRenderer>().sharedMaterial = isMoveableTile ? GridManager.GetInstance().WalkableMaterial : GridManager.GetInstance().NoneWalkableMaterial;
+        tempGOBJ.GetComponent<MeshFilter>().sharedMesh = GridManager.GetInstance().TileMesh;*/
+        tempGOBJ.transform.position = new Vector3(nodeCenterPosition.x,floor,nodeCenterPosition.y);
+        tempGOBJ.name = nodeCenterPosition.ToString();
+    }
 }
 public class GridManager : Manager<GridManager>
 {
     public Dictionary<Vector2Int, Node> grids = new Dictionary<Vector2Int, Node>();
+    private Mesh tileMesh;
+    public Mesh TileMesh
+    {
+        get 
+        {
+            if (tileMesh == null)
+            {
+                tileMesh = Resources.Load<GameObject>("WalkAbleTile").GetComponent<MeshFilter>().sharedMesh;
+
+            }
+            return tileMesh;
+        }
+    }
+    private Material walkableMaterial;
+    public Material WalkableMaterial
+    {
+        get 
+        {
+            if (walkableMaterial == null)
+            {
+                walkableMaterial = Resources.Load<Material>("WalkAbleTileMaterial");
+            }
+            return walkableMaterial;
+        }
+    }
+    private Material noneWalkableMaterial;
+    public Material NoneWalkableMaterial
+    {
+        get 
+        {
+            if (noneWalkableMaterial == null)
+            {
+                noneWalkableMaterial = Resources.Load<Material>("NoneWalkAbleTileMaterial");
+            }
+            return noneWalkableMaterial;
+        }
+    }
 
 
-    
+
+
 }
