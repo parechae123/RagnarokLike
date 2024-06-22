@@ -52,11 +52,11 @@ public class Player : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] targetHit = Physics.RaycastAll(ray, 1000f,8);
-        Camera.main.ScreenPointToRay(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (targetHit.Length> 0)
         {
             Debug.Log(targetHit[0].point);
-            targetNode = GridManager.GetInstance().PositionToNode(targetHit[0].point);
+            Node tempNode = GridManager.GetInstance().PositionToNode(targetHit[0].point);
+            targetNode = tempNode == null? targetNode : tempNode;
         }
     }
     private void InstallizeStates()

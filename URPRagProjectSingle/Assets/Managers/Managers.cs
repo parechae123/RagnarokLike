@@ -33,7 +33,7 @@ public class Manager<T> where T : new()
         instance = default(T);
     }
 }
-[SerializeField]
+[System.Serializable]
 public class Node
 {
     public Vector2Int nodeCenterPosition;       //³ëµåÀÇ Áß¾Ó ÁÂÇ¥°ª
@@ -105,7 +105,8 @@ public class GridManager : Manager<GridManager>
     public Node PositionToNode(Vector3 position)
     {
         Debug.Log(Mathf.RoundToInt(position.x)+","+ Mathf.RoundToInt(position.z));
-        return grids[new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z))];
+        Vector2Int tempIntPos = new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
+        return grids.ContainsKey(tempIntPos)? grids[new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z))]: null;
     }
 
 
