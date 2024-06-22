@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     public KeyCode tempKeyCode;
     //이동 도착 예정시간
     public float arriveTime;
+    [SerializeField]public Node targetNode;
     [SerializeField]
     public StateMachine stateMachine;
     public StateMachine StateMachine
@@ -36,7 +37,7 @@ public class Player : MonoBehaviour
     {
         instance = this;
         stat = new PlayerStat(3,1);
-        installizeStates();
+        InstallizeStates();
         //쿨타임 부분 수정필요
     }
     public void Update()
@@ -47,8 +48,18 @@ public class Player : MonoBehaviour
         }
         StateMachine.CurrentState.Execute();
     }
-
-    private void installizeStates()
+    public void SetTargetNode()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] targetHit = Physics.RaycastAll(ray, 1000f,8);
+        Camera.main.ScreenPointToRay(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        if (targetHit.Length> 0)
+        {
+            Debug.Log(targetHit[0].point);
+            targetNode = GridManager.GetInstance().PositionToNode(targetHit[0].point);
+        }
+    }
+    private void InstallizeStates()
     {
         Queue<PlayerStates> states = new Queue<PlayerStates>();
         states.Enqueue(new MoveState(KeyCode.Mouse0, 1, 1, "moveState", "idleState", false));

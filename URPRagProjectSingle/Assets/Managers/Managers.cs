@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -32,7 +33,7 @@ public class Manager<T> where T : new()
         instance = default(T);
     }
 }
-
+[SerializeField]
 public class Node
 {
     public Vector2Int nodeCenterPosition;       //노드의 중앙 좌표값
@@ -95,6 +96,16 @@ public class GridManager : Manager<GridManager>
             }
             return noneWalkableMaterial;
         }
+    }
+    /// <summary>
+    /// vector3를 vector2int로 형변환(반올림)
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    public Node PositionToNode(Vector3 position)
+    {
+        Debug.Log(Mathf.RoundToInt(position.x)+","+ Mathf.RoundToInt(position.z));
+        return grids[new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z))];
     }
 
 

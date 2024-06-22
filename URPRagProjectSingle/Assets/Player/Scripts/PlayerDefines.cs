@@ -101,6 +101,7 @@ namespace PlayerDefines
                 if (Input.GetKeyDown(boundedKey))
                 {
                     Player.Instance.StateMachine.ChangeState(stateName);
+                    Player.Instance.SetTargetNode();
                 }
 
             }
