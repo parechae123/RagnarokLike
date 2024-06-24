@@ -5,6 +5,7 @@ using PlayerDefines.States;
 using NeutralDefines.State;
 using PlayerDefines;
 using System;
+using UnityEditor;
 
 public class Player : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour
     public float arriveTime;
     [SerializeField]public Node targetNode;
     [SerializeField] public Node currentNode;
-    public List<Node> nodePreview = new List<Node>();
+    public Node[] nodePreview;
     [SerializeField]
     public StateMachine stateMachine;
     public StateMachine StateMachine
@@ -69,8 +70,7 @@ public class Player : MonoBehaviour
             {
                 SetCurrentNodeAndPosition();
                 currentNode.SetGH(currentNode.nodeCenterPosition, targetNode.nodeCenterPosition);
-                nodePreview.Clear();
-
+                nodePreview = GridManager.GetInstance().PathFinding(currentNode.nodeCenterPosition, targetNode.nodeCenterPosition);
             }
         }
     }
@@ -109,5 +109,15 @@ public class Player : MonoBehaviour
         states.Enqueue(new AttackState(KeyCode.Mouse1, 1, stat.attackSpeed, "attackState", "idleState", false));
         stateMachine = new StateMachine(states.ToArray());
         StateMachine.ChangeState("idleState");
+    }
+    private void OnDrawGizmos()
+    {
+        if ( nodePreview == null) return;
+        if (nodePreview.Length < 0) return;
+        for (int i = 0; i < nodePreview.Length; i++)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawCube(new Vector3(nodePreview[i].nodeCenterPosition.x,transform.position.y, nodePreview[i].nodeCenterPosition.y), Vector3.one);
+        }
     }
 }
