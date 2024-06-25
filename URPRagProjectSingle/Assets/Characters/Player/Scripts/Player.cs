@@ -6,6 +6,8 @@ using NeutralDefines.State;
 using PlayerDefines;
 using System;
 using UnityEditor;
+using System.Linq;
+using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
@@ -28,19 +30,19 @@ public class Player : MonoBehaviour
     public float arriveTime;
     [SerializeField]public Node targetNode;
     [SerializeField] public Node currentNode;
-    public Node[] nodePreview;
+    public LinkedList<Node> nodePreview = new LinkedList<Node>();
     [SerializeField]
     public StateMachine stateMachine;
     public StateMachine StateMachine
     {
         get { return stateMachine; }
     }
-    private MeshFilter playerMesh;
+    private SpriteRenderer playerSR;
     public void Awake()
     {
         instance = this;
         stat = new PlayerStat(3,1);
-        playerMesh = GetComponent<MeshFilter>();
+        playerSR = GetComponent<SpriteRenderer>();
         InstallizeStates();
         //쿨타임 부분 수정필요
     }
@@ -63,6 +65,7 @@ public class Player : MonoBehaviour
         RaycastHit[] targetHit = Physics.RaycastAll(ray, 1000f,8);
         if (targetHit.Length> 0)
         {
+            nodePreview.Clear();
             Debug.Log(targetHit[0].point);
             Node tempNode = GridManager.GetInstance().PositionToNode(targetHit[0].point);
             targetNode = tempNode == null? currentNode : tempNode;
@@ -86,7 +89,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void SetPlayerPositionToCenterPos()
     {
-        transform.position = new Vector3(currentNode.nodeCenterPosition.x, currentNode.nodeFloor+(playerMesh.mesh.bounds.size.y * 1.5f), currentNode.nodeCenterPosition.y);
+        transform.position = new Vector3(currentNode.nodeCenterPosition.x, currentNode.nodeFloor+(playerSR.bounds.size.y)+0.5f, currentNode.nodeCenterPosition.y);
     }
     /// <summary>
     /// 플레이어 오브젝트의 위치를 기반으로 하여 Node를 리턴해주는 함수
@@ -97,9 +100,24 @@ public class Player : MonoBehaviour
         return GridManager.GetInstance().PositionToNode(transform.position);
     }
     #endregion
-    private void PlayerMove()
+    public void PlayerMove()
     {
-
+        float moveSpeedPerSec = 1/stat.moveSpeed;
+        Vector3 targetVector = new Vector3(nodePreview.First().nodeCenterPosition.x, currentNode.nodeFloor + (playerSR.bounds.size.y) + 0.5f, nodePreview.First().nodeCenterPosition.y);
+        transform.DOMove(targetVector, moveSpeedPerSec).OnComplete(() =>
+        {
+            currentNode = nodePreview.First();
+            nodePreview.RemoveFirst();
+            if (nodePreview.Count > 0)
+            {
+                PlayerMove();
+            }
+            else
+            {
+                SetPlayerPositionToCenterPos();
+            }
+        });
+        
     }
     private void InstallizeStates()
     {
@@ -113,11 +131,12 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         if ( nodePreview == null) return;
-        if (nodePreview.Length < 0) return;
-        for (int i = 0; i < nodePreview.Length; i++)
+        if (nodePreview.Count < 0) return;
+        Node[] tempNodeArray = nodePreview.ToArray();
+        for (int i = 0; i < nodePreview.Count; i++)
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawCube(new Vector3(nodePreview[i].nodeCenterPosition.x,transform.position.y, nodePreview[i].nodeCenterPosition.y), Vector3.one);
+            Gizmos.DrawCube(new Vector3(tempNodeArray[i].nodeCenterPosition.x,transform.position.y, tempNodeArray[i].nodeCenterPosition.y), Vector3.one);
         }
     }
 }

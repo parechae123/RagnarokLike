@@ -137,11 +137,13 @@ public class GridManager : Manager<GridManager>
     /// <param name="endPos">이동목표 노드 위치</param>
     /// <returns></returns>
     /// 
-    public Node[] PathFinding(Vector2Int startPos, Vector2Int endPos)
+    public LinkedList<Node> PathFinding(Vector2Int startPos, Vector2Int endPos)
     {
         //열린노드 : 길이 될 수 있는(닫힌노드의 주변)
         //닫힌노드 : 열린 노드 중 가장 낮은 f비용의 노드,닫힌노드로 포함 될 시 열린노드에서 제함
         if (!grids.ContainsKey(endPos)) return null;
+        if (startPos ==endPos) return null;
+
         LinkedList<Node> openNodes = new LinkedList<Node>();
         LinkedList<Node> closedNodes = new LinkedList<Node>();
         bool isSearchDone = false;
@@ -149,7 +151,7 @@ public class GridManager : Manager<GridManager>
 
         closedNodes.AddLast(grids[startPos]);
         grids[startPos].SetGH(startPos, endPos);
-        short whileCounterMax = (short)1000;
+        short whileCounterMax = (short)100;
         while (!isSearchDone)
         {
             GetNearNodes(ref openNodes, closedNodes.Last().nodeCenterPosition, closedNodes);
@@ -177,10 +179,10 @@ public class GridManager : Manager<GridManager>
             grids[lowerstHNodePos].connectedNode = closedNodes.Last();
             closedNodes.AddLast(grids[lowerstHNodePos]);
             --whileCounterMax;
-            if (whileCounterMax <= 0) return closedNodes.ToArray();
+            if (whileCounterMax <= 0) return closedNodes;
         }
 
-        return closedNodes.ToArray();
+        return closedNodes;
 
     }
     /*    public Node[] PathFinding(Vector2Int startPos, Vector2Int endPos)

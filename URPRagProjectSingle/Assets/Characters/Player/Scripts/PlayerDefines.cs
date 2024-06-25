@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -102,6 +103,8 @@ namespace PlayerDefines
                 {
                     Player.Instance.StateMachine.ChangeState(stateName);
                     Player.Instance.SetTargetNode();
+                    Player.Instance.transform.DOKill();
+                    Player.Instance.PlayerMove();
                 }
 
             }
