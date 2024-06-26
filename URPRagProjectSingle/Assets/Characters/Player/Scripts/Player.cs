@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] targetHit = Physics.RaycastAll(ray, 1000f,8);
+        RaycastHit[] targetHitMonster = Physics.RaycastAll(ray, 1000f,8);
         transform.DOKill();
         nodePreview.Clear();
         transform.DOKill();
@@ -75,10 +76,13 @@ public class Player : MonoBehaviour
             {
                 SetCurrentNodeAndPosition();
                 currentNode.SetGH(currentNode.nodeCenterPosition, targetNode.nodeCenterPosition);
+
                 nodePreview = GridManager.GetInstance().PathFinding(currentNode.nodeCenterPosition, targetNode.nodeCenterPosition);
                 
             }
         }
+
+
     }
     
     #region 플레이어 노드 관련 함수
