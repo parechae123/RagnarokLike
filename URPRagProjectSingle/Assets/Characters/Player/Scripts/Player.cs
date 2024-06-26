@@ -63,9 +63,11 @@ public class Player : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] targetHit = Physics.RaycastAll(ray, 1000f,8);
+        transform.DOKill();
+        nodePreview.Clear();
+        transform.DOKill();
         if (targetHit.Length> 0)
         {
-            nodePreview.Clear();
             Debug.Log(targetHit[0].point);
             Node tempNode = GridManager.GetInstance().PositionToNode(targetHit[0].point);
             targetNode = tempNode == null? currentNode : tempNode;
@@ -74,6 +76,7 @@ public class Player : MonoBehaviour
                 SetCurrentNodeAndPosition();
                 currentNode.SetGH(currentNode.nodeCenterPosition, targetNode.nodeCenterPosition);
                 nodePreview = GridManager.GetInstance().PathFinding(currentNode.nodeCenterPosition, targetNode.nodeCenterPosition);
+                
             }
         }
     }
@@ -103,20 +106,23 @@ public class Player : MonoBehaviour
     public void PlayerMove()
     {
         float moveSpeedPerSec = 1/stat.moveSpeed;
+        if (nodePreview.Count <= 0) return;
         Vector3 targetVector = new Vector3(nodePreview.First().nodeCenterPosition.x, currentNode.nodeFloor + (playerSR.bounds.size.y) + 0.5f, nodePreview.First().nodeCenterPosition.y);
         transform.DOMove(targetVector, moveSpeedPerSec).OnComplete(() =>
         {
-            currentNode = nodePreview.First();
-            nodePreview.RemoveFirst();
             if (nodePreview.Count > 0)
             {
+                currentNode = nodePreview.First();
+                nodePreview.RemoveFirst();
                 PlayerMove();
             }
             else
             {
                 SetPlayerPositionToCenterPos();
             }
-        });
+
+
+        }).SetEase(Ease.Linear);
         
     }
     private void InstallizeStates()

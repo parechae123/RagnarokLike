@@ -141,11 +141,20 @@ public class GridManager : Manager<GridManager>
     {
         //열린노드 : 길이 될 수 있는(닫힌노드의 주변)
         //닫힌노드 : 열린 노드 중 가장 낮은 f비용의 노드,닫힌노드로 포함 될 시 열린노드에서 제함
-        if (!grids.ContainsKey(endPos)) return null;
-        if (startPos ==endPos) return null;
+        LinkedList<Node> closedNodes = new LinkedList<Node>();
+        if (!grids.ContainsKey(endPos))
+        {
+            closedNodes.Clear();
+            return closedNodes;
+        }
+
+        if (startPos == endPos) 
+        {
+            closedNodes.Clear();
+            return closedNodes;
+        } 
 
         LinkedList<Node> openNodes = new LinkedList<Node>();
-        LinkedList<Node> closedNodes = new LinkedList<Node>();
         bool isSearchDone = false;
 
 
