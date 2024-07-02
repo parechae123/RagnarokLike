@@ -5,6 +5,7 @@ namespace NeutralDefines
         
         using PlayerDefines.States;
         using Unity.VisualScripting;
+        using UnityEngine;
 
         [System.Serializable]
         public class StateMachine
@@ -20,7 +21,6 @@ namespace NeutralDefines
             {
                 get { return currentState; }
             }
-            
             public StateMachine(PlayerStates[] defaultStates)
             {
                 allStates = defaultStates;            
@@ -51,5 +51,49 @@ namespace NeutralDefines
                 return allStates[i];
             }
         }
+        [System.Serializable]
+        public class CursorStates
+        {
+            [SerializeField] private Texture2D defaultCursorIMG;
+            [SerializeField] private Texture2D noneClickAbleIMG;
+            [SerializeField] private Texture2D grabCursorIMG;
+            [SerializeField] private Texture2D attackAbleCursorIMG;
+
+            public void SetDefaultCursor()
+            {
+                Cursor.SetCursor(defaultCursorIMG, Vector2.left + Vector2.up, CursorMode.Auto);
+            }
+            public cursorState CurrentCursorState 
+            {
+                get;
+                private set;
+            }
+            public void changeState(cursorState nextCursorState)
+            {
+                if (nextCursorState == CurrentCursorState) return;
+                CurrentCursorState = nextCursorState;
+                switch (CurrentCursorState)
+                {
+                    case cursorState.defaultCurser:
+                        Cursor.SetCursor(defaultCursorIMG, Vector2.left + Vector2.up, CursorMode.Auto);
+                        break;
+                    case cursorState.noneClickAbleState:
+                        Cursor.SetCursor(noneClickAbleIMG, Vector2.left + Vector2.up, CursorMode.Auto);
+                        break;
+                    case cursorState.grabCursor:
+                        Cursor.SetCursor(grabCursorIMG, Vector2.left + Vector2.up, CursorMode.Auto);
+                        break;
+                    case cursorState.attackAble:
+                        Cursor.SetCursor(attackAbleCursorIMG, Vector2.left + Vector2.up, CursorMode.Auto);
+                        break;
+
+                }
+            }
+        }
+        public enum cursorState
+        {
+            defaultCurser, noneClickAbleState, grabCursor, attackAble
+        }
+
     }
 }

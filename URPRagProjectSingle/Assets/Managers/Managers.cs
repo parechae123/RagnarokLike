@@ -160,7 +160,7 @@ public class GridManager : Manager<GridManager>
 
         closedNodes.AddLast(grids[startPos]);
         grids[startPos].SetGH(startPos, endPos);
-        short whileCounterMax = (short)1000;
+        short whileCounterMax = (short)10000;
         while (!isSearchDone)
         {
             GetNearOpenNodes(ref openNodes, closedNodes.Last().nodeCenterPosition, closedNodes);
