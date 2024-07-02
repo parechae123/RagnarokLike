@@ -53,12 +53,10 @@ namespace PlayerDefines
             }
             public virtual void Enter()
             {
-                Debug.Log("들어감" + stateName);
                 skillTimer = 0;
             }
             public virtual void Execute()
             {
-                Debug.Log("도는중"+stateName);
                 skillTimer += Time.deltaTime;
                 if (skillCoolTime < skillTimer)
                 {
@@ -68,7 +66,6 @@ namespace PlayerDefines
 
             public virtual void Exit()
             {
-                Debug.Log("상태에서 나감" + stateName);
                 skillTimer = skillCoolTime;
             }
 
@@ -92,7 +89,6 @@ namespace PlayerDefines
             }
             public override void Execute()
             {
-                Debug.Log("도는중" + stateName);
                 skillTimer += Time.deltaTime;
                 if (durationTime < skillTimer)
                 {
@@ -149,7 +145,6 @@ namespace PlayerDefines
             }
             public override void Exit()
             {
-                Debug.Log("상태에서 나감"+stateName);
                 skillTimer = 0;
             }
         }
@@ -179,10 +174,45 @@ namespace PlayerDefines
         }
     }
     [System.Serializable]
-    public class PlayerStat
+    public class Stats
     {
-        public float moveSpeed = 3; //초당 이동하는 타일 수
+        private bool isCharacterDie = false;
+        private float hp;
+        public float HP
+        {
+            get
+            {
+                return hp;
+            }
+            set
+            {
+                hp = value;
+                if (hp>=0)
+                {
+                    isCharacterDie = true;
+                }
+            } 
+        }
+        private float sp
+        {
+            get;
+            set;
+        }
+        public float moveSpeed; //초당 이동하는 타일 수
         public float attackSpeed;
+
+        public bool IsEnoughSP(float spCost)
+        {
+            if (sp>= spCost&&!isCharacterDie)
+            {
+                sp -= spCost;
+                return true;
+            }
+            return false;
+        }
+    }
+    public class PlayerStat : Stats
+    {
         public PlayerStat(float moveSpeed, float attackSpeed)
         {
             this.moveSpeed = moveSpeed;

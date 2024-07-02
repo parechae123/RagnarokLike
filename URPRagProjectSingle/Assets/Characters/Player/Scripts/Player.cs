@@ -44,6 +44,7 @@ public class Player : MonoBehaviour
         get { return stateMachine; }
     }
     private SpriteRenderer playerSR;
+    [SerializeField] private Transform targetCell;
     [SerializeField] CursorStates playerCursorState = new CursorStates();
     public void Awake()
     {
@@ -66,7 +67,6 @@ public class Player : MonoBehaviour
     }
     public bool SetTargetNode(Vector3 point)
     {
-        Debug.Log(point);
         Node tempNode = GridManager.GetInstance().PositionToNode(point);
 
         if (tempNode != null)
@@ -180,15 +180,26 @@ public class Player : MonoBehaviour
         if (monsterHit.Length > 0)
         {
             playerCursorState.changeState(cursorState.attackAble);
+            if (targetCell.gameObject.activeSelf) targetCell.gameObject.SetActive(false);
         }
         else
         {
             if(groundHit.Length > 0)
             {
                 playerCursorState.changeState(cursorState.defaultCurser);
+                Node tempNode = GridManager.GetInstance().PositionToNode(groundHit[0].point);
+                if (tempNode != null)
+                {
+                    if(!targetCell.gameObject.activeSelf) targetCell.gameObject.SetActive(true);
+                    targetCell.position = new Vector3(GridManager.GetInstance().PositionToNode(groundHit[0].point).nodeCenterPosition.x,
+                    GridManager.GetInstance().PositionToNode(groundHit[0].point).nodeFloor,
+                    GridManager.GetInstance().PositionToNode(groundHit[0].point).nodeCenterPosition.y);
+                }
+
             }
             else
             {
+                if (targetCell.gameObject.activeSelf) targetCell.gameObject.SetActive(false);
                 playerCursorState.changeState(cursorState.noneClickAbleState);
             }
         }

@@ -1,3 +1,4 @@
+using PlayerDefines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,19 @@ public class Node
     public Vector2Int nodeCenterPosition;       //³ëµåÀÇ Áß¾Ó ÁÂÇ¥°ª
     public bool isMoveableTile;                 //ÀÌµ¿°¡´É Å¸ÀÏÀÎÁö
     public sbyte nodeFloor;                     //³ëµåÀÇ Ãþ(1Ãþ = y1,-1Ãþ = y-1
+    private Stats characterOnNode;
+    public bool isEmptyNode(Stats stat)
+    {
+        if (characterOnNode == null)
+        {
+            return true;
+        }
+        return false;
+    }
+    public void nodeCharacterUpdate(Stats stat)
+    {
+        characterOnNode = stat;
+    }
     public Node(sbyte floor, Vector2Int vec, bool isMoveable)
     {
         nodeFloor = floor;
@@ -125,7 +139,6 @@ public class GridManager : Manager<GridManager>
     /// <returns></returns>
     public Node PositionToNode(Vector3 position)
     {
-        Debug.Log(Mathf.RoundToInt(position.x) + "," + Mathf.RoundToInt(position.z));
         Vector2Int tempIntPos = new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
         return grids.ContainsKey(tempIntPos) ? grids[new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z))] : null;
     }
@@ -160,7 +173,7 @@ public class GridManager : Manager<GridManager>
 
         closedNodes.AddLast(grids[startPos]);
         grids[startPos].SetGH(startPos, endPos);
-        short whileCounterMax = (short)10000;
+        short whileCounterMax = (short)1000;
         while (!isSearchDone)
         {
             GetNearOpenNodes(ref openNodes, closedNodes.Last().nodeCenterPosition, closedNodes);

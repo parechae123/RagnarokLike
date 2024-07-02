@@ -35,7 +35,6 @@ public class MapReader : MonoBehaviour
         for (int i = 0; i < blockPositions.Length; i++)
         {
             GridManager.GetInstance().grids.Add(blockPositions[i], new Node(sameArrayFloor[i], blockPositions[i], true));
-            Debug.Log(GridManager.GetInstance().grids[blockPositions[i]].nodeCenterPosition);
         }
         Destroy(gameObject);
     }
