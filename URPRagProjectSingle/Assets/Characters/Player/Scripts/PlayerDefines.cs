@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Build.Player;
 using UnityEngine;
 namespace PlayerDefines
 {
@@ -21,6 +22,39 @@ namespace PlayerDefines
             public string nextStateName;
             //state 도중 끊을 수 없는지 가능시 false 불가능시 true
             public bool isCancelableState;
+            //TODO : 방향 지정필요
+            Vector3 playerLookPosition;
+            CameraPosPerPlayer pos
+            {
+                get
+                {
+                    if (MathF.Abs(playerLookPosition.x) > MathF.Abs(playerLookPosition.z))
+                    {
+                        if (playerLookPosition.x > 0)
+                        {
+                            return CameraPosPerPlayer.E;
+                        }
+                        else
+                        {
+                            return CameraPosPerPlayer.W;
+
+                        }
+                    }
+                    else
+                    {
+                        if (playerLookPosition.z > 0)
+                        {
+                            return CameraPosPerPlayer.N;
+                        }
+                        else
+                        {
+                            return CameraPosPerPlayer.S;
+
+                        }
+                    }
+                }
+            }
+
             protected float skillCoolTime;
             protected float skillTimer;
             public float SkillTimer
@@ -107,23 +141,35 @@ namespace PlayerDefines
 
         public class AttackState : PlayerStates
         {
-            public AttackState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
+            Stats stats;
+            public AttackState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState,Stats characterStat) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
             {
-
+                stats = characterStat;
             }
             public override void Enter()
             {
-                base.Enter();
+                
             }
             public override void Execute()
             {
+                skillTimer += Time.deltaTime;
+                if (stats.attackSpeed < skillTimer)
+                {
+                    skillTimer = 0;
+                    if (stats.target.isCharacterDie)
+                    {
+                        Player.Instance.StateMachine.ChangeState(nextStateName);
+                    }
+                    else
+                    {
+                        stats.AttackTarget();
+                    }
+                }
 
-                base.Execute();
-                
             }
             public override void Exit()
             {
-                base.Exit();
+                skillTimer = stats.attackSpeed;
             }
         }
         public class IdleState : PlayerStates
@@ -176,7 +222,28 @@ namespace PlayerDefines
     [System.Serializable]
     public class Stats
     {
-        private bool isCharacterDie = false;
+        public bool isCharacterDie
+        {
+            get;
+            private set;
+        }
+        public Action<Vector3> moveFunction;
+        public Action dieFunctions;//TODO : 사망 연출 등록필요
+        public Stats(Node initializeNode,float hp,float moveSpeed,float attackSpeed,float attackDamage) 
+        {
+            isCharacterDie = false;
+            standingNode = initializeNode;
+            standingNode.CharacterOnNode = this;
+            HP = hp;
+            this.moveSpeed = moveSpeed;
+            this.attackSpeed = attackSpeed;
+            this.attackDamage = attackDamage;
+        }
+        public Node standingNode
+        {
+            get;
+            set;
+        }
         private float hp;
         public float HP
         {
@@ -187,8 +254,9 @@ namespace PlayerDefines
             set
             {
                 hp = value;
-                if (hp>=0)
+                if (hp<=0)
                 {
+                    dieFunctions?.Invoke();
                     isCharacterDie = true;
                 }
             } 
@@ -199,7 +267,15 @@ namespace PlayerDefines
             set;
         }
         public float moveSpeed; //초당 이동하는 타일 수
+        public float attackDamage;
         public float attackSpeed;
+        public Stats target;
+        public void AttackTarget(float damage = float.MinValue)
+        {
+            
+            target.HP -= damage == float.MinValue ? attackDamage : damage;
+            Debug.Log(target.HP);
+        }
 
         public bool IsEnoughSP(float spCost)
         {
@@ -213,10 +289,9 @@ namespace PlayerDefines
     }
     public class PlayerStat : Stats
     {
-        public PlayerStat(float moveSpeed, float attackSpeed)
+        public PlayerStat(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage) : base(initializeNode,hp,moveSpeed,attackSpeed,attackDamage)
         {
-            this.moveSpeed = moveSpeed;
-            this.attackSpeed = attackSpeed;
+
         }
     }
 }

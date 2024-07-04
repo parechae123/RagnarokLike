@@ -32,9 +32,12 @@ public class PlayerCam : MonoBehaviour
     public float wheelSpeed;
     public float height;
     public Transform playerTarget;
-    Vector3 cameraNomalizedPos = new Vector3(0, 0, 1).normalized;
+    [SerializeField]Vector3 cameraNomalizedPos = new Vector3(0, 0, 1).normalized;
     public float cameraRotValue;
     public float rotationSensitivity;
+    public CameraPosPerPlayer cameraDirrection;
+
+
     // Update is called once per frame
     void Update()
     {
@@ -45,6 +48,31 @@ public class PlayerCam : MonoBehaviour
         {
             cameraRotValue += Input.GetAxis("Mouse X") * rotationSensitivity;
             cameraNomalizedPos = GetCircle(cameraRotValue);
+            //X의 절댓값이 y보다 클 때
+            if (MathF.Abs(cameraNomalizedPos.x)> MathF.Abs(cameraNomalizedPos.z))
+            {
+                if (cameraNomalizedPos.x>0)
+                {
+                    cameraDirrection = CameraPosPerPlayer.E;
+                }
+                else
+                {
+                    cameraDirrection = CameraPosPerPlayer.W;
+
+                }
+            }
+            else
+            {
+                if (cameraNomalizedPos.z > 0)
+                {
+                    cameraDirrection = CameraPosPerPlayer.N;
+                }
+                else
+                {
+                    cameraDirrection = CameraPosPerPlayer.S;
+
+                }
+            }
         }
 
     }
@@ -58,9 +86,14 @@ public class PlayerCam : MonoBehaviour
         float output = Vector2.Distance(new Vector2(target.x, target.z), new Vector2(cam.x, cam.z));
         return output;
     }
+
     /*    float OneDimensionDIstance(float a,float b)
         {
             float tempNum = a-b;
             return Mathf.Sqrt(tempNum*tempNum);
         }*/
+}
+public enum CameraPosPerPlayer
+{
+    N, E, S, W
 }

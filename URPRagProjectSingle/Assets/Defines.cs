@@ -4,6 +4,7 @@ namespace NeutralDefines
     {
         
         using PlayerDefines.States;
+        using System.Collections;
         using Unity.VisualScripting;
         using UnityEngine;
 
@@ -21,11 +22,12 @@ namespace NeutralDefines
             {
                 get { return currentState; }
             }
-            public StateMachine(PlayerStates[] defaultStates)
+            public StateMachine(PlayerStates[] defaultStates,Animator anim)
             {
                 allStates = defaultStates;            
+                this.anim = anim;
             }
-            
+            public Animator anim;
             public void ChangeState(string newStateName)
             {
                 if (currentState == null) 
@@ -38,7 +40,8 @@ namespace NeutralDefines
                 currentState = SearchState(newStateName);               //인수로 받아온 상태값을 입력
                 currentState?.Enter();                  //다음 상태값
             }
-            private PlayerStates SearchState(string stateName)
+            
+            public PlayerStates SearchState(string stateName)
             {
                 sbyte i = 0;
                 for (; i < allStates.Length; i++)

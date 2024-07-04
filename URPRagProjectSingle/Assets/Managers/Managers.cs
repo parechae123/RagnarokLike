@@ -44,6 +44,11 @@ public class Node
     public bool isMoveableTile;                 //이동가능 타일인지
     public sbyte nodeFloor;                     //노드의 층(1층 = y1,-1층 = y-1
     private Stats characterOnNode;
+    public Stats CharacterOnNode
+    {
+        get { return characterOnNode; }
+        set { characterOnNode = value; }
+    }
     public bool isEmptyNode(Stats stat)
     {
         if (characterOnNode == null)
@@ -51,10 +56,6 @@ public class Node
             return true;
         }
         return false;
-    }
-    public void nodeCharacterUpdate(Stats stat)
-    {
-        characterOnNode = stat;
     }
     public Node(sbyte floor, Vector2Int vec, bool isMoveable)
     {
@@ -380,5 +381,65 @@ public class GridManager : Manager<GridManager>
             }
         }
         return tempVec;
+    }
+    public bool MeleeAttackOrder(Stats attackerStat,Stats targetStat,float damage)
+    {
+        if (IsMeleeAttackAble(attackerStat.standingNode,targetStat.standingNode))
+        {
+            if (attackerStat.target != targetStat)
+            {
+                attackerStat.target = targetStat;
+            }
+            return true;
+        }
+        else
+        {
+            attackerStat.moveFunction(new Vector3(targetStat.standingNode.nodeCenterPosition.x, targetStat.standingNode.nodeFloor, targetStat.standingNode.nodeCenterPosition.y));
+            return false;
+        }
+    }
+    /// <summary>
+    /// 목표 노드가 캐릭터 근처에 있으면 true, 없으면 false를 리턴
+    /// </summary>
+    /// <param name="attackerStandingNode"></param>
+    /// <param name="targetStandingNode"></param>
+    /// <returns></returns>
+    private bool IsMeleeAttackAble(Node attackerStandingNode,Node targetStandingNode)
+    {
+
+        if (grids.ContainsKey(attackerStandingNode.nodeCenterPosition + Vector2Int.left))
+        {
+            if (grids[attackerStandingNode.nodeCenterPosition + Vector2Int.left] == targetStandingNode)
+            {
+                return true;
+            }
+        }
+
+        if (grids.ContainsKey(attackerStandingNode.nodeCenterPosition + Vector2Int.right))
+        {
+            if (grids[attackerStandingNode.nodeCenterPosition + Vector2Int.right] == targetStandingNode)
+            {
+                return true;
+            }
+
+        }
+
+        if (grids.ContainsKey(attackerStandingNode.nodeCenterPosition + Vector2Int.down))
+        {
+            if (grids[attackerStandingNode.nodeCenterPosition + Vector2Int.down] == targetStandingNode)
+            {
+                return true;
+            }
+
+        }
+
+        if (grids.ContainsKey(attackerStandingNode.nodeCenterPosition + Vector2Int.up))
+        {
+            if (grids[attackerStandingNode.nodeCenterPosition + Vector2Int.up] == targetStandingNode)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
