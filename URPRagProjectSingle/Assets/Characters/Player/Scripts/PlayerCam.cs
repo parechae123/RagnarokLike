@@ -5,6 +5,18 @@ using UnityEngine;
 
 public class PlayerCam : MonoBehaviour
 {
+    private static PlayerCam instance;
+    public static PlayerCam Instance
+    {
+        get 
+        {
+            if (instance == null)
+            {
+                instance = new PlayerCam();
+            }
+            return instance;
+        }
+    }
     public float distance;
     float Distance
     {
@@ -35,9 +47,42 @@ public class PlayerCam : MonoBehaviour
     [SerializeField]Vector3 cameraNomalizedPos = new Vector3(0, 0, 1).normalized;
     public float cameraRotValue;
     public float rotationSensitivity;
-    public CameraPosPerPlayer cameraDirrection;
+    [SerializeField]private Vector2Int cameraDirrection;
+    public Vector2Int CameraDirrection
+    {
+        get 
+        {
+            if (MathF.Abs(cameraNomalizedPos.x) > MathF.Abs(cameraNomalizedPos.z))
+            {
+                if (cameraNomalizedPos.x > 0)
+                {
+                    cameraDirrection = Vector2Int.right;
+                }
+                else
+                {
+                    cameraDirrection = Vector2Int.left;
 
+                }
+            }
+            else
+            {
+                if (cameraNomalizedPos.z > 0)
+                {
+                    cameraDirrection = Vector2Int.up;
+                }
+                else
+                {
+                    cameraDirrection = Vector2Int.down;
 
+                }
+            }
+            return cameraDirrection;
+        }
+    }
+    private void Awake()
+    {
+        instance = this;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -48,34 +93,11 @@ public class PlayerCam : MonoBehaviour
         {
             cameraRotValue += Input.GetAxis("Mouse X") * rotationSensitivity;
             cameraNomalizedPos = GetCircle(cameraRotValue);
-            //X의 절댓값이 y보다 클 때
-            if (MathF.Abs(cameraNomalizedPos.x)> MathF.Abs(cameraNomalizedPos.z))
-            {
-                if (cameraNomalizedPos.x>0)
-                {
-                    cameraDirrection = CameraPosPerPlayer.E;
-                }
-                else
-                {
-                    cameraDirrection = CameraPosPerPlayer.W;
-
-                }
-            }
-            else
-            {
-                if (cameraNomalizedPos.z > 0)
-                {
-                    cameraDirrection = CameraPosPerPlayer.N;
-                }
-                else
-                {
-                    cameraDirrection = CameraPosPerPlayer.S;
-
-                }
-            }
+            Player.Instance.StateMachine.AnimationChange();
         }
 
     }
+
     Vector3 GetCircle(float num)
     {
 
@@ -93,7 +115,7 @@ public class PlayerCam : MonoBehaviour
             return Mathf.Sqrt(tempNum*tempNum);
         }*/
 }
-public enum CameraPosPerPlayer
+public enum Dirrections
 {
     N, E, S, W
 }

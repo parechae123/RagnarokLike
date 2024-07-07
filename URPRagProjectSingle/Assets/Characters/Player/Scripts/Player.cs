@@ -50,8 +50,8 @@ public class Player : MonoBehaviour
     public LinkedList<Node> nodePreview = new LinkedList<Node>();
 
     [SerializeField]
-    public StateMachine stateMachine;
-    public StateMachine StateMachine
+    public PlayerStateMachine stateMachine;
+    public PlayerStateMachine StateMachine
     {
         get { return stateMachine; }
     }
@@ -59,6 +59,11 @@ public class Player : MonoBehaviour
     private SpriteRenderer playerSR;
     [SerializeField] private Transform targetCell;
     [SerializeField] CursorStates playerCursorState = new CursorStates();
+    [SerializeField]Vector2Int playerLookDir;
+    public Vector2Int PlayerLookDir
+    {
+        get { return playerLookDir; }
+    }
     public void Awake()
     {
         instance = this;
@@ -124,7 +129,7 @@ public class Player : MonoBehaviour
     #endregion
     #region 움직임,공격 관련
 
-    public void PlayerMove()
+    public void PlayerMove(bool isMoveToAttack = false)
     {
         float moveSpeedPerSec = 1 / stat.moveSpeed;
         if (nodePreview.Count <= 0) return;
@@ -157,7 +162,20 @@ public class Player : MonoBehaviour
         }
         Path tempPath = new Path(PathType.Linear, tempNodePosArray, 1);
         transform.DOKill();
-        DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear);
+        if (isMoveToAttack)
+        {
+            DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                if (StateMachine.CurrentState != StateMachine.SearchState("attackState")&& tempNodePosArray.Length> 0)
+                {
+                    StateMachine.ChangeState("attackState");
+                }
+            });
+        }
+        else
+        {
+            DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear);
+        }
         arriveTime = tempNodePosArray.Length * moveSpeedPerSec;
         return;
 
@@ -184,6 +202,9 @@ public class Player : MonoBehaviour
     {
         TweenerCore<Vector3, Path, PathOptions> tweenerCore = DOTween.To(PathPlugin.Get(), () => target.position, delegate (Vector3 x)
         {
+            SetPlayerDirrection(target.position,x);
+
+            StateMachine.AnimationChange();
             target.position = x;
             CurrentNode = GridManager.GetInstance().PositionToNode(target.position);
         }, path, duration).SetTarget(target);
@@ -232,7 +253,7 @@ public class Player : MonoBehaviour
             {
                 if (SetTargetMonster(monsterHit[0].transform))
                 {
-                    if (GridManager.GetInstance().MeleeAttackOrder(stat, GridManager.GetInstance().PositionToNode(monsterHit[0].point)?.CharacterOnNode, stat.attackSpeed))
+                    if (GridManager.GetInstance().MeleeAttackOrder(stat, GridManager.GetInstance().PositionToNode(monsterHit[0].point)?.CharacterOnNode))
                     {
                         if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
                         {
@@ -249,11 +270,39 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void PlayerMoveOrder(Vector3 targetPosition)
+    public void SetPlayerDirrection(Vector3 startPos,Vector3 endPos)
+    {
+        Vector3 tempPos = startPos - endPos;
+        if (tempPos.x != 0)
+        {
+            if (tempPos.x > 0)
+            {
+                playerLookDir = Vector2Int.right;
+            }
+            else if (tempPos.x < 0)
+            {
+                playerLookDir = Vector2Int.left;
+            }
+        }
+        else
+        {
+            if (tempPos.z > 0)
+            {
+                playerLookDir = Vector2Int.up;
+            }
+            else if(tempPos.z < 0)
+            {
+                playerLookDir = Vector2Int.down;
+            }
+        }
+    }
+
+    public void PlayerMoveOrder(Vector3 targetPosition, bool isMoveToAttack = false)
     {
         if (SetTargetNode(targetPosition))
         {
-            PlayerMove();
+            PlayerMove(isMoveToAttack);
+            
             StateMachine.ChangeState("moveState");
         }
 
@@ -265,7 +314,7 @@ public class Player : MonoBehaviour
         states.Enqueue(new MoveState( 1, 1, "moveState", "idleState", false));
         states.Enqueue(new IdleState(1, 1, "idleState", "idleState", true));
         states.Enqueue(new AttackState(1, stat.attackSpeed, "attackState", "idleState", false,stat));
-        stateMachine = new StateMachine(states.ToArray(),GetComponent<Animator>());
+        stateMachine = new PlayerStateMachine(states.ToArray(),GetComponent<Animator>());
         StateMachine.ChangeState("idleState");
     }
     private void OnDrawGizmos()

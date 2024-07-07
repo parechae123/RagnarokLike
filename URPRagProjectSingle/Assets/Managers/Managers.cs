@@ -86,8 +86,13 @@ public class Node
         // 두 점 사이의 x와 y 좌표 차이 계산
         Vector2Int dist = new Vector2Int(Mathf.Abs(nodeCenterPosition.x - targetPos.x), Mathf.Abs(nodeCenterPosition.y - targetPos.y));
 
-        // 맨해튼 거리 계산 (두 점 사이의 수평 및 수직 거리 합)
-        return (dist.x + dist.y) * 10;
+        // 대각선 거리 계산 (두 점 사이의 가장 큰 차이 값)
+        return 10 * (dist.x + dist.y) + (14 - 2 * 10) * Mathf.Min(dist.x, dist.y);
+        /*        // 두 점 사이의 x와 y 좌표 차이 계산
+                Vector2Int dist = new Vector2Int(Mathf.Abs(nodeCenterPosition.x - targetPos.x), Mathf.Abs(nodeCenterPosition.y - targetPos.y));
+
+                // 맨해튼 거리 계산 (두 점 사이의 수평 및 수직 거리 합)
+                return (dist.x + dist.y) * 10;*/
     }
 
 
@@ -185,7 +190,7 @@ public class GridManager : Manager<GridManager>
                 Node node = openNodes.First();
                 node.SetGH(startPos, endPos);
                 openNodes.RemoveFirst();
-                if (lowerstHValue > node.H)
+                if (lowerstHValue > node.H && node.isMoveableTile&&(node.CharacterOnNode == null|| endPos == node.nodeCenterPosition))
                 {
                     lowerstHValue = node.H;
                     lowerstHNodePos = node.nodeCenterPosition;
@@ -382,19 +387,20 @@ public class GridManager : Manager<GridManager>
         }
         return tempVec;
     }
-    public bool MeleeAttackOrder(Stats attackerStat,Stats targetStat,float damage)
+    public bool MeleeAttackOrder(Stats attackerStat,Stats targetStat)
     {
+        if (attackerStat.target != targetStat)
+        {
+            attackerStat.target = targetStat;
+        }
         if (IsMeleeAttackAble(attackerStat.standingNode,targetStat.standingNode))
         {
-            if (attackerStat.target != targetStat)
-            {
-                attackerStat.target = targetStat;
-            }
+
             return true;
         }
         else
         {
-            attackerStat.moveFunction(new Vector3(targetStat.standingNode.nodeCenterPosition.x, targetStat.standingNode.nodeFloor, targetStat.standingNode.nodeCenterPosition.y));
+            attackerStat.moveFunction(new Vector3(targetStat.standingNode.nodeCenterPosition.x, targetStat.standingNode.nodeFloor, targetStat.standingNode.nodeCenterPosition.y),true);
             return false;
         }
     }

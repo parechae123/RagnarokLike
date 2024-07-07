@@ -725,6 +725,7 @@ GameObject:
   - component: {fileID: 67711973}
   - component: {fileID: 67711972}
   - component: {fileID: 67711974}
+  - component: {fileID: 67711975}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -821,6 +822,8 @@ MonoBehaviour:
     nodeCenterPosition: {x: 0, y: 0}
     isMoveableTile: 0
     nodeFloor: 0
+  stateMachine:
+    anim: {fileID: 0}
   targetCell: {fileID: 1040385092}
   playerCursorState:
     defaultCursorIMG: {fileID: 2800000, guid: 5119282f8fea6914da0ca7f04d32f47b, type: 3}
@@ -828,6 +831,28 @@ MonoBehaviour:
     grabCursorIMG: {fileID: 2800000, guid: 8607646b6e0d80e4f93d248185a7b964, type: 3}
     attackAbleCursorIMG: {fileID: 2800000, guid: 9e1905eb01010834f8e86246af3355a8,
       type: 3}
+  playerLookDir: {x: 0, y: 0}
+--- !u!95 &67711975
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67711971}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e8dbf328d7953b34b809757abb7ed492, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &68446928
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5554,6 +5579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterStat:
     moveSpeed: 0
+    attackDamage: 0
     attackSpeed: 0
 --- !u!1001 &567934479
 PrefabInstance:
@@ -7359,8 +7385,10 @@ MonoBehaviour:
   wheelSpeed: 0.54
   height: 5.76
   playerTarget: {fileID: 67711973}
+  cameraNomalizedPos: {x: 0, y: 0, z: 1}
   cameraRotValue: -213.25516
   rotationSensitivity: 0.37
+  cameraDirrection: {x: 0, y: 0}
 --- !u!1001 &760096301
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9534,6 +9562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterStat:
     moveSpeed: 0
+    attackDamage: 0
     attackSpeed: 0
 --- !u!135 &1030514311
 SphereCollider:
@@ -16097,6 +16126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterStat:
     moveSpeed: 0
+    attackDamage: 0
     attackSpeed: 0
 --- !u!135 &1791692438
 SphereCollider:

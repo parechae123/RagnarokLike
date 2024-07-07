@@ -23,37 +23,6 @@ namespace PlayerDefines
             //state 도중 끊을 수 없는지 가능시 false 불가능시 true
             public bool isCancelableState;
             //TODO : 방향 지정필요
-            Vector3 playerLookPosition;
-            CameraPosPerPlayer pos
-            {
-                get
-                {
-                    if (MathF.Abs(playerLookPosition.x) > MathF.Abs(playerLookPosition.z))
-                    {
-                        if (playerLookPosition.x > 0)
-                        {
-                            return CameraPosPerPlayer.E;
-                        }
-                        else
-                        {
-                            return CameraPosPerPlayer.W;
-
-                        }
-                    }
-                    else
-                    {
-                        if (playerLookPosition.z > 0)
-                        {
-                            return CameraPosPerPlayer.N;
-                        }
-                        else
-                        {
-                            return CameraPosPerPlayer.S;
-
-                        }
-                    }
-                }
-            }
 
             protected float skillCoolTime;
             protected float skillTimer;
@@ -227,7 +196,7 @@ namespace PlayerDefines
             get;
             private set;
         }
-        public Action<Vector3> moveFunction;
+        public Action<Vector3,bool> moveFunction;
         public Action dieFunctions;//TODO : 사망 연출 등록필요
         public Stats(Node initializeNode,float hp,float moveSpeed,float attackSpeed,float attackDamage) 
         {

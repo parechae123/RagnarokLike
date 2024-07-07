@@ -9,7 +9,7 @@ namespace NeutralDefines
         using UnityEngine;
 
         [System.Serializable]
-        public class StateMachine
+        public class PlayerStateMachine
         {
             
             private PlayerStates[] allStates = new PlayerStates[0]; 
@@ -22,12 +22,27 @@ namespace NeutralDefines
             {
                 get { return currentState; }
             }
-            public StateMachine(PlayerStates[] defaultStates,Animator anim)
+            public PlayerStateMachine(PlayerStates[] defaultStates,Animator anim)
             {
                 allStates = defaultStates;            
                 this.anim = anim;
             }
-            public Animator anim;
+            [SerializeField]public Animator anim;
+            private Dirrections animationDirrection
+            {
+                get
+                {
+                    Vector2Int tempVecInt = Player.Instance.PlayerLookDir - PlayerCam.Instance.CameraDirrection;
+                    Debug.Log(tempVecInt);
+                    sbyte maxValue = (sbyte)Mathf.Max(tempVecInt.x,tempVecInt.y);
+                    sbyte minValue = (sbyte)Mathf.Min(tempVecInt.x, tempVecInt.y);
+                    if (maxValue == default(sbyte) && minValue == default(sbyte)) return Dirrections.N;
+                    else if (maxValue == (sbyte)2 || minValue == (sbyte)-2) return Dirrections.S;
+                    else if ((maxValue < default(sbyte) && minValue < default(sbyte)) || (maxValue > default(sbyte) && minValue > default(sbyte))) return Dirrections.W;
+                    else if ((maxValue > default(sbyte) && minValue < default(sbyte)) || (maxValue < default(sbyte) && minValue < default(sbyte))) return Dirrections.E;
+                    return Dirrections.E;
+                }
+            }
             public void ChangeState(string newStateName)
             {
                 if (currentState == null) 
@@ -39,6 +54,11 @@ namespace NeutralDefines
                 currentState?.Exit();                   //이전 상태값을 빠져나간다
                 currentState = SearchState(newStateName);               //인수로 받아온 상태값을 입력
                 currentState?.Enter();                  //다음 상태값
+                AnimationChange();
+            }
+            public void AnimationChange()
+            {
+                anim.Play(currentState.stateName+ animationDirrection);
             }
             
             public PlayerStates SearchState(string stateName)
