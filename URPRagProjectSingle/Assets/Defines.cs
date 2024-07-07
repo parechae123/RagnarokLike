@@ -2,7 +2,7 @@ namespace NeutralDefines
 {
     namespace State
     {
-        
+
         using PlayerDefines.States;
         using System.Collections;
         using Unity.VisualScripting;
@@ -11,8 +11,8 @@ namespace NeutralDefines
         [System.Serializable]
         public class PlayerStateMachine
         {
-            
-            private PlayerStates[] allStates = new PlayerStates[0]; 
+
+            private PlayerStates[] allStates = new PlayerStates[0];
             public PlayerStates[] AllStates
             {
                 get { return allStates; }
@@ -22,30 +22,42 @@ namespace NeutralDefines
             {
                 get { return currentState; }
             }
-            public PlayerStateMachine(PlayerStates[] defaultStates,Animator anim)
+            public PlayerStateMachine(PlayerStates[] defaultStates, Animator anim)
             {
-                allStates = defaultStates;            
+                allStates = defaultStates;
                 this.anim = anim;
             }
-            [SerializeField]public Animator anim;
+            [SerializeField] public Animator anim;
             private Dirrections animationDirrection
             {
                 get
                 {
                     Vector2Int tempVecInt = Player.Instance.PlayerLookDir - PlayerCam.Instance.CameraDirrection;
                     Debug.Log(tempVecInt);
-                    sbyte maxValue = (sbyte)Mathf.Max(tempVecInt.x,tempVecInt.y);
+                    sbyte maxValue = (sbyte)Mathf.Max(tempVecInt.x, tempVecInt.y);
                     sbyte minValue = (sbyte)Mathf.Min(tempVecInt.x, tempVecInt.y);
                     if (maxValue == default(sbyte) && minValue == default(sbyte)) return Dirrections.N;
                     else if (maxValue == (sbyte)2 || minValue == (sbyte)-2) return Dirrections.S;
-                    else if ((maxValue < default(sbyte) && minValue < default(sbyte)) || (maxValue > default(sbyte) && minValue > default(sbyte))) return Dirrections.W;
-                    else if ((maxValue > default(sbyte) && minValue < default(sbyte)) || (maxValue < default(sbyte) && minValue < default(sbyte))) return Dirrections.E;
+                    else
+                    {
+                        if (PlayerCam.Instance.CameraDirrection.x == 0)
+                        {
+                            if ((maxValue < default(sbyte) && minValue < default(sbyte)) || (maxValue > default(sbyte) && minValue > default(sbyte))) return Dirrections.W;
+                            else if ((maxValue > default(sbyte) && minValue < default(sbyte)) || (maxValue < default(sbyte) && minValue < default(sbyte))) return Dirrections.E;
+                        }
+                        else
+                        {
+                            if ((maxValue < default(sbyte) && minValue < default(sbyte)) || (maxValue > default(sbyte) && minValue > default(sbyte))) return Dirrections.E;
+                            else if ((maxValue > default(sbyte) && minValue < default(sbyte)) || (maxValue < default(sbyte) && minValue < default(sbyte))) return Dirrections.W;
+                        }
+
+                    }
                     return Dirrections.E;
                 }
             }
             public void ChangeState(string newStateName)
             {
-                if (currentState == null) 
+                if (currentState == null)
                 {
                     currentState = SearchState("idleState");
                     currentState.Enter();
@@ -58,9 +70,9 @@ namespace NeutralDefines
             }
             public void AnimationChange()
             {
-                anim.Play(currentState.stateName+ animationDirrection);
+                anim.Play(currentState.stateName + animationDirrection);
             }
-            
+
             public PlayerStates SearchState(string stateName)
             {
                 sbyte i = 0;
@@ -86,7 +98,7 @@ namespace NeutralDefines
             {
                 Cursor.SetCursor(defaultCursorIMG, Vector2.left + Vector2.up, CursorMode.Auto);
             }
-            public cursorState CurrentCursorState 
+            public cursorState CurrentCursorState
             {
                 get;
                 private set;
