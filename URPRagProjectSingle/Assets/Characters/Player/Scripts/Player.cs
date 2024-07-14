@@ -12,7 +12,7 @@ using DG.Tweening.Plugins.Core.PathCore;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using DG.Tweening.Plugins;
-using Unity.IO.LowLevel.Unsafe;
+using PlayerDefines.Stat;
 
 
 public class Player : MonoBehaviour
@@ -166,9 +166,15 @@ public class Player : MonoBehaviour
         {
             DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(() =>
             {
-                if (StateMachine.CurrentState != StateMachine.SearchState("attackState")&& tempNodePosArray.Length> 0)
+                if (GridManager.GetInstance().MeleeAttackOrder(stat,stat.target))
                 {
-                    StateMachine.ChangeState("attackState");
+                    //현재 상태가 attackState가 아닐 경우
+                    if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
+                    {
+                        stateMachine.SetDirrection(ref playerLookDir, stat.standingNode.nodeCenterPosition, stat.target.standingNode.nodeCenterPosition);
+                        //attackState로 바꿉니다
+                        StateMachine.ChangeState("attackState");
+                    }
                 }
             });
         }
@@ -202,7 +208,7 @@ public class Player : MonoBehaviour
     {
         TweenerCore<Vector3, Path, PathOptions> tweenerCore = DOTween.To(PathPlugin.Get(), () => target.position, delegate (Vector3 x)
         {
-            SetPlayerDirrection(target.position,x);
+            stateMachine.SetDirrection(ref playerLookDir,target.position,x);
 
             StateMachine.AnimationChange();
             target.position = x;
@@ -255,8 +261,11 @@ public class Player : MonoBehaviour
                 {
                     if (GridManager.GetInstance().MeleeAttackOrder(stat, GridManager.GetInstance().PositionToNode(monsterHit[0].point)?.CharacterOnNode))
                     {
+                        //현재 상태가 attackState가 아닐 경우
                         if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
                         {
+                            //attackState로 바꿉니다
+                            StateMachine.SetDirrection(ref playerLookDir, stat.standingNode.nodeCenterPosition, stat.target.standingNode.nodeCenterPosition);
                             StateMachine.ChangeState("attackState");
                         }
                     }
@@ -270,32 +279,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SetPlayerDirrection(Vector3 startPos,Vector3 endPos)
-    {
-        Vector3 tempPos = startPos - endPos;
-        if (tempPos.x != 0)
-        {
-            if (tempPos.x > 0)
-            {
-                playerLookDir = Vector2Int.right;
-            }
-            else if (tempPos.x < 0)
-            {
-                playerLookDir = Vector2Int.left;
-            }
-        }
-        else
-        {
-            if (tempPos.z > 0)
-            {
-                playerLookDir = Vector2Int.up;
-            }
-            else if(tempPos.z < 0)
-            {
-                playerLookDir = Vector2Int.down;
-            }
-        }
-    }
+
 
     public void PlayerMoveOrder(Vector3 targetPosition, bool isMoveToAttack = false)
     {

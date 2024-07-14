@@ -1,3 +1,7 @@
+using DG.Tweening;
+using System;
+using UnityEngine;
+
 namespace NeutralDefines
 {
     namespace State
@@ -55,6 +59,58 @@ namespace NeutralDefines
                     return Dirrections.E;
                 }
             }
+            public void SetDirrection(ref Vector2Int targetInstance,Vector3 startPos, Vector3 endPos)
+            {
+                Vector3 tempPos = startPos - endPos;
+                if (tempPos.x != 0)
+                {
+                    if (tempPos.x > 0)
+                    {
+                        targetInstance = Vector2Int.right;
+                    }
+                    else if (tempPos.x < 0)
+                    {
+                        targetInstance = Vector2Int.left;
+                    }
+                }
+                else
+                {
+                    if (tempPos.z > 0)
+                    {
+                        targetInstance = Vector2Int.up;
+                    }
+                    else if (tempPos.z < 0)
+                    {
+                        targetInstance = Vector2Int.down;
+                    }
+                }
+            }
+            public void SetDirrection(ref Vector2Int targetInstance,Vector2Int startPos, Vector2Int endPos)
+            {
+                Vector2Int tempPos = startPos - endPos;
+                if (tempPos.x != 0)
+                {
+                    if (tempPos.x > 0)
+                    {
+                        targetInstance = Vector2Int.right;
+                    }
+                    else if (tempPos.x < 0)
+                    {
+                        targetInstance = Vector2Int.left;
+                    }
+                }
+                else
+                {
+                    if (tempPos.y > 0)
+                    {
+                        targetInstance = Vector2Int.up;
+                    }
+                    else if (tempPos.y < 0)
+                    {
+                        targetInstance = Vector2Int.down;
+                    }
+                }
+            }
             public void ChangeState(string newStateName)
             {
                 if (currentState == null)
@@ -70,6 +126,7 @@ namespace NeutralDefines
             }
             public void AnimationChange()
             {
+                currentState?.SetAnimationSpeed(anim);
                 anim.Play(currentState.stateName + animationDirrection);
             }
 
@@ -130,5 +187,77 @@ namespace NeutralDefines
             defaultCurser, noneClickAbleState, grabCursor, attackAble
         }
 
+    }
+    namespace skills
+    {
+        public abstract class skillBase
+        {
+            public string skillName;
+            public bool isSkillLearned
+            {
+                get;
+                private set;
+            }
+            private float defaultCastingTime;
+            private Animator[] effectOBJs = new Animator[0];
+            private GameObject effectOBJPrefab;
+            private Sprite skillIcon;
+            public Sprite SkillIcon
+            {
+                get { return skillIcon; }
+            }
+            /// <summary>
+            /// 스킬 스크립트 생성자
+            /// </summary>
+            /// <param name="skillName">스킬 이름을 기반으로 하여 Resources폴더에서 미리 세팅해둔 prefab을 불러옴</param>
+            public skillBase(string skillName,float defaultCastingTime)
+            { 
+                this.skillName = skillName;
+                //TODO : 추후 테이블파싱으로 테이블기반 데이터 삽입 필요
+                this.defaultCastingTime = defaultCastingTime;
+                effectOBJPrefab = Resources.Load<GameObject>(skillName+"SkillPrefab");
+                Array.Resize(ref effectOBJs, 1);
+                effectOBJs[0] = GameObject.Instantiate(effectOBJPrefab).GetComponent<Animator>();
+                effectOBJs[0].gameObject.SetActive(false);
+
+                skillIcon = skillIcon = Resources.Load<Sprite>(skillName + "Skill_Icon");
+            }
+            
+            public void LearnSkill()
+            {
+                isSkillLearned = true;
+            }
+
+            public Animator GetNonPlayingSkillEffect()
+            {
+                for (int i = 0; i < effectOBJs.Length; i++)
+                {
+                    if (effectOBJs[i].gameObject.activeSelf)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        return effectOBJs[i];
+                    }
+                }
+                int tempNum = effectOBJs.Length;
+                Array.Resize(ref effectOBJs, tempNum+1);
+                effectOBJs[tempNum] = GameObject.Instantiate(effectOBJPrefab).GetComponent<Animator>();
+                return effectOBJs[tempNum];
+                
+            } 
+            public void StartSkillEffect(Vector3 EffectPosition)
+            {
+                Animator tempAnim = GetNonPlayingSkillEffect();
+                tempAnim.transform.position = EffectPosition;
+                tempAnim.gameObject.SetActive(true);
+                tempAnim.Play(skillName+"Effect");
+                DOVirtual.DelayedCall(tempAnim.GetCurrentAnimatorClipInfo(0)[0].clip.length, () =>
+                {
+                    if(tempAnim != null)tempAnim.gameObject.SetActive(false);
+                });
+            }
+        }
     }
 }

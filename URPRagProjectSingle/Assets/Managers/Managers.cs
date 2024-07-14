@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static UnityEditor.PlayerSettings;
+using PlayerDefines.Stat;
 
 /// <summary>
 /// 메니저 템플릿화
@@ -395,7 +395,10 @@ public class GridManager : Manager<GridManager>
         }
         if (IsMeleeAttackAble(attackerStat.standingNode,targetStat.standingNode))
         {
-
+            if (targetStat.isCharacterDie)
+            {
+                return false;
+            }
             return true;
         }
         else

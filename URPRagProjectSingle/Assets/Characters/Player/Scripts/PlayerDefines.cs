@@ -1,4 +1,5 @@
 using DG.Tweening;
+using NeutralDefines.skills;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace PlayerDefines
 {
     namespace States
     {
+        using PlayerDefines.Stat;
         public interface IState
         {
             void Enter();
@@ -33,8 +35,8 @@ namespace PlayerDefines
             protected float durationTime;
             public float DurationTime
             {
-                get 
-                { 
+                get
+                {
                     return durationTime;
                 }
             }
@@ -45,14 +47,19 @@ namespace PlayerDefines
             /// <param name="coolTime">해당 행동의 쿨타임</param>
             /// <param name="targetStateName">스테이트 이름</param>
             /// <param name="isCancelableState">상태 중 다른 상태를 받을 것인지</param>
-            public PlayerStates(float coolTime,float durationTime, string targetStateName,string nextStateName,bool isCancelableState)
+            public PlayerStates(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState)
             {
                 skillCoolTime = coolTime;
                 skillTimer = coolTime;
                 this.stateName = targetStateName;
-                this.nextStateName = nextStateName; 
+                this.nextStateName = nextStateName;
                 this.isCancelableState = isCancelableState;
                 this.durationTime = durationTime;
+            }
+
+            public virtual void SetAnimationSpeed(Animator anim)
+            {
+                anim.speed = 1;
             }
             public virtual void Enter()
             {
@@ -80,9 +87,9 @@ namespace PlayerDefines
 
         public class MoveState : PlayerStates
         {
-            public MoveState( float coolTime,float durationTime, string targetStateName, string nextStateName, bool isCancelableState) : base( coolTime,durationTime , targetStateName,nextStateName, isCancelableState)
+            public MoveState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
             {
-                
+
             }
             public override void Enter()
             {
@@ -110,14 +117,19 @@ namespace PlayerDefines
 
         public class AttackState : PlayerStates
         {
+            //해당 스테이트를 가지고있는 캐릭터의 스텟
             Stats stats;
-            public AttackState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState,Stats characterStat) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
+            public AttackState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState, Stats characterStat) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
             {
                 stats = characterStat;
             }
+            public override void SetAnimationSpeed(Animator anim)
+            {
+                anim.speed = stats.attackSpeed;
+            }
             public override void Enter()
             {
-                
+
             }
             public override void Execute()
             {
@@ -168,6 +180,7 @@ namespace PlayerDefines
 
         public class CastingState : PlayerStates
         {
+
             public CastingState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
             {
 
@@ -180,7 +193,7 @@ namespace PlayerDefines
             {
 
                 base.Execute();
-                
+
             }
             public override void Exit()
             {
@@ -188,80 +201,97 @@ namespace PlayerDefines
             }
         }
     }
-    [System.Serializable]
-    public class Stats
+    namespace Stat
     {
-        public bool isCharacterDie
+        [System.Serializable]
+        public class Stats
         {
-            get;
-            private set;
-        }
-        public Action<Vector3,bool> moveFunction;
-        public Action dieFunctions;//TODO : 사망 연출 등록필요
-        public Stats(Node initializeNode,float hp,float moveSpeed,float attackSpeed,float attackDamage) 
-        {
-            isCharacterDie = false;
-            standingNode = initializeNode;
-            standingNode.CharacterOnNode = this;
-            HP = hp;
-            this.moveSpeed = moveSpeed;
-            this.attackSpeed = attackSpeed;
-            this.attackDamage = attackDamage;
-        }
-        public Node standingNode
-        {
-            get;
-            set;
-        }
-        private float hp;
-        public float HP
-        {
-            get
+            public bool isCharacterDie
             {
-                return hp;
+                get;
+                private set;
             }
-            set
+            public Action<Vector3, bool> moveFunction;
+            public Action dieFunctions;//TODO : 사망 연출 등록필요
+            public Stats(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage)
             {
-                hp = value;
-                if (hp<=0)
+                isCharacterDie = false;
+                standingNode = initializeNode;
+                standingNode.CharacterOnNode = this;
+                HP = hp;
+                this.moveSpeed = moveSpeed;
+                this.attackSpeed = attackSpeed;
+                this.attackDamage = attackDamage;
+            }
+            public Node standingNode
+            {
+                get;
+                set;
+            }
+            private float hp;
+            public float HP
+            {
+                get
                 {
-                    dieFunctions?.Invoke();
-                    isCharacterDie = true;
+                    return hp;
                 }
-            } 
-        }
-        private float sp
-        {
-            get;
-            set;
-        }
-        public float moveSpeed; //초당 이동하는 타일 수
-        public float attackDamage;
-        public float attackSpeed;
-        public Stats target;
-        public void AttackTarget(float damage = float.MinValue)
-        {
-            
-            target.HP -= damage == float.MinValue ? attackDamage : damage;
-            Debug.Log(target.HP);
-        }
-
-        public bool IsEnoughSP(float spCost)
-        {
-            if (sp>= spCost&&!isCharacterDie)
-            {
-                sp -= spCost;
-                return true;
+                set
+                {
+                    hp = value;
+                    if (hp <= 0)
+                    {
+                        dieFunctions?.Invoke();
+                        isCharacterDie = true;
+                    }
+                }
             }
-            return false;
+            private float sp
+            {
+                get;
+                set;
+            }
+            public float moveSpeed; //초당 이동하는 타일 수
+            public float attackDamage;
+            public float attackSpeed;
+            public Stats target;
+            public void AttackTarget(float damage = float.MinValue)
+            {
+
+                target.HP -= damage == float.MinValue ? attackDamage : damage;
+                Debug.Log(target.HP);
+            }
+
+            public bool IsEnoughSP(float spCost)
+            {
+                if (sp >= spCost && !isCharacterDie)
+                {
+                    sp -= spCost;
+                    return true;
+                }
+                return false;
+            }
+        }
+        public class PlayerStat : Stats
+        {
+            public PlayerStat(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage) : base(initializeNode, hp, moveSpeed, attackSpeed, attackDamage)
+            {
+
+            }
         }
     }
-    public class PlayerStat : Stats
+    namespace JobClass
     {
-        public PlayerStat(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage) : base(initializeNode,hp,moveSpeed,attackSpeed,attackDamage)
+        public class Novice
         {
-
+            public string ClassName;
+            public skillBase[] skills;
         }
+        #region 1차 직업
+        public class SwordMan : Novice
+        { 
+            
+        }
+        #endregion
     }
 }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PlayerDefines;
+using PlayerDefines.Stat;
 
 public class TempMonster : MonoBehaviour
 {
