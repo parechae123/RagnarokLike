@@ -1,5 +1,8 @@
 using DG.Tweening;
+using PlayerDefines.Stat;
+using PlayerDefines.States;
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace NeutralDefines
@@ -190,43 +193,96 @@ namespace NeutralDefines
     }
     namespace skills
     {
-        public abstract class skillBase
+        [CreateAssetMenu(fileName = "new Skill",menuName = "Job/Skill")]
+        [System.Serializable]
+
+        public class SkillInfo
         {
             public string skillName;
+            public SkillBase[] skill;
+            public byte maxSkillLevel;
+            public byte nowSkillLeve;
+            public byte castingSkillLevel;
             public bool isSkillLearned
             {
                 get;
                 private set;
             }
-            private float defaultCastingTime;
-            private Animator[] effectOBJs = new Animator[0];
-            private GameObject effectOBJPrefab;
-            private Sprite skillIcon;
+            /// <summary>
+            /// 스킬 불러오기
+            /// </summary>
+            /// <param name="skillName"></param>
+            /// <param name="skill"></param>
+            /// <param name="maxSkillLevel"></param>
+            public SkillInfo(string skillName,SkillBase[] skill,byte maxSkillLevel)
+            {
+                this.maxSkillLevel = maxSkillLevel;
+                for (int i = 0; i < skill.Length; i++)
+                {
+                    if (skill[i].skillName != skillName )
+                    {
+                        Debug.LogError("스킬을 불러오는 중 문제가 발생하였습니다, 테이블과 입력하려는 데이터가 상이합니다.");
+                    }
+                    this.skill[i] = skill[i];
+                }
+            }
+        }
+        public class SkillBase : ScriptableObject
+        {
+            [Header("스킬 이름")]
+            public string skillName;
+            public string koreanSkillName;
+            [Header("데미지,데미지 타입 및 계수타입,스킬타입")]
+            public float defaultValue;
+            public ValueType damageType;
+            public float coefficient;
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="caster">시전자</param>
+            /// <returns></returns>
+            public float totalDamage(Stats caster)
+            {
+                switch (damageType)
+                {
+                    case ValueType.Physical:
+                        return defaultValue +(caster.attackDamage*coefficient);
+                    case ValueType.Magic:
+                        return defaultValue +(caster.abilityPower*coefficient);
+                    case ValueType.heal:
+                        return -1*(defaultValue + (caster.abilityPower * coefficient));
+                    default:
+                        return 0;
+                }
+
+            }
+            public ValueType coefficientType;
+            [Header("스킬 유형")]
+            [HideInInspector][SerializeField] public ObjectiveType objectiveType;
+            [HideInInspector][SerializeField]public SkillPosition skillPosition;
+            public SkillType skillType;
+            [Header("스킬 범위")]
+            [HideInInspector] [SerializeField] private float skillBound;
+
+            [Header("스킬 레벨,최대치,마나 소모값 및 캐스팅 시간")]
+            public byte skillLevelInfo;
+            [HideInInspector][SerializeField] public float spCost;
+
+            [HideInInspector][SerializeField] private float defaultCastingTime;
+            
+            private Animator[] effectOBJs = new Animator[0];//씬 내의 이펙트 오브젝트
+            [Header("스킬 이펙트 오브젝트 프리팹, 아이콘")]
+            [SerializeField] private GameObject effectOBJPrefab;
+            [SerializeField] private Sprite skillIcon;
+            [Header("스킬 사거리")]
+            [HideInInspector][SerializeField]public byte skillRange;
+            [Header("스킬 지속시간")]
+            [HideInInspector][SerializeField] public float skillDuration;
             public Sprite SkillIcon
             {
                 get { return skillIcon; }
             }
-            /// <summary>
-            /// 스킬 스크립트 생성자
-            /// </summary>
-            /// <param name="skillName">스킬 이름을 기반으로 하여 Resources폴더에서 미리 세팅해둔 prefab을 불러옴</param>
-            public skillBase(string skillName,float defaultCastingTime)
-            { 
-                this.skillName = skillName;
-                //TODO : 추후 테이블파싱으로 테이블기반 데이터 삽입 필요
-                this.defaultCastingTime = defaultCastingTime;
-                effectOBJPrefab = Resources.Load<GameObject>(skillName+"SkillPrefab");
-                Array.Resize(ref effectOBJs, 1);
-                effectOBJs[0] = GameObject.Instantiate(effectOBJPrefab).GetComponent<Animator>();
-                effectOBJs[0].gameObject.SetActive(false);
-
-                skillIcon = skillIcon = Resources.Load<Sprite>(skillName + "Skill_Icon");
-            }
             
-            public void LearnSkill()
-            {
-                isSkillLearned = true;
-            }
 
             public Animator GetNonPlayingSkillEffect()
             {
@@ -258,6 +314,94 @@ namespace NeutralDefines
                     if(tempAnim != null)tempAnim.gameObject.SetActive(false);
                 });
             }
+        }
+        #region 스킬 커스텀 인스펙터
+
+#if UNITY_EDITOR
+        [CustomEditor(typeof(SkillBase))]
+        public class SkillBaseEditor : Editor
+        {
+            public override void OnInspectorGUI()
+            {
+                SkillBase skill = (SkillBase)target;
+                base.OnInspectorGUI();
+
+                serializedObject.Update();
+                ObjectiveType objectiveType = (ObjectiveType)serializedObject.FindProperty("objectiveType").intValue;
+                SkillPosition skillPosition = (SkillPosition)serializedObject.FindProperty("skillPosition").intValue;
+                SkillType skillType = (SkillType)serializedObject.FindProperty("skillType").intValue;
+                switch (skillType)
+                {
+                    case SkillType.None:
+                        skill.objectiveType = ObjectiveType.None;
+                        break;
+                    case SkillType.Passive:
+                        skill.objectiveType = ObjectiveType.None;
+                        break;
+                    case SkillType.Active:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("spCost"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("defaultCastingTime"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("skillRange"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("objectiveType"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("skillPosition"));
+
+
+                        break;
+                    case SkillType.buff:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("skillDuration"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("spCost"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("defaultCastingTime"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("skillRange"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("objectiveType"));
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("skillPosition"));
+                        break;
+                    default:
+                        break;
+                }
+                switch (objectiveType) 
+                {
+                    case ObjectiveType.None:
+                        break;
+                    case ObjectiveType.OnlyTarget:
+                        
+                        break;
+                    case ObjectiveType.Bounded:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("skillBound"));
+                        break;
+                }
+                switch (skillPosition)
+                {
+                    case SkillPosition.self:
+                        break;
+                    case SkillPosition.cursor:
+                        
+                        break;
+                    default:
+                        break;
+                }
+
+
+                serializedObject.ApplyModifiedProperties();
+            }
+        }  
+#endif
+        #endregion
+        public enum SkillType
+        {
+            None,Passive,Active,buff
+        }
+        public enum SkillPosition
+        {
+            self,cursor
+        }
+        [Serializable]
+        public enum ObjectiveType
+        {
+            None,OnlyTarget,Bounded
+        }
+        public enum ValueType
+        {
+            Physical, Magic, heal
         }
     }
 }

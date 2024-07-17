@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: deadActing
+  m_EditorClassIdentifier: Assembly-CSharp:NeutralDefines.skills:SkillBase
+  skillName: 
+  koreanSkillName: 
+  defaultValue: 0
+  damageType: 0
+  coefficient: 0
+  coefficientType: 0
+  objectiveType: 1
+  skillPosition: 0
+  skillType: 3
+  skillBound: 0
+  maxSkillLevel: 1
+  skillLevel: 0
+  spCost: 10
+  defaultCastingTime: 0
+  effectOBJPrefab: {fileID: 0}
+  skillIcon: {fileID: 0}
+  skillRange: 0
+  skillDuration: 30
