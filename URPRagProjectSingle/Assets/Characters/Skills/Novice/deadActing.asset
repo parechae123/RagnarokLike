@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: deadActing
   m_EditorClassIdentifier: Assembly-CSharp:NeutralDefines.skills:SkillBase
-  skillName: 
-  koreanSkillName: 
+  skillName: deadActing
+  koreanSkillName: "\uC8FD\uC740\uCC99\uD558\uAE30"
   defaultValue: 0
   damageType: 0
   coefficient: 0
@@ -22,8 +22,7 @@ MonoBehaviour:
   skillPosition: 0
   skillType: 3
   skillBound: 0
-  maxSkillLevel: 1
-  skillLevel: 0
+  skillLevelInfo: 0
   spCost: 10
   defaultCastingTime: 0
   effectOBJPrefab: {fileID: 0}

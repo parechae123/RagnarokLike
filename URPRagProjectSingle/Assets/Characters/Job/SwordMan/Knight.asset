@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: c24882bbad5057a4698f416006e3d4f5, type: 3}
   m_Name: Knight
-  m_EditorClassIdentifier: Assembly-CSharp:PlayerDefines.JobClass:JobInfoMation
+  m_EditorClassIdentifier: 
   ClassName: Knight
-  skills: []
-  jobType: 1
-  jobPhase: 2
-  jobRoot: 2
+  MaxJobLevel: 50
+  basicCharacterSprite: {fileID: 0}
+  animContoller: {fileID: 0}
+  noviceSkills: []
+  firstJobSkills: []
+  secondJobSkills: []

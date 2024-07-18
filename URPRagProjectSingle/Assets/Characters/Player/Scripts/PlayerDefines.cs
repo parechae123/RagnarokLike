@@ -1,10 +1,8 @@
 using DG.Tweening;
-using NeutralDefines.skills;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Animations;
 using UnityEditor.Build.Player;
 using UnityEngine;
 namespace PlayerDefines
@@ -281,75 +279,6 @@ namespace PlayerDefines
             }
         }
     }
-    namespace JobClass
-    {
-        public class DefaultJobBase
-        {
-            public string ClassName;
-            public byte MaxJobLevel;
-            public byte jobLevel
-            {
-                get;
-                protected set;
-            }
-            public byte defaultJobSkillPoint
-            {
-                get;
-                protected set;
-            }
-            public Sprite basicCharacterSprite;
-            public AnimatorController animContoller;
-            public SkillBase[] noviceSkills;
-            public void JobLevelUp()
-            {
-                if (jobLevel == MaxJobLevel) return;
-                jobLevel++;
-                defaultJobSkillPoint++;
-            }
-        }
-        #region 1차 직업
-        public class FirstJobBase : DefaultJobBase
-        {
-            public SkillBase[] firstJobSkills;
-            public virtual void ChangeJob(ref DefaultJobBase jobInstance)
-            {
-                this.noviceSkills = jobInstance.noviceSkills;
-            }
-        }
-        #endregion
-        #region 2차 직업
-        public class SecondJobBase : FirstJobBase
-        { 
-            public SkillBase[] secondJobSkills;
-            public void ChangeJob(ref FirstJobBase jobInstance)
-            {
-                this.noviceSkills = jobInstance.noviceSkills;
-                this.firstJobSkills = jobInstance.firstJobSkills;
-            }
-        }
-        [CreateAssetMenu(fileName ="New Job File",menuName = @"Job/CreateJobFile")]
-        [System.Serializable]
-        public class JobInfoMation : ScriptableObject
-        {
-            public string ClassName;
-            public SkillBase[] skills;
-            [SerializeField]BaseJobType jobType;
-            [SerializeField] JobPhase jobPhase;
-            [SerializeField] JobRoot jobRoot;
-        }
-        enum BaseJobType
-        {
-            Novice,SwordMan,Mage,Archer
-        }
-        enum JobPhase
-        {
-            defaultJob,first, second,third
-        }
-        enum JobRoot
-        {
-            None,_1,_2
-        }
-        #endregion
-    }
+
 }
 
