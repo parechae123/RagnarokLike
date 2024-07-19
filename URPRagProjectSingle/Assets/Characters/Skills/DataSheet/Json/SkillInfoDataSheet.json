@@ -1,0 +1,34 @@
+[
+{
+"skillName": "firstAid",
+"maxSkillLevel": "1",
+"jobName": "Novice",
+"skillType": "Active",
+"objectiveType": "OnlyTarget",
+"skillPosition": "self"
+},
+{
+"skillName": "deadActing",
+"maxSkillLevel": "1",
+"jobName": "Novice",
+"skillType": "buff",
+"objectiveType": "OnlyTarget",
+"skillPosition": "self"
+},
+{
+"skillName": "bash",
+"maxSkillLevel": "10",
+"jobName": "SwordMan",
+"skillType": "Active",
+"objectiveType": "OnlyTarget",
+"skillPosition": "cursor"
+},
+{
+"skillName": "magnum break",
+"maxSkillLevel": "5",
+"jobName": "SwordMan",
+"skillType": "Active",
+"objectiveType": "Bounded",
+"skillPosition": "self"
+}
+]

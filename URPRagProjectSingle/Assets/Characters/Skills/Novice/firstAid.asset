@@ -9,24 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 4b79a72b8ffa1cd498eb722f02c864c8, type: 3}
   m_Name: firstAid
   m_EditorClassIdentifier: Assembly-CSharp:NeutralDefines.skills:SkillBase
-  skillName: first aid
-  koreanSkillName: "\uC751\uAE09\uCE58\uB8CC"
-  defaultValue: 10
-  damageType: 2
-  coefficient: 0.1
-  coefficientType: 2
-  objectiveType: 1
-  skillPosition: 0
-  skillType: 2
-  skillBound: 0
-  maxSkillLevel: 1
+  skillName: 
+  koreanSkillName: 
   skillLevel: 0
-  spCost: 3
+  defaultValue: 0
+  damageType: 0
+  coefficient: 0
+  coefficientType: 0
+  skillBound: 0
+  skillLevelInfo: 0
+  spCost: 0
   defaultCastingTime: 0
-  effectOBJPrefab: {fileID: 0}
-  skillIcon: {fileID: 0}
   skillRange: 0
   skillDuration: 0
