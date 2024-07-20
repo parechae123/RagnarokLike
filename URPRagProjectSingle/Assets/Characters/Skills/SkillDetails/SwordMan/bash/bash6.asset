@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b79a72b8ffa1cd498eb722f02c864c8, type: 3}
+  m_Name: bash6
+  m_EditorClassIdentifier: 
+  skillName: bash
+  koreanSkillName: "\uBC30\uC26C"
+  skillLevel: 6
+  defaultValue: 55
+  damageType: 0
+  coefficient: 1.5
+  coefficientType: 0
+  skillBound: 0
+  spCost: 13
+  defaultCastingTime: 0.4
+  skillRange: 1
+  skillDuration: 0

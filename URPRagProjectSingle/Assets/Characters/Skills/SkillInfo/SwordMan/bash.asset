@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6a787fd466accd4c97c37817355f889, type: 3}
+  m_Name: bash
+  m_EditorClassIdentifier: 
+  skillName: bash
+  jobName: SwordMan
+  skillType: 2
+  objectiveType: 1
+  skillPosition: 1
+  skill:
+  - {fileID: 11400000, guid: 8969fd46e74fc534bbc3525ee5080aff, type: 2}
+  - {fileID: 11400000, guid: c4fbd4c1b6f6e40479625cb596745c4b, type: 2}
+  - {fileID: 11400000, guid: 1cc917fe898bfcd41aa362e42cfe9c17, type: 2}
+  - {fileID: 11400000, guid: e369eec1fb3d93942814816d5182f16b, type: 2}
+  - {fileID: 11400000, guid: 263efb3949ab02547bcc7a53ae554f6b, type: 2}
+  - {fileID: 11400000, guid: ab082e3a9c55cba43a52d4d924823b2b, type: 2}
+  - {fileID: 11400000, guid: 897d8dee86d525746ac4fba358132ac6, type: 2}
+  - {fileID: 11400000, guid: 108ac799717485c40a4db61f958116bf, type: 2}
+  - {fileID: 11400000, guid: 86ce300d1c26d9049abef07c7e5ef511, type: 2}
+  - {fileID: 11400000, guid: b2fe06894adec204c8f93977f6e95386, type: 2}
+  effectOBJPrefab: {fileID: 0}
+  skillIcon: {fileID: 0}
+  maxSkillLevel: 10
+  nowSkillLeve: 0
+  castingSkillLevel: 0

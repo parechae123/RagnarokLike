@@ -3,13 +3,56 @@ using System;
 using UnityEngine;
 [CreateAssetMenu(fileName = "new SkillInfo", menuName = "Skill/SkillInfomations")]
 [System.Serializable]
-public class SkillInfo/* : ScriptableObject*/
+public class SkillInfo : ScriptableObject
 {
     ///해당 클래스는 플레이어가 스킬 정보로 가지고있어야하는 객체로 추후 스크립터블 오브젝트 해제해야함
     public string skillName;
+    public string jobName;
     [Header("스킬 유형")]
-    [SerializeField] public ObjectiveType objectiveType;
     public SkillType skillType;
+    [SerializeField] public ObjectiveType objectiveType;
+    [SerializeField] public SkillPosition skillPosition;
+    public SkillBase[] skill;
+    [Header("스킬 이펙트 오브젝트 프리팹, 아이콘")]
+    [SerializeField] private GameObject effectOBJPrefab;
+    [SerializeField] private Sprite skillIcon;
+    public byte maxSkillLevel;
+    public byte nowSkillLeve;
+    public byte castingSkillLevel;
+    public bool isSkillLearned
+    {
+        get;
+        private set;
+    }
+
+#if UNITY_EDITOR
+
+    public void ObjectToScriptableOBJ(SkillInfoObjectOnly basedObject)
+    {
+        skillName = basedObject.skillName;
+        maxSkillLevel = basedObject.maxSkillLevel;
+        skill = new SkillBase[maxSkillLevel];
+        jobName = basedObject.jobName;
+        skillType = basedObject.skillType;
+        objectiveType = basedObject.objectiveType;
+        skillPosition = basedObject.skillPosition;
+    }
+
+#endif
+    public void AddSkillDetailData(SkillBase skillData)
+    {
+        skill[skillData.skillLevel - (byte)1] = skillData; 
+    }
+}
+[System.Serializable]
+public class SkillInfoInGame
+{
+    ///해당 클래스는 플레이어가 스킬 정보로 가지고있어야하는 객체로 추후 스크립터블 오브젝트 해제해야함
+    public string skillName;
+    public string jobName;
+    [Header("스킬 유형")]
+    public SkillType skillType;
+    [SerializeField] public ObjectiveType objectiveType;
     [SerializeField] public SkillPosition skillPosition;
     public SkillBase[] skill;
     [SerializeField] private Sprite skillIcon;
@@ -24,27 +67,10 @@ public class SkillInfo/* : ScriptableObject*/
         get;
         private set;
     }
-
     /// <summary>
-    /// 스킬 불러오기
+    /// 비 사용중인 이펙트 오브젝트의 애니메이션을 반환해줍니다.
     /// </summary>
-    /// <param name="skillName"></param>
-    /// <param name="skill"></param>
-    /// <param name="maxSkillLevel"></param>
-/*    public SkillInfo(string skillName, SkillBase[] skill, byte maxSkillLevel)
-    {
-        this.maxSkillLevel = maxSkillLevel;
-        for (int i = 0; i < skill.Length; i++)
-        {
-            if (skill[i].skillName != skillName)
-            {
-                Debug.LogError("스킬을 불러오는 중 문제가 발생하였습니다, 테이블과 입력하려는 데이터가 상이합니다.");
-            }
-            this.skill[i] = skill[i];
-        }
-    }*/
-
-
+    /// <returns></returns>
     public Animator GetNonPlayingSkillEffect()
     {
         for (int i = 0; i < effectOBJs.Length; i++)
@@ -62,8 +88,11 @@ public class SkillInfo/* : ScriptableObject*/
         Array.Resize(ref effectOBJs, tempNum + 1);
         effectOBJs[tempNum] = GameObject.Instantiate(effectOBJPrefab).GetComponent<Animator>();
         return effectOBJs[tempNum];
-
     }
+    /// <summary>
+    /// 스킬 이펙트를 재생합니다.
+    /// </summary>
+    /// <param name="EffectPosition"></param>
     public void StartSkillEffect(Vector3 EffectPosition)
     {
         Animator tempAnim = GetNonPlayingSkillEffect();

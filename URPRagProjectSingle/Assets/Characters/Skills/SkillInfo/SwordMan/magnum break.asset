@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6a787fd466accd4c97c37817355f889, type: 3}
+  m_Name: magnum break
+  m_EditorClassIdentifier: 
+  skillName: magnum break
+  jobName: SwordMan
+  skillType: 2
+  objectiveType: 2
+  skillPosition: 0
+  skill:
+  - {fileID: 11400000, guid: 247793dc029a3484680dedcc6bc77c5d, type: 2}
+  - {fileID: 11400000, guid: 57dca290b8e1b1e458d2af7063d41f58, type: 2}
+  - {fileID: 11400000, guid: 47117573da0deaf4ca04cd59cda72c19, type: 2}
+  - {fileID: 11400000, guid: 69b98ba2deb9e964cb21d07f7debaf6e, type: 2}
+  - {fileID: 11400000, guid: 98c083eeeb883c54f9e3380da0b86f99, type: 2}
+  effectOBJPrefab: {fileID: 0}
+  skillIcon: {fileID: 0}
+  maxSkillLevel: 5
+  nowSkillLeve: 0
+  castingSkillLevel: 0

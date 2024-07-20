@@ -8,8 +8,9 @@ using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.Progress;
+#if UNITY_EDITOR
 
-public class SkillReader : MonoBehaviour
+public class DataReader : MonoBehaviour
 {
     [Header("스킬 디테일 시트 및 제이슨")]
     public DefaultAsset skillDetailSheet; // 스킬 디테일 시트
@@ -21,14 +22,15 @@ public class SkillReader : MonoBehaviour
     public SkillInfoObjectOnly[] skillInfoArray = new SkillInfoObjectOnly[0];
     [Header("파일 경로")]
     public string jsonOutputPath; // JSON 파일이 저장될 경로
-
+    public string skillInfoScriptableObjectPath;
+    public string skillDetailScriptableObjectPath;
     public void ConvertExcelToJson()
     {
         StartConvert(skillDetailSheet);
         StartConvert(skillInfoSheet);
-//        Debug.Log(new StreamReader(skillInfoJson).ReadToEnd());
+        //        Debug.Log(new StreamReader(skillInfoJson).ReadToEnd());
         skillInfoArray = JsonConvert.DeserializeObject<SkillInfoObjectOnly[]>(new StreamReader(skillInfoJson).ReadToEnd());
-//        Debug.Log(new StreamReader(skillDetailJson).ReadToEnd());
+        //        Debug.Log(new StreamReader(skillDetailJson).ReadToEnd());
         skillbaseArray = JsonConvert.DeserializeObject<SkillBaseObjectOnly[]>(new StreamReader(skillDetailJson).ReadToEnd());
         ConvertToScriptableOBJ();
         skillInfoJson.Dispose();
@@ -75,17 +77,43 @@ public class SkillReader : MonoBehaviour
     }
     public void ConvertToScriptableOBJ()
     {
-        for (uint i = 0; i<skillInfoArray.Length; i++)
+        for (uint i = 0; i < skillInfoArray.Length; i++)
         {
             Debug.Log(i);
+            SkillInfo skillinfo = ScriptableObject.CreateInstance<SkillInfo>();
+            skillinfo.ObjectToScriptableOBJ(skillInfoArray[i]);
             for (uint J = 0; J < skillbaseArray.Length; J++)
             {
                 if (skillInfoArray[i].skillName == skillbaseArray[J].skillName)
                 {
+                    SkillBase skillbase = ScriptableObject.CreateInstance<SkillBase>();
+                    skillbase.ObjectToScriptableObject(skillbaseArray[J]);
+                    string skillDetailPath = Path.Combine(skillDetailScriptableObjectPath, skillInfoArray[i].jobName);
+                    if (!AssetDatabase.IsValidFolder(skillDetailPath))
+                    {
+                        Directory.CreateDirectory(skillDetailPath);
+                    }
+                    skillDetailPath = Path.Combine(skillDetailPath, skillInfoArray[i].skillName);
+                    if (!AssetDatabase.IsValidFolder(skillDetailPath))
+                    {
+                        Directory.CreateDirectory(skillDetailPath);
+                    }
+                    skillDetailPath = Path.Combine(skillDetailPath, skillbaseArray[J].skillName + $"{skillbase.skillLevel}.asset");
+                    AssetDatabase.CreateAsset(skillbase, skillDetailPath);
+                    AssetDatabase.SaveAssets();
+                    skillinfo.AddSkillDetailData(skillbase);
                     Debug.Log(skillInfoArray[i].skillName + skillbaseArray[J].skillLevel);
                     //여기서 스크립터블 오브젝트 생성해주면 될 듯 함
                 }
             }
+            string skillInfoPath = Path.Combine(skillInfoScriptableObjectPath, skillInfoArray[i].jobName);
+            if (!AssetDatabase.IsValidFolder(skillInfoPath))
+            {
+                Directory.CreateDirectory(skillInfoPath);
+            }
+            skillInfoPath = Path.Combine(skillInfoPath, $"{skillInfoArray[i].skillName}.asset");
+            AssetDatabase.CreateAsset(skillinfo, skillInfoPath);
+            AssetDatabase.SaveAssets();
         }
     }
 
@@ -108,7 +136,7 @@ public class SkillReader : MonoBehaviour
             }
 
             json.Append("}");
-            if (i < table.Rows.Count - 1)json.AppendLine(",");
+            if (i < table.Rows.Count - 1) json.AppendLine(",");
         }
 
         json.AppendLine();
@@ -117,21 +145,21 @@ public class SkillReader : MonoBehaviour
         return json.ToString();
     }
 }
-#if UNITY_EDITOR
-[CustomEditor(typeof(SkillReader))]
+
+[CustomEditor(typeof(DataReader))]
 public class SkillReaderEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        SkillReader skillReader = (SkillReader)target;
+        DataReader skillReader = (DataReader)target;
         if (GUILayout.Button("Generate ScriptableObject"))
         {
             skillReader.ConvertExcelToJson();
         }
     }
 }
-#endif
+
 
 [System.Serializable]
 public class SkillBaseObjectOnly
@@ -159,3 +187,5 @@ public class SkillInfoObjectOnly
     public ObjectiveType objectiveType;
     public SkillPosition skillPosition;
 }
+
+#endif

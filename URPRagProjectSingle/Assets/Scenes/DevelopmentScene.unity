@@ -20127,6 +20127,8 @@ MonoBehaviour:
     objectiveType: 2
     skillPosition: 0
   jsonOutputPath: C:\Users\parec\RagnarokLike\URPRagProjectSingle\Assets\Characters\Skills\DataSheet\Json
+  skillInfoScriptableObjectPath: Assets/Characters/Skills/SkillInfo
+  skillDetailScriptableObjectPath: Assets/Characters/Skills/SkillDetails
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

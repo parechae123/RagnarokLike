@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b79a72b8ffa1cd498eb722f02c864c8, type: 3}
-  m_Name: deadActing
-  m_EditorClassIdentifier: Assembly-CSharp:NeutralDefines.skills:SkillBase
-  skillName: 
-  koreanSkillName: 
-  skillLevel: 0
-  defaultValue: 0
+  m_Name: bash9
+  m_EditorClassIdentifier: 
+  skillName: bash
+  koreanSkillName: "\uBC30\uC26C"
+  skillLevel: 9
+  defaultValue: 70
   damageType: 0
-  coefficient: 0
+  coefficient: 1.8
   coefficientType: 0
   skillBound: 0
-  skillLevelInfo: 0
-  spCost: 0
-  defaultCastingTime: 0
-  skillRange: 0
+  spCost: 16
+  defaultCastingTime: 0.1
+  skillRange: 1
   skillDuration: 0

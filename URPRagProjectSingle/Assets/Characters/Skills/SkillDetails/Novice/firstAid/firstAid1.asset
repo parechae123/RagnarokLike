@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b79a72b8ffa1cd498eb722f02c864c8, type: 3}
+  m_Name: firstAid1
+  m_EditorClassIdentifier: 
+  skillName: firstAid
+  koreanSkillName: "\uC751\uAE09\uCE58\uB8CC"
+  skillLevel: 1
+  defaultValue: 10
+  damageType: 2
+  coefficient: 0.1
+  coefficientType: 2
+  skillBound: 0
+  spCost: 10
+  defaultCastingTime: 0
+  skillRange: 0
+  skillDuration: 0

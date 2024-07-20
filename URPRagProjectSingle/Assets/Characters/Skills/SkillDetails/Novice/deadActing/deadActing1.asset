@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b79a72b8ffa1cd498eb722f02c864c8, type: 3}
-  m_Name: firstAid
-  m_EditorClassIdentifier: Assembly-CSharp:NeutralDefines.skills:SkillBase
-  skillName: 
-  koreanSkillName: 
-  skillLevel: 0
+  m_Name: deadActing1
+  m_EditorClassIdentifier: 
+  skillName: deadActing
+  koreanSkillName: "\uC8FD\uC740 \uCC99 \uD558\uAE30"
+  skillLevel: 1
   defaultValue: 0
   damageType: 0
   coefficient: 0
   coefficientType: 0
   skillBound: 0
-  skillLevelInfo: 0
-  spCost: 0
+  spCost: 10
   defaultCastingTime: 0
   skillRange: 0
-  skillDuration: 0
+  skillDuration: 300
