@@ -19894,6 +19894,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca3c5e93814742d418bf978ccdd504ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IconFolerPath: Assets/Characters/Skills/Icon
+  FXFolerPath: Assets/Characters/Skills/Effects/Pixel FX - Fire/Prefabs
   skillDetailSheet: {fileID: 102900000, guid: d8a0a76a317203642889575031982f41, type: 3}
   skillbaseArray:
   - skillName: firstAid

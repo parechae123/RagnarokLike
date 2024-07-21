@@ -12,6 +12,10 @@ using static UnityEditor.Progress;
 
 public class DataReader : MonoBehaviour
 {
+
+    [Header("스킬 아이콘 및 이펙트 폴더  주소")]
+    [SerializeField] string IconFolerPath;
+    [SerializeField] string FXFolerPath;
     [Header("스킬 디테일 시트 및 제이슨")]
     public DefaultAsset skillDetailSheet; // 스킬 디테일 시트
     public FileStream skillDetailJson; // 스킬 디테일 제이슨파일
@@ -82,6 +86,24 @@ public class DataReader : MonoBehaviour
             Debug.Log(i);
             SkillInfo skillinfo = ScriptableObject.CreateInstance<SkillInfo>();
             skillinfo.ObjectToScriptableOBJ(skillInfoArray[i]);
+            string fxPath = Path.Combine(FXFolerPath, skillinfo.jobName);
+            string iconPath = Path.Combine(IconFolerPath,skillinfo.jobName);
+            if (!AssetDatabase.IsValidFolder(fxPath))
+            {
+                Directory.CreateDirectory(fxPath);
+                Debug.Log("폴더가 생성되었습니다 폴더 경로 : " + fxPath);
+                Debug.Log("폴더가 생성되었습니다 폴더 이름 : " + skillinfo.jobName);
+            }
+            if (!AssetDatabase.IsValidFolder(iconPath))
+            {
+                Directory.CreateDirectory(iconPath);
+                Debug.Log("폴더가 생성되었습니다 폴더 경로 : " + iconPath);
+                Debug.Log("폴더가 생성되었습니다 폴더 이름 : " + skillinfo.jobName);
+            }
+
+            iconPath = Path.Combine(iconPath, $"{skillinfo.skillName}.png");
+            fxPath = Path.Combine(fxPath, $"{skillinfo.skillName}.prefab");
+            skillinfo.SetSkillAsset(AssetDatabase.LoadAssetAtPath<Sprite>(iconPath), AssetDatabase.LoadAssetAtPath<GameObject>(fxPath));
             for (uint J = 0; J < skillbaseArray.Length; J++)
             {
                 if (skillInfoArray[i].skillName == skillbaseArray[J].skillName)

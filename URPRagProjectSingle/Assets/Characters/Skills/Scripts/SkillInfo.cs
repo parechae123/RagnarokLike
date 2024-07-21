@@ -37,12 +37,29 @@ public class SkillInfo : ScriptableObject
         objectiveType = basedObject.objectiveType;
         skillPosition = basedObject.skillPosition;
     }
-
-#endif
+    /// <summary>
+    /// 해당 스크립트에 스킬배열에 스킬을 레벨순서로 넣어줌
+    /// </summary>
+    /// <param name="skillData"></param>
     public void AddSkillDetailData(SkillBase skillData)
     {
         skill[skillData.skillLevel - (byte)1] = skillData; 
     }
+    public void SetSkillAsset(Sprite Image,GameObject prefab)
+    {
+        if (Image == null || prefab == null)
+        {
+            Debug.LogError("해당 파일의 아래 항목을 찾을 수 없습니다 : " + skillName);
+            Debug.LogError("아이콘 : "+(Image == null? "비정상": "정상"));
+            Debug.LogError("이팩트 : "+ (prefab == null? "비정상": "정상"));
+            return;
+
+        }
+        skillIcon = Image;
+        effectOBJPrefab = prefab;
+    }
+
+#endif
 }
 [System.Serializable]
 public class SkillInfoInGame
@@ -60,12 +77,11 @@ public class SkillInfoInGame
     private Animator[] effectOBJs = new Animator[0];//씬 내의 이펙트 오브젝트
     [SerializeField] private GameObject effectOBJPrefab;
     public byte maxSkillLevel;
-    public byte nowSkillLeve;
+    public byte nowSkillLevel;
     public byte castingSkillLevel;
     public bool isSkillLearned
     {
-        get;
-        private set;
+        get { return (nowSkillLevel > 0);}
     }
     /// <summary>
     /// 비 사용중인 이펙트 오브젝트의 애니메이션을 반환해줍니다.
