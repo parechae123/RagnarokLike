@@ -14,8 +14,8 @@ public class SkillInfo : ScriptableObject
     [SerializeField] public SkillPosition skillPosition;
     public SkillBase[] skill;
     [Header("스킬 이펙트 오브젝트 프리팹, 아이콘")]
-    [SerializeField] private GameObject effectOBJPrefab;
-    [SerializeField] private Sprite skillIcon;
+    [SerializeField] public GameObject effectOBJPrefab;
+    [SerializeField] public Sprite skillIcon;
     public byte maxSkillLevel;
     public byte nowSkillLeve;
     public byte castingSkillLevel;
@@ -71,8 +71,8 @@ public class SkillInfoInGame
     public SkillType skillType;
     [SerializeField] public ObjectiveType objectiveType;
     [SerializeField] public SkillPosition skillPosition;
-    public SkillBase[] skill;
-    [SerializeField] private Sprite skillIcon;
+    public SkillBaseInGameData[] skill;
+    [SerializeField] public Sprite skillIcon;
     [Header("스킬 이펙트 오브젝트 프리팹, 아이콘")]
     private Animator[] effectOBJs = new Animator[0];//씬 내의 이펙트 오브젝트
     [SerializeField] private GameObject effectOBJPrefab;
@@ -82,6 +82,28 @@ public class SkillInfoInGame
     public bool isSkillLearned
     {
         get { return (nowSkillLevel > 0);}
+    }
+
+    public SkillInfoInGame(SkillInfo data)
+    {
+        skillName = data.skillName;
+        jobName = data.jobName;
+        skillType = data.skillType;
+        objectiveType = data.objectiveType;
+        skillPosition = data.skillPosition;
+        skill = convertInGameData(data.skill);
+        effectOBJPrefab = data.effectOBJPrefab;
+        skillIcon = data.skillIcon;
+        maxSkillLevel = data.maxSkillLevel;
+    }
+    private SkillBaseInGameData[] convertInGameData(SkillBase[] skills)
+    {
+        SkillBaseInGameData[] tempInGameData = new SkillBaseInGameData[skills.Length];
+        for (int i = 0; i < tempInGameData.Length; i++)
+        {
+            tempInGameData[i] = new SkillBaseInGameData(skills[i]);
+        }
+        return tempInGameData;
     }
     /// <summary>
     /// 비 사용중인 이펙트 오브젝트의 애니메이션을 반환해줍니다.

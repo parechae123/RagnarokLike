@@ -113,7 +113,7 @@ public class SkillBaseInGameData
         }
 
     }
-    public void ScriptableObjectToInGameSkillData(SkillBase targetObject)
+    public SkillBaseInGameData(SkillBase targetObject)
     {
         skillName = targetObject.skillName;
         koreanSkillName = targetObject.koreanSkillName;

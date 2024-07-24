@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,17 +10,14 @@ public class SkillTreeBase : ScriptableObject
     [SerializeField] BaseJobType jobType;
     [SerializeField] JobPhase jobPhase;
     [SerializeField] JobRoot jobRoot;
-    [SerializeField]SkillIconsInSkilltree skillIconsInSkilltree;
-    public void aa()
-    {
-        
-    }
+    [SerializeField]public SkillIconsInSkilltree skillIconsInSkilltree;
+
 }
 [System.Serializable]
 public class SkillIconsInSkilltree
 {
 
-    [SerializeField] private SkillGetConditionTable[] skills;
+    [SerializeField] private SkillGetConditionTable[] skills = new SkillGetConditionTable[0];
     public SkillGetConditionTable this[int index]
     {
         get
@@ -28,8 +26,19 @@ public class SkillIconsInSkilltree
         }
         set
         {
-            this[index] = value;
+            skills[index] = value;
         }
+    }
+
+    public int Length
+    {
+        get { return skills.Length; }
+    }
+    public void AddArraySkills(SkillInfo data)
+    {
+        int skillLength = skills.Length;
+        Array.Resize(ref skills, skillLength + 1);
+        skills[skillLength] = new SkillGetConditionTable(data);
     }
     /// <summary>
     /// 스킬을 배울 수 있는지 여부를 반환
@@ -59,13 +68,34 @@ public class SkillIconsInSkilltree
         return true;
     }
 }
+[System.Serializable]
 public class SkillGetConditionTable
-{
-    public SkillInfoInGame thisSkill;
+{   
+    public SkillInfo thisSkillInScriptableOBJ;
+    [HideInInspector]public SkillInfoInGame thisSkill;
+    public Vector2 positionOnSkillTree;
     public SkillGetCondition[] skillGetConditions = new SkillGetCondition[0];     //선행스킬 인덱스,배열이 0일 경우 조건없음
+    public SkillGetConditionTable(SkillInfo skillInfo)
+    {
+        thisSkillInScriptableOBJ = skillInfo;
+        thisSkill = new SkillInfoInGame(skillInfo); 
+    }
+    public bool isEmpty
+    {
+        get
+        {
+            if (thisSkillInScriptableOBJ == null || thisSkill == null)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
 }
+[System.Serializable]
 public class SkillGetCondition
 {
     public int targetLevel;
     public int targetIndex;
+
 }
