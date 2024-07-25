@@ -31,10 +31,10 @@ MonoBehaviour:
         maxSkillLevel: 1
         nowSkillLevel: 0
         castingSkillLevel: 0
-      positionOnSkillTree: {x: 68, y: 88}
+      positionOnSkillTree: {x: 67, y: 92}
       skillGetConditions:
-      - targetLevel: 0
-        targetIndex: 0
+      - targetIndex: 1
+        targetLevel: 1
     - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 621538e3518ebcc48ba673c8a20ef8cb,
         type: 2}
       thisSkill:
@@ -49,7 +49,41 @@ MonoBehaviour:
         maxSkillLevel: 1
         nowSkillLevel: 0
         castingSkillLevel: 0
-      positionOnSkillTree: {x: 429, y: 69.100006}
+      positionOnSkillTree: {x: 94, y: 247}
       skillGetConditions:
-      - targetLevel: 0
-        targetIndex: 0
+      - targetIndex: 2
+        targetLevel: 1
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 621538e3518ebcc48ba673c8a20ef8cb,
+        type: 2}
+      thisSkill:
+        skillName: firstAid
+        jobName: Novice
+        skillType: 2
+        objectiveType: 1
+        skillPosition: 0
+        skillIcon: {fileID: 21300000, guid: 5e93a13d0aab81048b25143ba568ef1b, type: 3}
+        effectOBJPrefab: {fileID: 1407303529245236996, guid: d78d99ff754437e418458d860925d768,
+          type: 3}
+        maxSkillLevel: 1
+        nowSkillLevel: 0
+        castingSkillLevel: 0
+      positionOnSkillTree: {x: 97, y: 411}
+      skillGetConditions:
+      - targetIndex: 3
+        targetLevel: 1
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 621538e3518ebcc48ba673c8a20ef8cb,
+        type: 2}
+      thisSkill:
+        skillName: firstAid
+        jobName: Novice
+        skillType: 2
+        objectiveType: 1
+        skillPosition: 0
+        skillIcon: {fileID: 21300000, guid: 5e93a13d0aab81048b25143ba568ef1b, type: 3}
+        effectOBJPrefab: {fileID: 1407303529245236996, guid: d78d99ff754437e418458d860925d768,
+          type: 3}
+        maxSkillLevel: 1
+        nowSkillLevel: 0
+        castingSkillLevel: 0
+      positionOnSkillTree: {x: 457, y: 355}
+      skillGetConditions: []

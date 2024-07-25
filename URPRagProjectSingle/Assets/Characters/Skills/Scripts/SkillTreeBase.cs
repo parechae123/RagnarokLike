@@ -78,7 +78,8 @@ public class SkillGetConditionTable
     public SkillGetConditionTable(SkillInfo skillInfo)
     {
         thisSkillInScriptableOBJ = skillInfo;
-        thisSkill = new SkillInfoInGame(skillInfo); 
+        thisSkill = new SkillInfoInGame(skillInfo);
+        skillGetConditions = new SkillGetCondition[0];
     }
     public bool isEmpty
     {
@@ -91,11 +92,22 @@ public class SkillGetConditionTable
             return false;
         }
     }
+    public void AddCondition(int targetIndex,int targetLevel)
+    {
+        int tempIndex = skillGetConditions.Length;
+        if (skillGetConditions == null) skillGetConditions = new SkillGetCondition[0];
+        Array.Resize(ref skillGetConditions, skillGetConditions.Length +1);
+        skillGetConditions[tempIndex] = new SkillGetCondition(targetIndex,targetLevel);
+    }
 }
 [System.Serializable]
 public class SkillGetCondition
 {
-    public int targetLevel;
     public int targetIndex;
-
+    public int targetLevel;
+    public SkillGetCondition(int targetIndex, int targetLevel)
+    {
+        this.targetIndex = targetIndex;
+        this.targetLevel = targetLevel;
+    }
 }
