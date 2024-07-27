@@ -17,7 +17,7 @@ public class SkillTreeBase : ScriptableObject
 public class SkillIconsInSkilltree
 {
 
-    [SerializeField] private SkillGetConditionTable[] skills = new SkillGetConditionTable[0];
+    [SerializeField] public SkillGetConditionTable[] skills = new SkillGetConditionTable[0];
     public SkillGetConditionTable this[int index]
     {
         get

@@ -14,7 +14,7 @@ public class SkillTreeEditorTool : EditorWindow
     public SkillTreeBase targetSkillTree;
     public string newFileName;
     public string skillTreeSavePath;//프로젝트 파일 경로 기준으로
-    public (SkillGetConditionTable, int) selectedSkillInfo;
+    public (SkillGetConditionTable, int) selectedSkillNode;
     private GenericMenu rightClickMenu;
     private bool makingConnection = false;
     public int conditionLevel;
@@ -39,7 +39,7 @@ public class SkillTreeEditorTool : EditorWindow
         }
         else
         {
-            if (selectedSkillInfo.Item1 != null)
+            if (selectedSkillNode.Item1 != null)
             {
                 ShowSelectedSkill();
             }
@@ -93,8 +93,8 @@ public class SkillTreeEditorTool : EditorWindow
                             }
                             else
                             {
-                                selectedSkillInfo.Item1 = targetSkillTree.skillIconsInSkilltree[i];
-                                selectedSkillInfo.Item2 = i;
+                                selectedSkillNode.Item1 = targetSkillTree.skillIconsInSkilltree[i];
+                                selectedSkillNode.Item2 = i;
                                 rightClickMenu.ShowAsContext();
                                 
                             }
@@ -103,16 +103,16 @@ public class SkillTreeEditorTool : EditorWindow
 
                         if (makingConnection)
                         {
-                            SkillConnecting(selectedSkillInfo,i,conditionLevel);
+                            SkillNodeConnecting(selectedSkillNode,i,conditionLevel);
                         }
-                        selectedSkillInfo.Item1 = targetSkillTree.skillIconsInSkilltree[i];
-                        selectedSkillInfo.Item2 = i;
+                        selectedSkillNode.Item1 = targetSkillTree.skillIconsInSkilltree[i];
+                        selectedSkillNode.Item2 = i;
                     }
                     else if (Event.current.type == EventType.MouseDrag)
                     {
                         if (Event.current.button == 0)
                         {
-                            selectedSkillInfo.Item1.positionOnSkillTree += Event.current.delta;
+                            selectedSkillNode.Item1.positionOnSkillTree += Event.current.delta;
                             Repaint(); 
                         }
                     }
@@ -132,6 +132,7 @@ public class SkillTreeEditorTool : EditorWindow
         EditorApplication.update += Update;
         rightClickMenu = new GenericMenu();
         rightClickMenu.AddItem(new GUIContent("Make Condition"), false,MenuItemCallBack, "Make Condition");
+        rightClickMenu.AddItem(new GUIContent("Remove"), false, MenuItemCallBack, "Remove");
         makingConnection = false;
     }
     private void OnDisable()
@@ -154,7 +155,10 @@ public class SkillTreeEditorTool : EditorWindow
         {
             makingConnection = true;
         }
+        else if (userData.ToString() == "Remove")
+        {
 
+        }
     }
     private void HandleDragAndDrop(Rect dropArea)
     {
@@ -245,8 +249,8 @@ public class SkillTreeEditorTool : EditorWindow
     private void ShowSelectedSkill()
     {
         EditorGUI.BeginDisabledGroup(true);
-        selectedSkillInfo.Item1.thisSkillInScriptableOBJ = (SkillInfo)EditorGUILayout.ObjectField("선택된 오브젝트", selectedSkillInfo.Item1.thisSkillInScriptableOBJ, typeof(SkillInfo), false);
-        selectedSkillInfo.Item2 = EditorGUILayout.IntField(selectedSkillInfo.Item2);
+        selectedSkillNode.Item1.thisSkillInScriptableOBJ = (SkillInfo)EditorGUILayout.ObjectField("선택된 오브젝트", selectedSkillNode.Item1.thisSkillInScriptableOBJ, typeof(SkillInfo), false);
+        selectedSkillNode.Item2 = EditorGUILayout.IntField(selectedSkillNode.Item2);
 
         EditorGUI.EndDisabledGroup();
     }
@@ -262,7 +266,7 @@ public class SkillTreeEditorTool : EditorWindow
         }
         return false;
     }
-    private void SkillConnecting((SkillGetConditionTable,int) startObject, int targetIndex,int targetLevel)
+    private void SkillNodeConnecting((SkillGetConditionTable,int) startObject, int targetIndex,int targetLevel)
     {
         if (targetIndex != startObject.Item2)
         {
@@ -270,5 +274,24 @@ public class SkillTreeEditorTool : EditorWindow
                 targetSkillTree.skillIconsInSkilltree[targetIndex].thisSkill.maxSkillLevel :targetLevel);
         }
         makingConnection = false;
+    }
+    private void RemoveSkillNode()
+    {
+        targetSkillTree.skillIconsInSkilltree[selectedSkillNode.Item2] = null;
+        int filledArrayCount = targetSkillTree.skillIconsInSkilltree.Length -1;
+        for (int i = 0; i< targetSkillTree.skillIconsInSkilltree.Length; i++)
+        {
+            if (targetSkillTree.skillIconsInSkilltree[i] == null)
+            {
+                for (int j = i; j < targetSkillTree.skillIconsInSkilltree.Length; j++)
+                {
+                    if (j + 1 >= targetSkillTree.skillIconsInSkilltree.Length) break;
+                    targetSkillTree.skillIconsInSkilltree[j] = targetSkillTree.skillIconsInSkilltree[j + 1];
+                }
+                break;
+            }
+        }
+        Array.Resize(ref targetSkillTree.skillIconsInSkilltree.skills, filledArrayCount);
+
     }
 }
