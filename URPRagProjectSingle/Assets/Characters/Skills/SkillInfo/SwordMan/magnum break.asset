@@ -23,8 +23,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 47117573da0deaf4ca04cd59cda72c19, type: 2}
   - {fileID: 11400000, guid: 69b98ba2deb9e964cb21d07f7debaf6e, type: 2}
   - {fileID: 11400000, guid: 98c083eeeb883c54f9e3380da0b86f99, type: 2}
-  effectOBJPrefab: {fileID: 0}
-  skillIcon: {fileID: 0}
+  effectOBJPrefab: {fileID: 1407303529245236996, guid: eb93008d4dda4754f867c07b578b98dd,
+    type: 3}
+  skillIcon: {fileID: 21300000, guid: 4867db53aa592a64a851c36645423699, type: 3}
   maxSkillLevel: 5
   nowSkillLeve: 0
   castingSkillLevel: 0

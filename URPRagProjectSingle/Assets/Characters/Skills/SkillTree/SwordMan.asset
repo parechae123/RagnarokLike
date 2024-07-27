@@ -12,60 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 738f54a802f343445b4bc42e592634f2, type: 3}
   m_Name: SwordMan
   m_EditorClassIdentifier: 
-  jobType: 0
-  jobPhase: 0
+  jobType: 1
+  jobPhase: 1
   jobRoot: 0
   skillIconsInSkilltree:
     skills:
-    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 621538e3518ebcc48ba673c8a20ef8cb,
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 3fc72b565cb0a324796d5e944a314023,
         type: 2}
       thisSkill:
-        skillName: firstAid
-        jobName: Novice
+        skillName: magnum break
+        jobName: SwordMan
         skillType: 2
-        objectiveType: 1
+        objectiveType: 2
         skillPosition: 0
-        skillIcon: {fileID: 21300000, guid: 5e93a13d0aab81048b25143ba568ef1b, type: 3}
-        effectOBJPrefab: {fileID: 1407303529245236996, guid: d78d99ff754437e418458d860925d768,
+        skillIcon: {fileID: 21300000, guid: 4867db53aa592a64a851c36645423699, type: 3}
+        effectOBJPrefab: {fileID: 1407303529245236996, guid: eb93008d4dda4754f867c07b578b98dd,
           type: 3}
-        maxSkillLevel: 1
+        maxSkillLevel: 5
         nowSkillLevel: 0
         castingSkillLevel: 0
-      positionOnSkillTree: {x: 57, y: 26}
-      skillGetConditions:
-      - targetIndex: 1
-        targetLevel: 0
-    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 621538e3518ebcc48ba673c8a20ef8cb,
-        type: 2}
-      thisSkill:
-        skillName: firstAid
-        jobName: Novice
-        skillType: 2
-        objectiveType: 1
-        skillPosition: 0
-        skillIcon: {fileID: 21300000, guid: 5e93a13d0aab81048b25143ba568ef1b, type: 3}
-        effectOBJPrefab: {fileID: 1407303529245236996, guid: d78d99ff754437e418458d860925d768,
-          type: 3}
-        maxSkillLevel: 1
-        nowSkillLevel: 0
-        castingSkillLevel: 0
-      positionOnSkillTree: {x: 272, y: 229}
-      skillGetConditions:
-      - targetIndex: 2
-        targetLevel: 0
-    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 621538e3518ebcc48ba673c8a20ef8cb,
-        type: 2}
-      thisSkill:
-        skillName: firstAid
-        jobName: Novice
-        skillType: 2
-        objectiveType: 1
-        skillPosition: 0
-        skillIcon: {fileID: 21300000, guid: 5e93a13d0aab81048b25143ba568ef1b, type: 3}
-        effectOBJPrefab: {fileID: 1407303529245236996, guid: d78d99ff754437e418458d860925d768,
-          type: 3}
-        maxSkillLevel: 1
-        nowSkillLevel: 0
-        castingSkillLevel: 0
-      positionOnSkillTree: {x: 47, y: 464}
+      positionOnSkillTree: {x: 0, y: 0}
       skillGetConditions: []
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 9562aaea56fda0c4f96484cf5bb82bd6,
+        type: 2}
+      thisSkill:
+        skillName: bash
+        jobName: SwordMan
+        skillType: 2
+        objectiveType: 1
+        skillPosition: 1
+        skillIcon: {fileID: 21300000, guid: 954cdace6e17b3d4890cbbbfe98ef2fe, type: 3}
+        effectOBJPrefab: {fileID: 1407303529245236996, guid: 94f4e57f500d82349b21830f88e14d62,
+          type: 3}
+        maxSkillLevel: 10
+        nowSkillLevel: 0
+        castingSkillLevel: 0
+      positionOnSkillTree: {x: 600, y: 0}
+      skillGetConditions: []
+  SkilltreeResolution: {x: 800, y: 600}

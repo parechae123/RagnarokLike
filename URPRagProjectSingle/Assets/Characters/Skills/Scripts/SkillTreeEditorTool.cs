@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class SkillTreeEditorTool : EditorWindow
 {
-    Rect workSpaceArea = new Rect(10, 100, 600, 600);
+    Rect workSpaceArea = new Rect(10, 100, 800, 600);
     public SkillTreeBase targetSkillTree;
     public string newFileName;
     public string skillTreeSavePath;//프로젝트 파일 경로 기준으로
@@ -112,12 +112,13 @@ public class SkillTreeEditorTool : EditorWindow
                     {
                         if (Event.current.button == 0)
                         {
-                            selectedSkillNode.Item1.positionOnSkillTree += Event.current.delta;
+                            selectedSkillNode.Item1.positionOnSkillTree += new Vector2Int((int)Event.current.delta.x,(int)Event.current.delta.y);
                             Repaint(); 
                         }
                     }
                     else if (Event.current.type == EventType.MouseUp)
                     {
+                        selectedSkillNode.Item1.positionOnSkillTree = new Vector2Int((int)(selectedSkillNode.Item1.positionOnSkillTree.x / 100f)*100, (int)(selectedSkillNode.Item1.positionOnSkillTree.y / 100f) * 100);
                         Repaint();
                     }
                 }
@@ -157,7 +158,7 @@ public class SkillTreeEditorTool : EditorWindow
         }
         else if (userData.ToString() == "Remove")
         {
-
+            RemoveSkillNode();
         }
     }
     private void HandleDragAndDrop(Rect dropArea)
@@ -207,6 +208,7 @@ public class SkillTreeEditorTool : EditorWindow
                         else if (DragAndDrop.objectReferences[i] is SkillTreeBase)
                         {
                             targetSkillTree = (SkillTreeBase)DragAndDrop.objectReferences[i];
+                            targetSkillTree.SkilltreeResolution = new Vector2Int((int)workSpaceArea.size.x, (int)workSpaceArea.size.y);
                         }
                         else
                         {
@@ -281,6 +283,7 @@ public class SkillTreeEditorTool : EditorWindow
         int filledArrayCount = targetSkillTree.skillIconsInSkilltree.Length -1;
         for (int i = 0; i< targetSkillTree.skillIconsInSkilltree.Length; i++)
         {
+            //스킬 배열을 앞당김
             if (targetSkillTree.skillIconsInSkilltree[i] == null)
             {
                 for (int j = i; j < targetSkillTree.skillIconsInSkilltree.Length; j++)
@@ -288,10 +291,21 @@ public class SkillTreeEditorTool : EditorWindow
                     if (j + 1 >= targetSkillTree.skillIconsInSkilltree.Length) break;
                     targetSkillTree.skillIconsInSkilltree[j] = targetSkillTree.skillIconsInSkilltree[j + 1];
                 }
-                break;
             }
         }
+        //스킬 배열 크기 조정
         Array.Resize(ref targetSkillTree.skillIconsInSkilltree.skills, filledArrayCount);
+        for (int i = 0; i < targetSkillTree.skillIconsInSkilltree.Length; i++)
+        {
+            for (int J = 0; J < targetSkillTree.skillIconsInSkilltree[i].skillGetConditions.Length; J++)
+            {
+                if (targetSkillTree.skillIconsInSkilltree[i].skillGetConditions[J].targetIndex == selectedSkillNode.Item2 ||
+                    targetSkillTree.skillIconsInSkilltree[i].skillGetConditions[J].targetIndex > targetSkillTree.skillIconsInSkilltree.Length)
+                {
+                    targetSkillTree.skillIconsInSkilltree[i].skillGetConditions = new SkillGetCondition[0];
+                }
 
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ public class SkillTreeBase : ScriptableObject
     [SerializeField] JobPhase jobPhase;
     [SerializeField] JobRoot jobRoot;
     [SerializeField]public SkillIconsInSkilltree skillIconsInSkilltree;
-
+    public Vector2Int SkilltreeResolution;
 }
 [System.Serializable]
 public class SkillIconsInSkilltree
@@ -73,7 +73,7 @@ public class SkillGetConditionTable
 {   
     public SkillInfo thisSkillInScriptableOBJ;
     [HideInInspector]public SkillInfoInGame thisSkill;
-    public Vector2 positionOnSkillTree;
+    public Vector2Int positionOnSkillTree;
     public SkillGetCondition[] skillGetConditions = new SkillGetCondition[0];     //선행스킬 인덱스,배열이 0일 경우 조건없음
     public SkillGetConditionTable(SkillInfo skillInfo)
     {
