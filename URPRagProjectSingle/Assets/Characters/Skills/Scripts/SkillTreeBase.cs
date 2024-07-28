@@ -40,33 +40,7 @@ public class SkillIconsInSkilltree
         Array.Resize(ref skills, skillLength + 1);
         skills[skillLength] = new SkillGetConditionTable(data);
     }
-    /// <summary>
-    /// 스킬을 배울 수 있는지 여부를 반환
-    /// </summary>
-    /// <param name="targetLearnSkillIndex"></param>
-    /// <returns></returns>
-    public bool isLearnAble(int targetLearnSkillIndex)
-    {
-        if (this[targetLearnSkillIndex].skillGetConditions.Length <= 0) return true;
-        else
-        {
-            for (int i = 0; i < this[targetLearnSkillIndex].skillGetConditions.Length; i++)
-            {
-                if (this[this[targetLearnSkillIndex].skillGetConditions[i].targetIndex].thisSkill.isSkillLearned)       //스킬을 배운 상태인가?
-                {
-                    if (this[this[targetLearnSkillIndex].skillGetConditions[i].targetIndex].thisSkill.nowSkillLevel < this[targetLearnSkillIndex].skillGetConditions[i].targetLevel)//스킬의 레벨이 충족되지 않았는가
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+
 }
 [System.Serializable]
 public class SkillGetConditionTable
@@ -92,7 +66,7 @@ public class SkillGetConditionTable
             return false;
         }
     }
-    public void AddCondition(int targetIndex,int targetLevel)
+    public void AddCondition(int targetIndex,byte targetLevel)
     {
         int tempIndex = skillGetConditions.Length;
         if (skillGetConditions == null) skillGetConditions = new SkillGetCondition[0];
@@ -104,8 +78,8 @@ public class SkillGetConditionTable
 public class SkillGetCondition
 {
     public int targetIndex;
-    public int targetLevel;
-    public SkillGetCondition(int targetIndex, int targetLevel)
+    public byte targetLevel;
+    public SkillGetCondition(int targetIndex, byte targetLevel)
     {
         this.targetIndex = targetIndex;
         this.targetLevel = targetLevel;

@@ -17,7 +17,7 @@ using PlayerDefines.Stat;
 
 public class Player : MonoBehaviour
 {
-    private PlayerStat stat;
+    public PlayerLevelInfo playerLevelInfo;
     private static Player instance;
     public static Player Instance
     {
@@ -41,9 +41,9 @@ public class Player : MonoBehaviour
         get { return currentNode; }
         set 
         {
-            stat.standingNode.CharacterOnNode = stat.standingNode.CharacterOnNode == stat ? null : stat.standingNode.CharacterOnNode;
-            stat.standingNode = value;
-            stat.standingNode.CharacterOnNode = stat;
+            playerLevelInfo.stat.standingNode.CharacterOnNode = playerLevelInfo.stat.standingNode.CharacterOnNode == playerLevelInfo.stat ? null : playerLevelInfo.stat.standingNode.CharacterOnNode;
+            playerLevelInfo.stat.standingNode = value;
+            playerLevelInfo.stat.standingNode.CharacterOnNode = playerLevelInfo.stat;
             currentNode = value;
         }
     }
@@ -74,10 +74,10 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
-        stat = new PlayerStat(currentNode, 100, 3, 1,10);
+        playerLevelInfo.stat = new PlayerStat(currentNode, 100, 3, 1,10);
         InstallizeStates();
         SetCurrentNodeAndPosition();
-        stat.moveFunction += PlayerMoveOrder;
+        playerLevelInfo.stat.moveFunction += PlayerMoveOrder;
         playerCursorState.SetDefaultCursor();
     }
     public void Update()
@@ -131,7 +131,7 @@ public class Player : MonoBehaviour
 
     public void PlayerMove(bool isMoveToAttack = false)
     {
-        float moveSpeedPerSec = 1 / stat.moveSpeed;
+        float moveSpeedPerSec = 1 / playerLevelInfo.stat.moveSpeed;
         if (nodePreview.Count <= 0) return;
         if (CurrentNode == nodePreview.First())
         {
@@ -144,7 +144,7 @@ public class Player : MonoBehaviour
         {
             if (CurrentNode != nodePreview.First())
             {
-                if (nodePreview.First().CharacterOnNode != null && stat != nodePreview.First().CharacterOnNode)
+                if (nodePreview.First().CharacterOnNode != null && playerLevelInfo.stat != nodePreview.First().CharacterOnNode)
                 {
                     Array.Resize(ref tempNodePosArray, i);
                     nodePreview.Clear();
@@ -166,12 +166,12 @@ public class Player : MonoBehaviour
         {
             DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(() =>
             {
-                if (GridManager.GetInstance().MeleeAttackOrder(stat,stat.target))
+                if (GridManager.GetInstance().MeleeAttackOrder(playerLevelInfo.stat, playerLevelInfo.stat.target))
                 {
                     //현재 상태가 attackState가 아닐 경우
                     if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
                     {
-                        stateMachine.SetDirrection(ref playerLookDir, stat.standingNode.nodeCenterPosition, stat.target.standingNode.nodeCenterPosition);
+                        stateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
                         //attackState로 바꿉니다
                         StateMachine.ChangeState("attackState");
                     }
@@ -259,13 +259,13 @@ public class Player : MonoBehaviour
             {
                 if (SetTargetMonster(monsterHit[0].transform))
                 {
-                    if (GridManager.GetInstance().MeleeAttackOrder(stat, GridManager.GetInstance().PositionToNode(monsterHit[0].point)?.CharacterOnNode))
+                    if (GridManager.GetInstance().MeleeAttackOrder(playerLevelInfo.stat, GridManager.GetInstance().PositionToNode(monsterHit[0].point)?.CharacterOnNode))
                     {
                         //현재 상태가 attackState가 아닐 경우
                         if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
                         {
                             //attackState로 바꿉니다
-                            StateMachine.SetDirrection(ref playerLookDir, stat.standingNode.nodeCenterPosition, stat.target.standingNode.nodeCenterPosition);
+                            StateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
                             StateMachine.ChangeState("attackState");
                         }
                     }
@@ -297,7 +297,7 @@ public class Player : MonoBehaviour
         Queue<PlayerStates> states = new Queue<PlayerStates>();
         states.Enqueue(new MoveState( 1, 1, "moveState", "idleState", false));
         states.Enqueue(new IdleState(1, 1, "idleState", "idleState", true));
-        states.Enqueue(new AttackState(1, stat.attackSpeed, "attackState", "idleState", false,stat));
+        states.Enqueue(new AttackState(1, playerLevelInfo.stat.attackSpeed, "attackState", "idleState", false, playerLevelInfo.stat));
         stateMachine = new PlayerStateMachine(states.ToArray(),GetComponent<Animator>());
         StateMachine.ChangeState("idleState");
     }
@@ -311,5 +311,177 @@ public class Player : MonoBehaviour
             Gizmos.color = Color.cyan;
             Gizmos.DrawCube(new Vector3(tempNodeArray[i].nodeCenterPosition.x, transform.position.y, tempNodeArray[i].nodeCenterPosition.y), Vector3.one);
         }
+    }
+}
+[System.Serializable]
+public class PlayerLevelInfo
+{
+    public PlayerStat stat;                                                 //플레이어 스텟
+    public SkillInfoInGame[] playerOwnSkills = new SkillInfoInGame[0];      //플레이어가 가지고 있는 스킬 리스트
+    #region 베이스 레벨 관련 변수
+    public byte baseLevel;
+    private byte maxBaseLevel = 99;
+    private float MaxBaseExp
+    {
+        get
+        {
+            return 342 * (baseLevel * 1.6f);
+        }
+    }
+    private float currBaseExp;
+    private float CurrBaseExp
+    {
+        get { return currBaseExp; }
+        set 
+        {
+            if (maxBaseLevel <= baseLevel) currBaseExp = 0;
+            while (value > MaxBaseExp)
+            {
+                value = value - MaxBaseExp;
+                BaseLevelUP();
+            }
+            currBaseExp = value;
+        }
+    }
+    short usedStatusPoint;
+    private short statutsPoint;
+    public short LeftStatusPoint
+    {
+        get
+        {
+            return (short)(statutsPoint - usedStatusPoint);
+        }
+    }
+    #endregion
+
+
+    #region 잡레벨 관련 변수
+    public byte jobLevel;
+    private byte maxJobLevel = 50;
+    private float MaxJobExp
+    {
+        get
+        {
+            return 10 * (jobLevel * 1.6f);
+        }
+    }
+    private float currJobExp;
+    private float CurrJobExp
+    {
+        get { return currJobExp; }
+        set
+        {
+            if (maxJobLevel <= jobLevel) currJobExp = 0;
+            while (value > MaxJobExp)
+            {
+                value = value - MaxJobExp;
+                JobLevelUP();
+            }
+            currJobExp = value;
+        }
+    }
+    byte usedSkillPoint;
+    private byte skillPoint;
+    private byte LeftSkillPoint
+    {
+        get { return (byte)(skillPoint - usedSkillPoint); }
+    }
+
+
+    #endregion
+
+
+
+    #region BaseLevel관련 함수
+    public void BaseLevelUP()
+    {
+        statutsPoint += (short)(3 + (baseLevel / 5));
+        baseLevel += 1;
+    }
+    public void GetBaseEXP(float exp)
+    {
+        CurrBaseExp += exp;
+    }
+    #endregion
+    #region JobLevel관련 함수
+    public void LearnSkill(SkillIconsInSkilltree skill,int targetSkillIndex)
+    {
+        if (LeftSkillPoint <= 0) return;
+
+        bool[] isLeanAble = isLearnAble(targetSkillIndex, skill);
+        //선행스킬 체크
+        for (int i = 0; i < isLeanAble.Length; i++)
+        {
+            if (isLeanAble[i] == false)
+            {
+                return;
+            }
+        }
+
+        foreach (SkillInfoInGame item in playerOwnSkills)
+        {
+            if (item.skillName == skill[targetSkillIndex].thisSkill.skillName)
+            {
+                if (item.nowSkillLevel < item.maxSkillLevel)
+                {
+                    item.nowSkillLevel++;
+                    usedSkillPoint++;
+                }
+                    return;
+            }
+        }
+        int tempIndex = playerOwnSkills.Length;
+        Array.Resize(ref playerOwnSkills, playerOwnSkills.Length + 1);
+        playerOwnSkills[tempIndex] = new SkillInfoInGame(skill[targetSkillIndex].thisSkillInScriptableOBJ);
+        playerOwnSkills[tempIndex].nowSkillLevel = 1;
+    }
+    public void JobLevelUP()
+    {
+        skillPoint += 1;
+        jobLevel += 1;
+    }
+    public void GetJobEXP(float exp)
+    {
+        CurrJobExp += exp;
+    }
+    #endregion
+    /// <summary>
+    /// 스킬을 배울 수 있는지 여부를 반환
+    /// </summary>
+    /// <param name="targetLearnSkillIndex"></param>
+    /// <returns></returns>
+    public bool[] isLearnAble(int targetLearnSkillIndex, SkillIconsInSkilltree skillTree)
+    {
+        bool[] tempBool = new bool[skillTree[targetLearnSkillIndex].skillGetConditions.Length];
+        (string,byte,bool)[] conditionSkillNames = new (string, byte,bool)[skillTree[targetLearnSkillIndex].skillGetConditions.Length];
+        
+        if (skillTree[targetLearnSkillIndex].skillGetConditions.Length <= 0) return tempBool;
+        else
+        {
+            for (int i = 0; i < skillTree[targetLearnSkillIndex].skillGetConditions.Length; i++)
+            {
+                conditionSkillNames[i].Item1 = skillTree[skillTree[targetLearnSkillIndex].skillGetConditions[i].targetIndex].thisSkill.skillName;
+                conditionSkillNames[i].Item2 = skillTree[targetLearnSkillIndex].skillGetConditions[i].targetLevel;
+                conditionSkillNames[i].Item3 = false;
+            }
+            foreach (SkillInfoInGame item in playerOwnSkills)
+            {
+                for (int i = 0; i < conditionSkillNames.Length; i++)
+                {
+                    if (conditionSkillNames[i].Item1 == item.skillName)
+                    {
+                        if (conditionSkillNames[i].Item2 <= item.nowSkillLevel)
+                        {
+                            conditionSkillNames[i].Item3 = true;
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < conditionSkillNames.Length; i++)
+        {
+            tempBool[i] = conditionSkillNames[i].Item3;
+        }
+        return tempBool;
     }
 }

@@ -103,7 +103,7 @@ public class SkillTreeEditorTool : EditorWindow
 
                         if (makingConnection)
                         {
-                            SkillNodeConnecting(selectedSkillNode,i,conditionLevel);
+                            SkillNodeConnecting(selectedSkillNode,i,(byte)conditionLevel);
                         }
                         selectedSkillNode.Item1 = targetSkillTree.skillIconsInSkilltree[i];
                         selectedSkillNode.Item2 = i;
@@ -268,7 +268,7 @@ public class SkillTreeEditorTool : EditorWindow
         }
         return false;
     }
-    private void SkillNodeConnecting((SkillGetConditionTable,int) startObject, int targetIndex,int targetLevel)
+    private void SkillNodeConnecting((SkillGetConditionTable,int) startObject, int targetIndex,byte targetLevel)
     {
         if (targetIndex != startObject.Item2)
         {
