@@ -335,7 +335,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &41885785
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1205,7 +1205,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8161257af15f2d4fa933975eeda47f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOwnSkills: []
+  playerLevelInfo:
+    playerOwnSkills: []
+    baseLevel: 0
+    jobLevel: 0
   tempKeyCode: 9
   arriveTime: 0
   targetNode:

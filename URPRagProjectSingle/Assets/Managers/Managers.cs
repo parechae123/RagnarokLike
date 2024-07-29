@@ -101,43 +101,6 @@ public class Node
 public class GridManager : Manager<GridManager>
 {
     public Dictionary<Vector2Int, Node> grids = new Dictionary<Vector2Int, Node>();
-    private Mesh tileMesh;
-    public Mesh TileMesh
-    {
-        get
-        {
-            if (tileMesh == null)
-            {
-                tileMesh = Resources.Load<GameObject>("WalkAbleTile").GetComponent<MeshFilter>().sharedMesh;
-
-            }
-            return tileMesh;
-        }
-    }
-    private Material walkableMaterial;
-    public Material WalkableMaterial
-    {
-        get
-        {
-            if (walkableMaterial == null)
-            {
-                walkableMaterial = Resources.Load<Material>("WalkAbleTileMaterial");
-            }
-            return walkableMaterial;
-        }
-    }
-    private Material noneWalkableMaterial;
-    public Material NoneWalkableMaterial
-    {
-        get
-        {
-            if (noneWalkableMaterial == null)
-            {
-                noneWalkableMaterial = Resources.Load<Material>("NoneWalkAbleTileMaterial");
-            }
-            return noneWalkableMaterial;
-        }
-    }
     /// <summary>
     /// vector3를 vector2int로 형변환(반올림)
     /// </summary>
@@ -451,4 +414,12 @@ public class GridManager : Manager<GridManager>
         }
         return false;
     }
+}
+public class UIManager : Manager<UIManager>
+{
+    
+}
+public class ResourceManager : Manager<ResourceManager>
+{
+    
 }

@@ -279,6 +279,14 @@ namespace PlayerDefines
             }
         }
     }
+    public class PlayerUi
+    {
+        //ÇÁ¸®ÆÕ ÇüÅÂ·Î ºÒ·¯¿È
+        public GameObject UILoad(string name)
+        {
+            return Resources.Load<GameObject>(name);
+        }
+    }
 
 }
 
