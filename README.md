@@ -1,5 +1,6 @@
 # 필수 설치 목록 
-+ Git 설치 필요
++ Git
++ UnityEditor22.3.33
 
 <!-- Line -->
 
