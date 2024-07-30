@@ -1,13 +1,9 @@
-using PlayerDefines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Rendering;
 using PlayerDefines.Stat;
+using PlayerDefines;
 
 /// <summary>
 /// 메니저 템플릿화
@@ -417,9 +413,11 @@ public class GridManager : Manager<GridManager>
 }
 public class UIManager : Manager<UIManager>
 {
-    
+    PlayerUI playerUI;
+    public void ResetUI()
+    {
+        playerUI?.ResetUI();
+        playerUI ??= new PlayerUI();
+    }
 }
-public class ResourceManager : Manager<ResourceManager>
-{
-    
-}
+

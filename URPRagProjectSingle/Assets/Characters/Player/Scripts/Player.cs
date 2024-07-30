@@ -13,6 +13,7 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using DG.Tweening.Plugins;
 using PlayerDefines.Stat;
+using UnityEngine.EventSystems;
 
 
 public class Player : MonoBehaviour
@@ -227,6 +228,11 @@ public class Player : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] groundHit = Physics.RaycastAll(ray, 1000f, 8);
         RaycastHit[] monsterHit = Physics.RaycastAll(ray, 1000f, 64);
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            playerCursorState.changeState(cursorState.defaultCurser);
+            return;
+        }
         if (monsterHit.Length > 0)
         {
             playerCursorState.changeState(cursorState.attackAble);

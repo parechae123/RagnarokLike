@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Build.Player;
 using UnityEngine;
+using UnityEngine.UIElements;
 namespace PlayerDefines
 {
     namespace States
@@ -21,9 +22,9 @@ namespace PlayerDefines
         {
             public string stateName;
             public string nextStateName;
-            //state µµÁß ²÷À» ¼ö ¾ø´ÂÁö °¡´É½Ã false ºÒ°¡´É½Ã true
+            //state ë„ì¤‘ ëŠì„ ìˆ˜ ì—†ëŠ”ì§€ ê°€ëŠ¥ì‹œ false ë¶ˆê°€ëŠ¥ì‹œ true
             public bool isCancelableState;
-            //TODO : ¹æÇâ ÁöÁ¤ÇÊ¿ä
+            //TODO : ë°©í–¥ ì§€ì •í•„ìš”
 
             protected float skillCoolTime;
             protected float skillTimer;
@@ -40,12 +41,12 @@ namespace PlayerDefines
                 }
             }
             /// <summary>
-            /// ½ºÅ×ÀÌÆ® »ı¼ºÀÚ
+            /// ìŠ¤í…Œì´íŠ¸ ìƒì„±ì
             /// </summary>
-            /// <param name="keyCode">ÀÔ·Â Æ®¸®°Å Å°</param>
-            /// <param name="coolTime">ÇØ´ç Çàµ¿ÀÇ ÄğÅ¸ÀÓ</param>
-            /// <param name="targetStateName">½ºÅ×ÀÌÆ® ÀÌ¸§</param>
-            /// <param name="isCancelableState">»óÅÂ Áß ´Ù¸¥ »óÅÂ¸¦ ¹ŞÀ» °ÍÀÎÁö</param>
+            /// <param name="keyCode">ì…ë ¥ íŠ¸ë¦¬ê±° í‚¤</param>
+            /// <param name="coolTime">í•´ë‹¹ í–‰ë™ì˜ ì¿¨íƒ€ì„</param>
+            /// <param name="targetStateName">ìŠ¤í…Œì´íŠ¸ ì´ë¦„</param>
+            /// <param name="isCancelableState">ìƒíƒœ ì¤‘ ë‹¤ë¥¸ ìƒíƒœë¥¼ ë°›ì„ ê²ƒì¸ì§€</param>
             public PlayerStates(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState)
             {
                 skillCoolTime = coolTime;
@@ -116,7 +117,7 @@ namespace PlayerDefines
 
         public class AttackState : PlayerStates
         {
-            //ÇØ´ç ½ºÅ×ÀÌÆ®¸¦ °¡Áö°íÀÖ´Â Ä³¸¯ÅÍÀÇ ½ºÅİ
+            //í•´ë‹¹ ìŠ¤í…Œì´íŠ¸ë¥¼ ê°€ì§€ê³ ìˆëŠ” ìºë¦­í„°ì˜ ìŠ¤í…Ÿ
             Stats stats;
             public AttackState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState, Stats characterStat) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
             {
@@ -211,7 +212,7 @@ namespace PlayerDefines
                 private set;
             }
             public Action<Vector3, bool> moveFunction;
-            public Action dieFunctions;//TODO : »ç¸Á ¿¬Ãâ µî·ÏÇÊ¿ä
+            public Action dieFunctions;//TODO : ì‚¬ë§ ì—°ì¶œ ë“±ë¡í•„ìš”
             public Stats(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage)
             {
                 isCharacterDie = false;
@@ -249,7 +250,7 @@ namespace PlayerDefines
                 get;
                 set;
             }
-            public float moveSpeed; //ÃÊ´ç ÀÌµ¿ÇÏ´Â Å¸ÀÏ ¼ö
+            public float moveSpeed; //ì´ˆë‹¹ ì´ë™í•˜ëŠ” íƒ€ì¼ ìˆ˜
             public float abilityPower;
             public float attackDamage;
             public float attackSpeed;
@@ -279,14 +280,94 @@ namespace PlayerDefines
             }
         }
     }
-    public class PlayerUi
+    public class PlayerUI
     {
-        //ÇÁ¸®ÆÕ ÇüÅÂ·Î ºÒ·¯¿È
-        public GameObject UILoad(string name)
+        private Canvas mainCanvas;
+        public RectTransform skillTreeUI;
+        public RectTransform statusUI;
+        public RectTransform equipUI;
+        public RectTransform inventoryUI;
+        public RectTransform escUI;
+        public RectTransform quickSlotUI;
+        public Stack<RectTransform> uiStack;
+        public PlayerUI() 
         {
-            return Resources.Load<GameObject>(name);
+            ResetUI();
+        }
+        public void ResetUI()
+        {
+            ResourceManager.GetInstance().LoadAsync<GameObject>("InGameCanvas", (UIs) =>
+            {
+                uiStack = uiStack ?? new Stack<RectTransform>();
+                uiStack.Clear();
+                if (mainCanvas != null) GameObject.Destroy(mainCanvas);
+
+                mainCanvas = GameObject.Instantiate(UIs).GetComponent<Canvas>();
+
+                skillTreeUI = mainCanvas.transform.Find("skillTreeUI").transform as RectTransform;
+                skillTreeUI.gameObject.SetActive(false);
+
+                statusUI = mainCanvas.transform.Find("statusUI").transform as RectTransform;
+                statusUI.gameObject.SetActive(false);
+
+                equipUI = mainCanvas.transform.Find("equipUI").transform as RectTransform;
+                equipUI.gameObject.SetActive(false);
+
+                inventoryUI = mainCanvas.transform.Find("inventoryUI").transform as RectTransform;
+                inventoryUI.gameObject.SetActive(false);
+
+                escUI = mainCanvas.transform.Find("escUI").transform as RectTransform;
+                escUI.gameObject.SetActive(false);
+
+                quickSlotUI = mainCanvas.transform.Find("quickSlotUI").transform as RectTransform;
+                quickSlotUI.gameObject.SetActive(false);
+            });
+        }
+        /// <summary>
+        /// ë§ˆì§€ë§‰ìœ¼ë¡œ ì¼  UIë¥¼ ActiveFalseí•´ì£¼ê³  uiStackì—ì„œ ì œê±°
+        /// </summary>
+        /// <param name="targetUI">í•´ë‹¹ ë§¤ê°œë³€ìˆ˜ ë“±ë¡ ì‹œ ëŒ€ìƒ UIë§Œ ActiveFalseí•´ì¤Œ</param>
+        public void PopUI(RectTransform targetUI = null)
+        {
+            if (uiStack.Count <= 0) return;
+
+            if (targetUI != null)
+            {
+                if (uiStack.Contains(targetUI))
+                {
+                    Stack<RectTransform> tempStack = new Stack<RectTransform>();
+                    RectTransform tempRect;
+                    for (int i = 0; i < uiStack.Count; i++)
+                    {
+                        tempRect = tempStack.Pop();
+                        if (tempRect != targetUI)
+                        {
+                            tempStack.Push(tempRect);
+                        }
+                        else
+                        {
+                            targetUI.gameObject.SetActive(false);
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                uiStack.Pop().gameObject.SetActive(false);
+            }
+
+
+        }
+        /// <summary>
+        /// uiStackì¸ìŠ¤í„´ìŠ¤ì— íƒ€ê²Ÿ UIì˜ RectTransformì„ ë“±ë¡,gameobjectì˜ activeë¥¼ trueë¡œ ë°”ê¿”ì¤Œ
+        /// </summary>
+        /// <param name="targetUI">í™œì„±í™” ì‹œí‚¬ UI</param>
+        public void PushUI(RectTransform targetUI)
+        {
+            uiStack.Push(targetUI);
+            targetUI.gameObject.SetActive(true);
         }
     }
-
 }
 

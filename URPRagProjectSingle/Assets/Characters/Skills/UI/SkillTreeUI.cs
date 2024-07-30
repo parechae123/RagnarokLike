@@ -13,7 +13,7 @@ public class SkillTreeUI : MonoBehaviour
     public SkillTreeBase targetSkillTreeBase;
     public RectTransform rectTR;
     public Button[,] skillBtns = new Button[0,0];
-    public HashSet<(int, int)> isSkillSlotFilled = new HashSet<(int, int)>();
+//    public HashSet<(int, int)> isSkillSlotFilled = new HashSet<(int, int)>();
     // Start is called before the first frame update
     private void UpdateSkillUI()
     {
@@ -36,6 +36,7 @@ public class SkillTreeUIEditor : Editor
                 {
                     targetInspector.skillBtns[j, i] = targetInspector.transform.GetChild((i * targetInspector.skillBtns.GetLength(0)) +j).GetComponent<Button>();
                     targetInspector.skillBtns[j, i].interactable = false;
+                    targetInspector.skillBtns[j, i].transform.GetChild(0).GetComponent<Text>().text = string.Empty;
                 }
             }
             for (int i = 0; i < targetInspector.targetSkillTreeBase.skillIconsInSkilltree.Length; i++)
@@ -45,8 +46,10 @@ public class SkillTreeUIEditor : Editor
                 tempArray.Item2 = targetInspector.targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.y / 100;
                 targetInspector.skillBtns[tempArray.Item1,tempArray.Item2].interactable = true;
 
-                targetInspector.isSkillSlotFilled.Add(tempArray);
-
+                //targetInspector.isSkillSlotFilled.Add(tempArray);
+                targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].transform.GetChild(0).GetComponent<Text>().color = Color.white;
+                targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].transform.GetChild(0).GetComponent<Text>().text =
+                    targetInspector.targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.skillName;
                 targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].image.sprite = 
                     targetInspector.targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.skillIcon;
             }
