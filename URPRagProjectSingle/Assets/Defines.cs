@@ -193,3 +193,35 @@ namespace NeutralDefines
     }
     
 }
+public class Positions : ItemInfo
+{
+    private Sprite itemIcon;
+    protected Sprite ItemIcon
+    {
+        get { return itemIcon; }
+    }
+    private int amount;
+    protected int ItemAmount
+    {
+        get { return amount; }
+    }
+    public void UseItem()
+    {
+
+    }
+}
+public interface ItemInfo
+{
+    protected virtual Sprite ItemIcon
+    {
+        get { return default(Sprite); }
+    }
+    protected virtual int ItemAmount
+    {
+        get { return default(int); }
+    }
+    public virtual void UseItem()
+    {
+
+    }
+}

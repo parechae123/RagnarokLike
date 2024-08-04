@@ -79,15 +79,15 @@ public class SkillInfoInGame : SlotItem
     public byte maxSkillLevel;
     public byte nowSkillLevel;
     public byte castingSkillLevel;
-    public override Sprite IconIMG
+    public Sprite IconIMG
     {
         get { return skillIcon; }
     }
-    public override string slotNumberInfo
+    public string slotNumberInfo
     {
         get { return castingSkillLevel.ToString(); }
     }
-    public override void Use(Vector3 effectPosition)
+    public void SlotFunction(Vector3 effectPosition)
     {
         StartSkillEffect(effectPosition);
     }

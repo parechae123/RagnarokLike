@@ -57,7 +57,7 @@ public class QuickSlot : MonoBehaviour,IPointerClickHandler
 
     }
 }
-public class SlotItem
+public interface SlotItem
 {
     public virtual Sprite IconIMG
     {
@@ -67,7 +67,7 @@ public class SlotItem
     {
         get { return null; }
     }
-    public virtual void Use(Vector3 effectPosition)
+    public virtual void SlotFunction(Vector3 effectPosition)
     {
         
     }
