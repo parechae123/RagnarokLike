@@ -69,6 +69,7 @@ public class SkillBase : ScriptableObject
 
 #endif
 }
+[System.Serializable]
 public class SkillBaseInGameData
 {
     [Header("스킬 이름")]
@@ -128,6 +129,7 @@ public class SkillBaseInGameData
         skillRange = targetObject.skillRange;
         skillDuration = targetObject.skillDuration;
     }
+
 }
 
 

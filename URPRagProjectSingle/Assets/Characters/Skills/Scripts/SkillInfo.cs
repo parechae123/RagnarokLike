@@ -62,7 +62,7 @@ public class SkillInfo : ScriptableObject
 #endif
 }
 [System.Serializable]
-public class SkillInfoInGame
+public class SkillInfoInGame : SlotItem
 {
     ///해당 클래스는 플레이어가 스킬 정보로 가지고있어야하는 객체로 추후 스크립터블 오브젝트 해제해야함
     public string skillName;
@@ -79,6 +79,18 @@ public class SkillInfoInGame
     public byte maxSkillLevel;
     public byte nowSkillLevel;
     public byte castingSkillLevel;
+    public override Sprite IconIMG
+    {
+        get { return skillIcon; }
+    }
+    public override string slotNumberInfo
+    {
+        get { return castingSkillLevel.ToString(); }
+    }
+    public override void Use(Vector3 effectPosition)
+    {
+        StartSkillEffect(effectPosition);
+    }
     public bool isSkillLearned
     {
         get { return (nowSkillLevel > 0);}

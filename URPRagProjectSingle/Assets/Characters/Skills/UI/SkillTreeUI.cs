@@ -34,9 +34,11 @@ public class SkillTreeUIEditor : Editor
             {
                 for (int j = 0; j < targetInspector.skillBtns.GetLength(0); j++)
                 {
-                    targetInspector.skillBtns[j, i] = targetInspector.transform.GetChild((i * targetInspector.skillBtns.GetLength(0)) +j).GetComponent<Button>();
+                    targetInspector.skillBtns[j, i] = targetInspector.transform.GetChild((i * targetInspector.skillBtns.GetLength(0)) +j).GetChild(0).GetComponent<Button>();
                     targetInspector.skillBtns[j, i].interactable = false;
-                    targetInspector.skillBtns[j, i].transform.GetChild(0).GetComponent<Text>().text = string.Empty;
+                    targetInspector.skillBtns[j, i].image.sprite = null;
+                    targetInspector.skillBtns[j, i].transform.parent.GetChild(1).GetComponent<Text>().text = string.Empty;
+                    targetInspector.skillBtns[j, i].transform.parent.GetChild(2).GetComponent<Text>().text = string.Empty;
                 }
             }
             for (int i = 0; i < targetInspector.targetSkillTreeBase.skillIconsInSkilltree.Length; i++)
@@ -47,9 +49,13 @@ public class SkillTreeUIEditor : Editor
                 targetInspector.skillBtns[tempArray.Item1,tempArray.Item2].interactable = true;
 
                 //targetInspector.isSkillSlotFilled.Add(tempArray);
-                targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].transform.GetChild(0).GetComponent<Text>().color = Color.white;
-                targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].transform.GetChild(0).GetComponent<Text>().text =
+                targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(1).GetComponent<Text>().color = Color.black;  //스킬 레벨 세팅
+                targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(1).GetComponent<Text>().text =
+                    targetInspector.targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.nowSkillLevel.ToString();
+                targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(2).GetComponent<Text>().color = Color.black;  //스킬 이름 세팅
+                targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(2).GetComponent<Text>().text =
                     targetInspector.targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.skillName;
+                targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(2).GetComponent<Text>().resizeTextForBestFit = true;
                 targetInspector.skillBtns[tempArray.Item1, tempArray.Item2].image.sprite = 
                     targetInspector.targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.skillIcon;
             }
