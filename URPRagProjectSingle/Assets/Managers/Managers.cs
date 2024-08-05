@@ -420,4 +420,3 @@ public class UIManager : Manager<UIManager>
         playerUI ??= new PlayerUI();
     }
 }
-

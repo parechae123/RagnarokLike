@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class QuickSlot : MonoBehaviour,IPointerClickHandler
 {
-    private SlotItem slotItem;
-    private SlotItem SlotItem
+    private ItemBase slotItem;
+    private ItemBase SlotItem
     {
         get
         {
@@ -15,8 +15,10 @@ public class QuickSlot : MonoBehaviour,IPointerClickHandler
         }
         set
         {
+            btn.interactable = false;
             iconImage.sprite = value.IconIMG;
             SlotText.text = value.slotNumberInfo;
+            btn.interactable = true;
             slotItem = value;
         }
     }
@@ -52,22 +54,44 @@ public class QuickSlot : MonoBehaviour,IPointerClickHandler
         iconImage.sprite = slotItem.IconIMG;
         
     }
+    /// <summary>
+    /// 그냥 추가시
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="isSwap"></param>
+    public void ChangeSlot(ItemBase item)
+    {
+        SlotItem = item;
+    }
+    /// <summary>
+    /// 슬롯아이템 스왑시
+    /// </summary>
+    /// <param name="item"></param>
+    public void ChangeSlot(ref ItemBase item)
+    {
+        ItemBase tempItemBase = item;
+        item = slotItem;
+        slotItem = tempItemBase;
+    }
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
 
+        }
     }
 }
-public interface SlotItem
+public interface ItemBase
 {
-    public virtual Sprite IconIMG
+    public Sprite IconIMG
     {
         get { return null; }
     }
-    public virtual string slotNumberInfo
+    public string slotNumberInfo
     {
         get { return null; }
     }
-    public virtual void SlotFunction(Vector3 effectPosition)
+    public void SlotFunction(Vector3 effectPosition)
     {
         
     }
