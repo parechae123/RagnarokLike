@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class QuickSlot : MonoBehaviour,IPointerClickHandler
+[System.Serializable]
+public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
 {
+    #region 변수
     private ItemBase slotItem;
     private ItemBase SlotItem
     {
@@ -48,11 +51,62 @@ public class QuickSlot : MonoBehaviour,IPointerClickHandler
             return slotText;
         }
     }
+    public Vector3 defaultPos;
+    public bool isStaticSlot;
+    #endregion
     private void Awake()
     {
+        defaultPos = transform.position;
         btn = transform.GetComponentInChildren<Button>();
         iconImage.sprite = slotItem.IconIMG;
-        
+    }
+    public void Install(ItemBase tempData, bool isStaticSlot)
+    {
+        btn = transform.GetComponentInChildren<Button>();
+        SlotItem = tempData;
+        this.isStaticSlot = isStaticSlot;
+        defaultPos = transform.position;
+    }
+    public void OnDrag(PointerEventData pp)
+    {
+        transform.position = pp.position;
+    }
+    public void OnEndDrag(PointerEventData pp)
+    {
+        // 마우스 위치에 대한 RaycastResult 리스트 생성
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+
+        // RaycastAll을 호출하여 raycastResults에 결과 저장
+        EventSystem.current.RaycastAll(pp, raycastResults);
+        for (int i = 0; i < raycastResults.Count; i++)
+        {
+            if (raycastResults[i].gameObject == this.gameObject)
+            {
+                continue;
+            }
+
+            if (raycastResults[i].gameObject.TryGetComponent<QuickSlot>(out QuickSlot targetSlot))
+            {
+                if (isStaticSlot)
+                {
+                    targetSlot.ChangeSlot(SlotItem);
+                }
+                else
+                {
+                    if (targetSlot.SlotItem == null)
+                    {
+                        targetSlot.ChangeSlot(SlotItem);
+                    }
+                    else
+                    {
+                        targetSlot.SwapSlot(ref slotItem);
+                    }
+                }
+
+                break;
+            }
+        }
+        transform.position = defaultPos;
     }
     /// <summary>
     /// 그냥 추가시
@@ -61,24 +115,19 @@ public class QuickSlot : MonoBehaviour,IPointerClickHandler
     /// <param name="isSwap"></param>
     public void ChangeSlot(ItemBase item)
     {
+        if (isStaticSlot) return;
         SlotItem = item;
     }
     /// <summary>
     /// 슬롯아이템 스왑시
     /// </summary>
     /// <param name="item"></param>
-    public void ChangeSlot(ref ItemBase item)
+    public void SwapSlot(ref ItemBase item)
     {
+        if (isStaticSlot) return;
         ItemBase tempItemBase = item;
         item = slotItem;
-        slotItem = tempItemBase;
-    }
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-
-        }
+        SlotItem = tempItemBase;
     }
 }
 public interface ItemBase

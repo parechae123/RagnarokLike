@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,7 +19,6 @@ public class EventTest : MonoBehaviour, IBeginDragHandler,IDragHandler,IEndDragH
     private void Awake()
     {
         defaultPos = transform.position;
-        DragManager.GetInstance().slotPositions.Add(defaultPos,this);
     }
     public void OnBeginDrag(PointerEventData pp)
     {
@@ -31,20 +31,24 @@ public class EventTest : MonoBehaviour, IBeginDragHandler,IDragHandler,IEndDragH
     }
     public void OnEndDrag(PointerEventData pp)
     {
-        for (int i = 0; i < pp.hovered.Count; i++)
+        // 마우스 위치에 대한 RaycastResult 리스트 생성
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+
+        // RaycastAll을 호출하여 raycastResults에 결과 저장
+        EventSystem.current.RaycastAll(pp, raycastResults);
+        for (int i = 0; i < raycastResults.Count; i++)
         {
-            if (pp.hovered[i] == this) continue;
-            if (DragManager.GetInstance().slotPositions.TryGetValue(pp.hovered[i].transform.position,out EventTest outPut))
+            if (raycastResults[i].gameObject == this.gameObject)
+            {
+                continue;
+            }
+
+            if (raycastResults[i].gameObject.TryGetComponent<EventTest>(out EventTest outPut))
             {
                 outPut.gameObject.SetActive(outPut.isSlotActivated == true ? false : true);
                 break;
             }
         }
         transform.position = defaultPos;
-
     }
-}
-public class DragManager : Manager<DragManager>
-{
-    public Dictionary<Vector3,EventTest> slotPositions = new Dictionary<Vector3, EventTest>();    
 }

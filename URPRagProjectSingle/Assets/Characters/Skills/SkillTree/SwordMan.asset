@@ -25,6 +25,7 @@ MonoBehaviour:
         skillType: 2
         objectiveType: 2
         skillPosition: 0
+        skill: []
         skillIcon: {fileID: 21300000, guid: 4867db53aa592a64a851c36645423699, type: 3}
         effectOBJPrefab: {fileID: 1407303529245236996, guid: eb93008d4dda4754f867c07b578b98dd,
           type: 3}
@@ -41,6 +42,7 @@ MonoBehaviour:
         skillType: 2
         objectiveType: 1
         skillPosition: 1
+        skill: []
         skillIcon: {fileID: 21300000, guid: 954cdace6e17b3d4890cbbbfe98ef2fe, type: 3}
         effectOBJPrefab: {fileID: 1407303529245236996, guid: 94f4e57f500d82349b21830f88e14d62,
           type: 3}
@@ -48,5 +50,7 @@ MonoBehaviour:
         nowSkillLevel: 0
         castingSkillLevel: 0
       positionOnSkillTree: {x: 600, y: 0}
-      skillGetConditions: []
+      skillGetConditions:
+      - targetIndex: 0
+        targetLevel: 5
   SkilltreeResolution: {x: 800, y: 600}

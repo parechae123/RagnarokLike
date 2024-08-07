@@ -420,3 +420,26 @@ public class UIManager : Manager<UIManager>
         playerUI ??= new PlayerUI();
     }
 }
+public class SkillManager : Manager<SkillManager>
+{
+    public SkillInfoInGame[] skillInfo = new SkillInfoInGame[0];
+
+    public void AddSkillInfo(SkillInfoInGame addItem)
+    {
+        int length = skillInfo.Length;
+        Array.Resize(ref skillInfo, length+1);
+        skillInfo[length] = addItem;
+    }
+    public SkillInfoInGame SearchSkillInfo(string skillName)
+    {
+        for (int i = 0; i < skillInfo.Length; i++)
+        {
+            
+            if (skillInfo[i].skillName == skillName)
+            {
+                return skillInfo[i];
+            }
+        }
+        return null;
+    }
+}

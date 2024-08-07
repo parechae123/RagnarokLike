@@ -21364,6 +21364,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4504150191586927300, guid: 00235a58e2f33304682774fc414f231f,
+        type: 3}
+      propertyPath: targetSkillTreeBase
+      value: 
+      objectReference: {fileID: 11400000, guid: 883f73a576f0c2342a268591798a67ad,
+        type: 2}
     - target: {fileID: 4658214686953037800, guid: 00235a58e2f33304682774fc414f231f,
         type: 3}
       propertyPath: m_AnchorMax.y
