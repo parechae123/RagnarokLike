@@ -413,7 +413,7 @@ public class GridManager : Manager<GridManager>
 }
 public class UIManager : Manager<UIManager>
 {
-    PlayerUI playerUI;
+    public PlayerUI playerUI;
     public void ResetUI()
     {
         playerUI?.ResetUI();

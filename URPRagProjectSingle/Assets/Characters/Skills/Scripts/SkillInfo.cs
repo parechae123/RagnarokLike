@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using UnityEditor.Build.Pipeline;
 using UnityEngine;
 [CreateAssetMenu(fileName = "new SkillInfo", menuName = "Skill/SkillInfomations")]
 [System.Serializable]
@@ -103,12 +104,12 @@ public class SkillInfoInGame : ItemBase
         skillType = data.skillType;
         objectiveType = data.objectiveType;
         skillPosition = data.skillPosition;
-        skill = convertInGameData(data.skill);
+        skill = ConvertInGameData(data.skill);
         effectOBJPrefab = data.effectOBJPrefab;
         skillIcon = data.skillIcon;
         maxSkillLevel = data.maxSkillLevel;
     }
-    private SkillBaseInGameData[] convertInGameData(SkillBase[] skills)
+    private SkillBaseInGameData[] ConvertInGameData(SkillBase[] skills)
     {
         SkillBaseInGameData[] tempInGameData = new SkillBaseInGameData[skills.Length];
         for (int i = 0; i < tempInGameData.Length; i++)

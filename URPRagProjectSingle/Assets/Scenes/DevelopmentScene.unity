@@ -822,6 +822,7 @@ MonoBehaviour:
     playerOwnSkills: []
     baseLevel: 0
     jobLevel: 0
+    skillPoint: 0
   tempKeyCode: 9
   arriveTime: 0
   targetNode:

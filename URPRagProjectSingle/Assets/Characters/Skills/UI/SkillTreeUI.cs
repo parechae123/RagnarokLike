@@ -19,7 +19,8 @@ public class SkillTreeUI : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        skillInfos = new SkillInfoInGame[0];
+        //skillInfos = new SkillInfoInGame[0];
+        GetSkillBTN();
         ResetSkillTree(true);
         for (int i = 0; i < skillInfos.Length; i++)
         {
@@ -40,9 +41,11 @@ public class SkillTreeUI : MonoBehaviour
                 skillBtns[j, i].transform.parent.GetChild(1).GetComponent<Text>().text = string.Empty;
                 skillBtns[j, i].transform.parent.GetChild(2).GetComponent<Text>().text = string.Empty;
                 skillBtns[j, i].gameObject.TryGetComponent<QuickSlot>(out QuickSlot tempQuickSlot);
+                EditorUtility.SetDirty(this);
                 if (tempQuickSlot != null) Destroy(tempQuickSlot);
             }
         }
+
     }
     public void ResetSkillTree(bool callOnAwake)
     {
@@ -68,7 +71,13 @@ public class SkillTreeUI : MonoBehaviour
                 SkillInfoInGame tempInGameSkill = new SkillInfoInGame(targetSkillTreeBase.skillIconsInSkilltree[i].thisSkillInScriptableOBJ);
                 Array.Resize<SkillInfoInGame>(ref skillInfos, skillInfos.Length + 1);
                 skillInfos[skillInfos.Length - 1] = tempInGameSkill;
+                
                 skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.gameObject.AddComponent<QuickSlot>().Install(tempInGameSkill, true);
+                int currIndex = i;
+                skillBtns[tempArray.Item1, tempArray.Item2].onClick.AddListener(() =>
+                {
+                    Player.Instance.playerLevelInfo.LearnSkill(targetSkillTreeBase.skillIconsInSkilltree, currIndex,tempInGameSkill);
+                });
             }
             else
             {
@@ -90,11 +99,5 @@ public class SkillTreeUIEditor : Editor
             targetInspector.ResetSkillTree(false);
 
         }
-    }
-
-
-    private void GetSkills()
-    {
-
     }
 }

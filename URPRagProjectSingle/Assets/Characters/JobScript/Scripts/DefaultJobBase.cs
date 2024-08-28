@@ -24,6 +24,7 @@ public class DefaultJobBase : ScriptableObject
     public Sprite basicCharacterSprite;
     public AnimatorController animContoller;
     public SkillInfo[] noviceSkills;
+    
     public void JobLevelUp()
     {
         if (jobLevel == MaxJobLevel) return;

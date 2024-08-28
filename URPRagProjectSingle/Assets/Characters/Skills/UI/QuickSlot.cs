@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -54,21 +55,23 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     public Vector3 defaultPos;
     public bool isStaticSlot;
     #endregion
-    private void Awake()
+/*    private void Awake()
     {
         defaultPos = transform.position;
         btn = transform.GetComponentInChildren<Button>();
-        iconImage.sprite = slotItem.IconIMG;
-    }
+        iconImage.sprite = SlotItem.IconIMG;
+    }*/
     public void Install(ItemBase tempData, bool isStaticSlot)
     {
         btn = transform.GetComponentInChildren<Button>();
         SlotItem = tempData;
+        iconImage.sprite = SlotItem.IconIMG;
         this.isStaticSlot = isStaticSlot;
-        defaultPos = transform.position;
+        defaultPos = transform.localPosition;
     }
     public void OnDrag(PointerEventData pp)
     {
+
         transform.position = pp.position;
     }
     public void OnEndDrag(PointerEventData pp)
@@ -106,7 +109,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
                 break;
             }
         }
-        transform.position = defaultPos;
+        transform.localPosition = defaultPos;
     }
     /// <summary>
     /// 그냥 추가시

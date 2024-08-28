@@ -387,7 +387,7 @@ public class PlayerLevelInfo
         }
     }
     byte usedSkillPoint;
-    private byte skillPoint;
+    public byte skillPoint;
     private byte LeftSkillPoint
     {
         get { return (byte)(skillPoint - usedSkillPoint); }
@@ -410,7 +410,7 @@ public class PlayerLevelInfo
     }
     #endregion
     #region JobLevel관련 함수
-    public void LearnSkill(SkillIconsInSkilltree skill,int targetSkillIndex)
+    public void LearnSkill(SkillIconsInSkilltree skill,int targetSkillIndex,SkillInfoInGame skillInfo)
     {
         if (LeftSkillPoint <= 0) return;
 
@@ -438,7 +438,7 @@ public class PlayerLevelInfo
         }
         int tempIndex = playerOwnSkills.Length;
         Array.Resize(ref playerOwnSkills, playerOwnSkills.Length + 1);
-        playerOwnSkills[tempIndex] = new SkillInfoInGame(skill[targetSkillIndex].thisSkillInScriptableOBJ);
+        playerOwnSkills[tempIndex] = skillInfo;
         playerOwnSkills[tempIndex].nowSkillLevel = 1;
     }
     public void JobLevelUP()
