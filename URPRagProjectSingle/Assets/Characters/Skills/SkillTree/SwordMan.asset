@@ -232,5 +232,5 @@ MonoBehaviour:
       positionOnSkillTree: {x: 0, y: 0}
       skillGetConditions:
       - targetIndex: 0
-        targetLevel: 0
+        targetLevel: 5
   SkilltreeResolution: {x: 800, y: 600}

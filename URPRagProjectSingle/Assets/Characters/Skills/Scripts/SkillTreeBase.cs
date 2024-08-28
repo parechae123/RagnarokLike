@@ -9,6 +9,10 @@ public class SkillTreeBase : ScriptableObject
 {
     [SerializeField] BaseJobType jobType;
     [SerializeField] JobPhase jobPhase;
+    public int GetPhase
+    {
+        get { return ((int)jobPhase); }
+    }
     [SerializeField] JobRoot jobRoot;
     [SerializeField]public SkillIconsInSkilltree skillIconsInSkilltree;
     public Vector2Int SkilltreeResolution;

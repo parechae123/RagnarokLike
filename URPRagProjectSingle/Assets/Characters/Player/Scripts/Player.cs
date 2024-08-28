@@ -323,7 +323,7 @@ public class Player : MonoBehaviour
 public class PlayerLevelInfo
 {
     public PlayerStat stat;                                                 //플레이어 스텟
-    public SkillInfoInGame[] playerOwnSkills = new SkillInfoInGame[0];      //플레이어가 가지고 있는 스킬 리스트
+    public PlayerSkillTreeForPhase[] playerOwnSkills = new PlayerSkillTreeForPhase[0];     //플레이어가 가지고 있는 스킬 리스트
     #region 베이스 레벨 관련 변수
     public byte baseLevel;
     private byte maxBaseLevel = 99;
@@ -410,11 +410,13 @@ public class PlayerLevelInfo
     }
     #endregion
     #region JobLevel관련 함수
-    public void LearnSkill(SkillIconsInSkilltree skill,int targetSkillIndex,SkillInfoInGame skillInfo)
+    public void LearnSkill(SkillIconsInSkilltree skill,int targetSkillIndex,SkillInfoInGame skillInfo,int classPhase)
     {
         if (LeftSkillPoint <= 0) return;
+        if (playerOwnSkills.Length < classPhase + 1) Array.Resize(ref playerOwnSkills, classPhase + 1);
 
-        bool[] isLeanAble = isLearnAble(targetSkillIndex, skill);
+        if (playerOwnSkills[classPhase] == null) playerOwnSkills[classPhase] = new PlayerSkillTreeForPhase();
+        bool[] isLeanAble = isLearnAble(targetSkillIndex,classPhase, skill);
         //선행스킬 체크
         for (int i = 0; i < isLeanAble.Length; i++)
         {
@@ -424,22 +426,24 @@ public class PlayerLevelInfo
             }
         }
 
-        foreach (SkillInfoInGame item in playerOwnSkills)
+        if (playerOwnSkills[classPhase] != null)
         {
-            if (item.skillName == skill[targetSkillIndex].thisSkill.skillName)
+            foreach (SkillInfoInGame item in playerOwnSkills[classPhase].playerOwnSkills)
             {
-                if (item.nowSkillLevel < item.maxSkillLevel)
+                if (item.skillName == skill[targetSkillIndex].thisSkill.skillName)
                 {
-                    item.nowSkillLevel++;
-                    usedSkillPoint++;
-                }
+                    if (item.nowSkillLevel < item.maxSkillLevel)
+                    {
+                        item.nowSkillLevel++;
+                        usedSkillPoint++;
+                    }
                     return;
+                }
             }
         }
-        int tempIndex = playerOwnSkills.Length;
-        Array.Resize(ref playerOwnSkills, playerOwnSkills.Length + 1);
-        playerOwnSkills[tempIndex] = skillInfo;
-        playerOwnSkills[tempIndex].nowSkillLevel = 1;
+        if(playerOwnSkills[classPhase].playerOwnSkills.Length< targetSkillIndex + 1) Array.Resize(ref playerOwnSkills[classPhase].playerOwnSkills, targetSkillIndex + 1);
+        playerOwnSkills[classPhase].playerOwnSkills[targetSkillIndex] = skillInfo;
+        playerOwnSkills[classPhase].playerOwnSkills[targetSkillIndex].nowSkillLevel = 1;
     }
     public void JobLevelUP()
     {
@@ -456,7 +460,7 @@ public class PlayerLevelInfo
     /// </summary>
     /// <param name="targetLearnSkillIndex"></param>
     /// <returns></returns>
-    public bool[] isLearnAble(int targetLearnSkillIndex, SkillIconsInSkilltree skillTree)
+    public bool[] isLearnAble(int targetLearnSkillIndex,int classPhase, SkillIconsInSkilltree skillTree)
     {
         bool[] tempBool = new bool[skillTree[targetLearnSkillIndex].skillGetConditions.Length];
         (string,byte,bool)[] conditionSkillNames = new (string, byte,bool)[skillTree[targetLearnSkillIndex].skillGetConditions.Length];
@@ -470,7 +474,7 @@ public class PlayerLevelInfo
                 conditionSkillNames[i].Item2 = skillTree[targetLearnSkillIndex].skillGetConditions[i].targetLevel;
                 conditionSkillNames[i].Item3 = false;
             }
-            foreach (SkillInfoInGame item in playerOwnSkills)
+            foreach (SkillInfoInGame item in playerOwnSkills[classPhase].playerOwnSkills)
             {
                 for (int i = 0; i < conditionSkillNames.Length; i++)
                 {
@@ -490,4 +494,9 @@ public class PlayerLevelInfo
         }
         return tempBool;
     }
+}
+[System.Serializable]
+public class PlayerSkillTreeForPhase
+{
+    public SkillInfoInGame[] playerOwnSkills = new SkillInfoInGame[0];
 }
