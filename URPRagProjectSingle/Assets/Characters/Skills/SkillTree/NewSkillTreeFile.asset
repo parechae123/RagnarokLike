@@ -16,4 +16,63 @@ MonoBehaviour:
   jobPhase: 0
   jobRoot: 0
   skillIconsInSkilltree:
-    skills: []
+    skills:
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 3bd3f8e1d00f9e14989445532794dde5,
+        type: 2}
+      thisSkill:
+        skillName: deadActing
+        jobName: Novice
+        skillType: 3
+        objectiveType: 1
+        skillPosition: 0
+        skill:
+        - skillName: deadActing
+          koreanSkillName: "\uC8FD\uC740 \uCC99 \uD558\uAE30"
+          skillLevel: 1
+          defaultValue: 0
+          damageType: 0
+          coefficient: 0
+          coefficientType: 0
+          skillBound: 0
+          spCost: 10
+          defaultCastingTime: 0
+          skillRange: 0
+          skillDuration: 300
+        skillIcon: {fileID: 21300000, guid: 9f922002032136c4687b8dced9bc624c, type: 3}
+        effectOBJPrefab: {fileID: 1407303529245236996, guid: 5391aaad421b0f142962b2443368cda3,
+          type: 3}
+        maxSkillLevel: 1
+        nowSkillLevel: 0
+        castingSkillLevel: 0
+      positionOnSkillTree: {x: 0, y: 0}
+      skillGetConditions: []
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: d5afca8b462cab34084c93208a8caaf1,
+        type: 2}
+      thisSkill:
+        skillName: firstAid
+        jobName: Novice
+        skillType: 2
+        objectiveType: 1
+        skillPosition: 0
+        skill:
+        - skillName: firstAid
+          koreanSkillName: "\uC751\uAE09\uCE58\uB8CC"
+          skillLevel: 1
+          defaultValue: 10
+          damageType: 2
+          coefficient: 0.1
+          coefficientType: 2
+          skillBound: 0
+          spCost: 10
+          defaultCastingTime: 0
+          skillRange: 0
+          skillDuration: 0
+        skillIcon: {fileID: 21300000, guid: 5e93a13d0aab81048b25143ba568ef1b, type: 3}
+        effectOBJPrefab: {fileID: 1407303529245236996, guid: d78d99ff754437e418458d860925d768,
+          type: 3}
+        maxSkillLevel: 1
+        nowSkillLevel: 0
+        castingSkillLevel: 0
+      positionOnSkillTree: {x: 300, y: 0}
+      skillGetConditions: []
+  SkilltreeResolution: {x: 800, y: 600}

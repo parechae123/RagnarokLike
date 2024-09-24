@@ -24,7 +24,8 @@ public class DataReader : MonoBehaviour
     public DefaultAsset skillInfoSheet; // 스킬인포메이션 시트
     public FileStream skillInfoJson; // 스킬인포메이션 시트
     public SkillInfoObjectOnly[] skillInfoArray = new SkillInfoObjectOnly[0];
-    [Header("파일 경로")]
+    [Header("파일 경로(환경에 따라 변경 필요)")]
+    
     public string jsonOutputPath; // JSON 파일이 저장될 경로
     public string skillInfoScriptableObjectPath;
     public string skillDetailScriptableObjectPath;
@@ -121,11 +122,21 @@ public class DataReader : MonoBehaviour
                         Directory.CreateDirectory(skillDetailPath);
                     }
                     skillDetailPath = Path.Combine(skillDetailPath, skillbaseArray[J].skillName + $"{skillbase.skillLevel}.asset");
-                    AssetDatabase.CreateAsset(skillbase, skillDetailPath);
+                    SkillBase aleardyExistSkillBase = AssetDatabase.LoadAssetAtPath<SkillBase>(skillDetailPath);
+                    if (aleardyExistSkillBase != null)
+                    {
+                        //err#001 : scriptableObject가 직접 수정되지 않는 버그 발생 해당부분 수정필요
+                        aleardyExistSkillBase = skillbase;
+                        skillinfo.AddSkillDetailData(aleardyExistSkillBase);
+                    }
+                    else
+                    {
+                        AssetDatabase.CreateAsset(skillbase, skillDetailPath);
+                        skillinfo.AddSkillDetailData(skillbase);
+                    }
                     AssetDatabase.SaveAssets();
-                    skillinfo.AddSkillDetailData(skillbase);
+                    
                     Debug.Log(skillInfoArray[i].skillName + skillbaseArray[J].skillLevel);
-                    //여기서 스크립터블 오브젝트 생성해주면 될 듯 함
                 }
             }
             string skillInfoPath = Path.Combine(skillInfoScriptableObjectPath, skillInfoArray[i].jobName);
@@ -134,8 +145,19 @@ public class DataReader : MonoBehaviour
                 Directory.CreateDirectory(skillInfoPath);
             }
             skillInfoPath = Path.Combine(skillInfoPath, $"{skillInfoArray[i].skillName}.asset");
-            AssetDatabase.CreateAsset(skillinfo, skillInfoPath);
+            SkillInfo aleardyExistSkillInfo = AssetDatabase.LoadAssetAtPath<SkillInfo>(skillInfoPath);
+            if (aleardyExistSkillInfo != null) 
+            {
+                //err#001 : scriptableObject가 직접 수정되지 않는 버그 발생 해당부분 수정필요
+                aleardyExistSkillInfo = skillinfo;
+            }
+            else
+            {
+                AssetDatabase.CreateAsset(skillinfo, skillInfoPath);
+            }
+
             AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
     }
 

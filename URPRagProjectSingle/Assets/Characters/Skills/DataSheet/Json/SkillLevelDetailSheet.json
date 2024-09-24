@@ -63,7 +63,7 @@
 "damageType": "Physical",
 "coefficient": "1",
 "coefficientType": "Physical",
-"skillBound": "0",
+"skillBound": "3",
 "spCost": "10",
 "defaultCastingTime": "0.7",
 "skillRange": "1",

@@ -18,11 +18,11 @@ MonoBehaviour:
   objectiveType: 2
   skillPosition: 0
   skill:
-  - {fileID: 11400000, guid: 247793dc029a3484680dedcc6bc77c5d, type: 2}
-  - {fileID: 11400000, guid: 57dca290b8e1b1e458d2af7063d41f58, type: 2}
-  - {fileID: 11400000, guid: 47117573da0deaf4ca04cd59cda72c19, type: 2}
-  - {fileID: 11400000, guid: 69b98ba2deb9e964cb21d07f7debaf6e, type: 2}
-  - {fileID: 11400000, guid: 98c083eeeb883c54f9e3380da0b86f99, type: 2}
+  - {fileID: 11400000, guid: da83dc95bebd88045a1de3ab48b7b3c5, type: 2}
+  - {fileID: 11400000, guid: 62a54d6f12cdecf4e837e977c7ef5228, type: 2}
+  - {fileID: 11400000, guid: fbff17a103f5a0946b5c2cfdf669af4e, type: 2}
+  - {fileID: 11400000, guid: 2e19dadddc7f57e41bcae8a44533988b, type: 2}
+  - {fileID: 11400000, guid: 0d10a384b3dc6ca4eaf33febc94d5f6a, type: 2}
   effectOBJPrefab: {fileID: 1407303529245236996, guid: eb93008d4dda4754f867c07b578b98dd,
     type: 3}
   skillIcon: {fileID: 21300000, guid: 4867db53aa592a64a851c36645423699, type: 3}

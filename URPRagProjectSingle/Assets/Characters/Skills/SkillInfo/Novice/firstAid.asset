@@ -18,7 +18,7 @@ MonoBehaviour:
   objectiveType: 1
   skillPosition: 0
   skill:
-  - {fileID: 11400000, guid: 5fa3230bd7f27464f8889960ad24a28a, type: 2}
+  - {fileID: 11400000, guid: 2b549d5b98bd0594e982b1f7dc9dd5d1, type: 2}
   effectOBJPrefab: {fileID: 1407303529245236996, guid: d78d99ff754437e418458d860925d768,
     type: 3}
   skillIcon: {fileID: 21300000, guid: 5e93a13d0aab81048b25143ba568ef1b, type: 3}

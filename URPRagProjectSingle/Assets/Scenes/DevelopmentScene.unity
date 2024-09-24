@@ -20495,6 +20495,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4504150191586927300, guid: 00235a58e2f33304682774fc414f231f,
+        type: 3}
+      propertyPath: targetSkillTreeBase
+      value: 
+      objectReference: {fileID: 11400000, guid: 81302691c8b1684438c4da73bf47a471,
+        type: 2}
+    - target: {fileID: 4504150191586927300, guid: 00235a58e2f33304682774fc414f231f,
+        type: 3}
+      propertyPath: skillInfos.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4681552212081714716, guid: 00235a58e2f33304682774fc414f231f,
         type: 3}
       propertyPath: m_Name
