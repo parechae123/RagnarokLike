@@ -49,7 +49,7 @@ public class DataReader : MonoBehaviour
             Debug.LogError("No Excel file assigned.");
             return;
         }
-
+        jsonOutputPath = (Application.dataPath.Replace("/", "\\")) + "\\Characters\\Skills\\DataSheet\\Json";
         string filePath = AssetDatabase.GetAssetPath(targetExcel);
 
         try
@@ -122,18 +122,9 @@ public class DataReader : MonoBehaviour
                         Directory.CreateDirectory(skillDetailPath);
                     }
                     skillDetailPath = Path.Combine(skillDetailPath, skillbaseArray[J].skillName + $"{skillbase.skillLevel}.asset");
-                    SkillBase aleardyExistSkillBase = AssetDatabase.LoadAssetAtPath<SkillBase>(skillDetailPath);
-                    if (aleardyExistSkillBase != null)
-                    {
-                        //err#001 : scriptableObject가 직접 수정되지 않는 버그 발생 해당부분 수정필요
-                        aleardyExistSkillBase = skillbase;
-                        skillinfo.AddSkillDetailData(aleardyExistSkillBase);
-                    }
-                    else
-                    {
-                        AssetDatabase.CreateAsset(skillbase, skillDetailPath);
-                        skillinfo.AddSkillDetailData(skillbase);
-                    }
+                    AssetDatabase.CreateAsset(skillbase, skillDetailPath);
+                    skillinfo.AddSkillDetailData(skillbase);
+
                     AssetDatabase.SaveAssets();
                     
                     Debug.Log(skillInfoArray[i].skillName + skillbaseArray[J].skillLevel);
@@ -149,7 +140,7 @@ public class DataReader : MonoBehaviour
             if (aleardyExistSkillInfo != null) 
             {
                 //err#001 : scriptableObject가 직접 수정되지 않는 버그 발생 해당부분 수정필요
-                aleardyExistSkillInfo = skillinfo;
+                aleardyExistSkillInfo.UpdateInfomation(skillinfo);
             }
             else
             {

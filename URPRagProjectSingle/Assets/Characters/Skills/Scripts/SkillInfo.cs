@@ -46,6 +46,17 @@ public class SkillInfo : ScriptableObject
     {
         skill[skillData.skillLevel - (byte)1] = skillData; 
     }
+    public void UpdateInfomation(SkillInfo lastestInfo)
+    {
+        skillName = lastestInfo.skillName;
+        maxSkillLevel = lastestInfo.maxSkillLevel;
+        skill = lastestInfo.skill;
+        jobName = lastestInfo.jobName;
+        skillType = lastestInfo.skillType;
+        objectiveType = lastestInfo.objectiveType;
+        skillPosition = lastestInfo.skillPosition;
+        SetSkillAsset(lastestInfo.skillIcon, lastestInfo.effectOBJPrefab);
+    }
     public void SetSkillAsset(Sprite Image,GameObject prefab)
     {
         if (Image == null || prefab == null)

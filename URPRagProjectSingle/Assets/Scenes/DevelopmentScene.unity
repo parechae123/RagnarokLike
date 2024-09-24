@@ -20106,287 +20106,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2127088815}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2138968277
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2138968279}
-  - component: {fileID: 2138968280}
-  m_Layer: 0
-  m_Name: SkillConverter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &2138968279
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2138968277}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.11557719, y: 1.2400583, z: -1.8380519}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2138968280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2138968277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca3c5e93814742d418bf978ccdd504ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IconFolerPath: Assets/Characters/Skills/Icon
-  FXFolerPath: Assets/Characters/Skills/Effects/Pixel FX - Fire/Prefabs
-  skillDetailSheet: {fileID: 102900000, guid: d8a0a76a317203642889575031982f41, type: 3}
-  skillbaseArray:
-  - skillName: firstAid
-    koreanSkillName: "\uC751\uAE09\uCE58\uB8CC"
-    skillLevel: 1
-    defaultValue: 10
-    damageType: 2
-    coefficient: 0.1
-    coefficientType: 2
-    skillBound: 0
-    spCost: 10
-    defaultCastingTime: 0
-    skillRange: 0
-    skillDuration: 0
-  - skillName: deadActing
-    koreanSkillName: "\uC8FD\uC740 \uCC99 \uD558\uAE30"
-    skillLevel: 1
-    defaultValue: 0
-    damageType: 0
-    coefficient: 0
-    coefficientType: 0
-    skillBound: 0
-    spCost: 10
-    defaultCastingTime: 0
-    skillRange: 0
-    skillDuration: 300
-  - skillName: bash
-    koreanSkillName: "\uBC30\uC26C"
-    skillLevel: 1
-    defaultValue: 10
-    damageType: 0
-    coefficient: 0.8
-    coefficientType: 0
-    skillBound: 0
-    spCost: 8
-    defaultCastingTime: 0.9
-    skillRange: 1
-    skillDuration: 0
-  - skillName: bash
-    koreanSkillName: "\uBC30\uC26C"
-    skillLevel: 2
-    defaultValue: 20
-    damageType: 0
-    coefficient: 0.9
-    coefficientType: 0
-    skillBound: 0
-    spCost: 9
-    defaultCastingTime: 0.8
-    skillRange: 1
-    skillDuration: 0
-  - skillName: bash
-    koreanSkillName: "\uBC30\uC26C"
-    skillLevel: 3
-    defaultValue: 30
-    damageType: 0
-    coefficient: 1
-    coefficientType: 0
-    skillBound: 0
-    spCost: 10
-    defaultCastingTime: 0.7
-    skillRange: 1
-    skillDuration: 0
-  - skillName: bash
-    koreanSkillName: "\uBC30\uC26C"
-    skillLevel: 4
-    defaultValue: 40
-    damageType: 0
-    coefficient: 1.1
-    coefficientType: 0
-    skillBound: 0
-    spCost: 11
-    defaultCastingTime: 0.6
-    skillRange: 1
-    skillDuration: 0
-  - skillName: bash
-    koreanSkillName: "\uBC30\uC26C"
-    skillLevel: 5
-    defaultValue: 50
-    damageType: 0
-    coefficient: 1.2
-    coefficientType: 0
-    skillBound: 0
-    spCost: 12
-    defaultCastingTime: 0.5
-    skillRange: 1
-    skillDuration: 0
-  - skillName: bash
-    koreanSkillName: "\uBC30\uC26C"
-    skillLevel: 6
-    defaultValue: 55
-    damageType: 0
-    coefficient: 1.5
-    coefficientType: 0
-    skillBound: 0
-    spCost: 13
-    defaultCastingTime: 0.4
-    skillRange: 1
-    skillDuration: 0
-  - skillName: bash
-    koreanSkillName: "\uBC30\uC26C"
-    skillLevel: 7
-    defaultValue: 60
-    damageType: 0
-    coefficient: 1.6
-    coefficientType: 0
-    skillBound: 0
-    spCost: 14
-    defaultCastingTime: 0.3
-    skillRange: 1
-    skillDuration: 0
-  - skillName: bash
-    koreanSkillName: "\uBC30\uC26C"
-    skillLevel: 8
-    defaultValue: 65
-    damageType: 0
-    coefficient: 1.7
-    coefficientType: 0
-    skillBound: 0
-    spCost: 15
-    defaultCastingTime: 0.2
-    skillRange: 1
-    skillDuration: 0
-  - skillName: bash
-    koreanSkillName: "\uBC30\uC26C"
-    skillLevel: 9
-    defaultValue: 70
-    damageType: 0
-    coefficient: 1.8
-    coefficientType: 0
-    skillBound: 0
-    spCost: 16
-    defaultCastingTime: 0.1
-    skillRange: 1
-    skillDuration: 0
-  - skillName: bash
-    koreanSkillName: "\uBC30\uC26C"
-    skillLevel: 10
-    defaultValue: 75
-    damageType: 0
-    coefficient: 2.3
-    coefficientType: 0
-    skillBound: 0
-    spCost: 17
-    defaultCastingTime: 0
-    skillRange: 1
-    skillDuration: 0
-  - skillName: magnum break
-    koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
-    skillLevel: 1
-    defaultValue: 5
-    damageType: 0
-    coefficient: 1.2
-    coefficientType: 0
-    skillBound: 1
-    spCost: 15
-    defaultCastingTime: 1.5
-    skillRange: 0
-    skillDuration: 0
-  - skillName: magnum break
-    koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
-    skillLevel: 2
-    defaultValue: 15
-    damageType: 0
-    coefficient: 1.35
-    coefficientType: 0
-    skillBound: 1
-    spCost: 18
-    defaultCastingTime: 1.2
-    skillRange: 0
-    skillDuration: 0
-  - skillName: magnum break
-    koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
-    skillLevel: 3
-    defaultValue: 25
-    damageType: 0
-    coefficient: 1.5
-    coefficientType: 0
-    skillBound: 1
-    spCost: 21
-    defaultCastingTime: 0.9
-    skillRange: 0
-    skillDuration: 0
-  - skillName: magnum break
-    koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
-    skillLevel: 4
-    defaultValue: 35
-    damageType: 0
-    coefficient: 1.65
-    coefficientType: 0
-    skillBound: 1
-    spCost: 24
-    defaultCastingTime: 0.6
-    skillRange: 0
-    skillDuration: 0
-  - skillName: magnum break
-    koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
-    skillLevel: 5
-    defaultValue: 50
-    damageType: 0
-    coefficient: 2.3
-    coefficientType: 0
-    skillBound: 1
-    spCost: 30
-    defaultCastingTime: 0.3
-    skillRange: 0
-    skillDuration: 0
-  skillInfoSheet: {fileID: 102900000, guid: fe3a377d875c65b4a8a8db93939f9a32, type: 3}
-  skillInfoArray:
-  - skillName: firstAid
-    maxSkillLevel: 1
-    jobName: Novice
-    skillType: 2
-    objectiveType: 1
-    skillPosition: 0
-  - skillName: deadActing
-    maxSkillLevel: 1
-    jobName: Novice
-    skillType: 3
-    objectiveType: 1
-    skillPosition: 0
-  - skillName: bash
-    maxSkillLevel: 10
-    jobName: SwordMan
-    skillType: 2
-    objectiveType: 1
-    skillPosition: 1
-  - skillName: magnum break
-    maxSkillLevel: 5
-    jobName: SwordMan
-    skillType: 2
-    objectiveType: 2
-    skillPosition: 0
-  jsonOutputPath: C:\Users\parec\RagnarokLike\URPRagProjectSingle\Assets\Characters\Skills\DataSheet\Json
-  skillInfoScriptableObjectPath: Assets/Characters/Skills/SkillInfo
-  skillDetailScriptableObjectPath: Assets/Characters/Skills/SkillDetails
 --- !u!1001 &4092819106123950784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20516,6 +20235,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00235a58e2f33304682774fc414f231f, type: 3}
+--- !u!1001 &8054972728265292689
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3717227482800382435, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.11557719
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717227482800382435, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.2400583
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717227482800382435, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.8380519
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717227482800382435, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717227482800382435, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717227482800382435, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717227482800382435, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717227482800382435, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717227482800382435, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717227482800382435, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9017702747929103896, guid: 00d1d73ce79646644acad5aab47b2cf6,
+        type: 3}
+      propertyPath: m_Name
+      value: SkillConverter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00d1d73ce79646644acad5aab47b2cf6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -20529,7 +20316,7 @@ SceneRoots:
   - {fileID: 1030514313}
   - {fileID: 1791692440}
   - {fileID: 2108876588}
-  - {fileID: 2138968279}
+  - {fileID: 8054972728265292689}
   - {fileID: 1642042797}
   - {fileID: 1950738930}
   - {fileID: 2088911200}

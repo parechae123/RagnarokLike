@@ -17,84 +17,7 @@ MonoBehaviour:
   jobRoot: 0
   skillIconsInSkilltree:
     skills:
-    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 3fc72b565cb0a324796d5e944a314023,
-        type: 2}
-      thisSkill:
-        skillName: magnum break
-        jobName: SwordMan
-        skillType: 2
-        objectiveType: 2
-        skillPosition: 0
-        skill:
-        - skillName: magnum break
-          koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
-          skillLevel: 1
-          defaultValue: 5
-          damageType: 0
-          coefficient: 1.2
-          coefficientType: 0
-          skillBound: 1
-          spCost: 15
-          defaultCastingTime: 1.5
-          skillRange: 0
-          skillDuration: 0
-        - skillName: magnum break
-          koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
-          skillLevel: 2
-          defaultValue: 15
-          damageType: 0
-          coefficient: 1.35
-          coefficientType: 0
-          skillBound: 1
-          spCost: 18
-          defaultCastingTime: 1.2
-          skillRange: 0
-          skillDuration: 0
-        - skillName: magnum break
-          koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
-          skillLevel: 3
-          defaultValue: 25
-          damageType: 0
-          coefficient: 1.5
-          coefficientType: 0
-          skillBound: 1
-          spCost: 21
-          defaultCastingTime: 0.9
-          skillRange: 0
-          skillDuration: 0
-        - skillName: magnum break
-          koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
-          skillLevel: 4
-          defaultValue: 35
-          damageType: 0
-          coefficient: 1.65
-          coefficientType: 0
-          skillBound: 1
-          spCost: 24
-          defaultCastingTime: 0.6
-          skillRange: 0
-          skillDuration: 0
-        - skillName: magnum break
-          koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
-          skillLevel: 5
-          defaultValue: 50
-          damageType: 0
-          coefficient: 2.3
-          coefficientType: 0
-          skillBound: 1
-          spCost: 30
-          defaultCastingTime: 0.3
-          skillRange: 0
-          skillDuration: 0
-        skillIcon: {fileID: 21300000, guid: 4867db53aa592a64a851c36645423699, type: 3}
-        effectOBJPrefab: {fileID: 1407303529245236996, guid: eb93008d4dda4754f867c07b578b98dd,
-          type: 3}
-        maxSkillLevel: 5
-        nowSkillLevel: 0
-        castingSkillLevel: 0
-      positionOnSkillTree: {x: 600, y: 0}
-      skillGetConditions: []
-    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 9562aaea56fda0c4f96484cf5bb82bd6,
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: d5a998ccc06844243a24f7ca49f52b89,
         type: 2}
       thisSkill:
         skillName: bash
@@ -134,7 +57,7 @@ MonoBehaviour:
           damageType: 0
           coefficient: 1
           coefficientType: 0
-          skillBound: 0
+          skillBound: 3
           spCost: 10
           defaultCastingTime: 0.7
           skillRange: 1
@@ -223,7 +146,7 @@ MonoBehaviour:
           defaultCastingTime: 0
           skillRange: 1
           skillDuration: 0
-        skillIcon: {fileID: 21300000, guid: 954cdace6e17b3d4890cbbbfe98ef2fe, type: 3}
+        skillIcon: {fileID: 21300000, guid: a19cebe0599724c469f757f6e0b2d9a4, type: 3}
         effectOBJPrefab: {fileID: 1407303529245236996, guid: 94f4e57f500d82349b21830f88e14d62,
           type: 3}
         maxSkillLevel: 10
@@ -231,6 +154,83 @@ MonoBehaviour:
         castingSkillLevel: 0
       positionOnSkillTree: {x: 0, y: 0}
       skillGetConditions:
-      - targetIndex: 0
+      - targetIndex: 1
         targetLevel: 5
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: b66f4df48d0d2ca4ab7715b477ab0f93,
+        type: 2}
+      thisSkill:
+        skillName: magnum break
+        jobName: SwordMan
+        skillType: 2
+        objectiveType: 2
+        skillPosition: 0
+        skill:
+        - skillName: magnum break
+          koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
+          skillLevel: 1
+          defaultValue: 5
+          damageType: 0
+          coefficient: 1.2
+          coefficientType: 0
+          skillBound: 1
+          spCost: 15
+          defaultCastingTime: 1.5
+          skillRange: 0
+          skillDuration: 0
+        - skillName: magnum break
+          koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
+          skillLevel: 2
+          defaultValue: 15
+          damageType: 0
+          coefficient: 1.35
+          coefficientType: 0
+          skillBound: 1
+          spCost: 18
+          defaultCastingTime: 1.2
+          skillRange: 0
+          skillDuration: 0
+        - skillName: magnum break
+          koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
+          skillLevel: 3
+          defaultValue: 25
+          damageType: 0
+          coefficient: 1.5
+          coefficientType: 0
+          skillBound: 1
+          spCost: 21
+          defaultCastingTime: 0.9
+          skillRange: 0
+          skillDuration: 0
+        - skillName: magnum break
+          koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
+          skillLevel: 4
+          defaultValue: 35
+          damageType: 0
+          coefficient: 1.65
+          coefficientType: 0
+          skillBound: 1
+          spCost: 24
+          defaultCastingTime: 0.6
+          skillRange: 0
+          skillDuration: 0
+        - skillName: magnum break
+          koreanSkillName: "\uB9E4\uADF8\uB118 \uBE0C\uB808\uC774\uD06C"
+          skillLevel: 5
+          defaultValue: 50
+          damageType: 0
+          coefficient: 2.3
+          coefficientType: 0
+          skillBound: 1
+          spCost: 30
+          defaultCastingTime: 0.3
+          skillRange: 0
+          skillDuration: 0
+        skillIcon: {fileID: 21300000, guid: 4867db53aa592a64a851c36645423699, type: 3}
+        effectOBJPrefab: {fileID: 1407303529245236996, guid: eb93008d4dda4754f867c07b578b98dd,
+          type: 3}
+        maxSkillLevel: 5
+        nowSkillLevel: 0
+        castingSkillLevel: 0
+      positionOnSkillTree: {x: 400, y: 0}
+      skillGetConditions: []
   SkilltreeResolution: {x: 800, y: 600}
