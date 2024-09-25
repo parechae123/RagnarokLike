@@ -822,6 +822,7 @@ MonoBehaviour:
     playerOwnSkills: []
     baseLevel: 0
     jobLevel: 0
+    usedSkillPoint: 0
     skillPoint: 0
   tempKeyCode: 9
   arriveTime: 0
@@ -20218,7 +20219,7 @@ PrefabInstance:
         type: 3}
       propertyPath: targetSkillTreeBase
       value: 
-      objectReference: {fileID: 11400000, guid: 81302691c8b1684438c4da73bf47a471,
+      objectReference: {fileID: 11400000, guid: 883f73a576f0c2342a268591798a67ad,
         type: 2}
     - target: {fileID: 4504150191586927300, guid: 00235a58e2f33304682774fc414f231f,
         type: 3}

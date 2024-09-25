@@ -116,8 +116,8 @@ public class SkillBaseInGameData
     }
     public SkillBaseInGameData(SkillBase targetObject)
     {
-        skillName = targetObject.skillName;
-        koreanSkillName = targetObject.koreanSkillName;
+        skillName = new string(targetObject.skillName);
+        koreanSkillName = new string(targetObject.koreanSkillName);
         skillLevel = targetObject.skillLevel;
         defaultValue = targetObject.defaultValue;
         damageType = targetObject.damageType;

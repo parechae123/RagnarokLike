@@ -63,7 +63,7 @@ public class SkillTreeEditorTool : EditorWindow
                         //선행스킬 위치
                         Vector2 endPos = targetSkillTree.skillIconsInSkilltree[targetSkillTree.skillIconsInSkilltree[i].skillGetConditions[J].targetIndex].positionOnSkillTree + additiveValue;
                         Vector2 middlePoint = (startPos + endPos) / 2f;
-                        Vector2 direction = (endPos - startPos).normalized;
+                        Vector2 direction = (startPos - endPos).normalized;
                         // 화살촉의 오른쪽 벡터 계산
                         Vector2 rightHead = new Vector2(
                             direction.x * Mathf.Cos(20*Mathf.Rad2Deg) - direction.y * Mathf.Sin(20f * Mathf.Rad2Deg),

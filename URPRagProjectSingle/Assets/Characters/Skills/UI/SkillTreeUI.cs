@@ -76,7 +76,10 @@ public class SkillTreeUI : MonoBehaviour
                 int currIndex = i;
                 skillBtns[tempArray.Item1, tempArray.Item2].onClick.AddListener(() =>
                 {
-                    Player.Instance.playerLevelInfo.LearnSkill(targetSkillTreeBase.skillIconsInSkilltree, currIndex,tempInGameSkill, targetSkillTreeBase.GetPhase);
+                    if(Player.Instance.playerLevelInfo.LearnSkill(targetSkillTreeBase.skillIconsInSkilltree, currIndex, tempInGameSkill, targetSkillTreeBase.GetPhase)) 
+                    {
+                        skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(1).GetComponent<Text>().text = (int.Parse(skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(1).GetComponent<Text>().text) + 1).ToString();
+                    }
                 });
             }
             else

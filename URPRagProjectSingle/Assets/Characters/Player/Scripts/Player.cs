@@ -386,7 +386,7 @@ public class PlayerLevelInfo
             currJobExp = value;
         }
     }
-    byte usedSkillPoint;
+    public byte usedSkillPoint;
     public byte skillPoint;
     private byte LeftSkillPoint
     {
@@ -410,9 +410,9 @@ public class PlayerLevelInfo
     }
     #endregion
     #region JobLevel관련 함수
-    public void LearnSkill(SkillIconsInSkilltree skill,int targetSkillIndex,SkillInfoInGame skillInfo,int classPhase)
+    public bool LearnSkill(SkillIconsInSkilltree skill,int targetSkillIndex,SkillInfoInGame skillInfo,int classPhase)
     {
-        if (LeftSkillPoint <= 0) return;
+        if (LeftSkillPoint <= 0) return false;
         if (playerOwnSkills.Length < classPhase + 1) Array.Resize(ref playerOwnSkills, classPhase + 1);
 
         if (playerOwnSkills[classPhase] == null) playerOwnSkills[classPhase] = new PlayerSkillTreeForPhase();
@@ -422,7 +422,7 @@ public class PlayerLevelInfo
         {
             if (isLeanAble[i] == false)
             {
-                return;
+                return false;
             }
         }
 
@@ -436,14 +436,17 @@ public class PlayerLevelInfo
                     {
                         item.nowSkillLevel++;
                         usedSkillPoint++;
+                        return true;
                     }
-                    return;
+                    return false;
                 }
             }
         }
         if(playerOwnSkills[classPhase].playerOwnSkills.Length< targetSkillIndex + 1) Array.Resize(ref playerOwnSkills[classPhase].playerOwnSkills, targetSkillIndex + 1);
         playerOwnSkills[classPhase].playerOwnSkills[targetSkillIndex] = skillInfo;
         playerOwnSkills[classPhase].playerOwnSkills[targetSkillIndex].nowSkillLevel = 1;
+        usedSkillPoint++;
+        return true;
     }
     public void JobLevelUP()
     {
