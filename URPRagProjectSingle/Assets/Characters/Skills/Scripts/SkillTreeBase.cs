@@ -8,7 +8,12 @@ using UnityEngine;
 public class SkillTreeBase : ScriptableObject
 {
     [SerializeField] BaseJobType jobType;
-    [SerializeField] JobPhase jobPhase;
+    [SerializeField]private JobPhase jobPhase;
+    public int GetJobPhase
+    {
+        get { return (int)jobPhase; }
+    }
+
     public int GetPhase
     {
         get { return ((int)jobPhase); }

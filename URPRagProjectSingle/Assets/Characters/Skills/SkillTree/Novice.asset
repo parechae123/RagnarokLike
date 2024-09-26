@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 738f54a802f343445b4bc42e592634f2, type: 3}
-  m_Name: SwordMan
+  m_Name: Novice
   m_EditorClassIdentifier: 
-  jobType: 1
-  jobPhase: 1
+  jobType: 0
+  jobPhase: 0
   jobRoot: 0
   skillIconsInSkilltree:
     skills:
@@ -22,6 +22,7 @@ MonoBehaviour:
       thisSkill:
         skillName: bash
         jobName: SwordMan
+        skillStatus: 0
         skillType: 2
         objectiveType: 1
         skillPosition: 1
@@ -159,6 +160,7 @@ MonoBehaviour:
       thisSkill:
         skillName: magnum break
         jobName: SwordMan
+        skillStatus: 0
         skillType: 2
         objectiveType: 2
         skillPosition: 0
@@ -229,7 +231,7 @@ MonoBehaviour:
         maxSkillLevel: 5
         nowSkillLevel: 0
         castingSkillLevel: 0
-      positionOnSkillTree: {x: 400, y: 0}
+      positionOnSkillTree: {x: 300, y: 0}
       skillGetConditions:
       - targetIndex: 0
         targetLevel: 5

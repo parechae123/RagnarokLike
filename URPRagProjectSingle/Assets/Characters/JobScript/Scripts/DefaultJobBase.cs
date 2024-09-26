@@ -36,7 +36,7 @@ enum BaseJobType
 {
     Novice, SwordMan, Mage, Archer
 }
-enum JobPhase
+public enum JobPhase
 {
     defaultJob, first, second, third
 }

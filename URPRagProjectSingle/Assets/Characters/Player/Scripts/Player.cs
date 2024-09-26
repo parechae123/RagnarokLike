@@ -261,6 +261,8 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.Mouse0))
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+
             if (monsterHit.Length > 0)
             {
                 if (SetTargetMonster(monsterHit[0].transform))
@@ -349,7 +351,7 @@ public class PlayerLevelInfo
             currBaseExp = value;
         }
     }
-    short usedStatusPoint;
+    short usedStatusPoint =0;
     private short statutsPoint;
     public short LeftStatusPoint
     {
@@ -388,7 +390,7 @@ public class PlayerLevelInfo
     }
     public byte usedSkillPoint;
     public byte skillPoint;
-    private byte LeftSkillPoint
+    public byte LeftSkillPoint
     {
         get { return (byte)(skillPoint - usedSkillPoint); }
     }
@@ -477,19 +479,27 @@ public class PlayerLevelInfo
                 conditionSkillNames[i].Item2 = skillTree[targetLearnSkillIndex].skillGetConditions[i].targetLevel;
                 conditionSkillNames[i].Item3 = false;
             }
-            foreach (SkillInfoInGame item in playerOwnSkills[classPhase].playerOwnSkills)
+            if(playerOwnSkills.Length > 0)
             {
-                for (int i = 0; i < conditionSkillNames.Length; i++)
+                foreach (SkillInfoInGame item in playerOwnSkills[classPhase].playerOwnSkills)
                 {
-                    if (conditionSkillNames[i].Item1 == item.skillName)
+                    for (int i = 0; i < conditionSkillNames.Length; i++)
                     {
-                        if (conditionSkillNames[i].Item2 <= item.nowSkillLevel)
+                        if (conditionSkillNames[i].Item1 == item.skillName)
                         {
-                            conditionSkillNames[i].Item3 = true;
+                            if (conditionSkillNames[i].Item2 <= item.nowSkillLevel)
+                            {
+                                conditionSkillNames[i].Item3 = true;
+                            }
                         }
                     }
                 }
             }
+            else
+            {
+                return new bool[1] { false };
+            }
+
         }
         for (int i = 0; i < conditionSkillNames.Length; i++)
         {

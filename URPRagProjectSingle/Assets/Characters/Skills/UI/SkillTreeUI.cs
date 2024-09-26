@@ -13,8 +13,9 @@ public class SkillTreeUI : MonoBehaviour
     public SkillTreeBase targetSkillTreeBase;
     public RectTransform rectTR;
     public SkillInfoInGame[] skillInfos = new SkillInfoInGame[0];
-    
+    public Material greyScaled, colored,blueScaled;
     [SerializeField]public Button[,] skillBtns;
+
 //    public HashSet<(int, int)> isSkillSlotFilled = new HashSet<(int, int)>();
     // Start is called before the first frame update
     void Awake()
@@ -26,6 +27,10 @@ public class SkillTreeUI : MonoBehaviour
         {
             SkillManager.GetInstance().AddSkillInfo(skillInfos[i]);
         }
+    }
+    private void Start()
+    {
+        CheckSkillStatus();
     }
     public void GetSkillBTN()
     {
@@ -47,6 +52,51 @@ public class SkillTreeUI : MonoBehaviour
         }
 
     }
+    
+    public void CheckSkillStatus()
+    {
+        //해당함수 JobLevelUp함수에 이벤트로 등록해야함
+        for (int i = 0; i < targetSkillTreeBase.skillIconsInSkilltree.Length;i++)
+        {
+            (int,int) btnArray = (targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.x/100, targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.y /100);
+            if (skillInfos[i].isSkillLearned)
+            {
+                skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = colored;
+                continue;
+            }
+            bool[] tempBool = Player.Instance.playerLevelInfo.isLearnAble(i, targetSkillTreeBase.GetJobPhase,targetSkillTreeBase.skillIconsInSkilltree);
+
+            bool isEscape = false;
+            for (int j = 0; j < tempBool.Length; j++ )
+            {
+                if (!tempBool[j]) 
+                { 
+                    isEscape = true;
+                    skillInfos[i].skillStatus = SkillStatus.noneLearnAble;
+                    skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = greyScaled;
+                    break; 
+                }
+            }
+
+            if (isEscape) continue;
+            else
+            {
+                if (Player.Instance.playerLevelInfo.LeftSkillPoint > 0)
+                {
+                    skillInfos[i].skillStatus = SkillStatus.learnAble;
+                    skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = blueScaled;
+                }
+                else
+                {
+                    skillInfos[i].skillStatus = SkillStatus.noneLearnAble;
+                    skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = greyScaled;
+
+                }
+            }
+            
+        }
+    }
+
     public void ResetSkillTree(bool callOnAwake)
     {
         for (int i = 0; i < targetSkillTreeBase.skillIconsInSkilltree.Length; i++)
@@ -74,6 +124,8 @@ public class SkillTreeUI : MonoBehaviour
                 
                 skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.gameObject.AddComponent<QuickSlot>().Install(tempInGameSkill, true);
                 int currIndex = i;
+
+
                 skillBtns[tempArray.Item1, tempArray.Item2].onClick.AddListener(() =>
                 {
                     if(Player.Instance.playerLevelInfo.LearnSkill(targetSkillTreeBase.skillIconsInSkilltree, currIndex, tempInGameSkill, targetSkillTreeBase.GetPhase)) 

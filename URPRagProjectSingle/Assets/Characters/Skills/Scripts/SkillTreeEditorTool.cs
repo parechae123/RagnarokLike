@@ -135,6 +135,7 @@ public class SkillTreeEditorTool : EditorWindow
         rightClickMenu.AddItem(new GUIContent("Make Condition"), false,MenuItemCallBack, "Make Condition");
         rightClickMenu.AddItem(new GUIContent("Remove"), false, MenuItemCallBack, "Remove");
         makingConnection = false;
+
     }
     private void OnDisable()
     {
@@ -149,6 +150,10 @@ public class SkillTreeEditorTool : EditorWindow
             EditorApplication.update -= Update;
             return;
         }
+    }
+    private void OnDestroy()
+    {
+        OnDisable();
     }
     private void MenuItemCallBack(object userData)
     {

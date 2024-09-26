@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using PlayerDefines.Stat;
 using PlayerDefines;
+using UnityEngine.UI;
 
 /// <summary>
 /// 메니저 템플릿화
@@ -414,6 +415,29 @@ public class GridManager : Manager<GridManager>
 public class UIManager : Manager<UIManager>
 {
     public PlayerUI playerUI;
+    private Image draggingIconImage;
+    public void DraggingIcons(Vector2 pos,Sprite sprite) 
+    {
+
+        if (draggingIconImage == null) IconOnOFF(true);
+
+        if (!draggingIconImage.gameObject.activeSelf) draggingIconImage.gameObject.SetActive(true);
+
+        if (draggingIconImage.sprite != sprite) 
+        {
+            draggingIconImage.sprite = sprite;
+        }
+        draggingIconImage.rectTransform.position = pos;
+    }
+    public void IconOnOFF(bool isTurnOFF)
+    {
+        if (draggingIconImage == null)
+        {
+            draggingIconImage = new GameObject("DraggingIcons").AddComponent<Image>();
+            draggingIconImage.rectTransform.SetParent(GameObject.Find("Canvas").transform);
+        }
+        draggingIconImage.gameObject.SetActive(isTurnOFF);
+    }
     public void ResetUI()
     {
         playerUI?.ResetUI();

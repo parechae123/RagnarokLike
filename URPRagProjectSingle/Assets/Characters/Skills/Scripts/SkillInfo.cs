@@ -9,11 +9,13 @@ public class SkillInfo : ScriptableObject
     ///해당 클래스는 플레이어가 스킬 정보로 가지고있어야하는 객체로 추후 스크립터블 오브젝트 해제해야함
     public string skillName;
     public string jobName;
+
     [Header("스킬 유형")]
     public SkillType skillType;
     [SerializeField] public ObjectiveType objectiveType;
     [SerializeField] public SkillPosition skillPosition;
     public SkillBase[] skill;
+
     [Header("스킬 이펙트 오브젝트 프리팹, 아이콘")]
     [SerializeField] public GameObject effectOBJPrefab;
     [SerializeField] public Sprite skillIcon;
@@ -77,14 +79,19 @@ public class SkillInfo : ScriptableObject
 public class SkillInfoInGame : ItemBase
 {
     ///해당 클래스는 플레이어가 스킬 정보로 가지고있어야하는 객체로 추후 스크립터블 오브젝트 해제해야함
+    public event Action<Vector3> quickSlotFuncs;
+    [Header("스킬 상태")]
     public string skillName;
     public string jobName;
+    public SkillStatus skillStatus;
+
     [Header("스킬 유형")]
     public SkillType skillType;
     [SerializeField] public ObjectiveType objectiveType;
     [SerializeField] public SkillPosition skillPosition;
     public SkillBaseInGameData[] skill;
     [SerializeField] public Sprite skillIcon;
+
     [Header("스킬 이펙트 오브젝트 프리팹, 아이콘")]
     private Animator[] effectOBJs = new Animator[0];//씬 내의 이펙트 오브젝트
     [SerializeField] private GameObject effectOBJPrefab;
@@ -99,13 +106,13 @@ public class SkillInfoInGame : ItemBase
     {
         get { return castingSkillLevel.ToString(); }
     }
-    public void SlotFunction(Vector3 effectPosition)
-    {
-        StartSkillEffect(effectPosition);
-    }
     public bool isSkillLearned
     {
         get { return (nowSkillLevel > 0);}
+    }
+    public bool isItemUseAble
+    {
+        get { return isSkillLearned; }
     }
 
     public SkillInfoInGame(SkillInfo data)
@@ -119,6 +126,8 @@ public class SkillInfoInGame : ItemBase
         effectOBJPrefab = data.effectOBJPrefab;
         skillIcon = data.skillIcon;
         maxSkillLevel = data.maxSkillLevel;
+        quickSlotFuncs = null;
+        quickSlotFuncs += StartSkillEffect;
     }
     private SkillBaseInGameData[] ConvertInGameData(SkillBase[] skills)
     {
@@ -151,12 +160,19 @@ public class SkillInfoInGame : ItemBase
         effectOBJs[tempNum] = GameObject.Instantiate(effectOBJPrefab).GetComponent<Animator>();
         return effectOBJs[tempNum];
     }
+    public void UseItem()
+    {
+        if (!isSkillLearned) return;
+        quickSlotFuncs?.Invoke(Vector3.zero);
+    }
     /// <summary>
     /// 스킬 이펙트를 재생합니다.
     /// </summary>
     /// <param name="EffectPosition"></param>
     public void StartSkillEffect(Vector3 EffectPosition)
     {
+        Debug.Log(skillName + "사용했어용~~");
+        return;
         Animator tempAnim = GetNonPlayingSkillEffect();
         tempAnim.transform.position = EffectPosition;
         tempAnim.gameObject.SetActive(true);

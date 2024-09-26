@@ -225,3 +225,7 @@ public interface ItemInfo
 
     }
 }
+public enum SkillStatus
+{
+    learnAble,noneLearnAble,useable
+}

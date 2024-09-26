@@ -139,7 +139,6 @@ public class DataReader : MonoBehaviour
             SkillInfo aleardyExistSkillInfo = AssetDatabase.LoadAssetAtPath<SkillInfo>(skillInfoPath);
             if (aleardyExistSkillInfo != null) 
             {
-                //err#001 : scriptableObject가 직접 수정되지 않는 버그 발생 해당부분 수정필요
                 aleardyExistSkillInfo.UpdateInfomation(skillinfo);
             }
             else
