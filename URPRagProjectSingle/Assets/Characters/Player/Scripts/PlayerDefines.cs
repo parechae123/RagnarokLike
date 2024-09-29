@@ -31,6 +31,7 @@ namespace PlayerDefines
             public float SkillTimer
             {
                 get { return skillCoolTime; }
+                set { skillCoolTime = value; }
             }
             protected float durationTime;
             public float DurationTime
@@ -118,14 +119,13 @@ namespace PlayerDefines
         public class AttackState : PlayerStates
         {
             //해당 스테이트를 가지고있는 캐릭터의 스텟
-            Stats stats;
             public AttackState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState, Stats characterStat) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
             {
-                stats = characterStat;
+                
             }
             public override void SetAnimationSpeed(Animator anim)
             {
-                anim.speed = stats.attackSpeed;
+                anim.speed = Player.Instance.playerLevelInfo.stat.attackSpeed;
             }
             public override void Enter()
             {
@@ -134,23 +134,54 @@ namespace PlayerDefines
             public override void Execute()
             {
                 skillTimer += Time.deltaTime;
-                if (stats.attackSpeed < skillTimer)
+                if (Player.Instance.playerLevelInfo.stat.attackSpeed < skillTimer)
                 {
                     skillTimer = 0;
-                    if (stats.target.isCharacterDie)
+                    if (Player.Instance.playerLevelInfo.stat.target.isCharacterDie)
                     {
                         Player.Instance.StateMachine.ChangeState(nextStateName);
                     }
                     else
                     {
-                        stats.AttackTarget();
+                        Player.Instance.playerLevelInfo.stat.AttackTarget();
                     }
                 }
 
             }
             public override void Exit()
             {
-                skillTimer = stats.attackSpeed;
+                skillTimer = Player.Instance.playerLevelInfo.stat.attackSpeed;
+            }
+        }
+        public class CastingState : PlayerStates
+        {
+            public CastingState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
+            {
+                
+            }
+            public override void SetAnimationSpeed(Animator anim)
+            {
+                anim.speed = Player.Instance.playerLevelInfo.stat.attackSpeed;
+                //TODO : status int,dex 구현 시 castingTime으로 변환해야함
+            }
+            public override void Enter()
+            {
+
+            }
+            public override void Execute()
+            {
+                skillTimer += Time.deltaTime;
+                if (Player.Instance.playerLevelInfo.stat.attackSpeed < skillTimer)
+                {
+                    skillTimer = 0;
+
+                    Player.Instance.StateMachine.ChangeState(nextStateName);
+                }
+
+            }
+            public override void Exit()
+            {
+                
             }
         }
         public class IdleState : PlayerStates
@@ -173,31 +204,6 @@ namespace PlayerDefines
             public override void Exit()
             {
                 skillTimer = 0;
-            }
-        }
-
-
-
-        public class CastingState : PlayerStates
-        {
-
-            public CastingState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
-            {
-
-            }
-            public override void Enter()
-            {
-                base.Enter();
-            }
-            public override void Execute()
-            {
-
-                base.Execute();
-
-            }
-            public override void Exit()
-            {
-                base.Exit();
             }
         }
     }
@@ -254,6 +260,12 @@ namespace PlayerDefines
             public float abilityPower;
             public float attackDamage;
             public float attackSpeed;
+            public float CastTimePercent
+            {
+                get { return 0; /*DexInt같은 능력치 추가 후 바꿔야함*/}
+            }
+            
+
             public Stats target;
             public void AttackTarget(float damage = float.MinValue)
             {

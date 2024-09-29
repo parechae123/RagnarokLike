@@ -97,7 +97,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             if (raycastResults[i].gameObject == this.gameObject)
             {
-                continue;
+                return;
             }
 
             if (raycastResults[i].gameObject.TryGetComponent<QuickSlot>(out QuickSlot targetSlot))

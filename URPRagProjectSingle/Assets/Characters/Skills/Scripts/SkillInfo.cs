@@ -1,4 +1,5 @@
 using DG.Tweening;
+using JetBrains.Annotations;
 using System;
 using UnityEditor.Build.Pipeline;
 using UnityEngine;
@@ -171,10 +172,43 @@ public class SkillInfoInGame : ItemBase
     /// <param name="EffectPosition"></param>
     public void StartSkillEffect(Vector3 EffectPosition)
     {
+        //attackState로 바꿉니다
+        Player.Instance.CastingOrder(skill[castingSkillLevel].defaultCastingTime);
+
+        switch (skillPosition)
+        {
+            case SkillPosition.cursor:
+                //마우스 클릭 이벤트가 발생할때 아래 함수를 실행시켜주는 구문을 작성해야함
+                SkillCastTargetPlace(EffectPosition);
+                break;
+            case SkillPosition.self:
+                SkillCastInPlace();
+                break;
+        }
+    }
+    public void SkillCastInPlace()
+    {
         Debug.Log(skillName + "사용했어용~~");
-        return;
         Animator tempAnim = GetNonPlayingSkillEffect();
-        tempAnim.transform.position = EffectPosition;
+        tempAnim.transform.position = Player.Instance.transform.position;
+        tempAnim.gameObject.SetActive(true);
+        tempAnim.Play(skillName + "Effect");
+        float tempTime = 0;
+        
+        for (int i = 0; i< tempAnim.runtimeAnimatorController.animationClips.Length; i++)
+        {
+            tempTime += tempAnim.runtimeAnimatorController.animationClips[i].length;
+        }
+        DOVirtual.DelayedCall(tempTime, () =>
+        {
+            if (tempAnim != null) tempAnim.gameObject.SetActive(false);
+        });
+    }
+    public void SkillCastTargetPlace(Vector3 targetPos)
+    {
+        Debug.Log(skillName + "사용했어용~~");
+        Animator tempAnim = GetNonPlayingSkillEffect();
+        tempAnim.transform.position = targetPos;
         tempAnim.gameObject.SetActive(true);
         tempAnim.Play(skillName + "Effect");
         DOVirtual.DelayedCall(tempAnim.GetCurrentAnimatorClipInfo(0)[0].clip.length, () =>

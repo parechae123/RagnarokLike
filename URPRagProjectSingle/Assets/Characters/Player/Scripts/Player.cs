@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     public KeyCode tempKeyCode;
     //이동 도착 예정시간
     public float arriveTime;
+
+
     [SerializeField] public Node targetNode;
     [SerializeField] private Node currentNode;
     [SerializeField] public Node CurrentNode
@@ -75,7 +77,9 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
-        playerLevelInfo.stat = new PlayerStat(currentNode, 100, 3, 1,10);
+        if (playerLevelInfo.stat == null) playerLevelInfo.stat = new PlayerStat(currentNode, 100, 3, 1, 10);
+        playerLevelInfo.baseLevelUP += playerLevelInfo.BaseLevelUP;
+        playerLevelInfo.jobLevelUP += playerLevelInfo.JobLevelUP;
         InstallizeStates();
         SetCurrentNodeAndPosition();
         playerLevelInfo.stat.moveFunction += PlayerMoveOrder;
@@ -84,6 +88,11 @@ public class Player : MonoBehaviour
     public void Update()
     {
         MouseBinding();
+        //디버그용 키로 빼야함
+        if(Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            playerLevelInfo.GetJobEXP(100);
+        }
         StateMachine.CurrentState.Execute();
 
     }
@@ -306,8 +315,14 @@ public class Player : MonoBehaviour
         states.Enqueue(new MoveState( 1, 1, "moveState", "idleState", false));
         states.Enqueue(new IdleState(1, 1, "idleState", "idleState", true));
         states.Enqueue(new AttackState(1, playerLevelInfo.stat.attackSpeed, "attackState", "idleState", false, playerLevelInfo.stat));
+        states.Enqueue(new CastingState(1, playerLevelInfo.stat.attackSpeed, "castingState", "idleState", false));
         stateMachine = new PlayerStateMachine(states.ToArray(),GetComponent<Animator>());
         StateMachine.ChangeState("idleState");
+    }
+
+    public void CastingOrder(float defaultCastingTime)
+    {
+        StateMachine.ChangeState("castingState",defaultCastingTime);
     }
     private void OnDrawGizmos()
     {
@@ -327,13 +342,14 @@ public class PlayerLevelInfo
     public PlayerStat stat;                                                 //플레이어 스텟
     public PlayerSkillTreeForPhase[] playerOwnSkills = new PlayerSkillTreeForPhase[0];     //플레이어가 가지고 있는 스킬 리스트
     #region 베이스 레벨 관련 변수
+    public Action baseLevelUP, jobLevelUP;
     public byte baseLevel;
     private byte maxBaseLevel = 99;
     private float MaxBaseExp
     {
         get
         {
-            return 342 * (baseLevel * 1.6f);
+            return 342 * ((float)baseLevel * 1.6f);
         }
     }
     private float currBaseExp;
@@ -342,11 +358,20 @@ public class PlayerLevelInfo
         get { return currBaseExp; }
         set 
         {
-            if (maxBaseLevel <= baseLevel) currBaseExp = 0;
-            while (value > MaxBaseExp)
+            if (maxBaseLevel <= baseLevel)
+            {
+                currBaseExp = 0;
+                return;
+            }
+            while (value > maxBaseLevel)
             {
                 value = value - MaxBaseExp;
-                BaseLevelUP();
+                currBaseExp = 0;
+                Debug.Log("다음 잡 맥스경험치" + MaxBaseExp);
+                Debug.Log("현재 경험치" + (currBaseExp + value));
+                if (value > 0) baseLevelUP.Invoke();
+                else break;
+
             }
             currBaseExp = value;
         }
@@ -373,21 +398,30 @@ public class PlayerLevelInfo
             return 10 * (jobLevel * 1.6f);
         }
     }
-    private float currJobExp;
+
+    [SerializeField]private float currJobExp;
     private float CurrJobExp
     {
         get { return currJobExp; }
         set
         {
-            if (maxJobLevel <= jobLevel) currJobExp = 0;
+            if (maxJobLevel <= jobLevel)
+            {
+                currJobExp = 0;
+                return;
+            }
             while (value > MaxJobExp)
             {
-                value = value - MaxJobExp;
-                JobLevelUP();
+                value = value-MaxJobExp;
+                currJobExp = 0;
+                if (value > 0) jobLevelUP.Invoke();
+                else break;
+
             }
             currJobExp = value;
         }
     }
+
     public byte usedSkillPoint;
     public byte skillPoint;
     public byte LeftSkillPoint

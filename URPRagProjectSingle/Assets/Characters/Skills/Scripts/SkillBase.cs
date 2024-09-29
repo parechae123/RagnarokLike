@@ -93,7 +93,7 @@ public class SkillBaseInGameData
     [Header("스킬 레벨,최대치,마나 소모값 및 캐스팅 시간")]
     [SerializeField] public float spCost;
 
-    [SerializeField] private float defaultCastingTime;
+    [SerializeField] public float defaultCastingTime;
 
     [Header("스킬 사거리")]
     [SerializeField] public byte skillRange;

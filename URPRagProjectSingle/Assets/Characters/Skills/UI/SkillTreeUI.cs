@@ -14,6 +14,7 @@ public class SkillTreeUI : MonoBehaviour
     public RectTransform rectTR;
     public SkillInfoInGame[] skillInfos = new SkillInfoInGame[0];
     public Material greyScaled, colored,blueScaled;
+    public Text leftSkillPointText;
     [SerializeField]public Button[,] skillBtns;
 
 //    public HashSet<(int, int)> isSkillSlotFilled = new HashSet<(int, int)>();
@@ -31,6 +32,8 @@ public class SkillTreeUI : MonoBehaviour
     private void Start()
     {
         CheckSkillStatus();
+        Player.Instance.playerLevelInfo.jobLevelUP += CheckSkillStatus;
+        Player.Instance.playerLevelInfo.jobLevelUP += UpdateSkillPointText;
     }
     public void GetSkillBTN()
     {
@@ -61,7 +64,8 @@ public class SkillTreeUI : MonoBehaviour
             (int,int) btnArray = (targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.x/100, targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.y /100);
             if (skillInfos[i].isSkillLearned)
             {
-                skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = colored;
+                if (skillInfos[i].maxSkillLevel <= skillInfos[i].nowSkillLevel || Player.Instance.playerLevelInfo.LeftSkillPoint <= 0) skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = colored;
+                else if (skillInfos[i].maxSkillLevel > skillInfos[i].nowSkillLevel && Player.Instance.playerLevelInfo.LeftSkillPoint > 0) skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = blueScaled;
                 continue;
             }
             bool[] tempBool = Player.Instance.playerLevelInfo.isLearnAble(i, targetSkillTreeBase.GetJobPhase,targetSkillTreeBase.skillIconsInSkilltree);
@@ -131,6 +135,8 @@ public class SkillTreeUI : MonoBehaviour
                     if(Player.Instance.playerLevelInfo.LearnSkill(targetSkillTreeBase.skillIconsInSkilltree, currIndex, tempInGameSkill, targetSkillTreeBase.GetPhase)) 
                     {
                         skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(1).GetComponent<Text>().text = (int.Parse(skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(1).GetComponent<Text>().text) + 1).ToString();
+                        CheckSkillStatus();
+                        UpdateSkillPointText();
                     }
                 });
             }
@@ -139,6 +145,10 @@ public class SkillTreeUI : MonoBehaviour
                 EditorUtility.SetDirty(this);
             }
         }
+    }
+    public void UpdateSkillPointText()
+    {
+        leftSkillPointText.text = "남은 스킬 포인트 : "+ Player.Instance.playerLevelInfo.LeftSkillPoint.ToString();
     }
 }
 [CustomEditor(typeof(SkillTreeUI))]

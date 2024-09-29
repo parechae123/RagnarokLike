@@ -127,6 +127,20 @@ namespace NeutralDefines
                 currentState?.Enter();                  //다음 상태값
                 AnimationChange();
             }
+            public void ChangeState(string newStateName,float castingTime)
+            {
+                if (currentState == null)
+                {
+                    currentState = SearchState("idleState");
+                    currentState.Enter();
+                    return;
+                }
+                currentState?.Exit();                   //이전 상태값을 빠져나간다
+                currentState = SearchState(newStateName);               //인수로 받아온 상태값을 입력
+                currentState.SkillTimer = castingTime;
+                currentState?.Enter();                  //다음 상태값
+                AnimationChange();
+            }
             public void AnimationChange()
             {
                 currentState?.SetAnimationSpeed(anim);
