@@ -172,8 +172,9 @@ public class SkillInfoInGame : ItemBase
     /// <param name="EffectPosition"></param>
     public void StartSkillEffect(Vector3 EffectPosition)
     {
-        //attackState로 바꿉니다
+        //castingState로 바꿉니다
         Player.Instance.CastingOrder(skill[castingSkillLevel].defaultCastingTime);
+        //캐스팅 시간이 정상적으로 끝났을때 아래 함수가 실행되도록 추가 작업 필요
 
         switch (skillPosition)
         {
@@ -211,7 +212,13 @@ public class SkillInfoInGame : ItemBase
         tempAnim.transform.position = targetPos;
         tempAnim.gameObject.SetActive(true);
         tempAnim.Play(skillName + "Effect");
-        DOVirtual.DelayedCall(tempAnim.GetCurrentAnimatorClipInfo(0)[0].clip.length, () =>
+        float tempTime = 0;
+
+        for (int i = 0; i < tempAnim.runtimeAnimatorController.animationClips.Length; i++)
+        {
+            tempTime += tempAnim.runtimeAnimatorController.animationClips[i].length;
+        }
+        DOVirtual.DelayedCall(tempTime, () =>
         {
             if (tempAnim != null) tempAnim.gameObject.SetActive(false);
         });
