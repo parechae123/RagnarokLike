@@ -161,7 +161,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
 
 public interface ItemBase
 {
-    public event Action<Vector3> quickSlotFuncs;
+    public event Action quickSlotFuncs;
     public Sprite IconIMG
     {
         get { return null; }
@@ -178,7 +178,7 @@ public interface ItemBase
 }
 public class EmptyItem: ItemBase
 {
-    public event Action<Vector3> quickSlotFuncs;
+    public event Action quickSlotFuncs;
     public EmptyItem(Sprite sprite) 
     {
         IconIMG = sprite;

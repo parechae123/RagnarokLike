@@ -32,11 +32,34 @@ public class Player : MonoBehaviour
             return instance;
         }
     }
-    public KeyCode tempKeyCode;
     //이동 도착 예정시간
-    public float arriveTime;
+    #region 스킬시전 관련 객체
+    private SkillInfoInGame skillObj;
+    public SkillInfoInGame SkillObj
+    {
+        get { return skillObj; }
+        set 
+        {
+            skillObj = value;
+            if (skillObj == null)
+            {
+                isSearchCastTarget = false;
+                return;
+            }
 
-
+            if(value.skillPosition == SkillPosition.self)
+            {
+                value.SkillCastInPlace(new Vector3(currentNode.nodeCenterPosition.x,transform.position.y , currentNode.nodeCenterPosition.y));
+            }
+            else if(value.skillPosition == SkillPosition.cursor)
+            {
+                isSearchCastTarget = true;
+            }
+        }
+    }
+    private bool isSearchCastTarget = false;
+    #endregion
+    #region 노드
     [SerializeField] public Node targetNode;
     [SerializeField] private Node currentNode;
     [SerializeField] public Node CurrentNode
@@ -51,7 +74,8 @@ public class Player : MonoBehaviour
         }
     }
     public LinkedList<Node> nodePreview = new LinkedList<Node>();
-
+    public float arriveTime;
+    #endregion
     [SerializeField]
     public PlayerStateMachine stateMachine;
     public PlayerStateMachine StateMachine
@@ -83,7 +107,7 @@ public class Player : MonoBehaviour
         InstallizeStates();
         SetCurrentNodeAndPosition();
         playerLevelInfo.stat.moveFunction += PlayerMoveOrder;
-        playerCursorState.SetDefaultCursor();
+        playerCursorState.changeState(cursorState.defaultCurser);
     }
     public void Update()
     {
@@ -272,6 +296,19 @@ public class Player : MonoBehaviour
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
+            if (isSearchCastTarget)
+            {
+                playerCursorState.changeState(cursorState.skillTargeting);
+                if (SkillObj.objectiveType == ObjectiveType.OnlyTarget)
+                {
+                    
+                }
+                else if (SkillObj.objectiveType == ObjectiveType.Bounded)
+                {
+
+                }
+            }
+
             if (monsterHit.Length > 0)
             {
                 if (SetTargetMonster(monsterHit[0].transform))
@@ -295,7 +332,10 @@ public class Player : MonoBehaviour
 
         }
     }
+    public void GetCastingTarget(bool isOnlyTarget)
+    {
 
+    }
 
 
     public void PlayerMoveOrder(Vector3 targetPosition, bool isMoveToAttack = false)

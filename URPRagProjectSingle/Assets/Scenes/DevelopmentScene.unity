@@ -928,6 +928,8 @@ MonoBehaviour:
     grabCursorIMG: {fileID: 2800000, guid: 8607646b6e0d80e4f93d248185a7b964, type: 3}
     attackAbleCursorIMG: {fileID: 2800000, guid: 9e1905eb01010834f8e86246af3355a8,
       type: 3}
+    skillTargetingCursorIMG: {fileID: 2800000, guid: 3ee3fa08caca7954a8a7147b0e3ec9e0,
+      type: 3}
   playerLookDir: {x: 0, y: 0}
 --- !u!95 &67711975
 Animator:

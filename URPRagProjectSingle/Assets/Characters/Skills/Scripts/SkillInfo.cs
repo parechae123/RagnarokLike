@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using System;
 using UnityEditor.Build.Pipeline;
 using UnityEngine;
+using UnityEngine.EventSystems;
 [CreateAssetMenu(fileName = "new SkillInfo", menuName = "Skill/SkillInfomations")]
 [System.Serializable]
 public class SkillInfo : ScriptableObject
@@ -80,7 +81,7 @@ public class SkillInfo : ScriptableObject
 public class SkillInfoInGame : ItemBase
 {
     ///해당 클래스는 플레이어가 스킬 정보로 가지고있어야하는 객체로 추후 스크립터블 오브젝트 해제해야함
-    public event Action<Vector3> quickSlotFuncs;
+    public event Action quickSlotFuncs;
     [Header("스킬 상태")]
     public string skillName;
     public string jobName;
@@ -128,7 +129,7 @@ public class SkillInfoInGame : ItemBase
         skillIcon = data.skillIcon;
         maxSkillLevel = data.maxSkillLevel;
         quickSlotFuncs = null;
-        quickSlotFuncs += StartSkillEffect;
+        quickSlotFuncs += SetSkillObjectToPlayer;
     }
     private SkillBaseInGameData[] ConvertInGameData(SkillBase[] skills)
     {
@@ -164,13 +165,18 @@ public class SkillInfoInGame : ItemBase
     public void UseItem()
     {
         if (!isSkillLearned) return;
-        quickSlotFuncs?.Invoke(Vector3.zero);
+        quickSlotFuncs?.Invoke();
     }
+    public void SetSkillObjectToPlayer()
+    {
+        Player.Instance.SkillObj = this;
+    }
+    
     /// <summary>
     /// 스킬 이펙트를 재생합니다.
     /// </summary>
     /// <param name="EffectPosition"></param>
-    public void StartSkillEffect(Vector3 EffectPosition)
+/*    public void StartSkillEffect(Vector3 EffectPosition)
     {
         //castingState로 바꿉니다
         Player.Instance.CastingOrder(skill[castingSkillLevel].defaultCastingTime);
@@ -183,15 +189,15 @@ public class SkillInfoInGame : ItemBase
                 SkillCastTargetPlace(EffectPosition);
                 break;
             case SkillPosition.self:
-                SkillCastInPlace();
+                SkillCastInPlace(EffectPosition);
                 break;
         }
-    }
-    public void SkillCastInPlace()
+    }*/
+    public void SkillCastInPlace(Vector3 skillPos)
     {
         Debug.Log(skillName + "사용했어용~~");
         Animator tempAnim = GetNonPlayingSkillEffect();
-        tempAnim.transform.position = Player.Instance.transform.position;
+        tempAnim.transform.position = skillPos;
         tempAnim.gameObject.SetActive(true);
         tempAnim.Play(skillName + "Effect");
         float tempTime = 0;
