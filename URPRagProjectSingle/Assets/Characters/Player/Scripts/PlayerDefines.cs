@@ -28,18 +28,11 @@ namespace PlayerDefines
 
             protected float skillCoolTime;
             protected float skillTimer;
-            public float SkillTimer
-            {
-                get { return skillCoolTime; }
-                set { skillCoolTime = value; }
-            }
             protected float durationTime;
             public float DurationTime
             {
-                get
-                {
-                    return durationTime;
-                }
+                get;
+                set; 
             }
             /// <summary>
             /// 스테이트 생성자
@@ -155,6 +148,9 @@ namespace PlayerDefines
         }
         public class CastingState : PlayerStates
         {
+            public Action<Vector3> casting;
+            public Vector3 castPos;
+            public Stats targetStat;
             public CastingState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
             {
                 
@@ -166,22 +162,25 @@ namespace PlayerDefines
             }
             public override void Enter()
             {
-
+                skillTimer = 0;
             }
             public override void Execute()
             {
                 skillTimer += Time.deltaTime;
-                if (Player.Instance.playerLevelInfo.stat.attackSpeed < skillTimer)
+                UIManager.GetInstance().SetCastingBarValue(durationTime, skillTimer);
+                if (DurationTime <= skillTimer)
                 {
                     skillTimer = 0;
-
+                    UIManager.GetInstance().CastingBarOnOff(false);
+                    casting.Invoke(castPos);
                     Player.Instance.StateMachine.ChangeState(nextStateName);
                 }
 
             }
             public override void Exit()
             {
-                
+                UIManager.GetInstance().CastingBarOnOff(false);
+                skillTimer = 0;
             }
         }
         public class IdleState : PlayerStates
@@ -219,12 +218,13 @@ namespace PlayerDefines
             }
             public Action<Vector3, bool> moveFunction;
             public Action dieFunctions;//TODO : 사망 연출 등록필요
-            public Stats(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage)
+            public Stats(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange)
             {
                 isCharacterDie = false;
                 standingNode = initializeNode;
                 standingNode.CharacterOnNode = this;
                 HP = hp;
+                this.charactorAttackRange = attackRange;
                 this.moveSpeed = moveSpeed;
                 this.attackSpeed = attackSpeed;
                 this.attackDamage = attackDamage;
@@ -260,6 +260,7 @@ namespace PlayerDefines
             public float abilityPower;
             public float attackDamage;
             public float attackSpeed;
+            public byte charactorAttackRange;
             public float CastTimePercent
             {
                 get { return 0; /*DexInt같은 능력치 추가 후 바꿔야함*/}
@@ -286,7 +287,7 @@ namespace PlayerDefines
         }
         public class PlayerStat : Stats
         {
-            public PlayerStat(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage) : base(initializeNode, hp, moveSpeed, attackSpeed, attackDamage)
+            public PlayerStat(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange) : base(initializeNode, hp, moveSpeed, attackSpeed, attackDamage,attackRange)
             {
 
             }

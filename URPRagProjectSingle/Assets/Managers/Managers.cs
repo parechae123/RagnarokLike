@@ -46,6 +46,10 @@ public class Node
         get { return characterOnNode; }
         set { characterOnNode = value; }
     }
+    public Vector3 worldPos
+    {
+        get {return new Vector3(nodeCenterPosition.x,((float)nodeFloor+0.5f),nodeCenterPosition.y); }
+    }
     public bool isEmptyNode(Stats stat)
     {
         if (characterOnNode == null)
@@ -347,23 +351,75 @@ public class GridManager : Manager<GridManager>
         }
         return tempVec;
     }
-    public bool MeleeAttackOrder(Stats attackerStat,Stats targetStat)
+    //원거리 평타 공격 미리 구현
+    public bool AttackOrder(Stats attackerStat,Stats targetStat,byte range)
     {
         if (attackerStat.target != targetStat)
         {
             attackerStat.target = targetStat;
         }
-        if (IsMeleeAttackAble(attackerStat.standingNode,targetStat.standingNode))
+
+        if(range == 1)
         {
-            if (targetStat.isCharacterDie)
+            if (IsMeleeAttackAble(attackerStat.standingNode, targetStat.standingNode))
             {
+                if (targetStat.isCharacterDie)
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                attackerStat.moveFunction(new Vector3(targetStat.standingNode.nodeCenterPosition.x, targetStat.standingNode.nodeFloor, targetStat.standingNode.nodeCenterPosition.y), true);
                 return false;
             }
-            return true;
         }
         else
         {
-            attackerStat.moveFunction(new Vector3(targetStat.standingNode.nodeCenterPosition.x, targetStat.standingNode.nodeFloor, targetStat.standingNode.nodeCenterPosition.y),true);
+            LinkedList<Node> tempList = GridManager.instance.PathFinding(attackerStat.standingNode.nodeCenterPosition,
+                targetStat.standingNode.nodeCenterPosition);
+
+            if (tempList.Max(node => node.H) <= range)
+            {
+                //여기다가 스테이트머신 attack 넣으면됨
+                return true;
+            }
+            return false;
+        }
+    }
+    public bool IsInRange(Stats attackerStat, Stats targetStat, byte range)
+    {
+        if (attackerStat.target != targetStat)
+        {
+            attackerStat.target = targetStat;
+        }
+
+        if (range == 1)
+        {
+            if (IsMeleeAttackAble(attackerStat.standingNode, targetStat.standingNode))
+            {
+                if (targetStat.isCharacterDie)
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            LinkedList<Node> tempList = GridManager.instance.PathFinding(attackerStat.standingNode.nodeCenterPosition,
+                targetStat.standingNode.nodeCenterPosition);
+
+            if (tempList.Max(node => node.H) <= range)
+            {
+                //여기다가 스테이트머신 attack 넣으면됨
+                return true;
+            }
             return false;
         }
     }
@@ -415,7 +471,55 @@ public class GridManager : Manager<GridManager>
 public class UIManager : Manager<UIManager>
 {
     public PlayerUI playerUI;
+    private RectTransform mainCanvas;
+    public RectTransform MainCanvas
+    {
+        get
+        {
+            if (mainCanvas == null)
+            {
+                mainCanvas = (RectTransform)GameObject.Find("Canvas").transform;
+            }
+            return mainCanvas;
+        }
+    }
     private Image draggingIconImage;
+
+    //캐스팅바 시리즈
+    private RectTransform outerCastBar;
+    private RectTransform OuterCastBar
+    {
+        get 
+        { 
+            if(outerCastBar == null)
+            {
+                if (outerCastBar == null) outerCastBar = (RectTransform)MainCanvas.Find("OuterCastBar").transform;
+            }
+            return outerCastBar;
+        }
+    }
+    private Image innerCastBar;
+    public Image InnerCastBar 
+    {
+        get
+        {
+            if(innerCastBar == null)
+            {
+                if(innerCastBar == null) innerCastBar = OuterCastBar.Find("InnerCastBar").GetComponent<Image>();
+            }
+            return innerCastBar;
+        }
+    }
+
+    public void SetCastingBarValue(float max,float curr)
+    {
+        CastingBarOnOff(true);
+        InnerCastBar.fillAmount = curr/max;
+    }
+    public void CastingBarOnOff(bool isTurnOn)
+    {
+        OuterCastBar.gameObject.SetActive(isTurnOn);
+    }
     public void DraggingIcons(Vector2 pos,Sprite sprite) 
     {
 

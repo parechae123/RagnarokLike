@@ -20,7 +20,7 @@ public class TempMonster : MonoBehaviour
     }
     void Start()
     {
-        monsterStat = new Stats(GridManager.GetInstance().PositionToNode(transform.position),30,3,3,10);
+        monsterStat = new Stats(GridManager.GetInstance().PositionToNode(transform.position),30,3,3,10,1);
         transform.position = new Vector3(monsterStat.standingNode.nodeCenterPosition.x, monsterStat.standingNode.nodeFloor+1.5f, monsterStat.standingNode.nodeCenterPosition.y);
         Debug.Log(monsterStat.standingNode.nodeCenterPosition);
     }

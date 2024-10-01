@@ -127,7 +127,7 @@ namespace NeutralDefines
                 currentState?.Enter();                  //다음 상태값
                 AnimationChange();
             }
-            public void ChangeState(string newStateName,float castingTime)
+            public void ChangeState(float castingTime,SkillInfoInGame skillInfo,Stats targetStat,Vector3 skillPos)
             {
                 if (currentState == null)
                 {
@@ -135,9 +135,20 @@ namespace NeutralDefines
                     currentState.Enter();
                     return;
                 }
+                CastingState temp = (CastingState)SearchState("castingState");
+                skillPos.y += 0.9f;
+                if(targetStat != null)
+                {
+                    skillPos.x = (targetStat.standingNode.worldPos.x + Player.Instance.playerLevelInfo.stat.standingNode.worldPos.x) / 2f;
+                    skillPos.z = (targetStat.standingNode.worldPos.z + Player.Instance.playerLevelInfo.stat.standingNode.worldPos.z) / 2f;
+                }
+                temp.casting = null;
+                temp.casting += skillInfo.SkillCastTargetPlace;
+                temp.castPos = skillPos;
+                temp.targetStat = targetStat;
                 currentState?.Exit();                   //이전 상태값을 빠져나간다
-                currentState = SearchState(newStateName);               //인수로 받아온 상태값을 입력
-                currentState.SkillTimer = castingTime;
+                currentState = temp;               
+                currentState.DurationTime = castingTime;
                 currentState?.Enter();                  //다음 상태값
                 AnimationChange();
             }
@@ -192,7 +203,7 @@ namespace NeutralDefines
                         Cursor.SetCursor(attackAbleCursorIMG, Vector2.left + Vector2.up, CursorMode.Auto);
                         break;
                     case cursorState.skillTargeting:
-                        Cursor.SetCursor(attackAbleCursorIMG, Vector2.down, CursorMode.Auto);
+                        Cursor.SetCursor(skillTargetingCursorIMG, Vector2.down, CursorMode.Auto);
                         break;
 
                 }
