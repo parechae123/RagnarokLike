@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
 {
     #region º¯¼ö
+    public KeyCode slotKey;
     private ItemBase slotItem;
     public ItemBase SlotItem
     {

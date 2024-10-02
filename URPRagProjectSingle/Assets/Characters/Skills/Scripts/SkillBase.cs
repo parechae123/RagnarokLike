@@ -23,7 +23,7 @@ public class SkillBase : ScriptableObject
     /// <returns></returns>
     public ValueType coefficientType;
     [Header("스킬 범위")]
-    [SerializeField] public float skillBound;
+    [SerializeField] public byte skillBound;
 
     [Header("스킬 레벨,최대치,마나 소모값 및 캐스팅 시간")]
     [SerializeField] public float spCost;
@@ -88,7 +88,11 @@ public class SkillBaseInGameData
 
     public ValueType coefficientType;
     [Header("스킬 범위")]
-    [SerializeField] private float skillBound;
+    [SerializeField] private byte skillBound;
+    public byte SkillBound
+    {
+        get { return skillBound; }
+    }
 
     [Header("스킬 레벨,최대치,마나 소모값 및 캐스팅 시간")]
     [SerializeField] public float spCost;
@@ -99,7 +103,7 @@ public class SkillBaseInGameData
     [SerializeField] public byte skillRange;
     [Header("스킬 지속시간")]
     [SerializeField] public float skillDuration;
-    public float totalDamage(Stats caster)
+    public float TotalDamage(Stats caster)
     {
         switch (damageType)
         {

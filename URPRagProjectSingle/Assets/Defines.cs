@@ -40,7 +40,7 @@ namespace NeutralDefines
                 get
                 {
                     Vector2Int tempVecInt = Player.Instance.PlayerLookDir - PlayerCam.Instance.CameraDirrection;
-                    Debug.Log(tempVecInt);
+                    //Debug.Log(tempVecInt);
                     sbyte maxValue = (sbyte)Mathf.Max(tempVecInt.x, tempVecInt.y);
                     sbyte minValue = (sbyte)Mathf.Min(tempVecInt.x, tempVecInt.y);
                     if (maxValue == default(sbyte) && minValue == default(sbyte)) return Dirrections.N;
@@ -137,15 +137,21 @@ namespace NeutralDefines
                 }
                 CastingState temp = (CastingState)SearchState("castingState");
                 skillPos.y += 0.9f;
-                if(targetStat != null)
+                if(targetStat != null&&skillInfo.objectiveType == ObjectiveType.OnlyTarget)
                 {
-                    skillPos.x = (targetStat.standingNode.worldPos.x + Player.Instance.playerLevelInfo.stat.standingNode.worldPos.x) / 2f;
-                    skillPos.z = (targetStat.standingNode.worldPos.z + Player.Instance.playerLevelInfo.stat.standingNode.worldPos.z) / 2f;
+                    skillPos = (targetStat.standingNode.worldPos + Player.Instance.playerLevelInfo.stat.standingNode.worldPos);
+                    skillPos.x = skillPos.x / 2f;
+                    skillPos.z = skillPos.z / 2f;
                 }
+                //타겟 및 스텟 및 스킬위치 초기화
                 temp.casting = null;
+                temp.targetStat = null;
+                temp.castPos = Vector3.down*100;
+
                 temp.casting += skillInfo.SkillCastTargetPlace;
                 temp.castPos = skillPos;
                 temp.targetStat = targetStat;
+
                 currentState?.Exit();                   //이전 상태값을 빠져나간다
                 currentState = temp;               
                 currentState.DurationTime = castingTime;

@@ -205,7 +205,7 @@ public class SkillBaseObjectOnly
     public ValueType damageType;
     public float coefficient;
     public ValueType coefficientType;
-    public float skillBound;
+    public byte skillBound;
     public float spCost;
     public float defaultCastingTime;
     public byte skillRange;

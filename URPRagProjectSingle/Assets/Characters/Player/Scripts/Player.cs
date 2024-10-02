@@ -14,6 +14,7 @@ using DG.Tweening.Plugins.Options;
 using DG.Tweening.Plugins;
 using PlayerDefines.Stat;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 
 public class Player : MonoBehaviour
@@ -50,8 +51,7 @@ public class Player : MonoBehaviour
 
             if(value.skillPosition == SkillPosition.self)
             {
-                playerCursorState.changeState(cursorState.skillTargeting);
-                StateMachine.ChangeState(SkillObj.skill[SkillObj.castingSkillLevel].defaultCastingTime,
+                StateMachine.ChangeState(SkillObj.skill[SkillObj.CastingSkillLevel].defaultCastingTime,
                     SkillObj,
                     null,
                     playerLevelInfo.stat.standingNode.worldPos);
@@ -190,10 +190,8 @@ public class Player : MonoBehaviour
                     nodePreview.Clear();
                     break;
                 }
-                
-                tempNodePosArray[i].x = nodePreview.First().nodeCenterPosition.x;
-                tempNodePosArray[i].y = nodePreview.First().nodeFloor + (playerSR.bounds.size.y) + 0.5f;
-                tempNodePosArray[i].z = nodePreview.First().nodeCenterPosition.y;
+                tempNodePosArray[i] = nodePreview.First().worldPos;
+                tempNodePosArray[i].y += Player.instance.playerSR.bounds.size.y;
             }
             else
             {
@@ -299,7 +297,7 @@ public class Player : MonoBehaviour
             {
                 stateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
                 //CastingState·Î ¹Ù²ß´Ï´Ù
-                StateMachine.ChangeState(SkillObj.skill[SkillObj.castingSkillLevel].defaultCastingTime,SkillObj, playerLevelInfo.stat.target, playerLevelInfo.stat.target.standingNode.worldPos);
+                StateMachine.ChangeState(SkillObj.skill[SkillObj.CastingSkillLevel].defaultCastingTime,SkillObj, playerLevelInfo.stat.target, playerLevelInfo.stat.target.standingNode.worldPos);
                 SkillObj = null;
             }
         }).SetEase(Ease.Linear);
@@ -440,7 +438,7 @@ public class Player : MonoBehaviour
                         if (GridManager.GetInstance().IsInRange(playerLevelInfo.stat, playerLevelInfo.stat.target, playerLevelInfo.stat.charactorAttackRange))
                         {
                             playerCursorState.changeState(cursorState.skillTargeting);
-                            StateMachine.ChangeState(SkillObj.skill[SkillObj.castingSkillLevel].defaultCastingTime,
+                            StateMachine.ChangeState(SkillObj.skill[SkillObj.CastingSkillLevel].defaultCastingTime,
                                 SkillObj,
                                 playerLevelInfo.stat.target,
                                 playerLevelInfo.stat.target.standingNode.worldPos);
@@ -452,7 +450,7 @@ public class Player : MonoBehaviour
                             if (SetTargetNode(GridManager.GetInstance().grids[pos].worldPos))
                             {
                                 StateMachine.ChangeState("moveState");
-                                PlayerMove(SkillObj, SkillObj.skill[SkillObj.castingSkillLevel].skillRange);
+                                PlayerMove(SkillObj, SkillObj.skill[SkillObj.CastingSkillLevel].skillRange);
 
                             }
 
@@ -462,7 +460,7 @@ public class Player : MonoBehaviour
                 else if (SkillObj.objectiveType == ObjectiveType.Bounded)
                 {
                     playerCursorState.changeState(cursorState.skillTargeting);
-                    StateMachine.ChangeState(SkillObj.skill[SkillObj.castingSkillLevel].defaultCastingTime,
+                    StateMachine.ChangeState(SkillObj.skill[SkillObj.CastingSkillLevel].defaultCastingTime,
                         SkillObj,
                         playerLevelInfo.stat.target,
                         playerLevelInfo.stat.target.standingNode.worldPos);

@@ -15,7 +15,7 @@ public class SkillTreeUI : MonoBehaviour
     public SkillInfoInGame[] skillInfos = new SkillInfoInGame[0];
     public Material greyScaled, colored,blueScaled;
     public Text leftSkillPointText;
-    [SerializeField]public Button[,] skillBtns;
+    [SerializeField]public SkillTreeSlot[,] skillBtns;
 
 //    public HashSet<(int, int)> isSkillSlotFilled = new HashSet<(int, int)>();
     // Start is called before the first frame update
@@ -38,17 +38,18 @@ public class SkillTreeUI : MonoBehaviour
     public void GetSkillBTN()
     {
         skillInfos = new SkillInfoInGame[0];
-        skillBtns = new Button[targetSkillTreeBase.SkilltreeResolution.x / 100, targetSkillTreeBase.SkilltreeResolution.y / 100];
+        skillBtns = new SkillTreeSlot[targetSkillTreeBase.SkilltreeResolution.x / 100, targetSkillTreeBase.SkilltreeResolution.y / 100];
         for (int i = 0; i < skillBtns.GetLength(1); i++)
         {
             for (int j = 0; j < skillBtns.GetLength(0); j++)
             {
-                skillBtns[j, i] = transform.GetChild((i * skillBtns.GetLength(0)) + j).GetChild(0).GetComponent<Button>();
-                skillBtns[j, i].interactable = false;
-                skillBtns[j, i].image.sprite = null;
-                skillBtns[j, i].transform.parent.GetChild(1).GetComponent<Text>().text = string.Empty;
-                skillBtns[j, i].transform.parent.GetChild(2).GetComponent<Text>().text = string.Empty;
-                skillBtns[j, i].gameObject.TryGetComponent<QuickSlot>(out QuickSlot tempQuickSlot);
+                skillBtns[j, i].skillBTN = transform.GetChild((i * skillBtns.GetLength(0)) + j).GetChild(0).GetComponent<Button>();
+                skillBtns[j, i].skillBTN.interactable = false;
+                skillBtns[j, i].skillBTN.image.sprite = null;
+                skillBtns[j, i].skillBTN.gameObject.TryGetComponent<QuickSlot>(out QuickSlot tempQuickSlot);
+                skillBtns[j, i].skillBTN.transform.parent.GetChild(1).GetComponent<Text>().text = string.Empty;
+                skillBtns[j, i].skillBTN.transform.parent.GetChild(2).GetComponent<Text>().text = string.Empty;
+
                 EditorUtility.SetDirty(this);
                 if (tempQuickSlot != null) Destroy(tempQuickSlot);
             }
@@ -64,8 +65,8 @@ public class SkillTreeUI : MonoBehaviour
             (int,int) btnArray = (targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.x/100, targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.y /100);
             if (skillInfos[i].isSkillLearned)
             {
-                if (skillInfos[i].maxSkillLevel <= skillInfos[i].nowSkillLevel || Player.Instance.playerLevelInfo.LeftSkillPoint <= 0) skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = colored;
-                else if (skillInfos[i].maxSkillLevel > skillInfos[i].nowSkillLevel && Player.Instance.playerLevelInfo.LeftSkillPoint > 0) skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = blueScaled;
+                if (skillInfos[i].maxSkillLevel <= skillInfos[i].nowSkillLevel || Player.Instance.playerLevelInfo.LeftSkillPoint <= 0) skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = colored;
+                else if (skillInfos[i].maxSkillLevel > skillInfos[i].nowSkillLevel && Player.Instance.playerLevelInfo.LeftSkillPoint > 0) skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = blueScaled;
                 continue;
             }
             bool[] tempBool = Player.Instance.playerLevelInfo.isLearnAble(i, targetSkillTreeBase.GetJobPhase,targetSkillTreeBase.skillIconsInSkilltree);
@@ -77,7 +78,7 @@ public class SkillTreeUI : MonoBehaviour
                 { 
                     isEscape = true;
                     skillInfos[i].skillStatus = SkillStatus.noneLearnAble;
-                    skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = greyScaled;
+                    skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = greyScaled;
                     break; 
                 }
             }
@@ -88,12 +89,12 @@ public class SkillTreeUI : MonoBehaviour
                 if (Player.Instance.playerLevelInfo.LeftSkillPoint > 0)
                 {
                     skillInfos[i].skillStatus = SkillStatus.learnAble;
-                    skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = blueScaled;
+                    skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = blueScaled;
                 }
                 else
                 {
                     skillInfos[i].skillStatus = SkillStatus.noneLearnAble;
-                    skillBtns[btnArray.Item1, btnArray.Item2].targetGraphic.material = greyScaled;
+                    skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = greyScaled;
 
                 }
             }
@@ -108,37 +109,63 @@ public class SkillTreeUI : MonoBehaviour
             (int, int) tempArray;
             tempArray.Item1 = targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.x / 100;
             tempArray.Item2 = targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.y / 100;
-            skillBtns[tempArray.Item1, tempArray.Item2].interactable = true;
+            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.interactable = true;
 
             //targetInspector.isSkillSlotFilled.Add(tempArray);
-            skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(1).GetComponent<Text>().color = Color.black;  //스킬 레벨 세팅
-            skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(1).GetComponent<Text>().text =
-                targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.nowSkillLevel.ToString();
-            skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(2).GetComponent<Text>().color = Color.black;  //스킬 이름 세팅
-            skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(2).GetComponent<Text>().text =
+            skillBtns[tempArray.Item1, tempArray.Item2].levelText = skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(1).GetComponent<Text>();  //스킬 레벨 세팅
+            skillBtns[tempArray.Item1, tempArray.Item2].levelText.color = Color.black;  //스킬 레벨 세팅
+            skillBtns[tempArray.Item1, tempArray.Item2].levelText.text = string.Empty;
+            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(2).GetComponent<Text>().color = Color.black;  //스킬 이름 세팅
+            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(2).GetComponent<Text>().text =
                 targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.skillName;
-            skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(2).GetComponent<Text>().resizeTextForBestFit = true;
-            skillBtns[tempArray.Item1, tempArray.Item2].image.sprite =
+
+            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(2).GetComponent<Text>().resizeTextForBestFit = true;
+            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.image.sprite =
                 targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.skillIcon;
             if (callOnAwake)
             {
                 SkillInfoInGame tempInGameSkill = new SkillInfoInGame(targetSkillTreeBase.skillIconsInSkilltree[i].thisSkillInScriptableOBJ);
                 Array.Resize<SkillInfoInGame>(ref skillInfos, skillInfos.Length + 1);
                 skillInfos[skillInfos.Length - 1] = tempInGameSkill;
-                
-                skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.gameObject.AddComponent<QuickSlot>().Install(tempInGameSkill, true);
+                skillBtns[tempArray.Item1, tempArray.Item2].levelText.text = string.Empty;
+                skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.gameObject.AddComponent<QuickSlot>().Install(tempInGameSkill, true);
                 int currIndex = i;
+                skillBtns[tempArray.Item1, tempArray.Item2].castingLevelDownBTN = skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(3).GetComponent<Button>();
+                skillBtns[tempArray.Item1, tempArray.Item2].castingLevelUpBTN = skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(4).GetComponent<Button>();
 
+                skillBtns[tempArray.Item1, tempArray.Item2].castingLevelDownBTN.onClick.AddListener(() =>
+                {
+                    if(tempInGameSkill.nowSkillLevel != 0)
+                    {
+                        tempInGameSkill.CastingSkillLevel -= 2;
+                        skillBtns[tempArray.Item1, tempArray.Item2].LevelTextUpdate(((tempInGameSkill.CastingSkillLevel + 1) + "/" + tempInGameSkill.nowSkillLevel).ToString());
+                    }
 
-                skillBtns[tempArray.Item1, tempArray.Item2].onClick.AddListener(() =>
+                });
+                skillBtns[tempArray.Item1, tempArray.Item2].castingLevelUpBTN.onClick.AddListener(() =>
+                {
+                    if (tempInGameSkill.nowSkillLevel != 0)
+                    {
+                        tempInGameSkill.CastingSkillLevel+= 2;
+                        skillBtns[tempArray.Item1, tempArray.Item2].LevelTextUpdate(((tempInGameSkill.CastingSkillLevel + 1) + "/" + tempInGameSkill.nowSkillLevel).ToString());
+                    }
+                });
+
+                //skillBtns[tempArray.Item1, tempArray.Item2].castingLevelDownBTN.gameObject.SetActive(false);
+                //skillBtns[tempArray.Item1, tempArray.Item2].castingLevelUpBTN.gameObject.SetActive(false);
+
+                skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.onClick.AddListener(() =>
                 {
                     if(Player.Instance.playerLevelInfo.LearnSkill(targetSkillTreeBase.skillIconsInSkilltree, currIndex, tempInGameSkill, targetSkillTreeBase.GetPhase)) 
                     {
-                        skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(1).GetComponent<Text>().text = (int.Parse(skillBtns[tempArray.Item1, tempArray.Item2].transform.parent.GetChild(1).GetComponent<Text>().text) + 1).ToString();
+                        tempInGameSkill.CastingSkillLevel = 1;
+                        skillBtns[tempArray.Item1, tempArray.Item2].LevelTextUpdate(((tempInGameSkill.CastingSkillLevel + 1) + "/" + tempInGameSkill.nowSkillLevel).ToString());
+
                         CheckSkillStatus();
                         UpdateSkillPointText();
                     }
                 });
+
             }
             else
             {
@@ -164,5 +191,19 @@ public class SkillTreeUIEditor : Editor
             targetInspector.ResetSkillTree(false);
 
         }
+    }
+}
+public struct SkillTreeSlot
+{
+    public Button skillBTN;
+    public Button castingLevelUpBTN;
+    public Button castingLevelDownBTN;
+    public Text levelText;
+    public void LevelTextUpdate(string text)
+    {
+        levelText.text = text;
+        levelText.gameObject.SetActive(true);
+        castingLevelUpBTN.gameObject.SetActive(true);
+        castingLevelDownBTN.gameObject.SetActive(true);
     }
 }

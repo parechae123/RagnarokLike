@@ -1,5 +1,6 @@
 using DG.Tweening;
 using JetBrains.Annotations;
+using PlayerDefines.Stat;
 using System;
 using UnityEditor.Build.Pipeline;
 using UnityEngine;
@@ -99,14 +100,27 @@ public class SkillInfoInGame : ItemBase
     [SerializeField] private GameObject effectOBJPrefab;
     public byte maxSkillLevel;
     public byte nowSkillLevel;
-    public byte castingSkillLevel;
+    private byte castingSkillLevel =1;
+    public byte CastingSkillLevel
+    {
+        get
+        {
+            if (castingSkillLevel == 0) return 0;
+            return (byte)(castingSkillLevel-1);
+        }
+        set
+        {
+            if (nowSkillLevel < value||value <= 0) return;
+            castingSkillLevel = value;
+        }
+    }
     public Sprite IconIMG
     {
         get { return skillIcon; }
     }
     public string slotNumberInfo
     {
-        get { return castingSkillLevel.ToString(); }
+        get { return CastingSkillLevel ==0? string.Empty: CastingSkillLevel.ToString(); }
     }
     public bool isSkillLearned
     {
@@ -193,33 +207,30 @@ public class SkillInfoInGame : ItemBase
                 break;
         }
     }*/
-    public void SkillCastInPlace(Vector3 skillPos)
+    public void SkillCastTargetPlace(Vector3 castingPos,Stats target,Stats caster)
     {
         Debug.Log(skillName + "사용했어용~~");
         Animator tempAnim = GetNonPlayingSkillEffect();
-        tempAnim.transform.position = skillPos;
+        tempAnim.transform.position = castingPos;
         tempAnim.gameObject.SetActive(true);
         tempAnim.Play(skillName + "Effect");
         float tempTime = 0;
-        
-        for (int i = 0; i< tempAnim.runtimeAnimatorController.animationClips.Length; i++)
+        switch (objectiveType)
         {
-            tempTime += tempAnim.runtimeAnimatorController.animationClips[i].length;
+            case ObjectiveType.None:
+                break;
+            case ObjectiveType.OnlyTarget:
+                if (target != null) target.HP -= skill[CastingSkillLevel].TotalDamage(caster);
+                break;
+            case ObjectiveType.Bounded:
+                Stats[] tempTargets = GetStats(new Vector2Int((int)castingPos.x, (int)castingPos.z));
+                for (int i = 0; i < tempTargets.Length; i++)
+                {
+                    if (tempTargets[i] == caster) continue;
+                    tempTargets[i].HP -= skill[CastingSkillLevel].TotalDamage(caster);
+                }
+                break;
         }
-        DOVirtual.DelayedCall(tempTime, () =>
-        {
-            if (tempAnim != null) tempAnim.gameObject.SetActive(false);
-        });
-    }
-    public void SkillCastTargetPlace(Vector3 targetPos)
-    {
-        Debug.Log(skillName + "사용했어용~~");
-        Animator tempAnim = GetNonPlayingSkillEffect();
-        tempAnim.transform.position = targetPos;
-        tempAnim.gameObject.SetActive(true);
-        tempAnim.Play(skillName + "Effect");
-        float tempTime = 0;
-
         for (int i = 0; i < tempAnim.runtimeAnimatorController.animationClips.Length; i++)
         {
             tempTime += tempAnim.runtimeAnimatorController.animationClips[i].length;
@@ -228,5 +239,39 @@ public class SkillInfoInGame : ItemBase
         {
             if (tempAnim != null) tempAnim.gameObject.SetActive(false);
         });
+    }
+    public Stats[] GetStats(Vector2Int nodePos)
+    {
+        Stats[] outPutStats = new Stats[0];
+        int boundMax = skill[CastingSkillLevel].SkillBound;
+        for (int i = -boundMax; i <= boundMax; i++)
+        {
+            for (int j = -boundMax; j <= boundMax; j++)
+            {
+                if ((i*i) + (j*j) <= boundMax * boundMax)
+                {
+                    Vector2Int tempVec = new Vector2Int(i, j) + nodePos;
+                    if (GridManager.GetInstance().grids.ContainsKey(tempVec))
+                    {
+                        if (GridManager.GetInstance().grids[tempVec].CharacterOnNode != null)
+                        {
+                            Array.Resize(ref outPutStats, outPutStats.Length+1);
+                            outPutStats[outPutStats.Length - 1] = GridManager.GetInstance().grids[tempVec].CharacterOnNode;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else continue;
+
+            }
+        }
+        return outPutStats;
     }
 }

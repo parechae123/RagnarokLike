@@ -148,7 +148,7 @@ namespace PlayerDefines
         }
         public class CastingState : PlayerStates
         {
-            public Action<Vector3> casting;
+            public Action<Vector3,Stats,Stats> casting;
             public Vector3 castPos;
             public Stats targetStat;
             public CastingState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
@@ -172,7 +172,7 @@ namespace PlayerDefines
                 {
                     skillTimer = 0;
                     UIManager.GetInstance().CastingBarOnOff(false);
-                    casting.Invoke(castPos);
+                    casting.Invoke(castPos,targetStat,Player.Instance.playerLevelInfo.stat);
                     Player.Instance.StateMachine.ChangeState(nextStateName);
                 }
 
@@ -244,6 +244,7 @@ namespace PlayerDefines
                 set
                 {
                     hp = value;
+                    Debug.Log(value+"몬스터 데미지");
                     if (hp <= 0)
                     {
                         dieFunctions?.Invoke();
@@ -272,7 +273,6 @@ namespace PlayerDefines
             {
 
                 target.HP -= damage == float.MinValue ? attackDamage : damage;
-                Debug.Log(target.HP);
             }
 
             public bool IsEnoughSP(float spCost)
