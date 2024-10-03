@@ -34,7 +34,7 @@ public class SkillBase : ScriptableObject
     [SerializeField] public byte skillRange;
     [Header("스킬 지속시간")]
     [SerializeField] public float skillDuration;
-    public float totalDamage(Stats caster)
+    public float TotalDamage(Stats caster)
     {
         switch (damageType)
         {

@@ -8,8 +8,12 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 [System.Serializable]
-public class SkillTreeUI : MonoBehaviour
+public class SkillTreeUI : MonoBehaviour , IuiInterface
 {
+    public KeyCode uiOpenKey
+    {
+        get { return KeyMapManager.GetInstance().keyMaps[UITypes.SkillTreeWindow]; }
+    }
     public SkillTreeBase targetSkillTreeBase;
     public RectTransform rectTR;
     public SkillInfoInGame[] skillInfos = new SkillInfoInGame[0];
@@ -49,8 +53,9 @@ public class SkillTreeUI : MonoBehaviour
                 skillBtns[j, i].skillBTN.gameObject.TryGetComponent<QuickSlot>(out QuickSlot tempQuickSlot);
                 skillBtns[j, i].skillBTN.transform.parent.GetChild(1).GetComponent<Text>().text = string.Empty;
                 skillBtns[j, i].skillBTN.transform.parent.GetChild(2).GetComponent<Text>().text = string.Empty;
-
+#if UNITY_EDITOR
                 EditorUtility.SetDirty(this);
+#endif
                 if (tempQuickSlot != null) Destroy(tempQuickSlot);
             }
         }
@@ -137,7 +142,7 @@ public class SkillTreeUI : MonoBehaviour
                 {
                     if(tempInGameSkill.nowSkillLevel != 0)
                     {
-                        tempInGameSkill.CastingSkillLevel -= 2;
+                        tempInGameSkill.CastingSkillLevel -= 0;
                         skillBtns[tempArray.Item1, tempArray.Item2].LevelTextUpdate(((tempInGameSkill.CastingSkillLevel + 1) + "/" + tempInGameSkill.nowSkillLevel).ToString());
                     }
 
@@ -169,7 +174,9 @@ public class SkillTreeUI : MonoBehaviour
             }
             else
             {
+#if UNITY_EDITOR
                 EditorUtility.SetDirty(this);
+#endif
             }
         }
     }
@@ -178,6 +185,7 @@ public class SkillTreeUI : MonoBehaviour
         leftSkillPointText.text = "남은 스킬 포인트 : "+ Player.Instance.playerLevelInfo.LeftSkillPoint.ToString();
     }
 }
+#if UNITY_EDITOR
 [CustomEditor(typeof(SkillTreeUI))]
 public class SkillTreeUIEditor : Editor
 {
@@ -193,6 +201,7 @@ public class SkillTreeUIEditor : Editor
         }
     }
 }
+#endif
 public struct SkillTreeSlot
 {
     public Button skillBTN;

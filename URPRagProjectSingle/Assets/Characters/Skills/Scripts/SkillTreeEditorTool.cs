@@ -5,9 +5,8 @@ using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.TerrainTools;
 using UnityEngine;
-
+#if UNITY_EDITOR
 public class SkillTreeEditorTool : EditorWindow
 {
     Rect workSpaceArea = new Rect(10, 100, 800, 600);
@@ -314,3 +313,4 @@ public class SkillTreeEditorTool : EditorWindow
         }
     }
 }
+#endif

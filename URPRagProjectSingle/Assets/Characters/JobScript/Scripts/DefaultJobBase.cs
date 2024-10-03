@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Animations;
 using DG.Tweening;
 using PlayerDefines.Stat;
 using System;
@@ -22,7 +21,6 @@ public class DefaultJobBase : ScriptableObject
         protected set;
     }
     public Sprite basicCharacterSprite;
-    public AnimatorController animContoller;
     public SkillInfo[] noviceSkills;
     
     public void JobLevelUp()

@@ -17,10 +17,29 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 81512bbf6450be2449a02c8044c67cd9
   m_SerializeEntries:
-  - m_GUID: 645ef62c53b617146b8bda2916c10c3a
-    m_Address: Assets/Characters/Job
+  - m_GUID: 28128b171f906f44090cd2760ed7c3c1
+    m_Address: Paladin
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - JobData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e80244787716f0841ba08366dcc751c5
+    m_Address: DefaultJobs
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - JobData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2237eb6a78cb6404a90f1f59a208269a
+    m_Address: Knight
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - JobData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83068faa5b881734b9c315180e207bff
+    m_Address: SwordMan
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - JobData
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b1ab8ed4be16e204fa7da75b33343685, type: 2}

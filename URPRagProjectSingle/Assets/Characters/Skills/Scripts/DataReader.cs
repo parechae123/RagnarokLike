@@ -7,7 +7,6 @@ using ExcelDataReader;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.Progress;
 #if UNITY_EDITOR
 
 public class DataReader : MonoBehaviour

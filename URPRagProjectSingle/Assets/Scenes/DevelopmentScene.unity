@@ -2122,7 +2122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d704cacfa6418840a1bb0f88c647ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotKey: 0
+  slotKey: 55
   isStaticSlot: 0
 --- !u!114 &63414168
 MonoBehaviour:
@@ -2541,6 +2541,7 @@ MonoBehaviour:
     currJobExp: 0
     usedSkillPoint: 0
     skillPoint: 0
+  quickSlots: []
   skillObj:
     skillName: 
     jobName: 
@@ -3713,7 +3714,7 @@ GameObject:
   - component: {fileID: 124639094}
   - component: {fileID: 124639093}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: QuickSlotText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3751,7 +3752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6449,7 +6450,7 @@ GameObject:
   - component: {fileID: 224243192}
   - component: {fileID: 224243191}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: QuickSlotText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6487,7 +6488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7170,7 +7171,7 @@ GameObject:
   - component: {fileID: 254596204}
   - component: {fileID: 254596203}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: QuickSlotText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7208,7 +7209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9927,7 +9928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d704cacfa6418840a1bb0f88c647ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotKey: 0
+  slotKey: 57
   isStaticSlot: 0
 --- !u!114 &373589285
 MonoBehaviour:
@@ -10058,7 +10059,7 @@ GameObject:
   - component: {fileID: 380701205}
   - component: {fileID: 380701204}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: QuickSlotText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10096,7 +10097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14321,7 +14322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d704cacfa6418840a1bb0f88c647ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotKey: 256
+  slotKey: 49
   isStaticSlot: 0
 --- !u!114 &566564354
 MonoBehaviour:
@@ -21205,7 +21206,7 @@ GameObject:
   - component: {fileID: 800997817}
   - component: {fileID: 800997816}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: QuickSlotText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21243,7 +21244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -28238,7 +28239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d704cacfa6418840a1bb0f88c647ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotKey: 0
+  slotKey: 54
   isStaticSlot: 0
 --- !u!114 &1172073806
 MonoBehaviour:
@@ -29746,7 +29747,7 @@ GameObject:
   - component: {fileID: 1239635211}
   - component: {fileID: 1239635210}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: QuickSlotText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29784,7 +29785,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -30378,7 +30379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d704cacfa6418840a1bb0f88c647ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotKey: 0
+  slotKey: 50
   isStaticSlot: 0
 --- !u!114 &1254604888
 MonoBehaviour:
@@ -34542,7 +34543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d704cacfa6418840a1bb0f88c647ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotKey: 0
+  slotKey: 52
   isStaticSlot: 0
 --- !u!114 &1406359676
 MonoBehaviour:
@@ -37671,7 +37672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d704cacfa6418840a1bb0f88c647ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotKey: 0
+  slotKey: 56
   isStaticSlot: 0
 --- !u!114 &1565468532
 MonoBehaviour:
@@ -43659,7 +43660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d704cacfa6418840a1bb0f88c647ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotKey: 0
+  slotKey: 51
   isStaticSlot: 0
 --- !u!114 &1817661092
 MonoBehaviour:
@@ -47585,7 +47586,7 @@ GameObject:
   - component: {fileID: 1959258429}
   - component: {fileID: 1959258428}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: QuickSlotText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47623,7 +47624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -47817,7 +47818,7 @@ GameObject:
   - component: {fileID: 1983784626}
   - component: {fileID: 1983784625}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: QuickSlotText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47855,7 +47856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -48162,7 +48163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d704cacfa6418840a1bb0f88c647ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotKey: 0
+  slotKey: 53
   isStaticSlot: 0
 --- !u!114 &1996721482
 MonoBehaviour:
@@ -49930,7 +49931,7 @@ GameObject:
   - component: {fileID: 2054641381}
   - component: {fileID: 2054641380}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: QuickSlotText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49968,7 +49969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

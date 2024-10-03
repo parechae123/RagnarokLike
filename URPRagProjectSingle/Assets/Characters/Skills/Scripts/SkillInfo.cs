@@ -2,7 +2,6 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using PlayerDefines.Stat;
 using System;
-using UnityEditor.Build.Pipeline;
 using UnityEngine;
 using UnityEngine.EventSystems;
 [CreateAssetMenu(fileName = "new SkillInfo", menuName = "Skill/SkillInfomations")]
@@ -79,7 +78,7 @@ public class SkillInfo : ScriptableObject
 #endif
 }
 [System.Serializable]
-public class SkillInfoInGame : ItemBase
+public class SkillInfoInGame : IitemBase
 {
     ///해당 클래스는 플레이어가 스킬 정보로 가지고있어야하는 객체로 추후 스크립터블 오브젝트 해제해야함
     public event Action quickSlotFuncs;
@@ -120,7 +119,10 @@ public class SkillInfoInGame : ItemBase
     }
     public string slotNumberInfo
     {
-        get { return CastingSkillLevel ==0? string.Empty: CastingSkillLevel.ToString(); }
+        get 
+        {
+            return CastingSkillLevel == 0 ? (isSkillLearned ? 1.ToString() : string.Empty  ) : (CastingSkillLevel+1).ToString();
+        }
     }
     public bool isSkillLearned
     {
@@ -130,6 +132,8 @@ public class SkillInfoInGame : ItemBase
     {
         get { return isSkillLearned; }
     }
+    public SlotType slotType { get { return SlotType.Skills; } }
+
 
     public SkillInfoInGame(SkillInfo data)
     {
@@ -141,6 +145,22 @@ public class SkillInfoInGame : ItemBase
         skill = ConvertInGameData(data.skill);
         effectOBJPrefab = data.effectOBJPrefab;
         skillIcon = data.skillIcon;
+        maxSkillLevel = data.maxSkillLevel;
+        quickSlotFuncs = null;
+        quickSlotFuncs += SetSkillObjectToPlayer;
+    }
+    public SkillInfoInGame(SkillInfoInGame data)
+    {
+        skillName = data.skillName;
+        jobName = data.jobName;
+        skillType = data.skillType;
+        objectiveType = data.objectiveType;
+        skillPosition = data.skillPosition;
+        skill = data.skill;
+        effectOBJPrefab = data.effectOBJPrefab;
+        skillIcon = data.skillIcon;
+        nowSkillLevel = data.nowSkillLevel;
+        castingSkillLevel = data.castingSkillLevel;
         maxSkillLevel = data.maxSkillLevel;
         quickSlotFuncs = null;
         quickSlotFuncs += SetSkillObjectToPlayer;

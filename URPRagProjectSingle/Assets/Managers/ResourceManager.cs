@@ -5,11 +5,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 
 public class ResourceManager : Manager<ResourceManager>
 {
-    private uint loadTaskNum;
+    public Dictionary<string, UnityEngine.Object> resourceDict;
+    private uint loadTaskNum = 0;
     public uint LoadTaskNum
     {
         get { return loadTaskNum; }
@@ -46,6 +46,8 @@ public class ResourceManager : Manager<ResourceManager>
     public void LoadAsyncAll<T>(string label, Action<(string,T)[]> callback)
     {
         var infoAsyncOP = Addressables.LoadResourceLocationsAsync(label,typeof(T));
+        infoAsyncOP.WaitForCompletion();
+        Debug.Log(infoAsyncOP.Result);
         if (infoAsyncOP.Result.Count == 0) callback.Invoke(null);
         infoAsyncOP.Completed += (op) =>
         {
@@ -58,13 +60,15 @@ public class ResourceManager : Manager<ResourceManager>
                 {
                     loadTaskNum--;
                     dataCount++;
+                    Array.Resize(ref tempT, dataCount);
+                    tempT[dataCount - 1].Item1 = OBJ.PrimaryKey;
+                    tempT[dataCount - 1].Item2 = result;
                     if (dataCount == infoAsyncOP.Result.Count)
                     {
                         callback?.Invoke(tempT);
                         Addressables.Release(infoAsyncOP);
                     }
-                    tempT[dataCount].Item1 = OBJ.PrimaryKey;
-                    tempT[dataCount].Item2 = result;
+
                 });
 
             }

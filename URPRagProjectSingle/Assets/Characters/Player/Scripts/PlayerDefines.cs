@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Build.Player;
 using UnityEngine;
 using UnityEngine.UIElements;
 namespace PlayerDefines
@@ -218,12 +217,13 @@ namespace PlayerDefines
             }
             public Action<Vector3, bool> moveFunction;
             public Action dieFunctions;//TODO : 사망 연출 등록필요
-            public Stats(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange)
+            public Stats(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange)
             {
                 isCharacterDie = false;
                 standingNode = initializeNode;
                 standingNode.CharacterOnNode = this;
                 HP = hp;
+                this.sp = sp;
                 this.charactorAttackRange = attackRange;
                 this.moveSpeed = moveSpeed;
                 this.attackSpeed = attackSpeed;
@@ -243,8 +243,8 @@ namespace PlayerDefines
                 }
                 set
                 {
+                    Debug.Log((value- hp) +"몬스터 데미지");
                     hp = value;
-                    Debug.Log(value+"몬스터 데미지");
                     if (hp <= 0)
                     {
                         dieFunctions?.Invoke();
@@ -287,7 +287,7 @@ namespace PlayerDefines
         }
         public class PlayerStat : Stats
         {
-            public PlayerStat(Node initializeNode, float hp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange) : base(initializeNode, hp, moveSpeed, attackSpeed, attackDamage,attackRange)
+            public PlayerStat(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange) : base(initializeNode, hp,sp, moveSpeed, attackSpeed, attackDamage,attackRange)
             {
 
             }

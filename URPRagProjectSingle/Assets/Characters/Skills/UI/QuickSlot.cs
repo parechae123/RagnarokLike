@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -13,8 +12,9 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
 {
     #region 변수
     public KeyCode slotKey;
-    private ItemBase slotItem;
-    public ItemBase SlotItem
+
+    private IitemBase slotItem;
+    public IitemBase SlotItem
     {
         get
         {
@@ -24,14 +24,22 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
         {
             btn.interactable = false;
             iconImage.sprite = value.IconIMG;
-            SlotText.text = value.slotNumberInfo;
+
             btn.interactable = true;
             slotItem = value;
+            
             if (!isStaticSlot)
             {
                 btn.onClick.RemoveAllListeners();
                 btn.onClick.AddListener(SlotItem.UseItem);
             }
+        }
+    }
+    public SlotType slotType
+    {
+        get 
+        {
+            return SlotItem.slotType;
         }
     }
     private Button btn
@@ -67,11 +75,14 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
             btn = transform.GetComponentInChildren<Button>();
             iconImage.sprite = SlotItem.IconIMG;
         }*/
-    private void Awake()
+    public void GetSlotKey()
     {
-
+        if (Input.GetKeyDown(slotKey))
+        {
+            SlotItem.UseItem();
+        }
     }
-    public void Install(ItemBase tempData, bool isStaticSlot)
+    public void Install(IitemBase tempData, bool isStaticSlot)
     {
         SlotItem = tempData;
         iconImage.sprite = SlotItem.IconIMG;
@@ -79,7 +90,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     }
     public void OnDrag(PointerEventData pp)
     {
-        if (SlotItem == null || SlotItem.GetType() == typeof(EmptyItem)) return;
+        if (SlotItem == null || SlotItem.slotType == SlotType.None) return;
         if (!SlotItem.isItemUseAble) return;
         if (pp.button == PointerEventData.InputButton.Left) UIManager.GetInstance().DraggingIcons(pp.position, iconImage.sprite);
         else return;
@@ -139,11 +150,21 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
         if (isStaticSlot) return;
         SlotItem = new EmptyItem(sprite);
     }
-    public void ChangeSlot(ItemBase item)
+    public void ChangeSlot(IitemBase item)
     {
         
         if (isStaticSlot) return;
-        SlotItem = item;
+        if (item.slotType == SlotType.Skills)
+        {
+            SkillInfoInGame temp = (SkillInfoInGame)item;
+            SlotItem = new SkillInfoInGame(temp);
+            SlotText.text = item.slotNumberInfo;
+        }
+        else
+        {
+            SlotItem = item;
+            SlotText.text = item.slotNumberInfo;
+        }
     }
     /// <summary>
     /// 슬롯아이템 스왑시
@@ -152,7 +173,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     public void SwapSlot( QuickSlot item)
     {
         if (isStaticSlot) return;
-        ItemBase tempItemBase = item.SlotItem;
+        IitemBase tempItemBase = item.SlotItem;
         item.SlotItem = SlotItem;
         SlotItem = tempItemBase;
         
@@ -160,24 +181,28 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
 }
 
 
-public interface ItemBase
+public interface IitemBase
 {
-    public event Action quickSlotFuncs;
-    public Sprite IconIMG
+    event Action quickSlotFuncs;
+    Sprite IconIMG
     {
-        get { return null; }
+        get;
     }
-    public string slotNumberInfo
+    string slotNumberInfo
     {
-        get { return null; }
+        get;
     }
-    public bool isItemUseAble
+    bool isItemUseAble
     {
-        get { return false; }
+        get;
     }
-    public void UseItem();
+    SlotType slotType
+    {
+        get;
+    }
+    void UseItem();
 }
-public class EmptyItem: ItemBase
+public class EmptyItem: IitemBase
 {
     public event Action quickSlotFuncs;
     public EmptyItem(Sprite sprite) 
@@ -193,8 +218,17 @@ public class EmptyItem: ItemBase
     {
         get { return null; }
     }
+    public bool isItemUseAble
+    {
+        get { return false; }
+    }
     public void UseItem()
     {
 
     }
+    public SlotType slotType { get { return SlotType.None; } }
+}
+public enum SlotType
+{
+    None,Equipments,ConsumableItem,Skills
 }

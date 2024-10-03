@@ -135,7 +135,9 @@ namespace NeutralDefines
                     currentState.Enter();
                     return;
                 }
+                
                 CastingState temp = (CastingState)SearchState("castingState");
+                if (currentState == temp) return;
                 skillPos.y += 0.9f;
                 if(targetStat != null&&skillInfo.objectiveType == ObjectiveType.OnlyTarget)
                 {
@@ -143,6 +145,17 @@ namespace NeutralDefines
                     skillPos.x = skillPos.x / 2f;
                     skillPos.z = skillPos.z / 2f;
                 }
+
+                if (Player.Instance.playerLevelInfo.stat.IsEnoughSP(skillInfo.skill[skillInfo.CastingSkillLevel].spCost))
+                {
+                    Debug.Log("마나 충분, 캐스팅 시작");
+                }
+                else
+                {
+                    Debug.Log("마나 불충분, 캐스팅 취소");
+                    return;
+                }
+
                 //타겟 및 스텟 및 스킬위치 초기화
                 temp.casting = null;
                 temp.targetStat = null;

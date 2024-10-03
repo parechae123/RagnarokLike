@@ -20,6 +20,7 @@ using Unity.VisualScripting;
 public class Player : MonoBehaviour
 {
     public PlayerLevelInfo playerLevelInfo;
+    public QuickSlot[] quickSlots = new QuickSlot[0];
     private static Player instance;
     public static Player Instance
     {
@@ -33,8 +34,8 @@ public class Player : MonoBehaviour
             return instance;
         }
     }
-    //ÀÌµ¿ µµÂø ¿¹Á¤½Ã°£
-    #region ½ºÅ³½ÃÀü °ü·Ã °´Ã¼
+    //ì´ë™ ë„ì°© ì˜ˆì •ì‹œê°„
+    #region ìŠ¤í‚¬ì‹œì „ ê´€ë ¨ ê°ì²´
     [SerializeField]private SkillInfoInGame skillObj;
     public SkillInfoInGame SkillObj
     {
@@ -65,7 +66,7 @@ public class Player : MonoBehaviour
     }
     private bool isSearchCastTarget = false;
     #endregion
-    #region ³ëµå
+    #region ë…¸ë“œ
     [SerializeField] public Node targetNode;
     [SerializeField] private Node currentNode;
     [SerializeField] public Node CurrentNode
@@ -103,26 +104,32 @@ public class Player : MonoBehaviour
 
         playerSR = GetComponent<SpriteRenderer>();
 
-        //ÄğÅ¸ÀÓ ºÎºĞ ¼öÁ¤ÇÊ¿ä
+        //ì¿¨íƒ€ì„ ë¶€ë¶„ ìˆ˜ì •í•„ìš”
     }
     private void Start()
     {
-        if (playerLevelInfo.stat == null) playerLevelInfo.stat = new PlayerStat(currentNode, 100, 3, 1, 10,1);
+        if (playerLevelInfo.stat == null) playerLevelInfo.stat = new PlayerStat(currentNode, 100,100, 3, 1, 10,1);
         playerLevelInfo.baseLevelUP += playerLevelInfo.BaseLevelUP;
         playerLevelInfo.jobLevelUP += playerLevelInfo.JobLevelUP;
         InstallizeStates();
         SetCurrentNodeAndPosition();
         playerLevelInfo.stat.moveFunction += PlayerMoveOrder;
         playerCursorState.changeState(cursorState.defaultCurser);
+        for (byte i = 0; i < UIManager.GetInstance().MainCanvas.transform.Find("QuickSlots").childCount; i++)
+        {
+            Array.Resize(ref quickSlots, i+1);
+            quickSlots[i] = UIManager.GetInstance().MainCanvas.transform.Find("QuickSlots").GetChild(i).GetComponent<QuickSlot>();
+        }
     }
     public void Update()
     {
         MouseBinding();
-        //µğ¹ö±×¿ë Å°·Î »©¾ßÇÔ
+        //ë””ë²„ê·¸ìš© í‚¤ë¡œ ë¹¼ì•¼í•¨
         if(Input.GetKeyDown(KeyCode.Keypad0))
         {
             playerLevelInfo.GetJobEXP(100);
         }
+        KeyBoardBinding();
         StateMachine.CurrentState.Execute();
 
     }
@@ -132,7 +139,7 @@ public class Player : MonoBehaviour
 
         if (tempNode != null)
         {
-            if (targetNode == tempNode) return false;        //ÀÌÀü¿¡ ±¸Çß´ø ¸ñÀûÁö ³ëµå¿Í °°Àº ¸ñÀûÁö ³ëµåÀÏ½Ã ÀÛµ¿ Á¦ÇÑ
+            if (targetNode == tempNode) return false;        //ì´ì „ì— êµ¬í–ˆë˜ ëª©ì ì§€ ë…¸ë“œì™€ ê°™ì€ ëª©ì ì§€ ë…¸ë“œì¼ì‹œ ì‘ë™ ì œí•œ
             targetNode = tempNode;
             nodePreview.Clear();
             SetCurrentNodeAndPosition();
@@ -144,7 +151,7 @@ public class Player : MonoBehaviour
         return false;
     }
     /// <summary>
-    /// Å¸°Ù¸ó½ºÅÍ ¼¼ÆÃ
+    /// íƒ€ê²Ÿëª¬ìŠ¤í„° ì„¸íŒ…
     /// </summary>
     /// <param name="monsterTR"></param>
     /// <returns></returns>
@@ -154,20 +161,20 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    #region ÇÃ·¹ÀÌ¾î ³ëµå °ü·Ã ÇÔ¼ö
+    #region í”Œë ˆì´ì–´ ë…¸ë“œ ê´€ë ¨ í•¨ìˆ˜
     public void SetCurrentNodeAndPosition()
     {
         CurrentNode = GridManager.GetInstance().PositionToNode(transform.position);
     }
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¸¦ ³ëµåÀÇ Áß¾ÓÀ¸·Î ¹Ù²ãÁÖ´Â ÇÔ¼ö
+    /// í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ë¥¼ ë…¸ë“œì˜ ì¤‘ì•™ìœ¼ë¡œ ë°”ê¿”ì£¼ëŠ” í•¨ìˆ˜
     /// </summary>
     private void SetPlayerPositionToCenterPos()
     {
         transform.position = new Vector3(CurrentNode.nodeCenterPosition.x, CurrentNode.nodeFloor + (playerSR.bounds.size.y) + 0.5f, CurrentNode.nodeCenterPosition.y);
     }
     #endregion
-    #region ¿òÁ÷ÀÓ,°ø°İ °ü·Ã
+    #region ì›€ì§ì„,ê³µê²© ê´€ë ¨
 
     public void PlayerMove(bool isMoveToAttack = false)
     {
@@ -209,11 +216,11 @@ public class Player : MonoBehaviour
             {
                 if (GridManager.GetInstance().AttackOrder(playerLevelInfo.stat, playerLevelInfo.stat.target,playerLevelInfo.stat.charactorAttackRange))
                 {
-                    //ÇöÀç »óÅÂ°¡ attackState°¡ ¾Æ´Ò °æ¿ì
+                    //í˜„ì¬ ìƒíƒœê°€ attackStateê°€ ì•„ë‹ ê²½ìš°
                     if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
                     {
                         StateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
-                        //attackState·Î ¹Ù²ß´Ï´Ù
+                        //attackStateë¡œ ë°”ê¿‰ë‹ˆë‹¤
                         StateMachine.ChangeState("attackState");
                     }
                 }
@@ -292,11 +299,11 @@ public class Player : MonoBehaviour
         transform.DOKill();
         DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(() =>
         {
-            //ÇöÀç »óÅÂ°¡ CastingState°¡ ¾Æ´Ò °æ¿ì
+            //í˜„ì¬ ìƒíƒœê°€ CastingStateê°€ ì•„ë‹ ê²½ìš°
             if (StateMachine.CurrentState != StateMachine.SearchState("castingState"))
             {
                 stateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
-                //CastingState·Î ¹Ù²ß´Ï´Ù
+                //CastingStateë¡œ ë°”ê¿‰ë‹ˆë‹¤
                 StateMachine.ChangeState(SkillObj.skill[SkillObj.CastingSkillLevel].defaultCastingTime,SkillObj, playerLevelInfo.stat.target, playerLevelInfo.stat.target.standingNode.worldPos);
                 SkillObj = null;
             }
@@ -321,9 +328,17 @@ public class Player : MonoBehaviour
         return tweenerCore;
     }
     #endregion
-    #region Å° ¹ÙÀÎµù
+    #region í‚¤ ë°”ì¸ë”©
+    public void KeyBoardBinding()
+    {
+        //í€µìŠ¬ë¡¯ ë°”ì¸ë”©
+        for (byte i = 0; i < quickSlots.Length; i++)
+        {
+            quickSlots[i].GetSlotKey();
+        }
+    }
     /// <summary>
-    /// ¸¶¿ì½º´Â °íÁ¤°ªÀ» »ç¿ë
+    /// ë§ˆìš°ìŠ¤ëŠ” ê³ ì •ê°’ì„ ì‚¬ìš©
     /// </summary>
     public void MouseBinding()
     {
@@ -394,10 +409,10 @@ public class Player : MonoBehaviour
                         ,playerLevelInfo.stat.charactorAttackRange
                         ))
                     {
-                        //ÇöÀç »óÅÂ°¡ attackState°¡ ¾Æ´Ò °æ¿ì
+                        //í˜„ì¬ ìƒíƒœê°€ attackStateê°€ ì•„ë‹ ê²½ìš°
                         if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
                         {
-                            //attackState·Î ¹Ù²ß´Ï´Ù
+                            //attackStateë¡œ ë°”ê¿‰ë‹ˆë‹¤
                             StateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
                             StateMachine.ChangeState("attackState");
                         }
@@ -430,10 +445,10 @@ public class Player : MonoBehaviour
                         SkillObj = null;
                         return;
                     }
-                    //´ë»óÀÌ ÀÖÀ» ½Ã
+                    //ëŒ€ìƒì´ ìˆì„ ì‹œ
                     else
                     {
-                        //°ø°İÀÌ °¡´ÉÇÑÁö ¸ÕÀú ÆÇº°, °ø°İ °¡´É ½Ã
+                        //ê³µê²©ì´ ê°€ëŠ¥í•œì§€ ë¨¼ì € íŒë³„, ê³µê²© ê°€ëŠ¥ ì‹œ
                         playerLevelInfo.stat.target = GridManager.GetInstance().grids[pos].CharacterOnNode;
                         if (GridManager.GetInstance().IsInRange(playerLevelInfo.stat, playerLevelInfo.stat.target, playerLevelInfo.stat.charactorAttackRange))
                         {
@@ -443,10 +458,10 @@ public class Player : MonoBehaviour
                                 playerLevelInfo.stat.target,
                                 playerLevelInfo.stat.target.standingNode.worldPos);
                         }
-                        //°ø°İ ºÒ°¡ ½Ã
+                        //ê³µê²© ë¶ˆê°€ ì‹œ
                         else
                         {
-                            //Á¢±ÙÇØ¼­ ½ÇÇà
+                            //ì ‘ê·¼í•´ì„œ ì‹¤í–‰
                             if (SetTargetNode(GridManager.GetInstance().grids[pos].worldPos))
                             {
                                 StateMachine.ChangeState("moveState");
@@ -509,9 +524,9 @@ public class Player : MonoBehaviour
 [System.Serializable]
 public class PlayerLevelInfo
 {
-    public PlayerStat stat;                                                 //ÇÃ·¹ÀÌ¾î ½ºÅİ
-    public PlayerSkillTreeForPhase[] playerOwnSkills = new PlayerSkillTreeForPhase[0];     //ÇÃ·¹ÀÌ¾î°¡ °¡Áö°í ÀÖ´Â ½ºÅ³ ¸®½ºÆ®
-    #region º£ÀÌ½º ·¹º§ °ü·Ã º¯¼ö
+    public PlayerStat stat;                                                 //í”Œë ˆì´ì–´ ìŠ¤í…Ÿ
+    public PlayerSkillTreeForPhase[] playerOwnSkills = new PlayerSkillTreeForPhase[0];     //í”Œë ˆì´ì–´ê°€ ê°€ì§€ê³  ìˆëŠ” ìŠ¤í‚¬ ë¦¬ìŠ¤íŠ¸
+    #region ë² ì´ìŠ¤ ë ˆë²¨ ê´€ë ¨ ë³€ìˆ˜
     public Action baseLevelUP, jobLevelUP;
     public byte baseLevel;
     private byte maxBaseLevel = 99;
@@ -537,8 +552,8 @@ public class PlayerLevelInfo
             {
                 value = value - MaxBaseExp;
                 currBaseExp = 0;
-                Debug.Log("´ÙÀ½ Àâ ¸Æ½º°æÇèÄ¡" + MaxBaseExp);
-                Debug.Log("ÇöÀç °æÇèÄ¡" + (currBaseExp + value));
+                Debug.Log("ë‹¤ìŒ ì¡ ë§¥ìŠ¤ê²½í—˜ì¹˜" + MaxBaseExp);
+                Debug.Log("í˜„ì¬ ê²½í—˜ì¹˜" + (currBaseExp + value));
                 if (value > 0) baseLevelUP.Invoke();
                 else break;
 
@@ -558,7 +573,7 @@ public class PlayerLevelInfo
     #endregion
 
 
-    #region Àâ·¹º§ °ü·Ã º¯¼ö
+    #region ì¡ë ˆë²¨ ê´€ë ¨ ë³€ìˆ˜
     public byte jobLevel;
     private byte maxJobLevel = 50;
     private float MaxJobExp
@@ -604,7 +619,7 @@ public class PlayerLevelInfo
 
 
 
-    #region BaseLevel°ü·Ã ÇÔ¼ö
+    #region BaseLevelê´€ë ¨ í•¨ìˆ˜
     public void BaseLevelUP()
     {
         statutsPoint += (short)(3 + (baseLevel / 5));
@@ -615,7 +630,7 @@ public class PlayerLevelInfo
         CurrBaseExp += exp;
     }
     #endregion
-    #region JobLevel°ü·Ã ÇÔ¼ö
+    #region JobLevelê´€ë ¨ í•¨ìˆ˜
     public bool LearnSkill(SkillIconsInSkilltree skill,int targetSkillIndex,SkillInfoInGame skillInfo,int classPhase)
     {
         if (LeftSkillPoint <= 0) return false;
@@ -623,7 +638,7 @@ public class PlayerLevelInfo
 
         if (playerOwnSkills[classPhase] == null) playerOwnSkills[classPhase] = new PlayerSkillTreeForPhase();
         bool[] isLeanAble = isLearnAble(targetSkillIndex,classPhase, skill);
-        //¼±Çà½ºÅ³ Ã¼Å©
+        //ì„ í–‰ìŠ¤í‚¬ ì²´í¬
         for (int i = 0; i < isLeanAble.Length; i++)
         {
             if (isLeanAble[i] == false)
@@ -665,7 +680,7 @@ public class PlayerLevelInfo
     }
     #endregion
     /// <summary>
-    /// ½ºÅ³À» ¹è¿ï ¼ö ÀÖ´ÂÁö ¿©ºÎ¸¦ ¹İÈ¯
+    /// ìŠ¤í‚¬ì„ ë°°ìš¸ ìˆ˜ ìˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ë°˜í™˜
     /// </summary>
     /// <param name="targetLearnSkillIndex"></param>
     /// <returns></returns>

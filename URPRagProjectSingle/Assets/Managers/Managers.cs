@@ -99,6 +99,10 @@ public class Node
 
 
 }
+public class KeyMapManager : Manager<KeyMapManager>
+{
+    public Dictionary<UITypes,KeyCode> keyMaps = new Dictionary<UITypes, KeyCode>();
+}
 public class GridManager : Manager<GridManager>
 {
     public Dictionary<Vector2Int, Node> grids = new Dictionary<Vector2Int, Node>();
