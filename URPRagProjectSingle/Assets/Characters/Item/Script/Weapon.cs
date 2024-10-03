@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
+
 public struct Affix
 {
     public int affixValue;
@@ -57,12 +58,31 @@ public class ItemEnums
         Luk,
     }
 }
-public class Weapon : ItemBase
+public class Weapon : IitemBase
 {
     Affix[] affixes = new Affix[3];
 
     public event Action quickSlotFuncs;
         
+
+    public Sprite IconIMG
+    {
+        get;
+    }
+    public string slotNumberInfo
+    {
+        get;
+    }
+    public SlotType slotType
+    {
+        get { return SlotType.Equipments; }    
+    }
+    public bool isItemUseAble
+    {
+        get;
+    }
+
+
     public string ItemName { get; private set; }
     public int ItemID { get; private set; }
     public string ItemType { get; private set; }
