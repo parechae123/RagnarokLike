@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class KeyBinnder : MonoBehaviour,IPointerDownHandler
 {
@@ -13,14 +16,28 @@ public class KeyBinnder : MonoBehaviour,IPointerDownHandler
     }
     public KeyCode inputKey;
     public UITypes types;
-    private bool watingInput = false;
+    private bool waitingInput = false;
+    public bool isWaitingInput
+    {
+        get { return waitingInput;}
+    }
+    public Image bindedKeyBG
+    {
+        get { return transform.Find("BindedKeyBG").GetComponent<Image>(); }
+    }
+    public Text boundKeyText
+    {
+        get { return transform.Find("BoundedKey").GetComponent<Text>(); }
+    }
     void Start()
     {
         AutoSetting();
+        boundKeyText.text = inputKey.ToString();
     }
     public void AutoSetting()
     {
-        switch (transform.GetChild(0).GetComponent<TextMeshProUGUI>().text)
+        //일회성으로 프로퍼티나 변수선언 안함
+        switch (transform.Find("description").GetComponent<TextMeshProUGUI>().text)
         {
             case "UI조합키":
                 types = UITypes.CombKey;
@@ -69,15 +86,55 @@ public class KeyBinnder : MonoBehaviour,IPointerDownHandler
     }
     public void OnPointerDown(PointerEventData pp)
     {
-        watingInput = true;
-        
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        if (watingInput)
+        if (!_main.IsOtherKeyBindingSequence)
         {
-            
+            waitingInput = true;
+            _main.SetBinderColor(this);
+            StartCoroutine(ReadyInputFunc());
         }
+    }
+    public void CheckDuplecatedKey(KeyCode newInputKey)
+    {
+        if (!_main.IskeyDuplicated(newInputKey))
+        {
+            inputKey = newInputKey;
+            boundKeyText.text = newInputKey.ToString();
+            if (types == UITypes.CombKey)
+            {
+                KeyMapManager.GetInstance().combKey = inputKey;
+                return;
+            }
+            ShortCutOBJ ShortCutTemp = new ShortCutOBJ { UIType = types, needCombKey = types.ToString().Contains("QuickSlot") ? false : true,target = null };
+            if (KeyMapManager.GetInstance().keyMaps.ContainsKey(inputKey)) KeyMapManager.GetInstance().keyMaps[inputKey] = new ShortCutOBJ();
+            else KeyMapManager.GetInstance().keyMaps.Add(inputKey,ShortCutTemp);
+        }
+    }
+    IEnumerator ReadyInputFunc()
+    {
+        yield return new WaitForEndOfFrame();
+        while (waitingInput)
+        {
+
+            foreach (KeyCode code in Enum.GetValues(typeof(KeyCode)))
+            {
+                if (code.ToString().Contains("Mouse")) continue;
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    waitingInput = false;
+                    _main.SetBinderColor(null);
+                    break;
+                }
+                if (Input.GetKeyDown(code))
+                {
+                    Debug.Log(code.ToString());
+                    CheckDuplecatedKey(code);
+                    waitingInput = false;
+                    break;
+                }
+
+            }
+            yield return null;
+        }
+        StopCoroutine(ReadyInputFunc());
     }
 }

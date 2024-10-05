@@ -272,3 +272,9 @@ public enum SkillStatus
 {
     learnAble,noneLearnAble,useable
 }
+public struct ShortCutOBJ
+{
+    public UITypes UIType;
+    public bool needCombKey;
+    public GameObject target;
+}

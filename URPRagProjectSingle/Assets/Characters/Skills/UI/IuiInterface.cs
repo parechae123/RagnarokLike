@@ -4,10 +4,7 @@ using UnityEngine;
 
 public interface IuiInterface
 {
-    KeyCode uiOpenKey
-    {
-        get;
-    }
+    void RegistGameOBJ();
 }
 public enum UITypes
 { 

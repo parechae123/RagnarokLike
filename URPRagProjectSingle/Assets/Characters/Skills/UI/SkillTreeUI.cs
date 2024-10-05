@@ -10,18 +10,30 @@ using UnityEngine.UI;
 [System.Serializable]
 public class SkillTreeUI : MonoBehaviour , IuiInterface
 {
-    public KeyCode uiOpenKey
-    {
-        get { return KeyMapManager.GetInstance().keyMaps[UITypes.SkillTreeWindow]; }
-    }
+
     public SkillTreeBase targetSkillTreeBase;
     public RectTransform rectTR;
     public SkillInfoInGame[] skillInfos = new SkillInfoInGame[0];
     public Material greyScaled, colored,blueScaled;
     public Text leftSkillPointText;
     [SerializeField]public SkillTreeSlot[,] skillBtns;
-
-//    public HashSet<(int, int)> isSkillSlotFilled = new HashSet<(int, int)>();
+    public void RegistGameOBJ()
+    {
+        foreach (KeyCode item in KeyMapManager.GetInstance().keyMaps.Keys)
+        {
+            if (KeyMapManager.GetInstance().keyMaps[item].UIType == UITypes.InventoryWindow)
+            {
+                KeyMapManager.GetInstance().keyMaps.TryGetValue(item, out ShortCutOBJ output);
+                output.target = gameObject;
+                break;
+            }
+            else
+            {
+                continue;
+            }
+        }
+    }
+    //    public HashSet<(int, int)> isSkillSlotFilled = new HashSet<(int, int)>();
     // Start is called before the first frame update
     void Awake()
     {

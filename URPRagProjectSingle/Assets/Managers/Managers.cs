@@ -101,7 +101,13 @@ public class Node
 }
 public class KeyMapManager : Manager<KeyMapManager>
 {
-    public Dictionary<UITypes,KeyCode> keyMaps = new Dictionary<UITypes, KeyCode>();
+    public Dictionary<KeyCode,ShortCutOBJ> keyMaps = new Dictionary<KeyCode,ShortCutOBJ>();
+    public KeyCode combKey;
+    //해당하는 애들만 받도록 Player에서 해주면 될듯
+    public KeyCode[] ConvertKeyList()
+    {
+        return keyMaps.Keys.ToArray<KeyCode>();
+    }
 }
 public class GridManager : Manager<GridManager>
 {
