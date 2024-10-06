@@ -110,6 +110,11 @@ public class KeyMapManager : Manager<KeyMapManager>
     {
         return keyMaps.Keys.ToArray<KeyCode>();
     }
+    public ShortCutOBJ[] ConvertValueArray()
+    {
+        return keyMaps.Values.ToArray<ShortCutOBJ>();
+    }
+
     public string ExportKeyMapJson()
     {
         string path = Path.Combine(Application.persistentDataPath, "KeySetting.txt");

@@ -6,6 +6,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class KeyBindOrganizator : MonoBehaviour
 {
@@ -16,6 +17,33 @@ public class KeyBindOrganizator : MonoBehaviour
     {
         if (KeyMapManager.GetInstance().ImportkeyMapJson())
         {
+            Queue<(KeyCode,ShortCutOBJ)> dataQueue = new Queue<(KeyCode, ShortCutOBJ)>();
+            KeyCode[] temp = KeyMapManager.GetInstance().ConvertKeyArray();
+            for (int i = 0; i < KeyMapManager.GetInstance().keyMaps.Count; i++)
+            {
+                dataQueue.Enqueue((temp[i], KeyMapManager.GetInstance().keyMaps[temp[i]]));
+            }
+            Queue<KeyBinnder> binderQueue = new Queue<KeyBinnder>(binders);
+            int tester = 0;
+            while (binderQueue.Count > 0 &&dataQueue.Count > 0)
+            {
+                binderQueue.TryPeek(out KeyBinnder key);
+                dataQueue.TryPeek(out (KeyCode,ShortCutOBJ) DQ);
+                tester++;
+                if (tester > 1000) break;
+                
+                if(key.types == UITypes.CombKey)binderQueue.Dequeue().boundKeyText.text = KeyMapManager.GetInstance().combKey.ToString();
+
+                if (key.types != DQ.Item2.UIType) 
+                { 
+                    dataQueue.Enqueue(dataQueue.Dequeue());
+                }
+                else
+                {
+                    binderQueue.Dequeue().boundKeyText.text = dataQueue.Dequeue().Item1.ToString();
+                }
+            }
+
             //TODO : 세팅값과 UI 연동 필요
             return;
         }
@@ -62,7 +90,7 @@ public class BindOrganizator : Editor
         base.OnInspectorGUI();
         KeyBindOrganizator KBO = (KeyBindOrganizator)target;
 
-        if (GUILayout.Button("Generate ScriptableObject"))
+        if (GUILayout.Button("Find KeyBinders"))
         {
             KBO.binders = new KeyBinnder[KBO.transform.childCount];
             for (int i = 0; i < KBO.transform.childCount; i++)
