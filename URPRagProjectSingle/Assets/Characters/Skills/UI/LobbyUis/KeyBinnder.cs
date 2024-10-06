@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class KeyBinnder : MonoBehaviour,IPointerDownHandler
+public class KeyBinnder : MonoBehaviour, IPointerDownHandler
 {
     private KeyBindOrganizator _main
     {
@@ -19,7 +19,7 @@ public class KeyBinnder : MonoBehaviour,IPointerDownHandler
     private bool waitingInput = false;
     public bool isWaitingInput
     {
-        get { return waitingInput;}
+        get { return waitingInput; }
     }
     public Image bindedKeyBG
     {
@@ -29,10 +29,13 @@ public class KeyBinnder : MonoBehaviour,IPointerDownHandler
     {
         get { return transform.Find("BoundedKey").GetComponent<Text>(); }
     }
-    void Start()
+    public void SetDefaultKey()
     {
         AutoSetting();
         boundKeyText.text = inputKey.ToString();
+        ShortCutOBJ ShortCutTemp = new ShortCutOBJ { UIType = types, needCombKey = types.ToString().Contains("QuickSlot") ? false : true, target = null };
+        if (types != UITypes.CombKey) KeyMapManager.GetInstance().keyMaps.Add(inputKey, ShortCutTemp);
+        else KeyMapManager.GetInstance().combKey = inputKey;
     }
     public void AutoSetting()
     {
@@ -97,16 +100,18 @@ public class KeyBinnder : MonoBehaviour,IPointerDownHandler
     {
         if (!_main.IskeyDuplicated(newInputKey))
         {
-            inputKey = newInputKey;
+
             boundKeyText.text = newInputKey.ToString();
             if (types == UITypes.CombKey)
             {
-                KeyMapManager.GetInstance().combKey = inputKey;
+                KeyMapManager.GetInstance().combKey = newInputKey;
+                inputKey = newInputKey;
                 return;
             }
             ShortCutOBJ ShortCutTemp = new ShortCutOBJ { UIType = types, needCombKey = types.ToString().Contains("QuickSlot") ? false : true,target = null };
-            if (KeyMapManager.GetInstance().keyMaps.ContainsKey(inputKey)) KeyMapManager.GetInstance().keyMaps[inputKey] = new ShortCutOBJ();
-            else KeyMapManager.GetInstance().keyMaps.Add(inputKey,ShortCutTemp);
+            KeyMapManager.GetInstance().keyMaps.Remove(inputKey);
+            KeyMapManager.GetInstance().keyMaps.Add(newInputKey, ShortCutTemp);
+            inputKey = newInputKey;
         }
     }
     IEnumerator ReadyInputFunc()
@@ -135,6 +140,7 @@ public class KeyBinnder : MonoBehaviour,IPointerDownHandler
             }
             yield return null;
         }
+        Debug.Log(KeyMapManager.GetInstance().ExportKeyMapJson());
         StopCoroutine(ReadyInputFunc());
     }
 }

@@ -272,6 +272,7 @@ public enum SkillStatus
 {
     learnAble,noneLearnAble,useable
 }
+[Serializable]
 public struct ShortCutOBJ
 {
     public UITypes UIType;

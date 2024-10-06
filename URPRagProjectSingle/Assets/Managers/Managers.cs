@@ -5,6 +5,8 @@ using UnityEngine;
 using PlayerDefines.Stat;
 using PlayerDefines;
 using UnityEngine.UI;
+using Newtonsoft.Json;
+using System.IO;
 
 /// <summary>
 /// 메니저 템플릿화
@@ -101,12 +103,54 @@ public class Node
 }
 public class KeyMapManager : Manager<KeyMapManager>
 {
-    public Dictionary<KeyCode,ShortCutOBJ> keyMaps = new Dictionary<KeyCode,ShortCutOBJ>();
+    [SerializeField]public Dictionary<KeyCode,ShortCutOBJ> keyMaps = new Dictionary<KeyCode,ShortCutOBJ>();
     public KeyCode combKey;
     //해당하는 애들만 받도록 Player에서 해주면 될듯
-    public KeyCode[] ConvertKeyList()
+    public KeyCode[] ConvertKeyArray()
     {
         return keyMaps.Keys.ToArray<KeyCode>();
+    }
+    public string ExportKeyMapJson()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "KeySetting.txt");
+        if (File.Exists(path))
+        {
+            using (StreamWriter writer = new StreamWriter(new FileStream(path,FileMode.Open,FileAccess.Write,FileShare.Read)))
+            {
+                writer.WriteLine(JsonConvert.SerializeObject(combKey));
+                writer.WriteLine(JsonConvert.SerializeObject(keyMaps));
+                writer.Flush();
+                writer.Close();
+            }
+        }
+        else
+        {
+            StreamWriter SW = new StreamWriter(path);
+            //첫번째 줄은 조합키만
+            SW.WriteLine(JsonConvert.SerializeObject(combKey));
+            //두번째줄은 조합키 제외 모든 키
+            SW.WriteLine(JsonConvert.SerializeObject(keyMaps));
+            SW.Flush();
+            SW.Close();
+        }
+        return Application.persistentDataPath+"폴더에"+"KeySetting.txt 파일로 저장되었습니다.";
+    }
+    public bool ImportkeyMapJson()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "KeySetting.txt");
+        if (!File.Exists(path)) return false;
+        StreamReader target = new StreamReader(Path.Combine(Application.persistentDataPath, "KeySetting.txt"));
+
+        combKey = JsonConvert.DeserializeObject<KeyCode>(target.ReadLine());
+        keyMaps = JsonConvert.DeserializeObject<Dictionary<KeyCode, ShortCutOBJ>>(target.ReadLine().ToString());
+
+        target.Close();
+        if (keyMaps.Count <= 0)
+        {
+            Debug.Log("오브젝트 임포트 실패");
+            return false;
+        }
+        else return true;
     }
 }
 public class GridManager : Manager<GridManager>
