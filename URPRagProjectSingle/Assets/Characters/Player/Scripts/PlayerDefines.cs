@@ -217,6 +217,8 @@ namespace PlayerDefines
             }
             public Action<Vector3, bool> moveFunction;
             public Action dieFunctions;//TODO : 사망 연출 등록필요
+            public EquipStat equipStat;
+            
             public Stats(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange)
             {
                 isCharacterDie = false;
@@ -257,7 +259,11 @@ namespace PlayerDefines
                 get;
                 set;
             }
-            public float moveSpeed; //초당 이동하는 타일 수
+            public float moveSpeed 
+            {
+                get { return Player.Instance.playerLevelInfo.stat.moveSpeed + equipStat.EquipMoveSpeed; }
+                set { }
+            } //초당 이동하는 타일 수
             public float abilityPower;
             public float attackDamage;
             public float attackSpeed;
