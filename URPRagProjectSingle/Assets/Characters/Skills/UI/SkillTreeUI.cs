@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 [System.Serializable]
 public class SkillTreeUI : MonoBehaviour , IuiInterface
 {
@@ -21,10 +22,15 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
     {
         foreach (KeyCode item in KeyMapManager.GetInstance().keyMaps.Keys)
         {
-            if (KeyMapManager.GetInstance().keyMaps[item].UIType == UITypes.InventoryWindow)
+            if (KeyMapManager.GetInstance().keyMaps[item].UIType == UITypes.SkillTreeWindow)
             {
-                KeyMapManager.GetInstance().keyMaps.TryGetValue(item, out ShortCutOBJ output);
-                output.target = gameObject;
+                ShortCutOBJ temp = KeyMapManager.GetInstance().keyMaps[item];
+
+
+                temp.subScribFuncs = null;
+                temp.subScribFuncs += OnOff;
+                KeyMapManager.GetInstance().keyMaps[item] = temp;
+
                 break;
             }
             else
@@ -44,6 +50,7 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
         {
             SkillManager.GetInstance().AddSkillInfo(skillInfos[i]);
         }
+        RegistGameOBJ();
     }
     private void Start()
     {
@@ -51,6 +58,7 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
         Player.Instance.playerLevelInfo.jobLevelUP += CheckSkillStatus;
         Player.Instance.playerLevelInfo.jobLevelUP += UpdateSkillPointText;
     }
+    public void OnOff() { gameObject.transform.parent.gameObject.SetActive(!gameObject.transform.parent.gameObject.activeSelf); }
     public void GetSkillBTN()
     {
         skillInfos = new SkillInfoInGame[0];

@@ -7,13 +7,14 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 public class KeyBindOrganizator : MonoBehaviour
 {
     // Start is called before the first frame update
     public KeyBinnder[] binders = new KeyBinnder[0];
     public Color notSelected, selected;
-    private void Start()
+    public void ReadOrCreateKeyBind()
     {
         if (KeyMapManager.GetInstance().ImportkeyMapJson())
         {
@@ -32,7 +33,12 @@ public class KeyBindOrganizator : MonoBehaviour
                 tester++;
                 if (tester > 1000) break;
                 
-                if(key.types == UITypes.CombKey)binderQueue.Dequeue().boundKeyText.text = KeyMapManager.GetInstance().combKey.ToString();
+                if(key.types == UITypes.CombKey)
+                {
+                    KeyBinnder tempBinder = binderQueue.Dequeue();
+                    tempBinder.inputKey = KeyMapManager.GetInstance().combKey;
+                    tempBinder.boundKeyText.text = KeyMapManager.GetInstance().combKey.ToString();
+                }
 
                 if (key.types != DQ.Item2.UIType) 
                 { 
@@ -40,7 +46,11 @@ public class KeyBindOrganizator : MonoBehaviour
                 }
                 else
                 {
-                    binderQueue.Dequeue().boundKeyText.text = dataQueue.Dequeue().Item1.ToString();
+                    KeyBinnder tempBinder = binderQueue.Dequeue();
+                    (KeyCode, ShortCutOBJ) tempOBJ = dataQueue.Dequeue();
+                    tempBinder.types = tempOBJ.Item2.UIType;
+                    tempBinder.inputKey = tempOBJ.Item1;
+                    tempBinder.boundKeyText.text = tempOBJ.Item1.ToString();
                 }
             }
 

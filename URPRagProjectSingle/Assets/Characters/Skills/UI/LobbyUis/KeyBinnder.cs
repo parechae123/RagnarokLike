@@ -33,7 +33,7 @@ public class KeyBinnder : MonoBehaviour, IPointerDownHandler
     {
         AutoSetting();
         boundKeyText.text = inputKey.ToString();
-        ShortCutOBJ ShortCutTemp = new ShortCutOBJ { UIType = types, needCombKey = types.ToString().Contains("QuickSlot") ? false : true, target = null };
+        ShortCutOBJ ShortCutTemp = new ShortCutOBJ { UIType = types, needCombKey = types.ToString().Contains("QuickSlot") ? false : true};
         if (types != UITypes.CombKey) KeyMapManager.GetInstance().keyMaps.Add(inputKey, ShortCutTemp);
         else KeyMapManager.GetInstance().combKey = inputKey;
     }
@@ -108,9 +108,17 @@ public class KeyBinnder : MonoBehaviour, IPointerDownHandler
                 inputKey = newInputKey;
                 return;
             }
-            ShortCutOBJ ShortCutTemp = new ShortCutOBJ { UIType = types, needCombKey = types.ToString().Contains("QuickSlot") ? false : true,target = null };
+            ShortCutOBJ shortCutTemp;
+            if (KeyMapManager.GetInstance().keyMaps.ContainsKey(inputKey))
+            {
+                shortCutTemp = KeyMapManager.GetInstance().keyMaps[inputKey];
+            }
+            else
+            {
+                shortCutTemp = new ShortCutOBJ { UIType = types, needCombKey = types.ToString().Contains("QuickSlot") ? false : true };
+            }
             KeyMapManager.GetInstance().keyMaps.Remove(inputKey);
-            KeyMapManager.GetInstance().keyMaps.Add(newInputKey, ShortCutTemp);
+            KeyMapManager.GetInstance().keyMaps.Add(newInputKey, shortCutTemp);
             inputKey = newInputKey;
         }
     }
@@ -123,6 +131,7 @@ public class KeyBinnder : MonoBehaviour, IPointerDownHandler
             foreach (KeyCode code in Enum.GetValues(typeof(KeyCode)))
             {
                 if (code.ToString().Contains("Mouse")) continue;
+
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     waitingInput = false;

@@ -20,7 +20,6 @@ using Unity.VisualScripting;
 public class Player : MonoBehaviour
 {
     public PlayerLevelInfo playerLevelInfo;
-    public QuickSlot[] quickSlots = new QuickSlot[0];
     private static Player instance;
     public static Player Instance
     {
@@ -94,6 +93,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform targetCell;
     [SerializeField] CursorStates playerCursorState = new CursorStates();
     [SerializeField]Vector2Int playerLookDir;
+    public KeyCode[] boundedKeys = new KeyCode[0];
+    public KeyCode combKey;
     public Vector2Int PlayerLookDir
     {
         get { return playerLookDir; }
@@ -115,12 +116,10 @@ public class Player : MonoBehaviour
         SetCurrentNodeAndPosition();
         playerLevelInfo.stat.moveFunction += PlayerMoveOrder;
         playerCursorState.changeState(cursorState.defaultCurser);
-        for (byte i = 0; i < UIManager.GetInstance().MainCanvas.transform.Find("QuickSlots").childCount; i++)
-        {
-            Array.Resize(ref quickSlots, i+1);
-            quickSlots[i] = UIManager.GetInstance().MainCanvas.transform.Find("QuickSlots").GetChild(i).GetComponent<QuickSlot>();
-        }
+
+        SetBindKey();
     }
+
     public void Update()
     {
         MouseBinding();
@@ -160,7 +159,21 @@ public class Player : MonoBehaviour
         if (monsterTR != null) return true;
         return false;
     }
-
+    public void SetBindKey()
+    {
+        boundedKeys = KeyMapManager.GetInstance().ConvertKeyArray();
+        combKey = KeyMapManager.GetInstance().combKey;
+        foreach ( KeyCode codes in boundedKeys)
+        {
+            if (KeyMapManager.GetInstance().keyMaps[codes].SlotNumber>= 0)
+            {
+                ShortCutOBJ temp = KeyMapManager.GetInstance().keyMaps[codes];
+                temp.subScribFuncs += UIManager.GetInstance().MainCanvas.transform.Find("QuickSlots").GetChild(KeyMapManager.GetInstance().keyMaps[codes].SlotNumber).GetComponent<QuickSlot>().GetSlotKey;
+                KeyMapManager.GetInstance().keyMaps[codes] = temp; 
+            }
+        }
+        
+    }
     #region 플레이어 노드 관련 함수
     public void SetCurrentNodeAndPosition()
     {
@@ -331,10 +344,27 @@ public class Player : MonoBehaviour
     #region 키 바인딩
     public void KeyBoardBinding()
     {
-        //퀵슬롯 바인딩
-        for (byte i = 0; i < quickSlots.Length; i++)
+
+        for (byte i = 0; i < boundedKeys.Length; i++)
         {
-            quickSlots[i].GetSlotKey();
+            if (KeyMapManager.GetInstance().keyMaps[boundedKeys[i]].needCombKey)
+            {
+                if (Input.GetKey(combKey))
+                {
+                    if (Input.GetKeyDown(boundedKeys[i]))
+                    {
+                        KeyMapManager.GetInstance().keyMaps[boundedKeys[i]].subScribFuncs?.Invoke();
+                    } 
+                }
+                
+            }
+            else
+            {
+                if (Input.GetKeyDown(boundedKeys[i]))
+                {
+                    KeyMapManager.GetInstance().keyMaps[boundedKeys[i]].subScribFuncs?.Invoke();
+                }
+            }
         }
     }
     /// <summary>

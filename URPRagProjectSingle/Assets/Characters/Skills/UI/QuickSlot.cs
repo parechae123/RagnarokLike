@@ -77,10 +77,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
         }*/
     public void GetSlotKey()
     {
-        if (Input.GetKeyDown(slotKey))
-        {
-            SlotItem.UseItem();
-        }
+        SlotItem.UseItem();
     }
     public void Install(IitemBase tempData, bool isStaticSlot)
     {

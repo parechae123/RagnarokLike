@@ -103,7 +103,7 @@ public class Node
 }
 public class KeyMapManager : Manager<KeyMapManager>
 {
-    [SerializeField]public Dictionary<KeyCode,ShortCutOBJ> keyMaps = new Dictionary<KeyCode,ShortCutOBJ>();
+    public Dictionary<KeyCode,ShortCutOBJ> keyMaps = new Dictionary<KeyCode,ShortCutOBJ>();
     public KeyCode combKey;
     //해당하는 애들만 받도록 Player에서 해주면 될듯
     public KeyCode[] ConvertKeyArray()
@@ -603,8 +603,8 @@ public class UIManager : Manager<UIManager>
     }
     public void ResetUI()
     {
-        playerUI?.ResetUI();
         playerUI ??= new PlayerUI();
+        playerUI?.ResetUI();
     }
 }
 public class SkillManager : Manager<SkillManager>

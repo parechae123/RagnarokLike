@@ -276,6 +276,11 @@ public enum SkillStatus
 public struct ShortCutOBJ
 {
     public UITypes UIType;
+    //0이하의 갑을 가지고 있을 시 SlotNumber가 아님
+    public int SlotNumber
+    {
+        get { return ((int)UIType - (int)UITypes.QuickSlotOne ); }
+    }
     public bool needCombKey;
-    public GameObject target;
+    public Action subScribFuncs;
 }
