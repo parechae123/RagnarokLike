@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = new GameObject("Player").AddComponent<Player>();
+                instance = new GameObject("Player").GetOrAddComponent<Player>();
             }
 
             return instance;
@@ -191,7 +191,7 @@ public class Player : MonoBehaviour
 
     public void PlayerMove(bool isMoveToAttack = false)
     {
-        float moveSpeedPerSec = 1 / playerLevelInfo.stat.moveSpeed;
+        float moveSpeedPerSec = 1 / playerLevelInfo.stat.MoveSpeed;
         if (nodePreview.Count <= 0) return;
         if (CurrentNode == nodePreview.First())
         {
@@ -267,7 +267,7 @@ public class Player : MonoBehaviour
     }
     public void PlayerMove(SkillInfoInGame skill, byte arriveDistanceFromTargetPos = 0)
     {
-        float moveSpeedPerSec = 1 / playerLevelInfo.stat.moveSpeed;
+        float moveSpeedPerSec = 1 / playerLevelInfo.stat.MoveSpeed;
         if (nodePreview.Count <= 0) return;
         if (CurrentNode == nodePreview.First())
         {

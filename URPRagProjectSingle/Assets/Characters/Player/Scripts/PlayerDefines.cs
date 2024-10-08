@@ -217,7 +217,7 @@ namespace PlayerDefines
             }
             public Action<Vector3, bool> moveFunction;
             public Action dieFunctions;//TODO : 사망 연출 등록필요
-            public EquipStat equipStat;
+            public EquipStat equipStat = new EquipStat(0,0,0,0,0,0);
             
             public Stats(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange)
             {
@@ -259,7 +259,8 @@ namespace PlayerDefines
                 get;
                 set;
             }
-            public float moveSpeed 
+            private float moveSpeed;
+            public float MoveSpeed 
             {
                 get { return Player.Instance.playerLevelInfo.stat.moveSpeed + equipStat.EquipMoveSpeed; }
                 set { }
