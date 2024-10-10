@@ -49,11 +49,9 @@ public class Node
         set 
         { 
             characterOnNode = value;
-            if(value == null) isBookPath = false;
         }
     }
     //예약된 길인지
-    public bool isBookPath;
     public Vector3 worldPos
     {
         get {return new Vector3(nodeCenterPosition.x,((float)nodeFloor+0.5f),nodeCenterPosition.y); }
@@ -374,7 +372,7 @@ public class GridManager : Manager<GridManager>
     /// </summary>
     /// <param name="position"></param>
     /// <returns></returns>
-    private Vector2Int[] NearPositions(Vector2Int position)
+    public Vector2Int[] NearPositions(Vector2Int position)
     {
         Vector2Int[] tempVec = new Vector2Int[0];
 
