@@ -143,8 +143,9 @@ public class Player : MonoBehaviour
             nodePreview.Clear();
             SetCurrentNodeAndPosition();
             CurrentNode.SetGH(CurrentNode.nodeCenterPosition, targetNode.nodeCenterPosition);
-
+            arriveTime = 0;
             nodePreview = GridManager.GetInstance().PathFinding(CurrentNode.nodeCenterPosition, targetNode.nodeCenterPosition);
+            
             return true;
         }
         return false;
@@ -211,7 +212,7 @@ public class Player : MonoBehaviour
                     break;
                 }
                 tempNodePosArray[i] = nodePreview.First().worldPos;
-                tempNodePosArray[i].y += Player.instance.playerSR.bounds.size.y;
+                tempNodePosArray[i].y += playerSR.bounds.size.y;
             }
             else
             {
@@ -223,6 +224,7 @@ public class Player : MonoBehaviour
         Path tempPath = new Path(PathType.Linear, tempNodePosArray, 1);
 
         transform.DOKill();
+        arriveTime = tempNodePosArray.Length * moveSpeedPerSec;
         if (isMoveToAttack)
         {
             DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(() =>
@@ -243,7 +245,6 @@ public class Player : MonoBehaviour
         {
             DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear);
         }
-        arriveTime = tempNodePosArray.Length * moveSpeedPerSec;
         return;
 
 
@@ -309,6 +310,8 @@ public class Player : MonoBehaviour
 
         Path tempPath = new Path(PathType.Linear, tempNodePosArray, 1);
 
+        arriveTime = tempNodePosArray.Length * moveSpeedPerSec;
+
         transform.DOKill();
         DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(() =>
         {
@@ -321,7 +324,6 @@ public class Player : MonoBehaviour
                 SkillObj = null;
             }
         }).SetEase(Ease.Linear);
-        arriveTime = tempNodePosArray.Length * moveSpeedPerSec;
         return;
 
 
@@ -523,7 +525,6 @@ public class Player : MonoBehaviour
         if (SetTargetNode(targetPosition))
         {
             PlayerMove(isMoveToAttack);
-            
             StateMachine.ChangeState("moveState");
         }
 

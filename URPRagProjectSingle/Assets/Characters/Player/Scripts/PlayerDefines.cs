@@ -27,12 +27,7 @@ namespace PlayerDefines
 
             protected float skillCoolTime;
             protected float skillTimer;
-            protected float durationTime;
-            public float DurationTime
-            {
-                get;
-                set; 
-            }
+            public float durationTime;
             /// <summary>
             /// 스테이트 생성자
             /// </summary>
@@ -88,12 +83,11 @@ namespace PlayerDefines
             {
                 base.Enter();
                 durationTime = Player.Instance.arriveTime;
-
             }
             public override void Execute()
             {
                 skillTimer += Time.deltaTime;
-                if (durationTime < skillTimer)
+                if (durationTime <= skillTimer)
                 {
                     Player.Instance.StateMachine.ChangeState(nextStateName);
                 }
@@ -167,7 +161,7 @@ namespace PlayerDefines
             {
                 skillTimer += Time.deltaTime;
                 UIManager.GetInstance().SetCastingBarValue(durationTime, skillTimer);
-                if (DurationTime <= skillTimer)
+                if (durationTime <= skillTimer)
                 {
                     skillTimer = 0;
                     UIManager.GetInstance().CastingBarOnOff(false);

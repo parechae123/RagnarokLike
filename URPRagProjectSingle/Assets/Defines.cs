@@ -125,6 +125,7 @@ namespace NeutralDefines
                 currentState?.Exit();                   //이전 상태값을 빠져나간다
                 currentState = SearchState(newStateName);               //인수로 받아온 상태값을 입력
                 currentState?.Enter();                  //다음 상태값
+                if (currentState.durationTime == 0) return;
                 AnimationChange();
             }
             public void ChangeState(float castingTime,SkillInfoInGame skillInfo,Stats targetStat,Vector3 skillPos)
@@ -167,7 +168,7 @@ namespace NeutralDefines
 
                 currentState?.Exit();                   //이전 상태값을 빠져나간다
                 currentState = temp;               
-                currentState.DurationTime = castingTime;
+                currentState.durationTime = castingTime;
                 currentState?.Enter();                  //다음 상태값
                 AnimationChange();
             }

@@ -46,8 +46,14 @@ public class Node
     public Stats CharacterOnNode
     {
         get { return characterOnNode; }
-        set { characterOnNode = value; }
+        set 
+        { 
+            characterOnNode = value;
+            if(value == null) isBookPath = false;
+        }
     }
+    //예약된 길인지
+    public bool isBookPath;
     public Vector3 worldPos
     {
         get {return new Vector3(nodeCenterPosition.x,((float)nodeFloor+0.5f),nodeCenterPosition.y); }
@@ -258,6 +264,7 @@ public class GridManager : Manager<GridManager>
         return doubleCheckedNodes;
 
     }
+
     /*    public Node[] PathFinding(Vector2Int startPos, Vector2Int endPos)
         {
             //열린노드 : 길이 될 수 있는(닫힌노드의 주변)

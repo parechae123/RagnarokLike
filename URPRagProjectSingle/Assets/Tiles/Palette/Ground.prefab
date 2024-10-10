@@ -213,6 +213,11 @@ PrefabInstance:
       propertyPath: m_DynamicOccludee
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3003750037283346557, guid: fea6a367ad578b940810dc5742cf10ba,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3003750037285116573, guid: fea6a367ad578b940810dc5742cf10ba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -290,6 +295,11 @@ PrefabInstance:
     - target: {fileID: 2303790651987679787, guid: 315e3037d6061204cad190d8fb3728b6,
         type: 3}
       propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303790651987679787, guid: 315e3037d6061204cad190d8fb3728b6,
+        type: 3}
+      propertyPath: m_LightProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2303790651989448907, guid: 315e3037d6061204cad190d8fb3728b6,
@@ -426,6 +436,11 @@ PrefabInstance:
       propertyPath: m_DynamicOccludee
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 389422324052325723, guid: 3bf19ffa13917ed45a241ba26dd3b805,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -437,7 +452,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6523161596689688869}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7411002115523791081
+--- !u!114 &17901275324393617
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
