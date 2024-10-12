@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
+
 [System.Serializable]
 public class SkillTreeUI : MonoBehaviour , IuiInterface
 {
@@ -30,7 +30,7 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
                 temp.subScribFuncs = null;
                 temp.subScribFuncs += OnOff;
                 KeyMapManager.GetInstance().keyMaps[item] = temp;
-
+                gameObject.transform.parent.gameObject.SetActive(false);
                 break;
             }
             else

@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 public struct Affix
 {
     public int affixValue;
-    public ItemEnums.Stats stat;
+    public ItemEnums.BasicStatTypes stat;
 }
 public class ItemEnums
 {
@@ -48,13 +48,13 @@ public class ItemEnums
         Plate       //ÆÇ±Ý
     }
 
-    public enum Stats
+    public enum BasicStatTypes
     {
-        Hp,
-        Mp,
         Str,
-        Int,
+        AGI,
+        Vit,
         Dex,
+        Int,
         Luk,
     }
 }
@@ -69,7 +69,6 @@ public class Weapon : IitemBase, IEquipBase
 
 
     public bool onEquip;
-    public PlayerStat onEquipPlayerstat;
 
     public Sprite IconIMG
     {

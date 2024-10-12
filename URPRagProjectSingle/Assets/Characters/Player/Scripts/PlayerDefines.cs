@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 namespace PlayerDefines
 {
     namespace States
@@ -204,21 +204,26 @@ namespace PlayerDefines
         [System.Serializable]
         public class Stats
         {
+
             public bool isCharacterDie
             {
-                get;
-                private set;
+                get { return HP <= 0; }
+            }
+            public bool isCharacterDamaged
+            {
+                get { return maxHP > hp; }
             }
             public Action<Vector3, bool> moveFunction;
             public Action dieFunctions;//TODO : 사망 연출 등록필요
-            public EquipStat equipStat = new EquipStat(0,0,0,0,0,0);
+
             
             public Stats(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange)
             {
-                isCharacterDie = false;
                 standingNode = initializeNode;
                 standingNode.CharacterOnNode = this;
-                HP = hp;
+                maxHP = hp;
+                maxSP = sp;
+                this.HP = hp;
                 this.sp = sp;
                 this.charactorAttackRange = attackRange;
                 this.moveSpeed = moveSpeed;
@@ -230,8 +235,9 @@ namespace PlayerDefines
                 get;
                 set;
             }
-            private float hp;
-            public float HP
+            protected float maxHP;
+            protected float hp;
+            public virtual float HP
             {
                 get
                 {
@@ -239,30 +245,41 @@ namespace PlayerDefines
                 }
                 set
                 {
-                    Debug.Log((value- hp) +"몬스터 데미지");
+                    Debug.Log((hp- value) +"몬스터 데미지");
                     hp = value;
-                    if (hp <= 0)
+                    if(isCharacterDie)
                     {
                         dieFunctions?.Invoke();
-                        isCharacterDie = true;
                     }
                 }
             }
-            private float sp
+            protected float maxSP;
+            protected float sp;
+            protected virtual float SP
             {
-                get;
-                set;
+                get { return sp; }
+                set 
+                { 
+                    if(value>maxSP) sp = maxSP;
+                    else sp = value;
+
+                }
             }
             private float moveSpeed;
             public float MoveSpeed 
             {
-                get { return Player.Instance.playerLevelInfo.stat.moveSpeed + equipStat.EquipMoveSpeed; }
+                get { return Player.Instance.playerLevelInfo.stat.moveSpeed; }
                 set { }
             } //초당 이동하는 타일 수
             public float abilityPower;
             public float attackDamage;
             public float attackSpeed;
-            public byte charactorAttackRange;
+            public float basicAttackTimer;
+            private byte charactorAttackRange;
+            public int CharactorAttackRange
+            {
+                get { return charactorAttackRange*10; }
+            }
             public float CastTimePercent
             {
                 get { return 0; /*DexInt같은 능력치 추가 후 바꿔야함*/}
@@ -276,7 +293,7 @@ namespace PlayerDefines
                 target.HP -= damage == float.MinValue ? attackDamage : damage;
             }
 
-            public bool IsEnoughSP(float spCost)
+            public virtual bool IsEnoughSP(float spCost)
             {
                 if (sp >= spCost && !isCharacterDie)
                 {
@@ -288,9 +305,106 @@ namespace PlayerDefines
         }
         public class PlayerStat : Stats
         {
+            public BasicStatus basicStatus;
+            public EquipStat equipStat;
             public PlayerStat(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange) : base(initializeNode, hp,sp, moveSpeed, attackSpeed, attackDamage,attackRange)
             {
+                HP = hp;
+                SP = sp;
+            }
+            public override float HP
+            {
+                get
+                {
+                    return base.hp;
+                }
+                set
+                {
+                    if(maxHP< value) base.hp = value;
+                    else base.hp = value;
+                    
+                    if (isCharacterDie)
+                    {
+                        dieFunctions?.Invoke();
+                    }
+                    UIManager.GetInstance().PlayerMaxCurrHP = (maxHP, base.hp);
+                }
+            }
+            protected override float SP
+            {
+                get { return base.sp; }
+                set 
+                {
+                    if (value > maxSP) sp = base.maxSP;
+                    else sp = value;
+                    UIManager.GetInstance().PlayerMaxCurrSP = (base.maxSP, base.sp);
+                }
+            }
+            public override bool IsEnoughSP(float spCost)
+            {
+                if (SP >= spCost && !isCharacterDie)
+                {
+                    SP -= spCost;
+                    return true;
+                }
+                return false;
+            }
+        }
+        public class MonsterStat : Stats
+        {
+            public MonsterStat(Node initializeNode, float hp, float sp, float moveSpeed, float attackSpeed, float attackDamage, byte attackRange) : base(initializeNode, hp, sp, moveSpeed, attackSpeed, attackDamage, attackRange)
+            {
+                HP = hp;
+                SP = sp;
+            }
 
+            private Slider hpBar;
+            public Slider HPBar
+            {
+                get
+                {
+                    return hpBar;
+                }
+                set
+                {
+                    if (value == null)
+                    {
+                        if (hpBar != null)
+                        {
+                            UIManager.GetInstance().HPBarEnqueue(hpBar);
+                        }
+                    }
+                    hpBar = value;
+                }
+            }
+            public override float HP
+            {
+                get
+                {
+                    return base.hp;
+                }
+                set
+                {
+                    if (maxHP <= value) base.hp = maxHP;
+                    else base.hp = value;
+
+                    if (isCharacterDie)
+                    {
+                        dieFunctions?.Invoke();
+                    }
+                    if(HPBar == null) HPBar = UIManager.GetInstance().HPBarDequeue();
+                    HPBar.value = hp;
+                    HPBar.maxValue = maxHP;
+                }
+            }
+            protected override float SP
+            {
+                get { return base.sp; }
+                set
+                {
+                    if (value > maxSP) sp = base.maxSP;
+                    else sp = value;
+                }
             }
         }
     }

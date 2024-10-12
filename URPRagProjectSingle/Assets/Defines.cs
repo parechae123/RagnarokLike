@@ -285,3 +285,27 @@ public struct ShortCutOBJ
     public bool needCombKey;
     public Action subScribFuncs;
 }
+public class RespawnBox
+{
+    public MonsterBase monster;
+    public float leftRespawnTime;
+    public RespawnBox(MonsterBase monster, float leftRespawnTime)
+    {
+        this.monster = monster;
+        this.leftRespawnTime = leftRespawnTime;
+    }
+
+    public void UntillRespawn(float deltaTime)
+    {
+        leftRespawnTime -= deltaTime;
+    }
+}
+public class BasicStatus
+{
+    int strength = 1;
+    int agility = 1;
+    int vitality = 1;
+    int dexterity = 1;
+    int inteligence = 1;
+    int luk = 1;
+}

@@ -15,6 +15,7 @@ using DG.Tweening.Plugins;
 using PlayerDefines.Stat;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using static ItemEnums;
 
 
 public class Player : MonoBehaviour
@@ -229,7 +230,7 @@ public class Player : MonoBehaviour
         {
             DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(() =>
             {
-                if (GridManager.GetInstance().AttackOrder(playerLevelInfo.stat, playerLevelInfo.stat.target,playerLevelInfo.stat.charactorAttackRange))
+                if (GridManager.GetInstance().AttackOrder(playerLevelInfo.stat, playerLevelInfo.stat.target,playerLevelInfo.stat.CharactorAttackRange))
                 {
                     //현재 상태가 attackState가 아닐 경우
                     if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
@@ -336,8 +337,20 @@ public class Player : MonoBehaviour
             stateMachine.SetDirrection(ref playerLookDir,target.position,x);
 
             StateMachine.AnimationChange();
+            Node nextNode = GridManager.GetInstance().PositionToNode(x);
+            if (null == nextNode.CharacterOnNode|| playerLevelInfo.stat == nextNode.CharacterOnNode)
+            {
+                CurrentNode = nextNode;
+            }
+            else
+            {
+                target.DOKill();
+                targetNode = null;
+                PlayerMoveOrder(path.wps[path.wpLengths.Length-1]);
+                return;
+            }
             target.position = x;
-            CurrentNode = GridManager.GetInstance().PositionToNode(target.position);
+
         }, path, duration).SetTarget(target);
         tweenerCore.plugOptions.mode = pathMode;
         return tweenerCore;
@@ -438,7 +451,7 @@ public class Player : MonoBehaviour
                 {
                     if (GridManager.GetInstance().AttackOrder(playerLevelInfo.stat
                         , GridManager.GetInstance().PositionToNode(monsterHit[0].point)?.CharacterOnNode
-                        ,playerLevelInfo.stat.charactorAttackRange
+                        ,playerLevelInfo.stat.CharactorAttackRange
                         ))
                     {
                         //현재 상태가 attackState가 아닐 경우
@@ -482,7 +495,7 @@ public class Player : MonoBehaviour
                     {
                         //공격이 가능한지 먼저 판별, 공격 가능 시
                         playerLevelInfo.stat.target = GridManager.GetInstance().grids[pos].CharacterOnNode;
-                        if (GridManager.GetInstance().IsInRange(playerLevelInfo.stat, playerLevelInfo.stat.target, playerLevelInfo.stat.charactorAttackRange))
+                        if (GridManager.GetInstance().IsInRange(playerLevelInfo.stat.standingNode, playerLevelInfo.stat.target.standingNode, playerLevelInfo.stat.CharactorAttackRange))
                         {
                             playerCursorState.changeState(cursorState.skillTargeting);
                             StateMachine.ChangeState(SkillObj.skill[SkillObj.CastingSkillLevel].defaultCastingTime,
@@ -496,8 +509,8 @@ public class Player : MonoBehaviour
                             //접근해서 실행
                             if (SetTargetNode(GridManager.GetInstance().grids[pos].worldPos))
                             {
-                                StateMachine.ChangeState("moveState");
                                 PlayerMove(SkillObj, SkillObj.skill[SkillObj.CastingSkillLevel].skillRange);
+                                StateMachine.ChangeState("moveState");
 
                             }
 
@@ -516,7 +529,7 @@ public class Player : MonoBehaviour
             isSearchCastTarget = false;
             playerCursorState.changeState(cursorState.defaultCurser);
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse2)) SkillObj = null;
+        else if (Input.GetKeyDown(KeyCode.Mouse1)) SkillObj = null;
     }
 
 
@@ -599,6 +612,26 @@ public class PlayerLevelInfo
         get
         {
             return (short)(statutsPoint - usedStatusPoint);
+        }
+    }
+    public void StatUP(BasicStatTypes statType)
+    {
+        switch (statType)
+        {
+            case BasicStatTypes.Str:
+                break;
+            case BasicStatTypes.AGI:
+                break;
+            case BasicStatTypes.Vit:
+                break;
+            case BasicStatTypes.Dex:
+                break;
+            case BasicStatTypes.Int:
+                break;
+            case BasicStatTypes.Luk:
+                break;
+            default:
+                break;
         }
     }
     #endregion

@@ -92,6 +92,7 @@ public class KeyBindOrganizator : MonoBehaviour
         return false;
     }
 }
+#if UNITY_EDITOR
 [CustomEditor(typeof(KeyBindOrganizator))]
 public class BindOrganizator : Editor
 {
@@ -110,4 +111,5 @@ public class BindOrganizator : Editor
             }
         }
     }
-}
+} 
+#endif

@@ -11,14 +11,19 @@ using DG.Tweening.Plugins;
 using DG.Tweening;
 using DG.Tweening.Plugins.Core.PathCore;
 using System;
+using UnityEngine.UI;
 
-public class TempMonster : MonoBehaviour
+public class MonsterBase : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] Stats monsterStat;
+    [SerializeField] MonsterStat monsterStat;
+    
+
+    public Vector3 initialPos = new Vector3(-1000,-1000,-1000);
     Queue<Node> path = new Queue<Node>();
     [SerializeField] int recogDistance;
     int RecogDistance { get { return recogDistance * 10; } }
+    public float respawnSec = 0;
     Node playerNode
     {
         get { return Player.Instance.playerLevelInfo.stat.standingNode; }
@@ -29,50 +34,73 @@ public class TempMonster : MonoBehaviour
     private SpriteRenderer monsterSR;
     [SerializeField] private float searchTimer;
     [SerializeField] private float searchDelay;
+    [SerializeField] private bool alreadyResearch;
+    private float baseEXP = 50;
+    private float jobEXP = 50;
     public Node CurrentNode
     {
         get { return monsterStat.standingNode; }
         set
         {
             lastNode = monsterStat.standingNode;
+            //직전노드에 이 몬스터가 자료헹에 들어가 있다면 null로 바꿔줌,그게 아니면 원래 Stat을 유지\
+            if (monsterStat.standingNode == null) return;
             monsterStat.standingNode.CharacterOnNode = monsterStat.standingNode.CharacterOnNode == monsterStat ? null : monsterStat.standingNode.CharacterOnNode;
             monsterStat.standingNode = value;
+            if (monsterStat.standingNode == null) return;
             monsterStat.standingNode.CharacterOnNode = monsterStat;
         }
     }
 
-    void Start()
+    public void Start()
     {
-        monsterStat = new Stats(GridManager.GetInstance().PositionToNode(transform.position), 30, 10, 1, 3, 10, 1);
+        if(initialPos == Vector3.one*(-1000)) initialPos = transform.position;
+
+        monsterStat = new MonsterStat(GridManager.GetInstance().PositionToNode(initialPos), 30, 10, 1, 3, 10, 1);
         transform.position = new Vector3(monsterStat.standingNode.nodeCenterPosition.x, monsterStat.standingNode.nodeFloor + 1.5f, monsterStat.standingNode.nodeCenterPosition.y);
         Debug.Log(monsterStat.standingNode.nodeCenterPosition);
+
         monsterSR = GetComponent<SpriteRenderer>();
+        monsterStat.dieFunctions = null;
+        monsterStat.dieFunctions += MonsterDie;
     }
     private void Update()
     {
         if (IsInRange(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition, RecogDistance))
         {
+            //공격로직
             searchTimer += Time.deltaTime;
-
+            monsterStat.basicAttackTimer += Time.deltaTime;
+            if(monsterStat.attackSpeed <= monsterStat.basicAttackTimer)
+            {
+                if (IsInRange(monsterStat.standingNode.nodeCenterPosition,playerNode.nodeCenterPosition,monsterStat.CharactorAttackRange))
+                {
+                    if (Player.Instance.playerLevelInfo.stat.isCharacterDie) return;
+                    Player.Instance.playerLevelInfo.stat.HP -= monsterStat.attackDamage;
+                    monsterStat.basicAttackTimer = 0;
+                    return;
+                }
+            }
+            //이동로직
             if (searchTimer > searchDelay)
             {
                 if (!isMonsterMoving)
                 {
                     if (blockingNode != null)
                     {
-                        if (blockingNode.CharacterOnNode != null&& blockingNode.CharacterOnNode != monsterStat) return;
+                        
+                        if (blockingNode.CharacterOnNode != null&& blockingNode.CharacterOnNode != monsterStat)
+                        {
+                            if(!alreadyResearch)
+                            {
+                                alreadyResearch = true;
+                                MoveOrder();
+                            }
+                            return;
+                        }
                     }
+                    MoveOrder();
 
-                    LinkedList<Node> list = PathFinding(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition);
-                    if (list.Count > 0)
-                    {
-                        if (list.First() == this.CurrentNode) list.RemoveFirst();
-                        if (list.Last() == this.playerNode) list.RemoveLast();
-
-
-                        path = new Queue<Node>(list);
-                        if (path.Count > 0) { StartCoroutine(Movement(path)); }
-                    }
                 }
             }
             if (searchTimer > searchDelay)
@@ -80,7 +108,10 @@ public class TempMonster : MonoBehaviour
                 searchTimer = 0;
             }
         }
-
+        if (monsterStat.isCharacterDamaged)
+        {
+            monsterStat.HPBar.transform.position = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + monsterSR.bounds.size.y, transform.position.z));
+        }
 
     }
     private bool IsInRange(Vector2Int startPos, Vector2Int endPos, int distance)
@@ -102,6 +133,26 @@ public class TempMonster : MonoBehaviour
         {
             Gizmos.color = Color.cyan;
             Gizmos.DrawCube(new Vector3(tempNodeArray[i].nodeCenterPosition.x, transform.position.y, tempNodeArray[i].nodeCenterPosition.y), Vector3.one);
+        }
+    }
+    public void MonsterDie()
+    {
+        MonsterManager.GetInstance().AddRespawnList(this);
+        Player.Instance.playerLevelInfo.GetBaseEXP(baseEXP);
+        Player.Instance.playerLevelInfo.GetJobEXP(jobEXP);
+        monsterStat.HPBar = null;
+    }
+    public void MoveOrder()
+    {
+        LinkedList<Node> list = PathFinding(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition);
+        if (list.Count > 0)
+        {
+            if (list.First() == this.CurrentNode) list.RemoveFirst();
+            if (list.Last() == this.playerNode) list.RemoveLast();
+
+
+            path = new Queue<Node>(list);
+            if (path.Count > 0) { StartCoroutine(Movement(path)); }
         }
     }
 
@@ -159,6 +210,7 @@ public class TempMonster : MonoBehaviour
             lastStandingPos.y += monsterSR.bounds.size.y;
             transform.position = lastStandingPos;
         }
+        alreadyResearch = false;
         isMonsterMoving = false;
     }
     public LinkedList<Node> PathFinding(Vector2Int startPos, Vector2Int endPos)
@@ -173,7 +225,11 @@ public class TempMonster : MonoBehaviour
             if(GridManager.GetInstance().grids[endPosList[i]].CharacterOnNode == null)
             {
                 GridManager.GetInstance().grids[endPosList[i]].SetGH(startPos, endPosList[i]);
-                if (GridManager.GetInstance().grids[endPosList[i]].F < lowerstF) endPos = endPosList[i];
+                if (GridManager.GetInstance().grids[endPosList[i]].F < lowerstF)
+                {
+                    lowerstF = GridManager.GetInstance().grids[endPosList[i]].F;
+                    endPos = endPosList[i];
+                }
             }
         }
         // 도착지(endPos)가 Grid에 없을 경우 빈 리스트 반환

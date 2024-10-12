@@ -7,6 +7,9 @@ using PlayerDefines;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.IO;
+using UnityEditor;
+using Unity.VisualScripting;
+using System.Threading;
 
 /// <summary>
 /// 메니저 템플릿화
@@ -415,15 +418,15 @@ public class GridManager : Manager<GridManager>
         }
         return tempVec;
     }
-    //원거리 평타 공격 미리 구현
-    public bool AttackOrder(Stats attackerStat,Stats targetStat,byte range)
+    //원거리 평타 공격 미리 구현,원거리 로직 잘못된듯 ㅎㅎ;;
+    public bool AttackOrder(Stats attackerStat,Stats targetStat,int range)
     {
         if (attackerStat.target != targetStat)
         {
             attackerStat.target = targetStat;
         }
 
-        if(range == 1)
+        if(range == 10)
         {
             if (IsMeleeAttackAble(attackerStat.standingNode, targetStat.standingNode))
             {
@@ -452,40 +455,16 @@ public class GridManager : Manager<GridManager>
             return false;
         }
     }
-    public bool IsInRange(Stats attackerStat, Stats targetStat, byte range)
+    public bool IsInRange(Node attackerNode, Node targetNode, int range)
     {
-        if (attackerStat.target != targetStat)
-        {
-            attackerStat.target = targetStat;
-        }
+        //GridManager의 GetDistance와 같은 식, 정적메모리 접근 과중화를 막기 위해 별도로 작성함
+        // 두 점 사이의 x와 y 좌표 차이 계산
+        Vector2Int dist = new Vector2Int(Mathf.Abs(attackerNode.nodeCenterPosition.x - targetNode.nodeCenterPosition.x),
+            Mathf.Abs(attackerNode.nodeCenterPosition.y - targetNode.nodeCenterPosition.y));
 
-        if (range == 1)
-        {
-            if (IsMeleeAttackAble(attackerStat.standingNode, targetStat.standingNode))
-            {
-                if (targetStat.isCharacterDie)
-                {
-                    return false;
-                }
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            LinkedList<Node> tempList = GridManager.instance.PathFinding(attackerStat.standingNode.nodeCenterPosition,
-                targetStat.standingNode.nodeCenterPosition);
-
-            if (tempList.Max(node => node.H) <= range)
-            {
-                //여기다가 스테이트머신 attack 넣으면됨
-                return true;
-            }
-            return false;
-        }
+        //         10 * (dist.x + dist.y) + (14 - 2 * 10) * Mathf.Min(dist.x, dist.y) == 대각선 거리 계산 (두 점 사이의 가장 큰 차이 값)
+        if (10 * (dist.x + dist.y) + (14 - 2 * 10) * Mathf.Min(dist.x, dist.y) <= range) return true;
+        else return false;
     }
     /// <summary>
     /// 목표 노드가 캐릭터 근처에 있으면 true, 없으면 false를 리턴
@@ -562,6 +541,74 @@ public class UIManager : Manager<UIManager>
             return outerCastBar;
         }
     }
+    private Slider playerHPBar;
+    private Slider PlayerHPBar
+    {
+        get 
+        {
+            if (playerHPBar == null) playerHPBar = MainCanvas.Find("PlayerHPBar").GetComponent<Slider>();
+            return playerHPBar;
+        }
+    }
+    private Text hpText;
+    private Text HpText
+    {
+        get 
+        {
+            if (hpText == null)
+            {
+                hpText = PlayerHPBar.transform.Find("SliderText").GetComponent<Text>();
+            }
+            return hpText;
+        }
+    }
+    /// <summary>
+    /// Max,CurrntHP
+    /// </summary>
+    public (float,float) PlayerMaxCurrHP
+    {
+        set 
+        { 
+            PlayerHPBar.maxValue = value.Item1;
+            PlayerHPBar.value = value.Item2;
+            HpText.text = $"{value.Item2}/{value.Item1}";
+        }
+    }
+
+    private Slider playerSPBar;
+    private Slider PlayerSPBar
+    {
+        get 
+        {
+            if (playerSPBar == null) playerSPBar = MainCanvas.Find("PlayerSPBar").GetComponent<Slider>();
+            return playerSPBar;
+        }
+    }
+    private Text spText;
+    private Text SpText
+    {
+        get 
+        {
+            if (spText == null)
+            {
+                spText = PlayerSPBar.transform.Find("SliderText").GetComponent<Text>();
+            }
+            return spText;
+        }
+    }
+    /// <summary>
+    /// Max,CurrntHP
+    /// </summary>
+    public (float,float) PlayerMaxCurrSP
+    {
+        set 
+        { 
+            PlayerSPBar.maxValue = value.Item1;
+            PlayerSPBar.value = value.Item2;
+            SpText.text = $"{value.Item2}/{value.Item1}";
+        }
+    }
+
     private Image innerCastBar;
     public Image InnerCastBar 
     {
@@ -573,6 +620,32 @@ public class UIManager : Manager<UIManager>
             }
             return innerCastBar;
         }
+    }
+    Slider MonsterHPBarOrigin
+    {
+        get { return MainCanvas.Find("MonsterHPBar").GetComponent<Slider>(); }
+    }
+    Queue<Slider> monsterHPBarPool = new Queue<Slider>();
+    public void HPBarEnqueue(Slider target)
+    {
+        target.transform.position = new Vector3(9990, 999, 9999);
+        monsterHPBarPool.Enqueue(target);
+        target.gameObject.SetActive(false);
+    }
+    public Slider HPBarDequeue()
+    {
+        if(monsterHPBarPool.Count > 0)
+        {
+            Slider temp = monsterHPBarPool.Dequeue();
+            temp.gameObject.SetActive(true);
+            return temp;
+        }
+        else
+        {
+            Slider newOBJ =  GameObject.Instantiate(MonsterHPBarOrigin.gameObject,MainCanvas).GetComponent<Slider>();
+            return newOBJ;
+        }
+
     }
 
     public void SetCastingBarValue(float max,float curr)
@@ -634,4 +707,33 @@ public class SkillManager : Manager<SkillManager>
         }
         return null;
     }
+}
+public class MonsterManager : Manager<MonsterManager>
+{
+    List<RespawnBox> respawnMonsters = new List<RespawnBox>();
+    public void AddRespawnList(MonsterBase targetMonster)
+    {
+        targetMonster.gameObject.SetActive(false);
+        respawnMonsters.Add(new RespawnBox(targetMonster, targetMonster.respawnSec));
+        targetMonster.CurrentNode = null;
+    }
+    public void Respawn(int target)
+    {
+        respawnMonsters[target].monster.Start();
+        respawnMonsters[target].monster.gameObject.SetActive(true);
+        respawnMonsters.RemoveAt(target);
+    }
+    public void UpdateRespawnTime(float deltatime)
+    {
+        for (int i = respawnMonsters.Count-1; i >= 0; i--)
+        {
+            respawnMonsters[i].UntillRespawn(deltatime);
+            if (respawnMonsters[i].leftRespawnTime <= 0)
+            {
+                Respawn(i);
+                break;
+            }
+        }
+    }
+
 }
