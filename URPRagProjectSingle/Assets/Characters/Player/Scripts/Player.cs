@@ -15,7 +15,6 @@ using DG.Tweening.Plugins;
 using PlayerDefines.Stat;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
-using static ItemEnums;
 
 
 public class Player : MonoBehaviour
@@ -103,16 +102,16 @@ public class Player : MonoBehaviour
     public void Awake()
     {
         instance = this;
-
+        if (playerLevelInfo.stat == null) playerLevelInfo.stat = new PlayerStat(currentNode, 100, 100, 3, 1, 10, 1, 100);
         playerSR = GetComponent<SpriteRenderer>();
-
+        playerLevelInfo.baseLevelUP += playerLevelInfo.BaseLevelUP;
+        playerLevelInfo.jobLevelUP += playerLevelInfo.JobLevelUP;
         //쿨타임 부분 수정필요
     }
     private void Start()
     {
-        if (playerLevelInfo.stat == null) playerLevelInfo.stat = new PlayerStat(currentNode, 100,100, 3, 1, 10,1,100);
-        playerLevelInfo.baseLevelUP += playerLevelInfo.BaseLevelUP;
-        playerLevelInfo.jobLevelUP += playerLevelInfo.JobLevelUP;
+
+
         InstallizeStates();
         SetCurrentNodeAndPosition();
         playerLevelInfo.stat.moveFunction += PlayerMoveOrder;
@@ -567,13 +566,13 @@ public class Player : MonoBehaviour
 }
 [System.Serializable]
 public class PlayerLevelInfo
-{
-    public PlayerStat stat;                                                 //플레이어 스텟
+{                                                 
+    public PlayerStat stat;                                             //플레이어 스텟
     public PlayerSkillTreeForPhase[] playerOwnSkills = new PlayerSkillTreeForPhase[0];     //플레이어가 가지고 있는 스킬 리스트
     #region 베이스 레벨 관련 변수
     public Action baseLevelUP, jobLevelUP;
     public byte baseLevel;
-    private byte maxBaseLevel = 99;
+    [SerializeField]private byte maxBaseLevel = 99;
     private float MaxBaseExp
     {
         get
@@ -592,12 +591,12 @@ public class PlayerLevelInfo
                 currBaseExp = 0;
                 return;
             }
-            while (value > maxBaseLevel)
+            while (value > MaxBaseExp)
             {
                 value = value - MaxBaseExp;
                 currBaseExp = 0;
-                Debug.Log("다음 잡 맥스경험치" + MaxBaseExp);
-                Debug.Log("현재 경험치" + (currBaseExp + value));
+                Debug.Log("다음 베이스 맥스경험치" + MaxBaseExp);
+                Debug.Log("현재 베이스 경험치" + (currBaseExp + value));
                 if (value > 0) baseLevelUP.Invoke();
                 else break;
 
@@ -605,7 +604,7 @@ public class PlayerLevelInfo
             currBaseExp = value;
         }
     }
-    short usedStatusPoint =0;
+    public short usedStatusPoint =0;
     private short statusPoint;
     /// <summary>
     /// Get == statusPoint-usedStatusPoint
@@ -616,13 +615,6 @@ public class PlayerLevelInfo
         get
         {
             return (short)(statusPoint - usedStatusPoint);
-        }
-        set 
-        {
-            if (value<= statusPoint)
-            {
-                usedStatusPoint = value;
-            }
         }
     }
     

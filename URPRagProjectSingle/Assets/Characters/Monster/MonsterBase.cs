@@ -35,7 +35,7 @@ public class MonsterBase : MonoBehaviour
     [SerializeField] private float searchTimer;
     [SerializeField] private float searchDelay;
     [SerializeField] private bool alreadyResearch;
-    private float baseEXP = 50;
+    private float baseEXP = 1000;
     private float jobEXP = 50;
     public Node CurrentNode
     {

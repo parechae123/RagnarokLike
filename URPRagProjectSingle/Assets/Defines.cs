@@ -363,49 +363,49 @@ public class BasicStatus
     /// </summary>
     /// <param name="statType">스텟 종류를 넣자</param>
     /// <param name="statusPoint">PlayerStats의 LeftStatusPoint을 넣어줌</param>
-    public void PureStatUP(BasicStatTypes statType,ref short statusPoint)
+    public void PureStatUP(BasicStatTypes statType)
     {
         switch (statType)
         {
             case BasicStatTypes.Str:
-                if(GetRequrePoint(pureStrength)<= statusPoint)
+                if(GetRequrePoint(pureStrength)<= Player.Instance.playerLevelInfo.LeftStatusPoint)
                 {
-                    statusPoint += GetRequrePoint(pureStrength);
+                    Player.Instance.playerLevelInfo.usedStatusPoint += GetRequrePoint(pureStrength);
                     pureStrength++;
                 }
                 break;
             case BasicStatTypes.AGI:
-                if (GetRequrePoint(pureAgility) <= statusPoint)
+                if (GetRequrePoint(pureAgility) <= Player.Instance.playerLevelInfo.LeftStatusPoint)
                 {
-                    statusPoint += GetRequrePoint(pureAgility);
+                    Player.Instance.playerLevelInfo.usedStatusPoint += GetRequrePoint(pureAgility);
                     pureAgility++;
                 }
                 break;
             case BasicStatTypes.Vit:
-                if (GetRequrePoint(pureVitality) <= statusPoint)
+                if (GetRequrePoint(pureVitality) <= Player.Instance.playerLevelInfo.LeftStatusPoint)
                 {
-                    statusPoint += GetRequrePoint(pureVitality);
+                    Player.Instance.playerLevelInfo.usedStatusPoint += GetRequrePoint(pureVitality);
                     pureVitality++;
                 }
                 break;
-            case BasicStatTypes.Dex:
-                if (GetRequrePoint(pureDexterity) <= statusPoint)
-                {
-                    statusPoint += GetRequrePoint(pureDexterity);
-                    pureDexterity++;
-                }
-                break;
             case BasicStatTypes.Int:
-                if (GetRequrePoint(pureInteligence) <= statusPoint)
+                if (GetRequrePoint(pureInteligence) <= Player.Instance.playerLevelInfo.LeftStatusPoint)
                 {
-                    statusPoint += GetRequrePoint(pureInteligence);
+                    Player.Instance.playerLevelInfo.usedStatusPoint += GetRequrePoint(pureInteligence);
                     pureInteligence++;
                 }
                 break;
-            case BasicStatTypes.Luk:
-                if (GetRequrePoint(pureLuck) <= statusPoint)
+            case BasicStatTypes.Dex:
+                if (GetRequrePoint(pureDexterity) <= Player.Instance.playerLevelInfo.LeftStatusPoint)
                 {
-                    statusPoint += GetRequrePoint(pureLuck);
+                    Player.Instance.playerLevelInfo.usedStatusPoint += GetRequrePoint(pureDexterity);
+                    pureDexterity++;
+                }
+                break;
+            case BasicStatTypes.Luk:
+                if (GetRequrePoint(pureLuck) <= Player.Instance.playerLevelInfo.LeftStatusPoint)
+                {
+                    Player.Instance.playerLevelInfo.usedStatusPoint += GetRequrePoint(pureLuck);
                     pureLuck++;
                 }
                 break;

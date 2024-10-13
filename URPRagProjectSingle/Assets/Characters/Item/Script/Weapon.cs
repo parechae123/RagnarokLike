@@ -53,8 +53,8 @@ public class ItemEnums
         Str,
         AGI,
         Vit,
-        Dex,
         Int,
+        Dex,
         Luk,
     }
 }

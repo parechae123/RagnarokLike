@@ -124,6 +124,8 @@ namespace PlayerDefines
             public override void Execute()
             {
                 skillTimer += Time.deltaTime;
+                
+
                 if (Player.Instance.playerLevelInfo.stat.TotalAttackSpeed < skillTimer)
                 {
                     skillTimer = 0;
@@ -135,6 +137,7 @@ namespace PlayerDefines
                     {
                         Player.Instance.playerLevelInfo.stat.AttackTarget();
                     }
+                    if (Player.Instance.playerLevelInfo.stat.target.isCharacterDie) Player.Instance.StateMachine.ChangeState(nextStateName);
                 }
 
             }
@@ -327,7 +330,19 @@ namespace PlayerDefines
 
         public class PlayerStat : Stats
         {
-            public BasicStatus basicStatus = new BasicStatus();
+            public BasicStatus basicStatus;
+            public BasicStatus BasicStatus
+            {
+                get
+                {
+                    if (basicStatus == null)
+                    {
+                        basicStatus = new BasicStatus();
+                    }
+                    return basicStatus;
+                }
+            }
+
             public EquipStat equipStat;
             public PlayerStat(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange,float evasion) : base(initializeNode, hp,sp, moveSpeed, attackSpeed, attackDamage,attackRange,evasion)
             {
@@ -337,18 +352,18 @@ namespace PlayerDefines
             //어택데미지
             public float TotalAD
             {
-                get { return attackDamage + (basicStatus.Strength * 3) + (basicStatus.Luck * 0.6f); }
+                get { return attackDamage + (BasicStatus.Strength * 3) + (BasicStatus.Luck * 0.6f); }
             }
             public float TotalAP
             {
                 //현재 AP와 int값에만 영향받음, 추후 장비영향 추가하여야함
-                get { return abilityPower + (basicStatus.Inteligence*2) + (basicStatus.Luck * 0.4f); }
+                get { return abilityPower + (BasicStatus.Inteligence*2) + (BasicStatus.Luck * 0.4f); }
                 set { if(value>=0) abilityPower = value; }
             }
             //적중률
             public int TotalAccuracy
             {
-                get { return (int)(accuracy + (basicStatus.Dexterity * 1.5f) + (basicStatus.Luck * 0.3f));}
+                get { return (int)(accuracy + (BasicStatus.Dexterity * 1.5f) + (BasicStatus.Luck * 0.3f));}
             }
 
             //공격속도
@@ -356,7 +371,7 @@ namespace PlayerDefines
             {
                 get 
                 {
-                    float tempAS = attackSpeed - (basicStatus.Agility * 0.06f);
+                    float tempAS = attackSpeed - (BasicStatus.Agility * 0.06f);
                     if (tempAS < 0.3f) return 0.3f;
                     return tempAS;
                 }
@@ -366,7 +381,7 @@ namespace PlayerDefines
             {
                 get 
                 {
-                    float tempCT = (1 - (basicStatus.Dexterity * 0.006f)) - (basicStatus.Inteligence * 0.003f);
+                    float tempCT = (1 - (BasicStatus.Dexterity * 0.006f)) - (BasicStatus.Inteligence * 0.003f);
                     return tempCT <0? 0:tempCT;
                 }
             }
@@ -375,7 +390,7 @@ namespace PlayerDefines
             {
                 get 
                 {
-                    float tempGC = (1 - (basicStatus.Agility * 0.006f));
+                    float tempGC = (1 - (BasicStatus.Agility * 0.006f));
                     return tempGC < 0? 0: tempGC; 
                 }
             }
@@ -383,13 +398,13 @@ namespace PlayerDefines
             {
                 get
                 {
-                    return defaultEvasion + ((basicStatus.Agility / 3) * 2) + (basicStatus.Luck  * 0.4f);
+                    return defaultEvasion + ((BasicStatus.Agility / 3) * 2) + (BasicStatus.Luck  * 0.4f);
                 }
             }
 
             public int CriChance
             {
-                get { return (int)(basicStatus.Luck * 0.8f);} 
+                get { return (int)(BasicStatus.Luck * 0.8f);} 
             }
             public float defaultCriDamage = 2;
             public float CriDamage
@@ -451,12 +466,12 @@ namespace PlayerDefines
 
                 if (UnityEngine.Random.Range(1, 101) <= CriChance) 
                 {
-                    this.target.HP -= (attackDamage*CriDamage);
+                    this.target.HP -= (TotalAD*CriDamage);
                     //TODO : 크리티컬 전용 데미지 텍스트 추가요망
                 }
                 else
                 {
-                    this.target.HP -= attackDamage;
+                    this.target.HP -= TotalAD;
                     //TODO : 데미지 텍스트 추가요망
                 }
 
