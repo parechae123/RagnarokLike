@@ -2,7 +2,9 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.UI;
 namespace PlayerDefines
@@ -65,6 +67,7 @@ namespace PlayerDefines
             public virtual void Exit()
             {
                 skillTimer = skillCoolTime;
+                
             }
 
 
@@ -111,7 +114,8 @@ namespace PlayerDefines
             }
             public override void SetAnimationSpeed(Animator anim)
             {
-                anim.speed = Player.Instance.playerLevelInfo.stat.attackSpeed;
+                // TODO : 중간메모
+                anim.speed = 1f/Player.Instance.playerLevelInfo.stat.TotalAttackSpeed;
             }
             public override void Enter()
             {
@@ -120,7 +124,7 @@ namespace PlayerDefines
             public override void Execute()
             {
                 skillTimer += Time.deltaTime;
-                if (Player.Instance.playerLevelInfo.stat.attackSpeed < skillTimer)
+                if (Player.Instance.playerLevelInfo.stat.TotalAttackSpeed < skillTimer)
                 {
                     skillTimer = 0;
                     if (Player.Instance.playerLevelInfo.stat.target.isCharacterDie)
@@ -136,7 +140,7 @@ namespace PlayerDefines
             }
             public override void Exit()
             {
-                skillTimer = Player.Instance.playerLevelInfo.stat.attackSpeed;
+                skillTimer = 0;
             }
         }
         public class CastingState : PlayerStates
@@ -150,8 +154,7 @@ namespace PlayerDefines
             }
             public override void SetAnimationSpeed(Animator anim)
             {
-                anim.speed = Player.Instance.playerLevelInfo.stat.attackSpeed;
-                //TODO : status int,dex 구현 시 castingTime으로 변환해야함
+                anim.speed = 1+(1* Player.Instance.playerLevelInfo.stat.CastTimePercent);
             }
             public override void Enter()
             {
@@ -217,7 +220,7 @@ namespace PlayerDefines
             public Action dieFunctions;//TODO : 사망 연출 등록필요
 
             
-            public Stats(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange)
+            public Stats(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange,float evasion)
             {
                 standingNode = initializeNode;
                 standingNode.CharacterOnNode = this;
@@ -229,12 +232,19 @@ namespace PlayerDefines
                 this.moveSpeed = moveSpeed;
                 this.attackSpeed = attackSpeed;
                 this.attackDamage = attackDamage;
+                defaultEvasion = evasion;
             }
             public Node standingNode
             {
                 get;
                 set;
             }
+            protected float defaultEvasion;
+            public virtual float Evasion
+            {
+                get { return defaultEvasion; }
+            }
+
             protected float maxHP;
             protected float hp;
             public virtual float HP
@@ -271,8 +281,11 @@ namespace PlayerDefines
                 get { return Player.Instance.playerLevelInfo.stat.moveSpeed; }
                 set { }
             } //초당 이동하는 타일 수
+
+            public float attackDamage;//공격력
             public float abilityPower;
-            public float attackDamage;
+            public float accuracy = 50; //명중률
+
             public float attackSpeed;
             public float basicAttackTimer;
             private byte charactorAttackRange;
@@ -280,17 +293,25 @@ namespace PlayerDefines
             {
                 get { return charactorAttackRange*10; }
             }
-            public float CastTimePercent
-            {
-                get { return 0; /*DexInt같은 능력치 추가 후 바꿔야함*/}
-            }
+
             
 
             public Stats target;
-            public void AttackTarget(float damage = float.MinValue)
+            public virtual void AttackTarget(Stats target)
             {
+                this.target = target;
+                if (target == null) return;
 
-                target.HP -= damage == float.MinValue ? attackDamage : damage;
+                //타겟 회피율 계산
+                if (accuracy < target.Evasion)
+                {
+                    if (UnityEngine.Random.Range(1, 101) >  target.Evasion- accuracy)
+                    {
+                        //TODO : MISS! DamageText 추가요망
+                        return;
+                    }
+                }
+                target.HP -= attackDamage;
             }
 
             public virtual bool IsEnoughSP(float spCost)
@@ -303,15 +324,80 @@ namespace PlayerDefines
                 return false;
             }
         }
+
         public class PlayerStat : Stats
         {
-            public BasicStatus basicStatus;
+            public BasicStatus basicStatus = new BasicStatus();
             public EquipStat equipStat;
-            public PlayerStat(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange) : base(initializeNode, hp,sp, moveSpeed, attackSpeed, attackDamage,attackRange)
+            public PlayerStat(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange,float evasion) : base(initializeNode, hp,sp, moveSpeed, attackSpeed, attackDamage,attackRange,evasion)
             {
                 HP = hp;
                 SP = sp;
             }
+            //어택데미지
+            public float TotalAD
+            {
+                get { return attackDamage + (basicStatus.Strength * 3) + (basicStatus.Luck * 0.6f); }
+            }
+            public float TotalAP
+            {
+                //현재 AP와 int값에만 영향받음, 추후 장비영향 추가하여야함
+                get { return abilityPower + (basicStatus.Inteligence*2) + (basicStatus.Luck * 0.4f); }
+                set { if(value>=0) abilityPower = value; }
+            }
+            //적중률
+            public int TotalAccuracy
+            {
+                get { return (int)(accuracy + (basicStatus.Dexterity * 1.5f) + (basicStatus.Luck * 0.3f));}
+            }
+
+            //공격속도
+            public float TotalAttackSpeed
+            {
+                get 
+                {
+                    float tempAS = attackSpeed - (basicStatus.Agility * 0.06f);
+                    if (tempAS < 0.3f) return 0.3f;
+                    return tempAS;
+                }
+            }
+            //캐스팅 타임 배율
+            public float CastTimePercent
+            {
+                get 
+                {
+                    float tempCT = (1 - (basicStatus.Dexterity * 0.006f)) - (basicStatus.Inteligence * 0.003f);
+                    return tempCT <0? 0:tempCT;
+                }
+            }
+            //글로벌 쿨타임 배율
+            public float GlobalCooltimePercent
+            {
+                get 
+                {
+                    float tempGC = (1 - (basicStatus.Agility * 0.006f));
+                    return tempGC < 0? 0: tempGC; 
+                }
+            }
+            public override float Evasion
+            {
+                get
+                {
+                    return defaultEvasion + ((basicStatus.Agility / 3) * 2) + (basicStatus.Luck  * 0.4f);
+                }
+            }
+
+            public int CriChance
+            {
+                get { return (int)(basicStatus.Luck * 0.8f);} 
+            }
+            public float defaultCriDamage = 2;
+            public float CriDamage
+            {
+                //TODO : 추후 장비 능력치 영향을 받도록 조정필요
+                get { return defaultCriDamage; }
+            }
+
             public override float HP
             {
                 get
@@ -349,10 +435,36 @@ namespace PlayerDefines
                 }
                 return false;
             }
+            public override void AttackTarget(Stats target = null)
+            {
+                if (target != null) { this.target = target; }
+                if (this.target == null) return;
+                if(TotalAccuracy < this.target.Evasion)
+                {
+                    if (UnityEngine.Random.Range(1, 101) > this.target.Evasion - TotalAccuracy)
+                    {
+                        //TODO : MISS! DamageText 추가요망
+                        return;
+                    }
+                }
+
+
+                if (UnityEngine.Random.Range(1, 101) <= CriChance) 
+                {
+                    this.target.HP -= (attackDamage*CriDamage);
+                    //TODO : 크리티컬 전용 데미지 텍스트 추가요망
+                }
+                else
+                {
+                    this.target.HP -= attackDamage;
+                    //TODO : 데미지 텍스트 추가요망
+                }
+
+            }
         }
         public class MonsterStat : Stats
         {
-            public MonsterStat(Node initializeNode, float hp, float sp, float moveSpeed, float attackSpeed, float attackDamage, byte attackRange) : base(initializeNode, hp, sp, moveSpeed, attackSpeed, attackDamage, attackRange)
+            public MonsterStat(Node initializeNode, float hp, float sp, float moveSpeed, float attackSpeed, float attackDamage, byte attackRange, float evasion) : base(initializeNode, hp, sp, moveSpeed, attackSpeed, attackDamage, attackRange,evasion)
             {
                 HP = hp;
                 SP = sp;
@@ -391,8 +503,9 @@ namespace PlayerDefines
                     if (isCharacterDie)
                     {
                         dieFunctions?.Invoke();
+                        return;
                     }
-                    if(HPBar == null) HPBar = UIManager.GetInstance().HPBarDequeue();
+                    if (HPBar == null) HPBar = UIManager.GetInstance().HPBarDequeue();
                     HPBar.value = hp;
                     HPBar.maxValue = maxHP;
                 }

@@ -110,7 +110,7 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
-        if (playerLevelInfo.stat == null) playerLevelInfo.stat = new PlayerStat(currentNode, 100,100, 3, 1, 10,1);
+        if (playerLevelInfo.stat == null) playerLevelInfo.stat = new PlayerStat(currentNode, 100,100, 3, 1, 10,1,100);
         playerLevelInfo.baseLevelUP += playerLevelInfo.BaseLevelUP;
         playerLevelInfo.jobLevelUP += playerLevelInfo.JobLevelUP;
         InstallizeStates();
@@ -606,34 +606,26 @@ public class PlayerLevelInfo
         }
     }
     short usedStatusPoint =0;
-    private short statutsPoint;
+    private short statusPoint;
+    /// <summary>
+    /// Get == statusPoint-usedStatusPoint
+    /// Set == usedStatusPoint
+    /// </summary>
     public short LeftStatusPoint
     {
         get
         {
-            return (short)(statutsPoint - usedStatusPoint);
+            return (short)(statusPoint - usedStatusPoint);
         }
-    }
-    public void StatUP(BasicStatTypes statType)
-    {
-        switch (statType)
+        set 
         {
-            case BasicStatTypes.Str:
-                break;
-            case BasicStatTypes.AGI:
-                break;
-            case BasicStatTypes.Vit:
-                break;
-            case BasicStatTypes.Dex:
-                break;
-            case BasicStatTypes.Int:
-                break;
-            case BasicStatTypes.Luk:
-                break;
-            default:
-                break;
+            if (value<= statusPoint)
+            {
+                usedStatusPoint = value;
+            }
         }
     }
+    
     #endregion
 
 
@@ -686,7 +678,7 @@ public class PlayerLevelInfo
     #region BaseLevel관련 함수
     public void BaseLevelUP()
     {
-        statutsPoint += (short)(3 + (baseLevel / 5));
+        statusPoint += (short)(3 + (baseLevel / 5));
         baseLevel += 1;
     }
     public void GetBaseEXP(float exp)

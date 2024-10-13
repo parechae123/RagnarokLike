@@ -4,6 +4,7 @@ using PlayerDefines.States;
 using System;
 using UnityEditor;
 using UnityEngine;
+using static ItemEnums;
 
 namespace NeutralDefines
 {
@@ -116,6 +117,7 @@ namespace NeutralDefines
             }
             public void ChangeState(string newStateName)
             {
+                anim.speed = 1;
                 if (currentState == null)
                 {
                     currentState = SearchState("idleState");
@@ -130,6 +132,7 @@ namespace NeutralDefines
             }
             public void ChangeState(float castingTime,SkillInfoInGame skillInfo,Stats targetStat,Vector3 skillPos)
             {
+                anim.speed = 1;
                 if (currentState == null)
                 {
                     currentState = SearchState("idleState");
@@ -168,7 +171,7 @@ namespace NeutralDefines
 
                 currentState?.Exit();                   //이전 상태값을 빠져나간다
                 currentState = temp;               
-                currentState.durationTime = castingTime;
+                currentState.durationTime = castingTime*Player.Instance.playerLevelInfo.stat.CastTimePercent;
                 currentState?.Enter();                  //다음 상태값
                 AnimationChange();
             }
@@ -302,10 +305,117 @@ public class RespawnBox
 }
 public class BasicStatus
 {
-    int strength = 1;
-    int agility = 1;
-    int vitality = 1;
-    int dexterity = 1;
-    int inteligence = 1;
-    int luk = 1;
+    int changeAbleStrength = 0;
+    int pureStrength = 1;
+    public int GetPureStr { get { return pureStrength; } }
+    public int Strength
+    {
+        get { return changeAbleStrength + pureStrength; }
+        set { changeAbleStrength = value; }
+    }
+    
+    int changeAbleAgility = 0;
+    int pureAgility = 1;
+    public int GetPureAgi { get { return pureAgility; } }
+    public int Agility
+    {
+        get { return changeAbleAgility + pureAgility;}
+        set { changeAbleAgility = value; }
+    }
+    
+    int changeAbleVitality = 0;
+    int pureVitality = 1;
+    public int GetPureVit{get { return pureVitality; }}
+    public int Vitality
+    {
+        get { return changeAbleVitality + pureVitality; }
+        set { changeAbleVitality = value;}
+    }
+    
+    int changeAbleDexterity = 0;
+    int pureDexterity = 1;
+    public int GetPureDex{get { return pureDexterity; }}
+    public int Dexterity
+    {
+        get { return changeAbleDexterity + pureDexterity; }
+        set { changeAbleDexterity = value; }
+    }
+    
+    int changeAbleInteligence = 0;
+    int pureInteligence = 1;
+    public int GetPureInt{get { return pureInteligence; }}
+    public int Inteligence
+    {
+        get { return changeAbleInteligence + pureInteligence; }
+        set { changeAbleInteligence = value; }
+    }
+    
+    int changeAbleLuck = 0;
+    int pureLuck = 1;
+    public int GetPureLuk { get{ return pureLuck; } }
+    public int Luck
+    {
+        get { return changeAbleLuck + pureLuck; }
+        set { changeAbleLuck = value;}
+    }
+    /// <summary>
+    /// pureStat을 증가시키는 유일한 함수, (추후 UI에 연결해야함)
+    /// </summary>
+    /// <param name="statType">스텟 종류를 넣자</param>
+    /// <param name="statusPoint">PlayerStats의 LeftStatusPoint을 넣어줌</param>
+    public void PureStatUP(BasicStatTypes statType,ref short statusPoint)
+    {
+        switch (statType)
+        {
+            case BasicStatTypes.Str:
+                if(GetRequrePoint(pureStrength)<= statusPoint)
+                {
+                    statusPoint += GetRequrePoint(pureStrength);
+                    pureStrength++;
+                }
+                break;
+            case BasicStatTypes.AGI:
+                if (GetRequrePoint(pureAgility) <= statusPoint)
+                {
+                    statusPoint += GetRequrePoint(pureAgility);
+                    pureAgility++;
+                }
+                break;
+            case BasicStatTypes.Vit:
+                if (GetRequrePoint(pureVitality) <= statusPoint)
+                {
+                    statusPoint += GetRequrePoint(pureVitality);
+                    pureVitality++;
+                }
+                break;
+            case BasicStatTypes.Dex:
+                if (GetRequrePoint(pureDexterity) <= statusPoint)
+                {
+                    statusPoint += GetRequrePoint(pureDexterity);
+                    pureDexterity++;
+                }
+                break;
+            case BasicStatTypes.Int:
+                if (GetRequrePoint(pureInteligence) <= statusPoint)
+                {
+                    statusPoint += GetRequrePoint(pureInteligence);
+                    pureInteligence++;
+                }
+                break;
+            case BasicStatTypes.Luk:
+                if (GetRequrePoint(pureLuck) <= statusPoint)
+                {
+                    statusPoint += GetRequrePoint(pureLuck);
+                    pureLuck++;
+                }
+                break;
+            default:
+                Debug.LogError("지정되지 않은 스텟요소입니다");
+                break;
+        }
+    }
+    public short GetRequrePoint(int pureStat)
+    {
+        return (short)(2 + ((pureStat - 1) / 10));
+    }
 }

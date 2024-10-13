@@ -56,7 +56,7 @@ public class MonsterBase : MonoBehaviour
     {
         if(initialPos == Vector3.one*(-1000)) initialPos = transform.position;
 
-        monsterStat = new MonsterStat(GridManager.GetInstance().PositionToNode(initialPos), 30, 10, 1, 3, 10, 1);
+        monsterStat = new MonsterStat(GridManager.GetInstance().PositionToNode(initialPos), 30, 10, 1, 3, 10, 1,0);
         transform.position = new Vector3(monsterStat.standingNode.nodeCenterPosition.x, monsterStat.standingNode.nodeFloor + 1.5f, monsterStat.standingNode.nodeCenterPosition.y);
         Debug.Log(monsterStat.standingNode.nodeCenterPosition);
 
@@ -76,7 +76,7 @@ public class MonsterBase : MonoBehaviour
                 if (IsInRange(monsterStat.standingNode.nodeCenterPosition,playerNode.nodeCenterPosition,monsterStat.CharactorAttackRange))
                 {
                     if (Player.Instance.playerLevelInfo.stat.isCharacterDie) return;
-                    Player.Instance.playerLevelInfo.stat.HP -= monsterStat.attackDamage;
+                    monsterStat.AttackTarget(Player.Instance.playerLevelInfo.stat);
                     monsterStat.basicAttackTimer = 0;
                     return;
                 }

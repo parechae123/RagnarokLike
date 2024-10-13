@@ -418,14 +418,13 @@ public class GridManager : Manager<GridManager>
         }
         return tempVec;
     }
-    //원거리 평타 공격 미리 구현,원거리 로직 잘못된듯 ㅎㅎ;;
     public bool AttackOrder(Stats attackerStat,Stats targetStat,int range)
     {
         if (attackerStat.target != targetStat)
         {
             attackerStat.target = targetStat;
         }
-
+        if (targetStat == null || attackerStat == null) return false;
         if(range == 10)
         {
             if (IsMeleeAttackAble(attackerStat.standingNode, targetStat.standingNode))
