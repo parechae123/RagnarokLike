@@ -68,6 +68,7 @@ public class DataReader : MonoBehaviour
                         File.WriteAllText(jsonFilePath, json);
                         if (targetExcel == skillDetailSheet) skillDetailJson = File.Open(jsonFilePath, FileMode.Open);
                         else skillInfoJson = File.Open(jsonFilePath, FileMode.Open);
+                        //여기다가 다른 Asset자료형 추가해서 넣으면됨
                     }
 
                     Debug.Log("Excel file successfully converted to JSON.");

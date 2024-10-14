@@ -127,6 +127,7 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Keypad0))
         {
             playerLevelInfo.GetJobEXP(100);
+            playerLevelInfo.GetBaseEXP(10000);
         }
         KeyBoardBinding();
         StateMachine.CurrentState.Execute();
@@ -345,6 +346,7 @@ public class Player : MonoBehaviour
             {
                 target.DOKill();
                 targetNode = null;
+                target.position = CurrentNode.worldPos+(Vector3.up* (CurrentNode.nodeFloor + (playerSR.bounds.size.y) + 0.5f)); 
                 PlayerMoveOrder(path.wps[path.wpLengths.Length-1]);
                 return;
             }
