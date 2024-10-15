@@ -139,7 +139,7 @@ namespace NeutralDefines
                     currentState.Enter();
                     return;
                 }
-                
+
                 CastingState temp = (CastingState)SearchState("castingState");
                 if (currentState == temp) return;
                 skillPos.y += 0.9f;
@@ -168,7 +168,7 @@ namespace NeutralDefines
                 temp.casting += skillInfo.SkillCastTargetPlace;
                 temp.castPos = skillPos;
                 temp.targetStat = targetStat;
-
+                if(skillInfo.skillPosition != SkillPosition.self) Player.Instance.SetCharactorDirrection(Player.Instance.transform.position, skillPos);
                 currentState?.Exit();                   //이전 상태값을 빠져나간다
                 currentState = temp;               
                 currentState.durationTime = castingTime*Player.Instance.playerLevelInfo.stat.CastTimePercent;

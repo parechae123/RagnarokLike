@@ -224,7 +224,7 @@ public class Player : MonoBehaviour
 
         Path tempPath = new Path(PathType.Linear, tempNodePosArray, 1);
 
-        transform.DOKill();
+        transform.DOKill(false);
         arriveTime = tempNodePosArray.Length * moveSpeedPerSec;
         if (isMoveToAttack)
         {
@@ -244,7 +244,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear);
+            DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(()=>
+            {
+                stateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
+            });
         }
         return;
 
@@ -313,8 +316,8 @@ public class Player : MonoBehaviour
 
         arriveTime = tempNodePosArray.Length * moveSpeedPerSec;
 
-        transform.DOKill();
-        DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(() =>
+        transform.DOKill(false);
+        DOPath(transform, tempPath, arriveTime).SetEase(Ease.Linear).OnComplete(() =>
         {
             //현재 상태가 CastingState가 아닐 경우
             if (StateMachine.CurrentState != StateMachine.SearchState("castingState"))
@@ -344,10 +347,11 @@ public class Player : MonoBehaviour
             }
             else
             {
-                target.DOKill();
+                target.DOKill(false);
                 targetNode = null;
-                target.position = CurrentNode.worldPos+(Vector3.up* (CurrentNode.nodeFloor + (playerSR.bounds.size.y) + 0.5f)); 
-                PlayerMoveOrder(path.wps[path.wpLengths.Length-1]);
+                target.position = CurrentNode.worldPos+(Vector3.up* (CurrentNode.nodeFloor + (playerSR.bounds.size.y)));
+                //PlayerMoveOrder(path.wps[path.wpLengths.Length-1]);
+                stateMachine.ChangeState("idleState");
                 return;
             }
             target.position = x;
@@ -532,7 +536,10 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1)) SkillObj = null;
     }
-
+    public void SetCharactorDirrection(Vector3 start, Vector3 end)
+    {
+        stateMachine.SetDirrection(ref playerLookDir, start, end);
+    }
 
     public void PlayerMoveOrder(Vector3 targetPosition, bool isMoveToAttack = false)
     {
