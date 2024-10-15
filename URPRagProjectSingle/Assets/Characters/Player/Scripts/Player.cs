@@ -674,10 +674,12 @@ public class PlayerLevelInfo
     {
         statusPoint += (short)(3 + (baseLevel / 5));
         baseLevel += 1;
+        UIManager.GetInstance().UpdateLevel();
     }
     public void GetBaseEXP(float exp)
     {
         CurrBaseExp += exp;
+        UIManager.GetInstance().UpdateExp(CurrBaseExp, MaxBaseExp, CurrJobExp, MaxJobExp);
     }
     #endregion
     #region JobLevel관련 함수
@@ -723,10 +725,12 @@ public class PlayerLevelInfo
     {
         skillPoint += 1;
         jobLevel += 1;
+        UIManager.GetInstance().UpdateLevel();
     }
     public void GetJobEXP(float exp)
     {
         CurrJobExp += exp;
+        UIManager.GetInstance().UpdateExp(CurrBaseExp, MaxBaseExp, CurrJobExp, MaxJobExp);
     }
     #endregion
     /// <summary>

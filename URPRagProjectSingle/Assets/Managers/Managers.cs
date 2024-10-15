@@ -575,6 +575,48 @@ public class UIManager : Manager<UIManager>
             return hpText;
         }
     }
+    private Slider BaseEXPBar
+    {
+        get 
+        {
+            return MainCanvas.Find("BaseExperienceBar").GetComponent<Slider>();
+        }
+    }
+    private Slider JobEXPBar
+    {
+        get 
+        {
+            return MainCanvas.Find("JobExperienceBar").GetComponent<Slider>();
+        }
+    }
+    private Text BaseLevelText
+    {
+        get
+        {
+            return BaseEXPBar.transform.Find("BaseLevelBox").GetChild(0).GetComponent<Text>();
+        }
+    }
+    private Text JobLevelText
+    {
+        get
+        {
+            return JobEXPBar.transform.Find("JobLevelBox").GetChild(0).GetComponent<Text>();
+        }
+    }
+    public void UpdateLevel()
+    {
+        BaseLevelText.text = Player.Instance.playerLevelInfo.baseLevel.ToString();
+        JobLevelText.text = Player.Instance.playerLevelInfo.jobLevel.ToString();
+    }
+    public void UpdateExp(float currBase,float maxBase,float currJob,float maxJob)
+    {
+        Slider tempBase = BaseEXPBar;
+        Slider tempJob = JobEXPBar;
+        tempBase.value = currBase;
+        tempBase.maxValue = maxBase;
+        tempJob.value = currJob;
+        tempJob.maxValue = maxJob;
+    }
     /// <summary>
     /// Max,CurrntHP
     /// </summary>
