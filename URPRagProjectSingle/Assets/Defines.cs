@@ -117,13 +117,17 @@ namespace NeutralDefines
             }
             public void ChangeState(string newStateName)
             {
-                anim.speed = 1;
                 if (currentState == null)
                 {
                     currentState = SearchState("idleState");
                     currentState.Enter();
                     return;
                 }
+                else
+                {
+                    if (!CurrentState.isCancelableState) return;
+                }
+                anim.speed = 1;
                 currentState?.Exit();                   //이전 상태값을 빠져나간다
                 currentState = SearchState(newStateName);               //인수로 받아온 상태값을 입력
                 currentState?.Enter();                  //다음 상태값
@@ -132,14 +136,17 @@ namespace NeutralDefines
             }
             public void ChangeState(float castingTime,SkillInfoInGame skillInfo,Stats targetStat,Vector3 skillPos)
             {
-                anim.speed = 1;
                 if (currentState == null)
                 {
                     currentState = SearchState("idleState");
                     currentState.Enter();
                     return;
                 }
-
+                else
+                {
+                    if (!CurrentState.isCancelableState) return;
+                }
+                anim.speed = 1;
                 CastingState temp = (CastingState)SearchState("castingState");
                 if (currentState == temp) return;
                 skillPos.y += 0.9f;

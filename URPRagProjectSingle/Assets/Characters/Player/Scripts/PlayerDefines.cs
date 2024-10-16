@@ -101,6 +101,34 @@ namespace PlayerDefines
                 base.Exit();
             }
         }
+        public class DamagedState : PlayerStates
+        {
+            public DamagedState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
+            {
+
+            }
+            public void SetDurationTime(float time)
+            {
+                durationTime = time;
+            }
+            public override void Enter()
+            {
+                base.Enter();
+            }
+            public override void Execute()
+            {
+                skillTimer += Time.deltaTime;
+                if (durationTime <= skillTimer)
+                {
+                    Player.Instance.StateMachine.ChangeState(nextStateName);
+                }
+
+            }
+            public override void Exit()
+            {
+                base.Exit();
+            }
+        }
 
 
 

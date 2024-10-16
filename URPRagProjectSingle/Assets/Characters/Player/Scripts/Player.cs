@@ -558,6 +558,7 @@ public class Player : MonoBehaviour
         states.Enqueue(new IdleState(1, 1, "idleState", "idleState", true));
         states.Enqueue(new AttackState(1, playerLevelInfo.stat.attackSpeed, "attackState", "idleState", false, playerLevelInfo.stat));
         states.Enqueue(new CastingState(1, playerLevelInfo.stat.attackSpeed, "castingState", "idleState", false));
+        states.Enqueue(new DamagedState(1, 0.3f, "damagedState", "idleState", false));
         stateMachine = new PlayerStateMachine(states.ToArray(),GetComponent<Animator>());
         StateMachine.ChangeState("idleState");
     }
