@@ -13,8 +13,8 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     #region º¯¼ö
     public KeyCode slotKey;
 
-    private IitemBase slotItem;
-    public IitemBase SlotItem
+    private IItemBase slotItem;
+    public IItemBase SlotItem
     {
         get
         {
@@ -79,7 +79,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         SlotItem.UseItem();
     }
-    public void Install(IitemBase tempData, bool isStaticSlot)
+    public void Install(IItemBase tempData, bool isStaticSlot)
     {
         SlotItem = tempData;
         iconImage.sprite = SlotItem.IconIMG;
@@ -147,7 +147,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
         if (isStaticSlot) return;
         SlotItem = new EmptyItem(sprite);
     }
-    public void ChangeSlot(IitemBase item)
+    public virtual void ChangeSlot(IItemBase item)
     {
         
         if (isStaticSlot) return;
@@ -170,7 +170,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     public void SwapSlot( QuickSlot item)
     {
         if (isStaticSlot) return;
-        IitemBase tempItemBase = item.SlotItem;
+        IItemBase tempItemBase = item.SlotItem;
         item.SlotItem = SlotItem;
         SlotItem = tempItemBase;
         
@@ -178,7 +178,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
 }
 
 
-public interface IitemBase
+public interface IItemBase
 {
     event Action quickSlotFuncs;
     Sprite IconIMG
@@ -199,7 +199,7 @@ public interface IitemBase
     }
     void UseItem();
 }
-public class EmptyItem: IitemBase
+public class EmptyItem: IItemBase
 {
     public event Action quickSlotFuncs;
     public EmptyItem(Sprite sprite) 

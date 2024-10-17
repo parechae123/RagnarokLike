@@ -23,32 +23,32 @@ public class StatusUI : MonoBehaviour
         Player.Instance.playerLevelInfo.baseLevelUP += UpdateStatUI;
         statUPButtons[0].onClick.AddListener(() =>
         {
-            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(ItemEnums.BasicStatTypes.Str);
+            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(BasicStatTypes.Str);
             UpdateStatUI();
         });
         statUPButtons[1].onClick.AddListener(() =>
         {
-            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(ItemEnums.BasicStatTypes.AGI);
+            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(BasicStatTypes.AGI);
             UpdateStatUI();
         });
         statUPButtons[2].onClick.AddListener(() =>
         {
-            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(ItemEnums.BasicStatTypes.Vit);
+            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(BasicStatTypes.Vit);
             UpdateStatUI();
         });
         statUPButtons[3].onClick.AddListener(() =>
         {
-            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(ItemEnums.BasicStatTypes.Int);
+            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(BasicStatTypes.Int);
             UpdateStatUI();
         });
         statUPButtons[4].onClick.AddListener(() =>
         {
-            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(ItemEnums.BasicStatTypes.Dex);
+            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(BasicStatTypes.Dex);
             UpdateStatUI();
         });
         statUPButtons[5].onClick.AddListener(() =>
         {
-            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(ItemEnums.BasicStatTypes.Luk);
+            Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(BasicStatTypes.Luk);
             UpdateStatUI();
         });
         

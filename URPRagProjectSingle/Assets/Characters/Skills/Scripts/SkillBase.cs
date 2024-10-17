@@ -113,6 +113,8 @@ public class SkillBaseInGameData
                 return defaultValue + (caster.abilityPower * coefficient);
             case ValueType.heal:
                 return -1 * (defaultValue + (caster.abilityPower * coefficient));
+            case ValueType.PhysicalRange:
+                return defaultValue+ (caster.accuracy* coefficient);
             default:
                 return 0;
         }
@@ -153,5 +155,5 @@ public enum ObjectiveType
 }
 public enum ValueType
 {
-    Physical, Magic, heal
+    Physical, Magic, heal,PhysicalRange
 }

@@ -358,6 +358,12 @@ namespace PlayerDefines
 
         public class PlayerStat : Stats
         {
+            //직업관련
+            public BaseJobType jobType;
+            public JobPhase jobPhase;
+            public JobRoot jobRoot;
+
+
             public BasicStatus basicStatus;
             public BasicStatus BasicStatus
             {
@@ -371,7 +377,9 @@ namespace PlayerDefines
                 }
             }
 
-            public EquipStat equipStat;
+            public Weapons weapons;
+
+
             public PlayerStat(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange,float evasion) : base(initializeNode, hp,sp, moveSpeed, attackSpeed, attackDamage,attackRange,evasion)
             {
                 HP = hp;

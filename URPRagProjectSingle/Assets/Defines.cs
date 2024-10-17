@@ -4,7 +4,6 @@ using PlayerDefines.States;
 using System;
 using UnityEditor;
 using UnityEngine;
-using static ItemEnums;
 
 namespace NeutralDefines
 {

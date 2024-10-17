@@ -579,6 +579,7 @@ public class PlayerLevelInfo
 {                                                 
     public PlayerStat stat;                                             //플레이어 스텟
     public PlayerSkillTreeForPhase[] playerOwnSkills = new PlayerSkillTreeForPhase[0];     //플레이어가 가지고 있는 스킬 리스트
+
     #region 베이스 레벨 관련 변수
     public Action baseLevelUP, jobLevelUP;
     public byte baseLevel;

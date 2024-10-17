@@ -30,15 +30,15 @@ public class DefaultJobBase : ScriptableObject
         defaultJobSkillPoint++;
     }
 }
-enum BaseJobType
+public enum BaseJobType
 {
-    Novice, SwordMan, Mage, Archer
+    Novice, SwordMan, Mage, Archer ,None
 }
 public enum JobPhase
 {
     defaultJob, first, second, third
 }
-enum JobRoot
+public enum JobRoot
 {
     None, _1, _2
 }
