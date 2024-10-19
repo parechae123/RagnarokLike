@@ -129,6 +129,11 @@ public class Player : MonoBehaviour
             playerLevelInfo.GetJobEXP(100);
             playerLevelInfo.GetBaseEXP(10000);
         }
+        if(Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            UIManager.GetInstance().equipInven.GetItems(new Weapons(null, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Head, 0, false, WeaponType.Bow));
+            
+        }
         KeyBoardBinding();
         StateMachine.CurrentState.Execute();
 

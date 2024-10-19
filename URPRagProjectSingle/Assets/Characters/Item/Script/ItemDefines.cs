@@ -17,7 +17,7 @@ public enum BasicStatTypes
 }
 public enum WeaponApixType
 {
-    CriticalDMG, CriticalChance, ATK, MATK, AttackSpeed, Casting
+    CriticalDMG, CriticalChance, ATK, MATK, AttackSpeed, CastingSpeed,MaxHP
 }
 public enum ArmorApixType
 {
@@ -25,7 +25,7 @@ public enum ArmorApixType
 }
 public enum EquipPart
 {
-    Head, Chest, Pants, Boots, RightHand, LeftHand, TwoHanded
+    Head, Chest, Pants, Boots,Gauntlet, RightHand, LeftHand, TwoHanded
 }
 public enum WeaponType
 {
@@ -36,15 +36,24 @@ public enum WeaponType
     BluntWeapon/*둔기*/,
     Dagger
 }
-public struct WeaponApixes
+public enum ArmorMat
 {
-    public (BasicStatTypes, float) firstLine;//Stat만
-    public (WeaponApixType, float)[] abilityApixes;
+    Cloth,
+    Leather,
+    PlateArmor
 }
-public struct ArmorApixes
+/// <summary>
+/// 
+/// </summary>
+/// <typeparam name="T">ApixEnumTypeOnly</typeparam>
+public interface IApixBase<T> where T : Enum
 {
-    public (BasicStatTypes, float) firstLine;//Stat만
-    public (ArmorApixType, float)[] abilityApixes;
+    (BasicStatTypes, float) firstLine { get; set; }
+    (T, float)[] abilityApixes
+    {
+        get;
+        set;
+    }
 }
 public interface IArmorBase : IItemBase
 {
@@ -52,7 +61,7 @@ public interface IArmorBase : IItemBase
     {
         get;
     }
-    WeaponApixes apixList
+    IApixBase<ArmorApixType> apixList
     {
         get;
     }
@@ -75,34 +84,91 @@ public interface IArmorBase : IItemBase
         get;
     }
 }
-
-public class Weapons : IItemBase
+public class inventoryItemBase : IItemBase
 {
-    private bool isEquipedWeapon = false;
-    public event Action quickSlotFuncs;
-    public Sprite IconIMG
+    public virtual event Action quickSlotFuncs;
+    public virtual Sprite IconIMG
+    {
+        get { return itemSprite; }
+    }
+    public string itemName;
+    protected Sprite itemSprite;
+    protected sbyte amount;
+    public virtual sbyte Amount
+    {
+        get { return amount; }
+        set
+        {
+            if (value == 0)
+            {
+                ResetEvent();
+                amount = value;
+            }
+            else
+            {
+                amount = value;
+            }
+        }
+    }
+
+    public virtual string slotNumberInfo
+    {
+        get { return Amount.ToString(); }
+    }
+    public virtual SlotType slotType
+    {
+        get { return SlotType.None; }
+    }
+    public virtual bool IsItemUseAble
+    {
+        get { return false; }
+    }
+    public virtual bool isStackAble
+    {
+        get { return true; }
+    }
+    public virtual bool IsEmptySlot
+    {
+        get { return Amount <= 0; }
+    }
+    public virtual void UseItem()
+    {
+
+    }
+    protected void ResetEvent()
+    {
+        quickSlotFuncs = null;
+    }
+}
+public class Equips : inventoryItemBase
+{
+    public bool isEquiped = false;
+    public override event Action quickSlotFuncs;
+    public override Sprite IconIMG
     {
         get { return itemSpirte; }
     }
-    Sprite itemSpirte;
+    protected Sprite itemSpirte;
+    public override bool isStackAble => false;
 
-    BaseJobType[] equipAbleJobs;
+    protected BaseJobType[] equipAbleJobs;
 
-    byte equipLevel;
+
+    protected byte equipLevel;
     public bool isItemUseAble
     {
         get
         {
 
-            return (equipLevel <= Player.Instance.playerLevelInfo.baseLevel) && (CheckJob());
+            return (equipLevel <= Player.Instance.playerLevelInfo.baseLevel)&&Amount>0 && (CheckJob());
         }
     }
 
-    public string slotNumberInfo
+    public override string slotNumberInfo
     {
         get { return string.Empty; }
     }
-    public SlotType slotType { get { return SlotType.Equipments; } }
+    public override SlotType slotType { get { return SlotType.Equipments; } }
     public float BuyValue
     {
         get { return goldValue; }
@@ -111,24 +177,160 @@ public class Weapons : IItemBase
     {
         get { return goldValue / 10f; }
     }
-    private float goldValue;
-    EquipPart part;
-    EquipPart Part
+    protected float goldValue;
+    protected EquipPart part;
+    public EquipPart GetPart
     {
         get { return part; }
     }
-    WeaponApixes apixList;
-    WeaponType weaponType;
-    //ATK or MATK
-    float valueOne;
+    protected float valueOne;
     public float ValueOne
     {
         get { return valueOne; }
     }
+
+    //공속 계수 == 1.2 일시 캐릭터 공속* 1.2하여 공속이 느려짐 임시변수로 아직 미사용
+    protected virtual float TypeValue
+    {
+        get
+        {
+            return 1;
+        }
+    }
+
+    public bool CheckJob()
+    {
+        if (equipAbleJobs.Length <= 0) return false;
+        for (int i = 0; i < equipAbleJobs.Length; i++)
+        {
+            if (equipAbleJobs[i] == Player.Instance.playerLevelInfo.stat.jobType) return true;
+        }
+        return false;
+    }
+    /// <summary>
+    /// CreateEmptySlot
+    /// </summary>
+    public Equips()
+    {
+        Amount = 0;
+    }
+    public Equips(Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne)
+    {
+        Amount = 1;
+        this.itemSpirte = itemSprite;
+        this.equipAbleJobs = equipJobs;
+        this.equipLevel = equipLevel;
+        this.goldValue = goldValue;
+        this.part = part;
+        this.valueOne = valueOne;
+        quickSlotFuncs = null;
+        quickSlotFuncs += UseItem;
+    }
+    public Equips(EquipPart part)
+    {
+        this.part = part;
+        equipAbleJobs = new BaseJobType[1] { BaseJobType.None };
+    }
+
+    public override void UseItem()
+    {
+        if (isItemUseAble)
+        {
+            Amount--;
+            if (isEquiped&&isItemUseAble)
+            {
+                Debug.Log("ㅇㅇㅇ");
+                isEquiped = false;
+            }
+            else
+            {
+                isEquiped = true;
+            }
+        }
+    }
+}
+
+public class Armors : Equips
+{
+    IApixBase<ArmorApixType> apixList;
+    ArmorMat matType;
+    
+    public Armors() : base()
+    {
+
+    }
+    public Armors(EquipPart part) : base(part)
+    {
+        this.part = part;
+    }
+    public WeaponApixType GetValueType
+    {
+        get
+        {
+            switch (matType)
+            {
+                case ArmorMat.Cloth:
+                    return WeaponApixType.CastingSpeed;
+                case ArmorMat.Leather:
+                    return WeaponApixType.CriticalDMG;
+                case ArmorMat.PlateArmor:
+                    return WeaponApixType.MaxHP;
+                default:
+                    return WeaponApixType.AttackSpeed;
+            }
+        }
+    }
+    public Armors(Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne,IApixBase<ArmorApixType> apixes,ArmorMat armorMat) : base(itemSprite, equipJobs, equipLevel, goldValue, part, valueOne)
+    {
+        Amount = 1;
+        this.itemSpirte = itemSprite;
+        this.equipAbleJobs = equipJobs;
+        this.equipLevel = equipLevel;
+        this.goldValue = goldValue;
+        this.part = part;
+        this.valueOne = valueOne;
+        this.apixList = apixes;
+        this.matType = armorMat;
+        ResetEvent();
+        quickSlotFuncs += UseItem;
+    }
+    protected override float TypeValue
+    {
+        get
+        {
+            switch (matType)
+            {
+                case ArmorMat.Cloth:
+                    return 0.05f;
+                case ArmorMat.Leather:
+                    return 0.04f;
+                case ArmorMat.PlateArmor:
+                    return 0.02f;
+                default:
+                    break;
+            }
+            return 0;
+        }
+    }
+
+}
+
+
+public class Weapons : Equips
+{
+    WeaponType weaponType;
+    IApixBase<WeaponApixType> apixList;
     bool isMATKWeapon;
     bool IsMATKWeapon { get { return isMATKWeapon; } }
-    //공속 계수 == 1.2 일시 캐릭터 공속* 1.2하여 공속이 느려짐 임시변수로 아직 미사용
-    float TypeValue
+    public Weapons() : base()
+    {
+
+    }
+    public Weapons(EquipPart equipPart) : base(equipPart)
+    {
+        this.part = equipPart;
+    }
+    protected override float TypeValue
     {
         get
         {
@@ -152,49 +354,23 @@ public class Weapons : IItemBase
             return 1;
         }
     }
-
-    public bool CheckJob()
+    
+    public Weapons(Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne, bool isMATKWeapon,WeaponType weaponType) : base(itemSprite,equipJobs, equipLevel, goldValue,part,valueOne)
     {
-        for (int i = 0; i < equipAbleJobs.Length; i++)
-        {
-            if (equipAbleJobs[i] == Player.Instance.playerLevelInfo.stat.jobType) return true;
-        }
-        return false;
-    }
-
-    public Weapons(Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, WeaponApixes apixes, WeaponType weaponType, float valueOne,bool isMATKWeapon)
-    {
+        Amount = 1;
         this.itemSpirte = itemSprite;
         this.equipAbleJobs = equipJobs;
         this.equipLevel = equipLevel;
         this.goldValue = goldValue;
         this.part = part;
-        this.apixList = apixes;
         this.weaponType = weaponType;
         this.valueOne = valueOne;
-        this.isMATKWeapon = isMATKWeapon; 
-        quickSlotFuncs = null;
+        this.isMATKWeapon = isMATKWeapon;
+        ResetEvent();
         quickSlotFuncs += UseItem;
     }
-    public Weapons(EquipPart part)
-    {
-        this.part = part;
-    }
-
-    public void UseItem()
-    {
-        if (isItemUseAble)
-        {
-            if (isEquipedWeapon)
-            {
-                isEquipedWeapon = false;
-            }
-            else
-            {
-                isEquipedWeapon = true;
-            }
-        }
-    }
 }
+
+
 
 

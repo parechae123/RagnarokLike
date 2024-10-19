@@ -8,13 +8,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
+public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler 
 {
     #region 변수
     public KeyCode slotKey;
 
     private IItemBase slotItem;
-    public IItemBase SlotItem
+    public virtual IItemBase SlotItem
     {
         get
         {
@@ -46,7 +46,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         get { return transform.GetComponentInChildren<Button>(); }
     }
-    private Image iconImage
+    public Image iconImage
     {
         get 
         { 
@@ -88,7 +88,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     public void OnDrag(PointerEventData pp)
     {
         if (SlotItem == null || SlotItem.slotType == SlotType.None) return;
-        if (!SlotItem.isItemUseAble) return;
+        if (!SlotItem.IsItemUseAble&&SlotItem.slotType == SlotType.Skills) return;
         if (pp.button == PointerEventData.InputButton.Left) UIManager.GetInstance().DraggingIcons(pp.position, iconImage.sprite);
         else return;
     }
@@ -96,7 +96,7 @@ public class QuickSlot : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         // 마우스 위치에 대한 RaycastResult 리스트 생성
         if (SlotItem == null || SlotItem.GetType() == typeof(EmptyItem)) return;
-        if (!SlotItem.isItemUseAble) return;
+        if (!SlotItem.IsItemUseAble && SlotItem.slotType == SlotType.Skills) return;
         List<RaycastResult> raycastResults = new List<RaycastResult>();
         UIManager.GetInstance().IconOnOFF(false);
         // RaycastAll을 호출하여 raycastResults에 결과 저장
@@ -189,7 +189,7 @@ public interface IItemBase
     {
         get;
     }
-    bool isItemUseAble
+    bool IsItemUseAble
     {
         get;
     }
@@ -215,7 +215,7 @@ public class EmptyItem: IItemBase
     {
         get { return null; }
     }
-    public bool isItemUseAble
+    public bool IsItemUseAble
     {
         get { return false; }
     }
@@ -227,5 +227,5 @@ public class EmptyItem: IItemBase
 }
 public enum SlotType
 {
-    None,Equipments,ConsumableItem,Skills
+    None,Equipments,ConsumableItem,Skills,MISC
 }

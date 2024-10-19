@@ -376,9 +376,75 @@ namespace PlayerDefines
                     return basicStatus;
                 }
             }
+            #region 장비 관련
+            private Weapons[] weapons = new Weapons[2] {new Weapons(EquipPart.LeftHand), new Weapons(EquipPart.RightHand) };
+            private Armors[] armors = new Armors[5] { new Armors(EquipPart.Head), new Armors(EquipPart.Chest),new Armors(EquipPart.Pants),new Armors(EquipPart.Boots), new Armors(EquipPart.Gauntlet) };
+            public Armors GetArmorSlot
+            {
+                set 
+                {
+                    if (value.isItemUseAble)
+                    {
+                        Armors tempArmor = value;
+                        switch (value.GetPart)
+                        {
+                            case EquipPart.Head:
+                                value = armors[0];
+                                armors[0] = tempArmor;
+                                break;
+                            case EquipPart.Chest:
+                                value = armors[1];
+                                armors[1] = tempArmor;
+                                break;
+                            case EquipPart.Pants:
+                                value = armors[2];
+                                armors[2] = tempArmor;
+                                break;
+                            case EquipPart.Boots:
+                                value = armors[3];
+                                armors[3] = tempArmor;
+                                break;
+                            case EquipPart.Gauntlet:
+                                value = armors[4];
+                                armors[4] = tempArmor;
+                                break;
+                        }
+                    }
 
-            public Weapons weapons;
+                }
+            }
+            public Weapons GetWeaponSlot
+            {
+                set
+                {
+                    if (value.isItemUseAble)
+                    {
+                        Weapons tempWeapon = value;
+                        switch (value.GetPart)
+                        {
+                            case EquipPart.LeftHand:
+                                value = weapons[0];
+                                weapons[0] = tempWeapon;
+                                break;
+                            case EquipPart.RightHand:
+                                value = weapons[1];
+                                weapons[1] = tempWeapon;
+                                break;
+                            case EquipPart.TwoHanded:
+                                value = weapons[0];
+                                weapons[0] = tempWeapon;
+                                if (weapons[1].isEquiped)
+                                {
+                                    UIManager.GetInstance().equipInven.GetItems(weapons[1]);
+                                    weapons[1] = new Weapons(EquipPart.RightHand);
+                                }
+                                break;
+                        }
+                    }
 
+                }
+            }
+            #endregion
 
             public PlayerStat(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange,float evasion) : base(initializeNode, hp,sp, moveSpeed, attackSpeed, attackDamage,attackRange,evasion)
             {

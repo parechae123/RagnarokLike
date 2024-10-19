@@ -603,6 +603,9 @@ public class UIManager : Manager<UIManager>
             return JobEXPBar.transform.Find("JobLevelBox").GetChild(0).GetComponent<Text>();
         }
     }
+    public Inventory<Equips> equipInven = new Inventory<Equips>("EquipTabs");
+    //public Inventory<Consumable> equipInven = new Inventory<Consumable>("CosumeableTab");
+    //public Inventory<MISC> equipInven = new Inventory<MISC>("MiscTabs");
     public void UpdateLevel()
     {
         BaseLevelText.text = Player.Instance.playerLevelInfo.baseLevel.ToString();

@@ -128,7 +128,7 @@ public class SkillInfoInGame : IItemBase
     {
         get { return (nowSkillLevel > 0);}
     }
-    public bool isItemUseAble
+    public bool IsItemUseAble
     {
         get { return isSkillLearned; }
     }
