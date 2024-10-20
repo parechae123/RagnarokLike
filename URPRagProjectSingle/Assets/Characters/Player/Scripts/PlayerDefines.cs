@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
 using UnityEngine;
@@ -365,9 +366,9 @@ namespace PlayerDefines
             public BaseJobType jobType;
             public JobPhase jobPhase;
             public JobRoot jobRoot;
+            
 
-
-            public BasicStatus basicStatus;
+            private BasicStatus basicStatus;
             public BasicStatus BasicStatus
             {
                 get
@@ -379,6 +380,9 @@ namespace PlayerDefines
                     return basicStatus;
                 }
             }
+
+
+
             #region 장비 관련
             private Weapons[] weapons = new Weapons[2] {new Weapons(EquipPart.LeftHand), new Weapons(EquipPart.RightHand) };
             private Armors[] armors = new Armors[5] { new Armors(EquipPart.Head), new Armors(EquipPart.Chest),new Armors(EquipPart.Pants),new Armors(EquipPart.Boots), new Armors(EquipPart.Gauntlet) };
@@ -386,78 +390,95 @@ namespace PlayerDefines
             {
                 set 
                 {
+                    bool successChange = false;
                     switch (value.GetPart)
                     {
                         case EquipPart.Head:
                             armors[0].Amount = 1;
                             armors[0].isEquiped = false;
                             UIManager.GetInstance().equipInven.GetItems(armors[0]);
+                            BasicStatus.SetChangeAbleStatus(armors[0].apixList.firstLine.Item1, -armors[0].apixList.firstLine.Item2);
                             armors[0] = value;
                             UIManager.GetInstance().equipWindowArmors[0].SlotItem = value;
-                            UIManager.GetInstance().equipInven.RemoveItem(value);
+                            successChange = true;
                             break;
                         case EquipPart.Chest:
                             armors[1].Amount = 1;
                             armors[1].isEquiped = false;
                             UIManager.GetInstance().equipInven.GetItems(armors[1]);
+                            BasicStatus.SetChangeAbleStatus(armors[1].apixList.firstLine.Item1, -armors[1].apixList.firstLine.Item2);
                             armors[1] = value;
                             UIManager.GetInstance().equipWindowArmors[1].SlotItem = value;
-                            UIManager.GetInstance().equipInven.RemoveItem(value);
+                            successChange = true;
                             break;
                         case EquipPart.Pants:
                             armors[2].Amount = 1;
                             armors[2].isEquiped = false;
                             UIManager.GetInstance().equipInven.GetItems(armors[2]);
+                            BasicStatus.SetChangeAbleStatus(armors[2].apixList.firstLine.Item1, -armors[2].apixList.firstLine.Item2);
                             armors[2] = value;
                             UIManager.GetInstance().equipWindowArmors[2].SlotItem = value;
-                            UIManager.GetInstance().equipInven.RemoveItem(value);
+                            successChange = true;
                             break;
                         case EquipPart.Boots:
                             armors[3].Amount = 1;
                             armors[3].isEquiped = false;
                             UIManager.GetInstance().equipInven.GetItems(armors[3]);
+                            BasicStatus.SetChangeAbleStatus(armors[3].apixList.firstLine.Item1, -armors[3].apixList.firstLine.Item2);
                             armors[3] = value;
                             UIManager.GetInstance().equipWindowArmors[3].SlotItem = value;
-                            UIManager.GetInstance().equipInven.RemoveItem(value);
+                            successChange = true;
                             break;
                         case EquipPart.Gauntlet:
                             armors[4].Amount = 1;
                             armors[4].isEquiped = false;
                             UIManager.GetInstance().equipInven.GetItems(armors[4]);
+                            BasicStatus.SetChangeAbleStatus(armors[4].apixList.firstLine.Item1, -armors[4].apixList.firstLine.Item2);
                             armors[4] = value;
                             UIManager.GetInstance().equipWindowArmors[4].SlotItem = value;
-                            UIManager.GetInstance().equipInven.RemoveItem(value);
+                            successChange = true;
                             break;
                     }
-
+                    if (successChange)
+                    {
+                        UIManager.GetInstance().equipInven.RemoveItem(value);
+                        BasicStatus.SetChangeAbleStatus(value.apixList.firstLine.Item1, value.apixList.firstLine.Item2);
+                    }
                 }
             }
             public Weapons GetWeaponSlot
             {
                 set
                 {
+                    bool successChange = false;
+
                     switch (value.GetPart)
                     {
                         case EquipPart.LeftHand:
                             weapons[0].isEquiped = false;
                             weapons[0].Amount = 1;
                             UIManager.GetInstance().equipInven.GetItems(weapons[0]);
+                            BasicStatus.SetChangeAbleStatus(weapons[0].apixList.firstLine.Item1, -weapons[0].apixList.firstLine.Item2);
                             weapons[0] = value;
                             UIManager.GetInstance().equipWindowWeapons[0].SlotItem = value;
                             UIManager.GetInstance().equipInven.RemoveItem(value);
+                            successChange = true;
                             break;
                         case EquipPart.RightHand:
                             weapons[1].isEquiped = false;
                             weapons[1].Amount = 1;
                             UIManager.GetInstance().equipInven.GetItems(weapons[1]);
+                            BasicStatus.SetChangeAbleStatus(weapons[1].apixList.firstLine.Item1, -weapons[1].apixList.firstLine.Item2);
                             weapons[1] = value;
                             UIManager.GetInstance().equipWindowWeapons[1].SlotItem = value;
                             UIManager.GetInstance().equipInven.RemoveItem(value);
+                            successChange = true;
                             if (weapons[0].GetPart == EquipPart.TwoHanded)
                             {
                                 weapons[0].Amount = 1;
                                 weapons[0].isEquiped = false;
                                 UIManager.GetInstance().equipInven.GetItems(weapons[0]);
+                                BasicStatus.SetChangeAbleStatus(weapons[0].apixList.firstLine.Item1, -weapons[0].apixList.firstLine.Item2);
                                 weapons[0] = new Weapons(EquipPart.LeftHand);
                                 UIManager.GetInstance().equipWindowWeapons[0].SlotItem = null;
 
@@ -467,21 +488,28 @@ namespace PlayerDefines
                             weapons[0].isEquiped = false;
                             weapons[0].Amount = 1;
                             UIManager.GetInstance().equipInven.GetItems(weapons[0]);
+                            BasicStatus.SetChangeAbleStatus(weapons[0].apixList.firstLine.Item1, -weapons[0].apixList.firstLine.Item2);
                             weapons[0] = value;
                             UIManager.GetInstance().equipWindowWeapons[0].SlotItem = value;
                             UIManager.GetInstance().equipInven.RemoveItem(value);
+                            successChange = true;
                             if (weapons[1].isEquiped)
                             {
                                 weapons[1].isEquiped = false;
                                 weapons[1].Amount = 1;
                                 UIManager.GetInstance().equipInven.GetItems(weapons[1]);
                                 weapons[1].isEquiped = false;
+                                BasicStatus.SetChangeAbleStatus(weapons[1].apixList.firstLine.Item1, -weapons[1].apixList.firstLine.Item2);
                                 weapons[1] = new Weapons(EquipPart.RightHand);
                                 UIManager.GetInstance().equipWindowWeapons[1].SlotItem = null;
                             }
                             break;
                     }
-
+                    if (successChange)
+                    {
+                        UIManager.GetInstance().equipInven.RemoveItem(value);
+                        BasicStatus.SetChangeAbleStatus(value.apixList.firstLine.Item1, value.apixList.firstLine.Item2);
+                    }
                 }
             }
             #endregion
@@ -494,18 +522,18 @@ namespace PlayerDefines
             //어택데미지
             public float TotalAD
             {
-                get { return attackDamage + (BasicStatus.Strength * 3) + (BasicStatus.Luck * 0.6f); }
+                get { return attackDamage + (BasicStatus.Strength * 3) + (BasicStatus.Luck * 0.6f) + GetWeaponValue(false)+GetWeaponApixValue(WeaponApixType.ATK); ; }
             }
             public float TotalAP
             {
                 //현재 AP와 int값에만 영향받음, 추후 장비영향 추가하여야함
-                get { return abilityPower + (BasicStatus.Inteligence*2) + (BasicStatus.Luck * 0.4f); }
+                get { return abilityPower + (BasicStatus.Inteligence*2) + (BasicStatus.Luck * 0.4f) + GetWeaponValue(true) + GetWeaponApixValue(WeaponApixType.MATK); }
                 set { if(value>=0) abilityPower = value; }
             }
             //적중률
             public int TotalAccuracy
             {
-                get { return (int)(accuracy + (BasicStatus.Dexterity * 1.5f) + (BasicStatus.Luck * 0.3f));}
+                get { return (int)(accuracy + (BasicStatus.Dexterity * 1.5f) + (BasicStatus.Luck * 0.3f) + GetWeaponApixValue(WeaponApixType.Accuracy));}
             }
 
             //공격속도
@@ -513,8 +541,8 @@ namespace PlayerDefines
             {
                 get 
                 {
-                    float tempAS = attackSpeed - (BasicStatus.Agility * 0.06f);
-                    if (tempAS < 0.3f) return 0.3f;
+                    float tempAS = attackSpeed - (BasicStatus.Agility * 0.06f)- GetWeaponApixValue(WeaponApixType.AttackSpeed);
+                    if (tempAS < 0.1f) return 0.1f;
                     return tempAS;
                 }
             }
@@ -523,7 +551,7 @@ namespace PlayerDefines
             {
                 get 
                 {
-                    float tempCT = (1 - (BasicStatus.Dexterity * 0.006f)) - (BasicStatus.Inteligence * 0.003f);
+                    float tempCT = (1 - (BasicStatus.Dexterity * 0.006f)) - (BasicStatus.Inteligence * 0.003f)- GetWeaponApixValue(WeaponApixType.CastingSpeed)-GetArmorMatValue(WeaponApixType.CastingSpeed);
                     return tempCT <0? 0:tempCT;
                 }
             }
@@ -540,19 +568,19 @@ namespace PlayerDefines
             {
                 get
                 {
-                    return defaultEvasion + ((BasicStatus.Agility / 3) * 2) + (BasicStatus.Luck  * 0.4f);
+                    return defaultEvasion + ((BasicStatus.Agility / 3) * 2) + (BasicStatus.Luck  * 0.4f)+GetArmorApixValue(ArmorApixType.Evasion);
                 }
             }
 
             public int CriChance
             {
-                get { return (int)(BasicStatus.Luck * 0.8f);} 
+                get { return (int)(BasicStatus.Luck * 0.8f) + (int)GetWeaponApixValue(WeaponApixType.CriticalChance); } 
             }
             public float defaultCriDamage = 2;
             public float CriDamage
             {
-                //TODO : 추후 장비 능력치 영향을 받도록 조정필요
-                get { return defaultCriDamage; }
+                
+                get { return defaultCriDamage+ GetArmorMatValue(WeaponApixType.CriticalDMG); }
             }
 
             public override float HP
@@ -617,6 +645,66 @@ namespace PlayerDefines
                     //TODO : 데미지 텍스트 추가요망
                 }
 
+            }
+
+            public float GetWeaponApixValue(WeaponApixType targetType)
+            {
+                float temp = 0f;
+                for (byte i = 0; i < weapons.Length; i++)
+                {
+                    if (weapons[i].apixList.abilityApixes == null) continue;
+                    for (byte j = 0; j < weapons[i].apixList.abilityApixes.Length; j++)
+                    {
+                        if (weapons[i].apixList.abilityApixes[i].Item1 == targetType) temp += weapons[i].apixList.abilityApixes[i].Item2;
+                    }
+                }
+                return temp;
+            }
+            public float GetWeaponValue(bool callOnMATK)
+            {
+                float temp = 0f;
+                for (byte i = 0; i < weapons.Length; i++)
+                {
+                    if (callOnMATK && weapons[i].IsMATKWeapon) temp += weapons[i].ValueOne;
+                    else if (!callOnMATK && !weapons[i].IsMATKWeapon) temp += weapons[i].ValueOne;
+
+                }
+                return temp;
+            }
+            /// <summary>
+            /// TODO : 방어도 미구현으로 추후 사용 필요
+            /// </summary>
+            /// <returns></returns>
+            public float GetArmorValue()
+            {
+                float temp = 0f;
+                for (byte i = 0; i < armors.Length; i++)
+                {
+                    temp += armors[i].ValueOne;
+                }
+                return temp;
+            }
+            public float GetArmorMatValue(WeaponApixType targetType)
+            {
+                float temp = 0f;
+                for (byte i = 0; i < armors.Length; i++)
+                {
+                    if (armors[i].GetValueType == targetType) temp += armors[i].GetMatValue;
+                }
+                return temp;
+            }
+            public float GetArmorApixValue(ArmorApixType targetType)
+            {
+                float temp = 0f;
+                for (byte i = 0; i < armors.Length; i++)
+                {
+                    if (armors[i].apixList.abilityApixes == null) continue;
+                    for (byte j = 0; j < armors[i].apixList.abilityApixes.Length; j++)
+                    {
+                        if (armors[i].apixList.abilityApixes[i].Item1 == targetType) temp += armors[i].apixList.abilityApixes[i].Item2;
+                    }
+                }
+                return temp;
             }
         }
         public class MonsterStat : Stats

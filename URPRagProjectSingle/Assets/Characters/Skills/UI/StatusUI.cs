@@ -21,6 +21,7 @@ public class StatusUI : MonoBehaviour
     {
         RegistGameOBJ();
         Player.Instance.playerLevelInfo.baseLevelUP += UpdateStatUI;
+        Player.Instance.playerLevelInfo.stat.BasicStatus.updateStat += UpdateStatUI;
         statUPButtons[0].onClick.AddListener(() =>
         {
             Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(BasicStatTypes.Str);

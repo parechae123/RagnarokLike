@@ -17,7 +17,7 @@ public enum BasicStatTypes
 }
 public enum WeaponApixType
 {
-    CriticalDMG, CriticalChance, ATK, MATK, AttackSpeed, CastingSpeed,MaxHP
+    CriticalDMG, CriticalChance, ATK, MATK, AttackSpeed, CastingSpeed,MaxHP, Accuracy
 }
 public enum ArmorApixType
 {
@@ -46,14 +46,10 @@ public enum ArmorMat
 /// 
 /// </summary>
 /// <typeparam name="T">ApixEnumTypeOnly</typeparam>
-public interface IApixBase<T> where T : Enum
+public struct IApixBase<T> where T : Enum
 {
-    (BasicStatTypes, float) firstLine { get; set; }
-    (T, float)[] abilityApixes
-    {
-        get;
-        set;
-    }
+    public (BasicStatTypes, int) firstLine;
+    public (T, float)[] abilityApixes; 
 }
 public interface IArmorBase : IItemBase
 {
@@ -260,7 +256,7 @@ public class Equips : inventoryItemBase
 
 public class Armors : Equips
 {
-    IApixBase<ArmorApixType> apixList;
+    public IApixBase<ArmorApixType> apixList;
     ArmorMat matType;
     
     public Armors() : base()
@@ -321,6 +317,10 @@ public class Armors : Equips
             return 0;
         }
     }
+    public float GetMatValue
+    {
+        get { return TypeValue; }
+    }
     public override void UseItem()
     {
         if (isItemUseAble)
@@ -368,9 +368,9 @@ public class Armors : Equips
 public class Weapons : Equips
 {
     WeaponType weaponType;
-    IApixBase<WeaponApixType> apixList;
+    public IApixBase<WeaponApixType> apixList;
     bool isMATKWeapon;
-    bool IsMATKWeapon { get { return isMATKWeapon; } }
+    public bool IsMATKWeapon { get { return isMATKWeapon; } }
     public Weapons() : base()
     {
 
@@ -404,7 +404,7 @@ public class Weapons : Equips
         }
     }
     
-    public Weapons(string itemName, Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne, bool isMATKWeapon,WeaponType weaponType) : base(itemName, itemSprite,equipJobs, equipLevel, goldValue,part,valueOne)
+    public Weapons(string itemName, Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne, bool isMATKWeapon,WeaponType weaponType, IApixBase<WeaponApixType> apix) : base(itemName, itemSprite,equipJobs, equipLevel, goldValue,part,valueOne)
     {
         this.itemName = itemName;
         Amount = 1;
@@ -416,6 +416,7 @@ public class Weapons : Equips
         this.weaponType = weaponType;
         this.valueOne = valueOne;
         this.isMATKWeapon = isMATKWeapon;
+        apixList = apix;
         ResetEvent();
         quickSlotFuncs += UseItem;
     }

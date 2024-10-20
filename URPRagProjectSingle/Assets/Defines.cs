@@ -311,6 +311,7 @@ public class RespawnBox
 }
 public class BasicStatus
 {
+    public event Action updateStat;
     int changeAbleStrength = 0;
     int pureStrength = 1;
     public int GetPureStr { get { return pureStrength; } }
@@ -423,5 +424,32 @@ public class BasicStatus
     public short GetRequrePoint(int pureStat)
     {
         return (short)(2 + ((pureStat - 1) / 10));
+    }
+    public void SetChangeAbleStatus(BasicStatTypes type, int value)
+    {
+        switch (type)
+        {
+            case BasicStatTypes.Str:
+                changeAbleStrength += value;
+                break;
+            case BasicStatTypes.AGI:
+                changeAbleAgility += value;
+                break;
+            case BasicStatTypes.Vit:
+                changeAbleVitality += value;
+                break;
+            case BasicStatTypes.Int:
+                changeAbleInteligence += value; 
+                break;
+            case BasicStatTypes.Dex:
+                changeAbleDexterity += value;
+                break;
+            case BasicStatTypes.Luk:
+                changeAbleLuck += value;
+                break;
+            default:
+                break;
+        }
+        updateStat?.Invoke();
     }
 }
