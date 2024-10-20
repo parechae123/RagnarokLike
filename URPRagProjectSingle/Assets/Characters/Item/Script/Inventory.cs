@@ -54,6 +54,20 @@ public class Inventory<T> where T : inventoryItemBase
     }
     public void GetItems(T targetItem)
     {
+        if (targetItem.itemName == string.Empty|| targetItem.itemName == null) return;
         GetEmptySlot = targetItem;
+    }
+    public void RemoveItem(T targetItem)
+    {
+        for (int i = 0; i < invenIndex.Length; i++)
+        {
+            if (invenIndex[i] == targetItem)
+            {
+                //invenIndex[i].ResetIMG();
+                slotParent.GetChild(i).GetChild(0).GetComponent<EquipmentSlots>().SlotItem = null;
+                invenIndex[i] = null;
+                return;
+            }
+        }
     }
 }

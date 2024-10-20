@@ -131,7 +131,7 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.Keypad1))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Weapons(null, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Head, 0, false, WeaponType.Bow));
+            UIManager.GetInstance().equipInven.GetItems(new Weapons("Bow",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.LeftHand, 0, false, WeaponType.Bow));
             
         }
         KeyBoardBinding();

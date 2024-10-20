@@ -385,28 +385,42 @@ namespace PlayerDefines
                 {
                     if (value.isItemUseAble)
                     {
-                        Armors tempArmor = value;
                         switch (value.GetPart)
                         {
                             case EquipPart.Head:
-                                value = armors[0];
-                                armors[0] = tempArmor;
+                                armors[0].Amount = 1;
+                                armors[0].isEquiped = false;
+                                UIManager.GetInstance().equipInven.GetItems(armors[0]);
+                                armors[0] = value;
+                                UIManager.GetInstance().equipInven.RemoveItem(value);
                                 break;
                             case EquipPart.Chest:
-                                value = armors[1];
-                                armors[1] = tempArmor;
+                                armors[1].Amount = 1;
+                                armors[1].isEquiped = false;
+                                UIManager.GetInstance().equipInven.GetItems(armors[1]);
+                                armors[1] = value;
+                                UIManager.GetInstance().equipInven.RemoveItem(value);
                                 break;
                             case EquipPart.Pants:
-                                value = armors[2];
-                                armors[2] = tempArmor;
+                                armors[2].Amount = 1;
+                                armors[2].isEquiped = false;
+                                UIManager.GetInstance().equipInven.GetItems(armors[2]);
+                                armors[2] = value;
+                                UIManager.GetInstance().equipInven.RemoveItem(value);
                                 break;
                             case EquipPart.Boots:
-                                value = armors[3];
-                                armors[3] = tempArmor;
+                                armors[3].Amount = 1;
+                                armors[3].isEquiped = false;
+                                UIManager.GetInstance().equipInven.GetItems(armors[3]);
+                                armors[3] = value;
+                                UIManager.GetInstance().equipInven.RemoveItem(value);
                                 break;
                             case EquipPart.Gauntlet:
-                                value = armors[4];
-                                armors[4] = tempArmor;
+                                armors[4].Amount = 1;
+                                armors[4].isEquiped = false;
+                                UIManager.GetInstance().equipInven.GetItems(armors[4]);
+                                armors[4] = value;
+                                UIManager.GetInstance().equipInven.RemoveItem(value);
                                 break;
                         }
                     }
@@ -419,23 +433,42 @@ namespace PlayerDefines
                 {
                     if (value.isItemUseAble)
                     {
-                        Weapons tempWeapon = value;
                         switch (value.GetPart)
                         {
                             case EquipPart.LeftHand:
-                                value = weapons[0];
-                                weapons[0] = tempWeapon;
+                                weapons[0].isEquiped = false;
+                                weapons[0].Amount = 1;
+                                UIManager.GetInstance().equipInven.GetItems(weapons[0]);
+                                weapons[0] = value;
+                                UIManager.GetInstance().equipInven.RemoveItem(value);
                                 break;
                             case EquipPart.RightHand:
-                                value = weapons[1];
-                                weapons[1] = tempWeapon;
+                                weapons[1].isEquiped = false;
+                                weapons[1].Amount = 1;
+                                UIManager.GetInstance().equipInven.GetItems(weapons[1]);
+                                weapons[1] = value;
+                                UIManager.GetInstance().equipInven.RemoveItem(value);
+                                if (weapons[0].GetPart == EquipPart.TwoHanded)
+                                {
+                                    weapons[0].Amount = 1;
+                                    weapons[0].isEquiped = false;
+                                    UIManager.GetInstance().equipInven.GetItems(weapons[0]);
+                                    weapons[0] = new Weapons(EquipPart.LeftHand);
+                                    
+                                }
                                 break;
                             case EquipPart.TwoHanded:
-                                value = weapons[0];
-                                weapons[0] = tempWeapon;
+                                weapons[0].isEquiped = false;
+                                weapons[0].Amount = 1;
+                                UIManager.GetInstance().equipInven.GetItems(weapons[0]);
+                                weapons[0] = value;
+                                UIManager.GetInstance().equipInven.RemoveItem(value);
                                 if (weapons[1].isEquiped)
                                 {
+                                    weapons[1].isEquiped = false;
+                                    weapons[1].Amount = 1;
                                     UIManager.GetInstance().equipInven.GetItems(weapons[1]);
+                                    weapons[1].isEquiped = false;
                                     weapons[1] = new Weapons(EquipPart.RightHand);
                                 }
                                 break;

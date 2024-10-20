@@ -11,7 +11,7 @@ public class EquipmentSlots : QuickSlot
     {
         get { return part; }
     }
-    public Equips equips;
+    private Equips equips;
     private Button btn
     {
         get { return GetComponent<UnityEngine.UI.Button>(); }
@@ -21,6 +21,14 @@ public class EquipmentSlots : QuickSlot
         get => equips;
         set
         {
+            if (value == null) 
+            {
+                iconImage.sprite = null;
+                btn.interactable = false;
+                btn.onClick.RemoveAllListeners();
+                equips = null;
+                return;
+            } 
             if (value.slotType == SlotType.None) return;
             btn.interactable = false;
             iconImage.sprite = value.IconIMG;
@@ -41,8 +49,7 @@ public class EquipmentSlots : QuickSlot
     }
     private void Start()
     {
-        //임시코드
-        SlotItem = new Weapons();
+        
     }
 
 }

@@ -85,6 +85,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
         iconImage.sprite = SlotItem.IconIMG;
         this.isStaticSlot = isStaticSlot;
     }
+
     public void OnDrag(PointerEventData pp)
     {
         if (SlotItem == null || SlotItem.slotType == SlotType.None) return;
