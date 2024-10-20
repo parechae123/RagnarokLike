@@ -325,12 +325,34 @@ public class Armors : Equips
     {
         if (isItemUseAble)
         {
-            Amount = 0;
             if (isEquiped)
             {
                 Debug.Log($"{itemName}장착해제");
                 Amount = 1;
                 isEquiped = false;
+
+                switch (part)
+                {
+                    case EquipPart.Head:
+                        UIManager.GetInstance().equipWindowArmors[0].SlotItem = new Armors(part);
+                        break;
+                    case EquipPart.Chest:
+                        UIManager.GetInstance().equipWindowArmors[1].SlotItem = new Armors(part);
+                        break;
+                    case EquipPart.Pants:
+                        UIManager.GetInstance().equipWindowArmors[2].SlotItem = new Armors(part);
+                        break;
+                    case EquipPart.Boots:
+                        UIManager.GetInstance().equipWindowArmors[3].SlotItem = new Armors(part);
+                        break;
+                    case EquipPart.Gauntlet:
+                        UIManager.GetInstance().equipWindowArmors[4].SlotItem = new Armors(part);
+                        break;
+                    default:
+                        break;
+                }
+                Player.Instance.playerLevelInfo.stat.GetArmorSlot = new Armors(part);
+                return;
             }
             else
             {
@@ -399,6 +421,7 @@ public class Weapons : Equips
     }
     public override void UseItem()
     {
+        //슬롯 전이시 해당 함수가 안넘어감
         if (isItemUseAble)
         {
 
@@ -407,7 +430,15 @@ public class Weapons : Equips
                 Debug.Log($"{itemName}장착해제");
                 Amount = 1;
                 isEquiped = false;
-                UIManager.GetInstance().equipInven.GetItems(this);
+                if (part == EquipPart.LeftHand)
+                {
+                    UIManager.GetInstance().equipWindowWeapons[0].SlotItem = new Weapons(part);
+                }
+                else
+                {
+                    UIManager.GetInstance().equipWindowWeapons[1].SlotItem = new Weapons(part);
+                }
+                Player.Instance.playerLevelInfo.stat.GetWeaponSlot = new Weapons(part);
                 return;
             }
             else
@@ -416,7 +447,6 @@ public class Weapons : Equips
                 Player.Instance.playerLevelInfo.stat.GetWeaponSlot = this;
                 isEquiped = true;
             }
-            Amount = 0;
         }
     }
 }

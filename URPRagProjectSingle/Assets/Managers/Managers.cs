@@ -526,7 +526,14 @@ public class UIManager : Manager<UIManager>
         }
     }
     private Image draggingIconImage;
-
+    /// <summary>
+    /// 0 = leftHand,1 = rightHand
+    /// </summary>
+    public EquipmentSlots[] equipWindowWeapons;
+    /// <summary>
+    /// 0 = head, 1 = chest, 2 = pants, 3= boots , 4 = gauntlet
+    /// </summary>
+    public EquipmentSlots[] equipWindowArmors;
     //캐스팅바 시리즈
     private RectTransform outerCastBar;
     private RectTransform OuterCastBar

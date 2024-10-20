@@ -64,6 +64,7 @@ public class Player : MonoBehaviour
         }
     }
     private bool isSearchCastTarget = false;
+    public bool isMotionBookCancel = false;
     #endregion
     #region 노드
     [SerializeField] public Node targetNode;
@@ -251,7 +252,7 @@ public class Player : MonoBehaviour
         {
             DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(()=>
             {
-                stateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
+                //stateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
             });
         }
         return;
@@ -548,6 +549,11 @@ public class Player : MonoBehaviour
 
     public void PlayerMoveOrder(Vector3 targetPosition, bool isMoveToAttack = false)
     {
+        if (!StateMachine.CurrentState.isCancelableState)
+        {
+            isMotionBookCancel = true;
+            return;
+        }
         if (SetTargetNode(targetPosition))
         {
             PlayerMove(isMoveToAttack);
@@ -559,7 +565,7 @@ public class Player : MonoBehaviour
     private void InstallizeStates()
     {
         Queue<PlayerStates> states = new Queue<PlayerStates>();
-        states.Enqueue(new MoveState( 1, 1, "moveState", "idleState", false));
+        states.Enqueue(new MoveState( 1, 1, "moveState", "idleState", true));
         states.Enqueue(new IdleState(1, 1, "idleState", "idleState", true));
         states.Enqueue(new AttackState(1, playerLevelInfo.stat.attackSpeed, "attackState", "idleState", false, playerLevelInfo.stat));
         states.Enqueue(new CastingState(1, playerLevelInfo.stat.attackSpeed, "castingState", "idleState", false));

@@ -124,7 +124,7 @@ namespace NeutralDefines
                 }
                 else
                 {
-                    if (!CurrentState.isCancelableState) return;
+                    if (!CurrentState.isCancelableState&&CurrentState.durationTime>= CurrentState.GetTimer) return;
                 }
                 anim.speed = 1;
                 currentState?.Exit();                   //이전 상태값을 빠져나간다

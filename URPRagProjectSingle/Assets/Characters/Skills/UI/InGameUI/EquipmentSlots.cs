@@ -35,12 +35,10 @@ public class EquipmentSlots : QuickSlot
 
             btn.interactable = true;
             equips = (Equips)value;
-            if (!isStaticSlot)
-            {
-                btn.onClick.RemoveAllListeners();
-                btn.onClick.AddListener(SlotItem.UseItem);
-            }
 
+
+            btn.onClick.RemoveAllListeners();
+            btn.onClick.AddListener(SlotItem.UseItem);
         }
     }
     bool IsEmptySlot
