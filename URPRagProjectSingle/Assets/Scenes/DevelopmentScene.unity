@@ -2653,7 +2653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotKey: 0
-  isStaticSlot: 0
+  isStaticSlot: 1
 --- !u!1 &61851431
 GameObject:
   m_ObjectHideFlags: 0
@@ -10527,7 +10527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotKey: 0
-  isStaticSlot: 0
+  isStaticSlot: 1
 --- !u!1001 &222814629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11228,7 +11228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotKey: 0
-  isStaticSlot: 0
+  isStaticSlot: 1
 --- !u!1 &232884474
 GameObject:
   m_ObjectHideFlags: 0
@@ -21474,7 +21474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotKey: 0
-  isStaticSlot: 0
+  isStaticSlot: 1
 --- !u!1 &445676738
 GameObject:
   m_ObjectHideFlags: 0
@@ -22351,7 +22351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotKey: 0
-  isStaticSlot: 0
+  isStaticSlot: 1
 --- !u!1 &459257818
 GameObject:
   m_ObjectHideFlags: 0
@@ -81539,7 +81539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotKey: 0
-  isStaticSlot: 0
+  isStaticSlot: 1
 --- !u!4 &1741397642 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2303790651989448907, guid: 315e3037d6061204cad190d8fb3728b6,
@@ -86446,7 +86446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotKey: 0
-  isStaticSlot: 0
+  isStaticSlot: 1
 --- !u!1001 &1866653984
 PrefabInstance:
   m_ObjectHideFlags: 0
