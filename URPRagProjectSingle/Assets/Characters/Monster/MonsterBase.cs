@@ -66,6 +66,7 @@ public class MonsterBase : MonoBehaviour
     }
     private void Update()
     {
+        transform.rotation = Camera.main.transform.rotation;
         if (IsInRange(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition, RecogDistance))
         {
             //공격로직

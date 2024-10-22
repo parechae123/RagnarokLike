@@ -124,6 +124,7 @@ public class Player : MonoBehaviour
     public void Update()
     {
         MouseBinding();
+        transform.rotation = Camera.main.transform.rotation;
         //디버그용 키로 빼야함
         if(Input.GetKeyDown(KeyCode.Keypad0))
         {
