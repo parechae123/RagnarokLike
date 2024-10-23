@@ -148,25 +148,41 @@ namespace PlayerDefines
             public override void Enter()
             {
                 durationTime = Player.Instance.playerLevelInfo.stat.TotalAttackSpeed;
+                skillTimer = 0;
             }
             public override void Execute()
             {
                 skillTimer += Time.deltaTime;
-                
 
-                if (Player.Instance.playerLevelInfo.stat.TotalAttackSpeed < skillTimer)
+                if (Player.Instance.playerLevelInfo.stat.target.isCharacterDie || Player.Instance.isMotionBookCancel)
                 {
+                    Player.Instance.isMotionBookCancel = true;
+                    Player.Instance.StateMachine.ChangeState(nextStateName);
+                    Player.Instance.isMotionBookCancel = false;
+                    skillTimer = 0;
+                    return;
+                }
+                if (Player.Instance.playerLevelInfo.stat.TotalAttackSpeed <= skillTimer)
+                {
+                    if (Player.Instance.playerLevelInfo.stat.target == null)
+                    {
+                        Player.Instance.StateMachine.ChangeState(nextStateName);
+                        skillTimer = 0;
+                        return;
+                    }
 
                     if (Player.Instance.playerLevelInfo.stat.target.isCharacterDie|| Player.Instance.isMotionBookCancel)
                     {
+                        Player.Instance.isMotionBookCancel = true;
                         Player.Instance.StateMachine.ChangeState(nextStateName);
                         Player.Instance.isMotionBookCancel = false;
+                        skillTimer = 0;
+                        return;
                     }
                     else
                     {
                         Player.Instance.playerLevelInfo.stat.AttackTarget();
                     }
-                    if (Player.Instance.playerLevelInfo.stat.target.isCharacterDie) Player.Instance.StateMachine.ChangeState(nextStateName);
                     skillTimer = 0;
                 }
 

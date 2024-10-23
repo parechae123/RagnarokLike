@@ -9948,6 +9948,10 @@ MonoBehaviour:
     type: 2}
   rectTR: {fileID: 786396321799195134}
   skillInfos: []
+  greyScaled: {fileID: 0}
+  colored: {fileID: 0}
+  blueScaled: {fileID: 0}
+  leftSkillPointText: {fileID: 0}
 --- !u!1 &4718864563844175697
 GameObject:
   m_ObjectHideFlags: 0
