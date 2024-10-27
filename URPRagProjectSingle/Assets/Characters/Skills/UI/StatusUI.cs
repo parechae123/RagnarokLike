@@ -34,11 +34,15 @@ public class StatusUI : MonoBehaviour
         statUPButtons[2].onClick.AddListener(() =>
         {
             Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(BasicStatTypes.Vit);
+            UIManager.GetInstance().PlayerMaxCurrHP = (Player.Instance.playerLevelInfo.stat.MaxHP,
+            Player.Instance.playerLevelInfo.stat.HP);
             UpdateStatUI();
         });
         statUPButtons[3].onClick.AddListener(() =>
         {
             Player.Instance.playerLevelInfo.stat.BasicStatus.PureStatUP(BasicStatTypes.Int);
+            UIManager.GetInstance().PlayerMaxCurrSP = (Player.Instance.playerLevelInfo.stat.MaxSP,
+            Player.Instance.playerLevelInfo.stat.SP);
             UpdateStatUI();
         });
         statUPButtons[4].onClick.AddListener(() =>
@@ -114,12 +118,12 @@ public class StatusUI : MonoBehaviour
         otherStats[2].text = tempStat.TotalAccuracy.ToString();
         otherStats[3].text = tempStat.CriChance.ToString();
         otherStats[4].text = Player.Instance.playerLevelInfo.LeftStatusPoint.ToString();
-        otherStats[5].text = "미구현";
-        otherStats[6].text = $"{tempStat.CastTimePercent}%";
-        otherStats[7].text = "미구현";
+        otherStats[5].text = tempStat.HPRegen.ToString("n1");
+        otherStats[6].text = tempStat.CastTimePercent.ToString("n3");
+        otherStats[7].text = tempStat.SPRegen.ToString("n1");
         otherStats[8].text = tempStat.Evasion.ToString();
-        otherStats[9].text = tempStat.TotalAttackSpeed.ToString();
-        otherStats[10].text = tempStat.GlobalCooltimePercent.ToString();
+        otherStats[9].text = tempStat.TotalAttackSpeed.ToString("n3");
+        otherStats[10].text = tempStat.GlobalCooltimePercent.ToString("n3");
 
 
     }

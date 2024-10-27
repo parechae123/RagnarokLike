@@ -240,14 +240,14 @@ public class SkillInfoInGame : IItemBase
             case ObjectiveType.None:
                 break;
             case ObjectiveType.OnlyTarget:
-                if (target != null) target.HP -= skill[CastingSkillLevel].TotalDamage(caster);
+                if (target != null) target.GetDamage(skill[CastingSkillLevel].TotalDamage(caster),skill[castingSkillLevel].damageType);
                 break;
             case ObjectiveType.Bounded:
                 Stats[] tempTargets = GetStats(new Vector2Int((int)castingPos.x, (int)castingPos.z));
                 for (int i = 0; i < tempTargets.Length; i++)
                 {
                     if (tempTargets[i] == caster) continue;
-                    tempTargets[i].HP -= skill[CastingSkillLevel].TotalDamage(caster);
+                    tempTargets[i].GetDamage(skill[CastingSkillLevel].TotalDamage(caster), skill[castingSkillLevel].damageType);
                 }
                 break;
         }

@@ -21,6 +21,7 @@ public enum WeaponApixType
 }
 public enum ArmorApixType
 {
+    //완료,   완료,     완료,     완료  완료      미완  완료
     MaxMana, ManaRegen, MaxHp, HpRegen, MoveSpeed, Def, Evasion
 }
 public enum EquipPart
@@ -40,7 +41,8 @@ public enum ArmorMat
 {
     Cloth,
     Leather,
-    PlateArmor
+    PlateArmor,
+    None
 }
 /// <summary>
 /// 
@@ -266,6 +268,7 @@ public class Armors : Equips
     public Armors(EquipPart part) : base(part)
     {
         this.part = part;
+        this.matType = ArmorMat.None;
     }
     public WeaponApixType GetValueType
     {
@@ -306,11 +309,11 @@ public class Armors : Equips
             switch (matType)
             {
                 case ArmorMat.Cloth:
-                    return 0.05f;
-                case ArmorMat.Leather:
-                    return 0.04f;
-                case ArmorMat.PlateArmor:
                     return 0.02f;
+                case ArmorMat.Leather:
+                    return 0.025f;
+                case ArmorMat.PlateArmor:
+                    return 0.06f;
                 default:
                     break;
             }

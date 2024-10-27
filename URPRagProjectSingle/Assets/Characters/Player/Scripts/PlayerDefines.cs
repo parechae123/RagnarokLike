@@ -261,9 +261,9 @@ namespace PlayerDefines
             {
                 get { return HP <= 0; }
             }
-            public bool isCharacterDamaged
+            public virtual bool isCharacterDamaged
             {
-                get { return maxHP > hp; }
+                get { return defaultMaxHP > hp; }
             }
             public Action<Vector3, bool> moveFunction;
             public Action dieFunctions;//TODO : 사망 연출 등록필요
@@ -273,8 +273,8 @@ namespace PlayerDefines
             {
                 standingNode = initializeNode;
                 standingNode.CharacterOnNode = this;
-                maxHP = hp;
-                maxSP = sp;
+                defaultMaxHP = hp;
+                defaultSP = sp;
                 this.HP = hp;
                 this.sp = sp;
                 this.charactorAttackRange = attackRange;
@@ -294,7 +294,7 @@ namespace PlayerDefines
                 get { return defaultEvasion; }
             }
 
-            protected float maxHP;
+            protected float defaultMaxHP;
             protected float hp;
             public virtual float HP
             {
@@ -312,40 +312,65 @@ namespace PlayerDefines
                     }
                 }
             }
-            protected float maxSP;
+            protected float defaultSP;
             protected float sp;
-            protected virtual float SP
+            public virtual float SP
             {
                 get { return sp; }
                 set 
                 { 
-                    if(value>maxSP) sp = maxSP;
+                    if(value>defaultSP) sp = defaultSP;
                     else sp = value;
 
                 }
             }
-            private float moveSpeed;
-            public float MoveSpeed 
+            protected float moveSpeed;
+            public virtual float MoveSpeed 
             {
-                get { return Player.Instance.playerLevelInfo.stat.moveSpeed; }
-                set { }
+                get { return moveSpeed; }
+                set { moveSpeed = value; }
             } //초당 이동하는 타일 수
 
             public float attackDamage;//공격력
             public float abilityPower;
             public float accuracy = 50; //명중률
 
+            public float deff;
+            public float magicDeff;
+
             public float attackSpeed;
-            public float basicAttackTimer;
+            public float statTimer;
             private byte charactorAttackRange;
             public int CharactorAttackRange
             {
                 get { return charactorAttackRange*10; }
             }
 
-            
 
             public Stats target;
+            //방어력계산
+            public virtual void GetDamage(float value, ValueType valueType)
+            {
+                switch (valueType)
+                {
+                    case ValueType.Physical:
+                        value *= 1f / (deff+1f);
+                        break;
+                    case ValueType.Magic:
+                        value *= 1f / (magicDeff+1f);
+                        break;
+                    case ValueType.Heal:
+                        value = Math.Sign(value);
+                        break;
+                    case ValueType.PhysicalRange:
+                        value *= 1f / (deff+1f);
+                        break;
+                    case ValueType.TrueDamage:
+                        break;
+                }
+
+                HP -= value;
+            }
             public virtual void AttackTarget(Stats target)
             {
                 this.target = target;
@@ -360,9 +385,8 @@ namespace PlayerDefines
                         return;
                     }
                 }
-                target.HP -= attackDamage;
+                target.GetDamage(attackDamage, ValueType.Physical);
             }
-
             public virtual bool IsEnoughSP(float spCost)
             {
                 if (sp >= spCost && !isCharacterDie)
@@ -380,7 +404,7 @@ namespace PlayerDefines
             public BaseJobType jobType;
             public JobPhase jobPhase;
             public JobRoot jobRoot;
-            
+            public float RegenTime = 5f;
 
             private BasicStatus basicStatus;
             public BasicStatus BasicStatus
@@ -394,8 +418,12 @@ namespace PlayerDefines
                     return basicStatus;
                 }
             }
+            public override bool isCharacterDamaged
+            {
+                get { return MaxHP > hp; }
+            }
 
-
+            public override float MoveSpeed { get => base.moveSpeed+GetArmorApixValue(ArmorApixType.MoveSpeed); }
 
             #region 장비 관련
             private Weapons[] weapons = new Weapons[2] {new Weapons(EquipPart.LeftHand), new Weapons(EquipPart.RightHand) };
@@ -457,6 +485,8 @@ namespace PlayerDefines
                     {
                         UIManager.GetInstance().equipInven.RemoveItem(value);
                         BasicStatus.SetChangeAbleStatus(value.apixList.firstLine.Item1, value.apixList.firstLine.Item2);
+                        UIManager.GetInstance().PlayerMaxCurrHP = (MaxHP, HP);
+                        UIManager.GetInstance().PlayerMaxCurrSP = (MaxSP, SP);
                     }
                 }
             }
@@ -523,6 +553,9 @@ namespace PlayerDefines
                     {
                         UIManager.GetInstance().equipInven.RemoveItem(value);
                         BasicStatus.SetChangeAbleStatus(value.apixList.firstLine.Item1, value.apixList.firstLine.Item2);
+
+                        UIManager.GetInstance().PlayerMaxCurrHP = (MaxHP, HP);
+                        UIManager.GetInstance().PlayerMaxCurrSP = (MaxSP, SP);
                     }
                 }
             }
@@ -565,7 +598,7 @@ namespace PlayerDefines
             {
                 get 
                 {
-                    float tempCT = (1 - (BasicStatus.Dexterity * 0.006f)) - (BasicStatus.Inteligence * 0.003f)- GetWeaponApixValue(WeaponApixType.CastingSpeed)-GetArmorMatValue(WeaponApixType.CastingSpeed);
+                    float tempCT = 1 - ((BasicStatus.Dexterity * 0.006f) + (BasicStatus.Inteligence * 0.003f) + GetWeaponApixValue(WeaponApixType.CastingSpeed) + GetArmorMatValue(WeaponApixType.CastingSpeed));
                     return tempCT <0? 0:tempCT;
                 }
             }
@@ -597,6 +630,15 @@ namespace PlayerDefines
                 get { return defaultCriDamage+ GetArmorMatValue(WeaponApixType.CriticalDMG); }
             }
 
+            public float HPRegen 
+            {
+                get { return (MaxHP / 100f) + (GetArmorApixValue(ArmorApixType.HpRegen)); }
+            }
+            public float MaxHP 
+            {
+                get { return defaultMaxHP + (this.BasicStatus.Vitality * 10f)*(1f+GetArmorMatValue(WeaponApixType.MaxHP)); }
+            }
+
             public override float HP
             {
                 get
@@ -605,26 +647,35 @@ namespace PlayerDefines
                 }
                 set
                 {
-                    if(maxHP< value) base.hp = value;
+                    if(MaxHP < value) base.hp = MaxHP;
                     else base.hp = value;
                     
                     if (isCharacterDie)
                     {
                         dieFunctions?.Invoke();
                     }
-                    UIManager.GetInstance().PlayerMaxCurrHP = (maxHP, base.hp);
+                    UIManager.GetInstance().PlayerMaxCurrHP = (MaxHP, hp);
                 }
             }
-            protected override float SP
+            public float MaxSP
+            {
+                get { return base.defaultSP + GetArmorApixValue(ArmorApixType.MaxMana) + (this.BasicStatus.Inteligence * 7f); }
+            }
+            public override float SP
             {
                 get { return base.sp; }
                 set 
                 {
-                    if (value > maxSP) sp = base.maxSP;
+                    if (value > MaxSP) sp = MaxSP;
                     else sp = value;
-                    UIManager.GetInstance().PlayerMaxCurrSP = (base.maxSP, base.sp);
+                    UIManager.GetInstance().PlayerMaxCurrSP = (MaxSP, sp);
                 }
             }
+            public float SPRegen
+            {
+                get { return (MaxSP / 100f) + (GetArmorApixValue(ArmorApixType.ManaRegen)); }
+            }
+
             public override bool IsEnoughSP(float spCost)
             {
                 if (SP >= spCost && !isCharacterDie)
@@ -650,12 +701,12 @@ namespace PlayerDefines
 
                 if (UnityEngine.Random.Range(1, 101) <= CriChance) 
                 {
-                    this.target.HP -= (TotalAD*CriDamage);
+                    this.target.GetDamage(TotalAD * CriDamage,ValueType.Physical);
                     //TODO : 크리티컬 전용 데미지 텍스트 추가요망
                 }
                 else
                 {
-                    this.target.HP -= TotalAD;
+                    this.target.GetDamage(TotalAD, ValueType.Physical);
                     //TODO : 데미지 텍스트 추가요망
                 }
 
@@ -669,7 +720,7 @@ namespace PlayerDefines
                     if (weapons[i].apixList.abilityApixes == null) continue;
                     for (byte j = 0; j < weapons[i].apixList.abilityApixes.Length; j++)
                     {
-                        if (weapons[i].apixList.abilityApixes[i].Item1 == targetType) temp += weapons[i].apixList.abilityApixes[i].Item2;
+                        if (weapons[i].apixList.abilityApixes[j].Item1 == targetType) temp += weapons[i].apixList.abilityApixes[j].Item2;
                     }
                 }
                 return temp;
@@ -756,7 +807,7 @@ namespace PlayerDefines
                 }
                 set
                 {
-                    if (maxHP <= value) base.hp = maxHP;
+                    if (defaultMaxHP <= value) base.hp = defaultMaxHP;
                     else base.hp = value;
 
                     if (isCharacterDie)
@@ -766,15 +817,15 @@ namespace PlayerDefines
                     }
                     if (HPBar == null) HPBar = UIManager.GetInstance().HPBarDequeue();
                     HPBar.value = hp;
-                    HPBar.maxValue = maxHP;
+                    HPBar.maxValue = defaultMaxHP;
                 }
             }
-            protected override float SP
+            public override float SP
             {
                 get { return base.sp; }
                 set
                 {
-                    if (value > maxSP) sp = base.maxSP;
+                    if (value > defaultMaxHP) sp = base.defaultSP;
                     else sp = value;
                 }
             }

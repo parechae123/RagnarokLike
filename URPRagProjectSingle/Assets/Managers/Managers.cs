@@ -636,7 +636,7 @@ public class UIManager : Manager<UIManager>
         { 
             PlayerHPBar.maxValue = value.Item1;
             PlayerHPBar.value = value.Item2;
-            HpText.text = $"{value.Item2}/{value.Item1}";
+            HpText.text = value.Item2.ToString("0") + '/' + value.Item1.ToString("0");
         }
     }
 
@@ -670,7 +670,7 @@ public class UIManager : Manager<UIManager>
         { 
             PlayerSPBar.maxValue = value.Item1;
             PlayerSPBar.value = value.Item2;
-            SpText.text = $"{value.Item2}/{value.Item1}";
+            SpText.text = value.Item2.ToString("0") +'/'+ value.Item1.ToString("0");
         }
     }
 

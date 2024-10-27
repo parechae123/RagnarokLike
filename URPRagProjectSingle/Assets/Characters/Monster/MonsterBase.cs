@@ -71,14 +71,14 @@ public class MonsterBase : MonoBehaviour
         {
             //공격로직
             searchTimer += Time.deltaTime;
-            monsterStat.basicAttackTimer += Time.deltaTime;
-            if(monsterStat.attackSpeed <= monsterStat.basicAttackTimer)
+            monsterStat.statTimer += Time.deltaTime;
+            if(monsterStat.attackSpeed <= monsterStat.statTimer)
             {
                 if (IsInRange(monsterStat.standingNode.nodeCenterPosition,playerNode.nodeCenterPosition,monsterStat.CharactorAttackRange))
                 {
                     if (Player.Instance.playerLevelInfo.stat.isCharacterDie) return;
                     monsterStat.AttackTarget(Player.Instance.playerLevelInfo.stat);
-                    monsterStat.basicAttackTimer = 0;
+                    monsterStat.statTimer = 0;
                     return;
                 }
             }

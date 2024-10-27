@@ -124,6 +124,7 @@ public class Player : MonoBehaviour
     public void Update()
     {
         MouseBinding();
+        InTime();
         transform.rotation = Camera.main.transform.rotation;
         //디버그용 키로 빼야함
         if(Input.GetKeyDown(KeyCode.Keypad0))
@@ -133,8 +134,8 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.U))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Weapons("shield",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.RightHand, 0, false, WeaponType.Shield,
-                new IApixBase<WeaponApixType> { firstLine = (BasicStatTypes.Str,10),abilityApixes = new (WeaponApixType, float)[3] {(WeaponApixType.AttackSpeed,0.3f), (WeaponApixType.CastingSpeed, 0.3f), (WeaponApixType.MATK, 0.3f) } }));
+            UIManager.GetInstance().equipInven.GetItems(new Weapons("shield",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.RightHand, 10, true, WeaponType.Shield,
+                new IApixBase<WeaponApixType> { firstLine = (BasicStatTypes.Str,10),abilityApixes = new (WeaponApixType, float)[3] {(WeaponApixType.AttackSpeed,0.3f), (WeaponApixType.CastingSpeed, 0.1f), (WeaponApixType.MATK, 0.3f) } }));
             
         }
         if(Input.GetKeyDown(KeyCode.I))
@@ -152,7 +153,7 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Y))
         {
             UIManager.GetInstance().equipInven.GetItems(new Armors("gabba", playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Chest, 0,
-                new IApixBase<ArmorApixType> { firstLine = (BasicStatTypes.Str, 10), abilityApixes = new (ArmorApixType, float)[3] { (ArmorApixType.MaxHp, 0.3f), (ArmorApixType.MaxMana, 0.3f), (ArmorApixType.Evasion, 0.3f) } }, ArmorMat.Leather));
+                new IApixBase<ArmorApixType> { firstLine = (BasicStatTypes.Str, 10), abilityApixes = new (ArmorApixType, float)[3] { (ArmorApixType.MaxHp, 0.3f), (ArmorApixType.MaxMana, 0.3f), (ArmorApixType.Evasion, 0.3f) } }, ArmorMat.PlateArmor));
 
         }
         if(Input.GetKeyDown(KeyCode.T))
@@ -164,6 +165,17 @@ public class Player : MonoBehaviour
         KeyBoardBinding();
         StateMachine.CurrentState.Execute();
 
+    }
+    private void InTime() 
+    {
+        playerLevelInfo.stat.statTimer += Time.deltaTime;
+        if (playerLevelInfo.stat.statTimer >= playerLevelInfo.stat.RegenTime) 
+        {
+            playerLevelInfo.stat.HP += playerLevelInfo.stat.HPRegen;
+            playerLevelInfo.stat.SP += playerLevelInfo.stat.SPRegen;
+
+            playerLevelInfo.stat.statTimer = 0;
+        }
     }
     public bool SetTargetNode(Vector3 point)
     {

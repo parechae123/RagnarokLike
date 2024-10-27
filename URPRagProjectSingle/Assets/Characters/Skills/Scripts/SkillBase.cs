@@ -42,7 +42,7 @@ public class SkillBase : ScriptableObject
                 return defaultValue + (caster.attackDamage * coefficient);
             case ValueType.Magic:
                 return defaultValue + (caster.abilityPower * coefficient);
-            case ValueType.heal:
+            case ValueType.Heal:
                 return -1 * (defaultValue + (caster.abilityPower * coefficient));
             default:
                 return 0;
@@ -111,7 +111,7 @@ public class SkillBaseInGameData
                 return defaultValue + (caster.attackDamage * coefficient);
             case ValueType.Magic:
                 return defaultValue + (caster.abilityPower * coefficient);
-            case ValueType.heal:
+            case ValueType.Heal:
                 return -1 * (defaultValue + (caster.abilityPower * coefficient));
             case ValueType.PhysicalRange:
                 return defaultValue+ (caster.accuracy* coefficient);
@@ -155,5 +155,5 @@ public enum ObjectiveType
 }
 public enum ValueType
 {
-    Physical, Magic, heal,PhysicalRange
+    Physical, Magic, Heal,PhysicalRange,TrueDamage
 }
