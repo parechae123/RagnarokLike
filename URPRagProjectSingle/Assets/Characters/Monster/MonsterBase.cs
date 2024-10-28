@@ -167,32 +167,41 @@ public class MonsterBase : MonoBehaviour
         Vector3 tempVec;
 //        LinkedList<Node> list;
         Vector3 lastStandingPos;
+        Vector3 moveStartPos = Vector3.zero;
         while (nodeQueue.Count > 0)
         {
             float timer = 0;
             nextNode = nodeQueue.Dequeue();
             monsterOnNode = GridManager.GetInstance().PositionToNode(transform.position);
             playerLastNode = playerNode;
+            moveStartPos = transform.position;
             while (timer <= secPerMove)
             {
                 timer += Time.deltaTime;
+
                 monsterOnNode = GridManager.GetInstance().PositionToNode(transform.position);
-                tempVec = (nextNode.worldPos - transform.position) * (secPerMove * timer);
+                tempVec = (nextNode.worldPos - moveStartPos) * (secPerMove * timer);
                 tempVec.y = nextNode.nodeFloor;
-                transform.position = tempVec + transform.position;
+                transform.position = tempVec + moveStartPos;
 
                 if ((monsterOnNode.CharacterOnNode != null && monsterOnNode.CharacterOnNode != this.monsterStat) || playerNode != playerLastNode || (nextNode.CharacterOnNode != null && nextNode.CharacterOnNode != this.monsterStat))
                 {
-/*                    list = GridManager.GetInstance().PathFinding(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition);
+                    /*                    list = GridManager.GetInstance().PathFinding(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition);
 
-                    if (list.Count > 0)
-                    {
-                        if (list.First() == this.CurrentNode) list.RemoveFirst();
-                        if (list.Last() == this.playerNode) list.RemoveLast();
-                    }*/
+                                        if (list.Count > 0)
+                                        {
+                                            if (list.First() == this.CurrentNode) list.RemoveFirst();
+                                            if (list.Last() == this.playerNode) list.RemoveLast();
+                                        }*/
                     //위 과정이 끝나도
+                    
                     if(nextNode.CharacterOnNode != null)blockingNode = nextNode;
-                    isMonsterMoving = false;
+
+                    //if (timer < secPerMove) continue;
+
+                    //isMonsterMoving = false;
+                    
+                    StartCoroutine(CanceledMoveProccess(blockingNode != nextNode ? nextNode : CurrentNode));
                     //if (list.Count <= 0) isMonsterMoving = false;
                     //else StartCoroutine(Movement(list.Count >= 2 ? new Queue<Node>(list) : new Queue<Node>(new Node[1] { lastNode })));
                     yield break;
@@ -207,12 +216,38 @@ public class MonsterBase : MonoBehaviour
                 yield return null;
             }
             yield return null;
-            lastStandingPos = nextNode.worldPos;
-            lastStandingPos.y += monsterSR.bounds.size.y;
-            transform.position = lastStandingPos;
+    
+
         }
         alreadyResearch = false;
         isMonsterMoving = false;
+    }
+    public IEnumerator CanceledMoveProccess(Node nextNode) 
+    {
+        float timer = 0f;
+        float secPerMove = 1f / monsterStat.MoveSpeed;
+        Vector3 moveStartPos = transform.position;
+        Vector3 tempVec;
+        Debug.LogError($"이때 끊기니?");
+        while (true)
+        {
+            timer += Time.deltaTime;
+            tempVec = (nextNode.worldPos - moveStartPos) * (secPerMove * timer);
+            yield return null;
+            tempVec.y = nextNode.nodeFloor;
+            if (nextNode.CharacterOnNode != monsterStat&& nextNode.CharacterOnNode != null) 
+            {
+                isMonsterMoving = false;
+                yield break;
+            }
+            CurrentNode = GridManager.GetInstance().PositionToNode(transform.position);
+            transform.position = tempVec + moveStartPos;
+            if (timer>= secPerMove)
+            {
+                isMonsterMoving = false;
+                yield break;
+            }
+        }
     }
     public LinkedList<Node> PathFinding(Vector2Int startPos, Vector2Int endPos)
     {

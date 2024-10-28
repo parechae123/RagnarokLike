@@ -354,16 +354,17 @@ namespace PlayerDefines
                 switch (valueType)
                 {
                     case ValueType.Physical:
-                        value *= 1f / (deff+1f);
+                        value -= value * (((deff * 0.01f) + 1f) * 0.1f);
                         break;
                     case ValueType.Magic:
-                        value *= 1f / (magicDeff+1f);
+                        value -= value * (((magicDeff * 0.01f) + 1f) * 0.1f);
                         break;
                     case ValueType.Heal:
-                        value = Math.Sign(value);
+                        if(value > 0) value = Math.Sign(value);
+
                         break;
                     case ValueType.PhysicalRange:
-                        value *= 1f / (deff+1f);
+                        value -= value * (((deff * 0.01f) + 1f) * 0.1f);
                         break;
                     case ValueType.TrueDamage:
                         break;

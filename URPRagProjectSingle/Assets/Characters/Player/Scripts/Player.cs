@@ -393,7 +393,7 @@ public class Player : MonoBehaviour
             {
                 target.DOKill(false);
                 targetNode = null;
-                target.position = CurrentNode.worldPos+(Vector3.up* (CurrentNode.nodeFloor + (playerSR.bounds.size.y)));
+                target.position = CurrentNode.worldPos+(Vector3.up* (CurrentNode.nodeFloor));
                 //PlayerMoveOrder(path.wps[path.wpLengths.Length-1]);
                 stateMachine.ChangeState("idleState");
                 return;
