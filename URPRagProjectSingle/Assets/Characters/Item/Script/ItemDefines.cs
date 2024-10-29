@@ -22,7 +22,7 @@ public enum WeaponApixType
 public enum ArmorApixType
 {
     //완료,   완료,     완료,     완료  완료      미완  완료
-    MaxMana, ManaRegen, MaxHp, HpRegen, MoveSpeed, Def, Evasion
+    MaxMana, ManaRegen, MaxHp, HpRegen, MoveSpeed, deff, Evasion, magicDeff
 }
 public enum EquipPart
 {
@@ -82,7 +82,7 @@ public interface IArmorBase : IItemBase
         get;
     }
 }
-public class inventoryItemBase : IItemBase
+public class InventoryItemBase : IItemBase
 {
     public virtual event Action quickSlotFuncs;
     public virtual Sprite IconIMG
@@ -142,7 +142,7 @@ public class inventoryItemBase : IItemBase
         itemSprite = null;
     }
 }
-public class Equips : inventoryItemBase
+public class Equips : InventoryItemBase
 {
     public bool isEquiped = false;
     public override event Action quickSlotFuncs;
@@ -260,7 +260,7 @@ public class Armors : Equips
 {
     public IApixBase<ArmorApixType> apixList;
     ArmorMat matType;
-    
+    public bool magicDeff;
     public Armors() : base()
     {
 
@@ -287,7 +287,7 @@ public class Armors : Equips
             }
         }
     }
-    public Armors(string itemName,Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne,IApixBase<ArmorApixType> apixes,ArmorMat armorMat) : base(itemName,itemSprite, equipJobs, equipLevel, goldValue, part, valueOne)
+    public Armors(string itemName,Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne,IApixBase<ArmorApixType> apixes,ArmorMat armorMat,bool isMagicDeff) : base(itemName,itemSprite, equipJobs, equipLevel, goldValue, part, valueOne)
     {
         this.itemName = itemName;
         Amount = 1;
@@ -299,6 +299,7 @@ public class Armors : Equips
         this.valueOne = valueOne;
         this.apixList = apixes;
         this.matType = armorMat;
+        magicDeff = isMagicDeff;
         ResetEvent();
         quickSlotFuncs += UseItem;
     }
@@ -455,6 +456,21 @@ public class Weapons : Equips
     }
 }
 
+public class Consumables : InventoryItemBase
+{
+    //Amount ==0일시 아이템 제거되도록 구현 필요
+}
+public class Potions : Consumables
+{
 
+}
+public class foods : Consumables
+{
+
+}
+public class buffItems : Consumables
+{
+    //버프시스템 구현 필요한데 이건 준교수님께 여쭤봐야할듯
+}
 
 

@@ -124,6 +124,8 @@ public class StatusUI : MonoBehaviour
         otherStats[8].text = tempStat.Evasion.ToString();
         otherStats[9].text = tempStat.TotalAttackSpeed.ToString("n3");
         otherStats[10].text = tempStat.GlobalCooltimePercent.ToString("n3");
+        otherStats[11].text = tempStat.Deff.ToString("0");
+        otherStats[12].text = tempStat.MagicDeff.ToString("0");
 
 
     }

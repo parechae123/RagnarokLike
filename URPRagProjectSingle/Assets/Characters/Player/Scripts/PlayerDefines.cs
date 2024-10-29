@@ -336,7 +336,21 @@ namespace PlayerDefines
             public float accuracy = 50; //명중률
 
             public float deff;
+            public virtual float Deff
+            {
+                get 
+                {
+                    return deff < 0 ? 0: deff;
+                }
+            }
             public float magicDeff;
+            public virtual float MagicDeff
+            {
+                get
+                {
+                    return magicDeff < 0 ? 0 : magicDeff;
+                }
+            }
 
             public float attackSpeed;
             public float statTimer;
@@ -354,17 +368,17 @@ namespace PlayerDefines
                 switch (valueType)
                 {
                     case ValueType.Physical:
-                        value -= value * ((deff * 0.01f) * 0.1f);
+                        value -= value * (Deff * 0.001f);
                         break;
                     case ValueType.Magic:
-                        value -= value * ((magicDeff * 0.01f) * 0.1f);
+                        value -= value * (MagicDeff * 0.001f);
                         break;
                     case ValueType.Heal:
                         if(value > 0) value = Math.Sign(value);
 
                         break;
                     case ValueType.PhysicalRange:
-                        value -= value * ((deff * 0.01f) * 0.1f);
+                        value -= value * (Deff * 0.001f);
                         break;
                     case ValueType.TrueDamage:
                         break;
@@ -631,6 +645,24 @@ namespace PlayerDefines
                 get { return defaultCriDamage+ GetArmorMatValue(WeaponApixType.CriticalDMG); }
             }
 
+            #region 방어기제
+            public override float Deff
+            {
+                get 
+                {
+                    float temp = deff + GetArmorValue(false) + GetArmorApixValue(ArmorApixType.deff) + (basicStatus.Vitality * 0.1f);
+                    return temp < 750f? temp : 750f;        
+                }
+            }
+            public override float MagicDeff
+            {
+                get 
+                {
+                    float temp = magicDeff + GetArmorValue(true) + GetArmorApixValue(ArmorApixType.magicDeff) + (basicStatus.Inteligence * 0.1f);
+                    return temp < 750f ? temp : 750f;
+                }
+            }
+
             public float HPRegen 
             {
                 get { return (MaxHP / 100f) + (GetArmorApixValue(ArmorApixType.HpRegen)); }
@@ -676,7 +708,7 @@ namespace PlayerDefines
             {
                 get { return (MaxSP / 100f) + (GetArmorApixValue(ArmorApixType.ManaRegen)); }
             }
-
+            #endregion
             public override bool IsEnoughSP(float spCost)
             {
                 if (SP >= spCost && !isCharacterDie)
@@ -731,8 +763,7 @@ namespace PlayerDefines
                 float temp = 0f;
                 for (byte i = 0; i < weapons.Length; i++)
                 {
-                    if (callOnMATK && weapons[i].IsMATKWeapon) temp += weapons[i].ValueOne;
-                    else if (!callOnMATK && !weapons[i].IsMATKWeapon) temp += weapons[i].ValueOne;
+                    temp += weapons[i].IsMATKWeapon == callOnMATK ? armors[i].ValueOne : 0;
 
                 }
                 return temp;
@@ -741,12 +772,12 @@ namespace PlayerDefines
             /// TODO : 방어도 미구현으로 추후 사용 필요
             /// </summary>
             /// <returns></returns>
-            public float GetArmorValue()
+            public float GetArmorValue(bool isMDeff)
             {
                 float temp = 0f;
                 for (byte i = 0; i < armors.Length; i++)
                 {
-                    temp += armors[i].ValueOne;
+                    temp += armors[i].magicDeff == isMDeff? armors[i].ValueOne : 0;
                 }
                 return temp;
             }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory<T> where T : inventoryItemBase
+public class Inventory<T> where T : InventoryItemBase
 {
     private RectTransform slotParent;
     public Inventory(string invenName)

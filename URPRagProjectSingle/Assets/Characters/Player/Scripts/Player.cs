@@ -146,14 +146,14 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.O))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Armors("hat",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Head, 0,
-                new IApixBase<ArmorApixType> { firstLine = (BasicStatTypes.Str, 10), abilityApixes = new (ArmorApixType, float)[3] { (ArmorApixType.MaxHp, 0.3f), (ArmorApixType.MaxMana, 0.3f), (ArmorApixType.Evasion, 0.3f) } }, ArmorMat.Leather));
+            UIManager.GetInstance().equipInven.GetItems(new Armors("hat",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Head, 10,
+                new IApixBase<ArmorApixType> { firstLine = (BasicStatTypes.Str, 10), abilityApixes = new (ArmorApixType, float)[3] { (ArmorApixType.MaxHp, 0.3f), (ArmorApixType.MaxMana, 0.3f), (ArmorApixType.Evasion, 0.3f) } }, ArmorMat.Leather,true));
             
         }
         if(Input.GetKeyDown(KeyCode.Y))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Armors("gabba", playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Chest, 0,
-                new IApixBase<ArmorApixType> { firstLine = (BasicStatTypes.Str, 10), abilityApixes = new (ArmorApixType, float)[3] { (ArmorApixType.MaxHp, 0.3f), (ArmorApixType.MaxMana, 0.3f), (ArmorApixType.Evasion, 0.3f) } }, ArmorMat.PlateArmor));
+            UIManager.GetInstance().equipInven.GetItems(new Armors("gabba", playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Chest, 10,
+                new IApixBase<ArmorApixType> { firstLine = (BasicStatTypes.Str, 10), abilityApixes = new (ArmorApixType, float)[3] { (ArmorApixType.MaxHp, 0.3f), (ArmorApixType.MaxMana, 0.3f), (ArmorApixType.Evasion, 0.3f) } }, ArmorMat.PlateArmor,false));
 
         }
         if(Input.GetKeyDown(KeyCode.T))
