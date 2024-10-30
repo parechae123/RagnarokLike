@@ -28,6 +28,10 @@ public enum EquipPart
 {
     Head, Chest, Pants, Boots,Gauntlet, RightHand, LeftHand, TwoHanded
 }
+public enum PotionType
+{
+    HP,SP
+}
 public enum WeaponType
 {
     Shield,
@@ -108,6 +112,16 @@ public class InventoryItemBase : IItemBase
             }
         }
     }
+    public float BuyValue
+    {
+        get { return goldValue; }
+    }
+    public float SellValue
+    {
+        get { return goldValue / 10f; }
+    }
+    protected float goldValue;
+
 
     public virtual string slotNumberInfo
     {
@@ -133,12 +147,13 @@ public class InventoryItemBase : IItemBase
     {
 
     }
-    protected void ResetEvent()
+    protected virtual void ResetEvent()
     {
         quickSlotFuncs = null;
     }
     public void ResetIMG()
     {
+        //TODO : 여기는 스프라이트 아틀라스의 빈칸 아이콘으로 대체하자
         itemSprite = null;
     }
 }
@@ -148,9 +163,8 @@ public class Equips : InventoryItemBase
     public override event Action quickSlotFuncs;
     public override Sprite IconIMG
     {
-        get { return itemSpirte; }
+        get { return itemSprite; }
     }
-    protected Sprite itemSpirte;
     public override bool isStackAble => false;
 
     protected BaseJobType[] equipAbleJobs;
@@ -171,15 +185,7 @@ public class Equips : InventoryItemBase
         get { return string.Empty; }
     }
     public override SlotType slotType { get { return SlotType.Equipments; } }
-    public float BuyValue
-    {
-        get { return goldValue; }
-    }
-    public float SellValue
-    {
-        get { return goldValue / 10f; }
-    }
-    protected float goldValue;
+
     protected EquipPart part;
     public EquipPart GetPart
     {
@@ -220,7 +226,7 @@ public class Equips : InventoryItemBase
     {
         this.itemName = itemName;
         Amount = 1;
-        this.itemSpirte = itemSprite;
+        this.itemSprite = itemSprite;
         this.equipAbleJobs = equipJobs;
         this.equipLevel = equipLevel;
         this.goldValue = goldValue;
@@ -291,7 +297,7 @@ public class Armors : Equips
     {
         this.itemName = itemName;
         Amount = 1;
-        this.itemSpirte = itemSprite;
+        this.itemSprite = itemSprite;
         this.equipAbleJobs = equipJobs;
         this.equipLevel = equipLevel;
         this.goldValue = goldValue;
@@ -412,7 +418,7 @@ public class Weapons : Equips
     {
         this.itemName = itemName;
         Amount = 1;
-        this.itemSpirte = itemSprite;
+        this.itemSprite = itemSprite;
         this.equipAbleJobs = equipJobs;
         this.equipLevel = equipLevel;
         this.goldValue = goldValue;
@@ -458,11 +464,62 @@ public class Weapons : Equips
 
 public class Consumables : InventoryItemBase
 {
-    //Amount ==0일시 아이템 제거되도록 구현 필요
+    public override SlotType slotType
+    {
+        get { return SlotType.ConsumableItem; }
+    }
+
+    public override string slotNumberInfo
+    {
+        get { return Amount.ToString(); }
+    }
 }
 public class Potions : Consumables
 {
+    //Amount ==0일시 아이템 제거되도록 구현 필요
+    public PotionType potionType;
+    public float valueOne;
+    public int invenIndex;
+    public Potions(string itemName, Sprite itemSprite, float goldValue, PotionType potionType, float valueOne)
+    {
+        this.itemName = itemName;
+        Amount = 1;
+        this.itemSprite = itemSprite;
+        this.goldValue = goldValue;
+        this.potionType = potionType;
+        this.valueOne = valueOne;
+        ResetEvent();
+        quickSlotFuncs += UseItem;
+    }
+    public override void UseItem()
+    {
+        if (Amount> 0)
+        {
+            Amount--;
+            switch (potionType)
+            {
+                case PotionType.HP:
+                    Player.Instance.playerLevelInfo.stat.GetDamage(valueOne, ValueType.Heal);
+                    break;
+                case PotionType.SP:
+                    Player.Instance.playerLevelInfo.stat.SP += valueOne;
+                    break;
+            }
 
+        }
+
+        if (Amount > 0)
+        {
+            ResetIMG();
+            ResetEvent();
+        }
+    }
+    protected override void ResetEvent()
+    {
+        base.ResetEvent();
+        UIManager.GetInstance().consumeInven.RemoveItem(this);
+    }
+    
 }
 public class foods : Consumables
 {

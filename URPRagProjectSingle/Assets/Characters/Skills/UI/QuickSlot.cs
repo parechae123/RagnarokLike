@@ -31,7 +31,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
             if (!isStaticSlot)
             {
                 btn.onClick.RemoveAllListeners();
-                btn.onClick.AddListener(SlotItem.UseItem);
+                btn.onClick.AddListener(GetSlotKey);
             }
         }
     }
@@ -78,6 +78,17 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
     public void GetSlotKey()
     {
         SlotItem?.UseItem();
+        if(SlotItem.slotType != SlotType.Skills) 
+        {
+            InventoryItemBase temp = (InventoryItemBase)SlotItem;
+            //TODO : 아이콘 아틀라스에서 이거 넣어주면됨
+            if (temp.Amount <= 0)
+            {
+                iconImage.sprite = null;
+                RemoveSlot(default);
+            }
+            
+        }
     }
     public void Install(IItemBase tempData, bool isStaticSlot)
     {

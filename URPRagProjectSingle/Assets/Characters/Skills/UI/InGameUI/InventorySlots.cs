@@ -4,21 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class EquipmentSlots : QuickSlot
+public class InventorySlots : QuickSlot
 {
     EquipPart part;
     public EquipPart GetPart
     {
         get { return part; }
     }
-    private Equips equips;
+    private IItemBase itemData;
     private Button btn
     {
         get { return GetComponent<UnityEngine.UI.Button>(); }
     }
     public override IItemBase SlotItem
     {
-        get => equips;
+        get => itemData;
         set
         {
             if (value == null) 
@@ -26,7 +26,7 @@ public class EquipmentSlots : QuickSlot
                 iconImage.sprite = null;
                 btn.interactable = false;
                 btn.onClick.RemoveAllListeners();
-                equips = null;
+                itemData = null;
                 return;
             } 
             if (value.slotType == SlotType.None) return;
@@ -34,7 +34,7 @@ public class EquipmentSlots : QuickSlot
             iconImage.sprite = value.IconIMG;
 
             btn.interactable = true;
-            equips = (Equips)value;
+            itemData = value;
 
 
             btn.onClick.RemoveAllListeners();
@@ -43,7 +43,7 @@ public class EquipmentSlots : QuickSlot
     }
     bool IsEmptySlot
     {
-        get { return equips == null ? true : !equips.isEquiped; }
+        get { return itemData == null ? true : false; }
     }
     private void Start()
     {

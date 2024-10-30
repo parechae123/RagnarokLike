@@ -529,11 +529,11 @@ public class UIManager : Manager<UIManager>
     /// <summary>
     /// 0 = leftHand,1 = rightHand
     /// </summary>
-    public EquipmentSlots[] equipWindowWeapons;
+    public InventorySlots[] equipWindowWeapons;
     /// <summary>
     /// 0 = head, 1 = chest, 2 = pants, 3= boots , 4 = gauntlet
     /// </summary>
-    public EquipmentSlots[] equipWindowArmors;
+    public InventorySlots[] equipWindowArmors;
     //캐스팅바 시리즈
     private RectTransform outerCastBar;
     private RectTransform OuterCastBar
@@ -610,6 +610,7 @@ public class UIManager : Manager<UIManager>
             return JobEXPBar.transform.Find("JobLevelBox").GetChild(0).GetComponent<Text>();
         }
     }
+    public Inventory<Consumables> consumeInven = new Inventory<Consumables>("CosumeableTab");
     public Inventory<Equips> equipInven = new Inventory<Equips>("EquipTabs");
     //public Inventory<Consumable> equipInven = new Inventory<Consumable>("CosumeableTab");
     //public Inventory<MISC> equipInven = new Inventory<MISC>("MiscTabs");

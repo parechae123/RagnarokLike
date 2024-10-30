@@ -160,7 +160,14 @@ public class Player : MonoBehaviour
         {
             UIManager.GetInstance().equipInven.GetItems(new Weapons("Bow",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.LeftHand, 0, false, WeaponType.Bow,
                 new IApixBase<WeaponApixType> { firstLine = (BasicStatTypes.AGI, 10), abilityApixes = new (WeaponApixType, float)[3] { (WeaponApixType.AttackSpeed, 0.3f), (WeaponApixType.CastingSpeed, 0.3f), (WeaponApixType.MATK, 0.3f) } }));
-            
+        }
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            UIManager.GetInstance().consumeInven.GetItems(new Potions("마나 포션",playerSR.sprite,100,PotionType.HP,100));
+        }
+        if(Input.GetKeyDown(KeyCode.LeftBracket))
+        {
+            UIManager.GetInstance().consumeInven.GetItems(new Potions("마나 포션",playerSR.sprite,100,PotionType.SP,100));
         }
         KeyBoardBinding();
         StateMachine.CurrentState.Execute();

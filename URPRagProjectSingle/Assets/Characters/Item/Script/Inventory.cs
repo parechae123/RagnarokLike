@@ -24,23 +24,24 @@ public class Inventory<T> where T : InventoryItemBase
                 {
                     invenIndex[i] = value;
                     invenIndex[i].Amount = value.Amount;
-                    slotParent.GetChild(i).GetChild(0).GetComponent<EquipmentSlots>().SlotItem = value;
+                    slotParent.GetChild(i).GetChild(0).GetComponent<InventorySlots>().SlotItem = value;
                     break;
                 }
                 if (invenIndex[i].IsEmptySlot)
                 {
                     invenIndex[i] = value;
                     invenIndex[i].Amount = value.Amount;
-                    slotParent.GetChild(i).GetChild(0).GetComponent<EquipmentSlots>().SlotItem = value;
+                    slotParent.GetChild(i).GetChild(0).GetComponent<InventorySlots>().SlotItem = value;
                     break;
                 }
                 else if(invenIndex[i].isStackAble)
                 {
+                    //TODO : 같은 아이템인지 검사할 요소를 넣어야함 요소검사 VS 아이템 코드검사 둘 중 하나 해야할듯
                     int temp = (int)invenIndex[i].Amount + (int)value.Amount;
                     if (temp > 0&& temp <= sbyte.MaxValue)
                     {
                         invenIndex[i].Amount += value.Amount;
-                        slotParent.GetChild(i).GetChild(0).GetComponent<EquipmentSlots>().SlotItem = invenIndex[i];
+                        slotParent.GetChild(i).GetChild(0).GetComponent<InventorySlots>().SlotItem = invenIndex[i];
                         break;
                     }
                     else
@@ -64,7 +65,7 @@ public class Inventory<T> where T : InventoryItemBase
             if (invenIndex[i] == targetItem)
             {
                 //invenIndex[i].ResetIMG();
-                slotParent.GetChild(i).GetChild(0).GetComponent<EquipmentSlots>().SlotItem = null;
+                slotParent.GetChild(i).GetChild(0).GetComponent<InventorySlots>().SlotItem = null;
                 invenIndex[i] = null;
                 return;
             }

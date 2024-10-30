@@ -33,8 +33,8 @@ public class EquipmentWindow : MonoBehaviour
     private void RegistEquipmentSlots()
     {
         Transform playerSiluet = transform.GetChild(0);
-        UIManager.GetInstance().equipWindowWeapons = new EquipmentSlots[2];
-        UIManager.GetInstance().equipWindowArmors = new EquipmentSlots[5];
+        UIManager.GetInstance().equipWindowWeapons = new InventorySlots[2];
+        UIManager.GetInstance().equipWindowArmors = new InventorySlots[5];
 
         for (byte i = 0; i < playerSiluet.childCount; i++)
         {
@@ -42,11 +42,11 @@ public class EquipmentWindow : MonoBehaviour
             {
                 if (i == 0)
                 {
-                    UIManager.GetInstance().equipWindowWeapons[j] = playerSiluet.GetChild(i).GetChild(j).GetComponent<EquipmentSlots>();
+                    UIManager.GetInstance().equipWindowWeapons[j] = playerSiluet.GetChild(i).GetChild(j).GetComponent<InventorySlots>();
                 }
                 else if(i== 1)
                 {
-                    UIManager.GetInstance().equipWindowArmors[j] = playerSiluet.GetChild(i).GetChild(j).GetComponent<EquipmentSlots>();
+                    UIManager.GetInstance().equipWindowArmors[j] = playerSiluet.GetChild(i).GetChild(j).GetComponent<InventorySlots>();
                 }
             }
         }

@@ -374,7 +374,7 @@ namespace PlayerDefines
                         value -= value * (MagicDeff * 0.001f);
                         break;
                     case ValueType.Heal:
-                        if(value > 0) value = Math.Sign(value);
+                        if(value > 0) value = -value;
 
                         break;
                     case ValueType.PhysicalRange:
