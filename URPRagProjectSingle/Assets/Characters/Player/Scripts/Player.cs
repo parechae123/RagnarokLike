@@ -134,40 +134,40 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.U))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Weapons("shield",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.RightHand, 10, true, WeaponType.Shield,
+            UIManager.GetInstance().equipInven.GetItems(new Weapons("10001","shield",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.RightHand, 10, true, WeaponType.Shield,
                 new IApixBase<WeaponApixType> { firstLine = (BasicStatTypes.Str,10),abilityApixes = new (WeaponApixType, float)[3] {(WeaponApixType.AttackSpeed,0.3f), (WeaponApixType.CastingSpeed, 0.1f), (WeaponApixType.MATK, 0.3f) } }));
             
         }
         if(Input.GetKeyDown(KeyCode.I))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Weapons("twoHanded",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.TwoHanded, 0, false, WeaponType.Bow,
+            UIManager.GetInstance().equipInven.GetItems(new Weapons("10002","twoHanded",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.TwoHanded, 0, false, WeaponType.Bow,
                 new IApixBase<WeaponApixType> { firstLine = (BasicStatTypes.AGI, 10), abilityApixes = new (WeaponApixType, float)[3] { (WeaponApixType.AttackSpeed, 0.3f), (WeaponApixType.CastingSpeed, 0.3f), (WeaponApixType.MATK, 0.3f) } }));
             
         }
         if(Input.GetKeyDown(KeyCode.O))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Armors("hat",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Head, 10,
+            UIManager.GetInstance().equipInven.GetItems(new Armors("20001","hat", playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Head, 10,
                 new IApixBase<ArmorApixType> { firstLine = (BasicStatTypes.Str, 10), abilityApixes = new (ArmorApixType, float)[3] { (ArmorApixType.MaxHp, 0.3f), (ArmorApixType.MaxMana, 0.3f), (ArmorApixType.Evasion, 0.3f) } }, ArmorMat.Leather,true));
             
         }
         if(Input.GetKeyDown(KeyCode.Y))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Armors("gabba", playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Chest, 10,
+            UIManager.GetInstance().equipInven.GetItems(new Armors("20001","gabba", playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Chest, 10,
                 new IApixBase<ArmorApixType> { firstLine = (BasicStatTypes.Str, 10), abilityApixes = new (ArmorApixType, float)[3] { (ArmorApixType.MaxHp, 0.3f), (ArmorApixType.MaxMana, 0.3f), (ArmorApixType.Evasion, 0.3f) } }, ArmorMat.PlateArmor,false));
 
         }
         if(Input.GetKeyDown(KeyCode.T))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Weapons("Bow",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.LeftHand, 0, false, WeaponType.Bow,
+            UIManager.GetInstance().equipInven.GetItems(new Weapons("10002","Bow",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.LeftHand, 0, false, WeaponType.Bow,
                 new IApixBase<WeaponApixType> { firstLine = (BasicStatTypes.AGI, 10), abilityApixes = new (WeaponApixType, float)[3] { (WeaponApixType.AttackSpeed, 0.3f), (WeaponApixType.CastingSpeed, 0.3f), (WeaponApixType.MATK, 0.3f) } }));
         }
         if(Input.GetKeyDown(KeyCode.P))
         {
-            UIManager.GetInstance().consumeInven.GetItems(new Potions("마나 포션",playerSR.sprite,100,PotionType.HP,100));
+            UIManager.GetInstance().consumeInven.GetItems(new Potions("30001","체력 포션",playerSR.sprite,100,PotionType.HP,100));
         }
         if(Input.GetKeyDown(KeyCode.LeftBracket))
         {
-            UIManager.GetInstance().consumeInven.GetItems(new Potions("마나 포션",playerSR.sprite,100,PotionType.SP,100));
+            UIManager.GetInstance().consumeInven.GetItems(new Potions("30002","마나 포션",playerSR.sprite,100,PotionType.SP,100));
         }
         KeyBoardBinding();
         StateMachine.CurrentState.Execute();

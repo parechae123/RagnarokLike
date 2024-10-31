@@ -93,6 +93,7 @@ public class InventoryItemBase : IItemBase
     {
         get { return itemSprite; }
     }
+    public string itemCode;
     public string itemName;
     protected Sprite itemSprite;
     protected sbyte amount;
@@ -222,8 +223,9 @@ public class Equips : InventoryItemBase
     {
         Amount = 0;
     }
-    public Equips(string itemName,Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne)
+    public Equips(string itemCode,string itemName,Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne)
     {
+        this.itemCode = itemCode;
         this.itemName = itemName;
         Amount = 1;
         this.itemSprite = itemSprite;
@@ -293,8 +295,9 @@ public class Armors : Equips
             }
         }
     }
-    public Armors(string itemName,Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne,IApixBase<ArmorApixType> apixes,ArmorMat armorMat,bool isMagicDeff) : base(itemName,itemSprite, equipJobs, equipLevel, goldValue, part, valueOne)
+    public Armors(string itemCode,string itemName,Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne,IApixBase<ArmorApixType> apixes,ArmorMat armorMat,bool isMagicDeff) : base(itemCode,itemName,itemSprite, equipJobs, equipLevel, goldValue, part, valueOne)
     {
+        this.itemCode = itemCode;
         this.itemName = itemName;
         Amount = 1;
         this.itemSprite = itemSprite;
@@ -414,8 +417,9 @@ public class Weapons : Equips
         }
     }
     
-    public Weapons(string itemName, Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne, bool isMATKWeapon,WeaponType weaponType, IApixBase<WeaponApixType> apix) : base(itemName, itemSprite,equipJobs, equipLevel, goldValue,part,valueOne)
+    public Weapons(string itemCode,string itemName, Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne, bool isMATKWeapon,WeaponType weaponType, IApixBase<WeaponApixType> apix) : base(itemCode,itemName, itemSprite,equipJobs, equipLevel, goldValue,part,valueOne)
     {
+        this.itemCode = itemCode;
         this.itemName = itemName;
         Amount = 1;
         this.itemSprite = itemSprite;
@@ -480,8 +484,9 @@ public class Potions : Consumables
     public PotionType potionType;
     public float valueOne;
     public int invenIndex;
-    public Potions(string itemName, Sprite itemSprite, float goldValue, PotionType potionType, float valueOne)
+    public Potions(string itemCode,string itemName, Sprite itemSprite, float goldValue, PotionType potionType, float valueOne)
     {
+        this.itemCode = itemCode;
         this.itemName = itemName;
         Amount = 1;
         this.itemSprite = itemSprite;
@@ -508,7 +513,7 @@ public class Potions : Consumables
 
         }
 
-        if (Amount > 0)
+        if (Amount <= 0)
         {
             ResetIMG();
             ResetEvent();

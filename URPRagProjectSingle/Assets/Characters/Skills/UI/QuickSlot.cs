@@ -59,7 +59,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
         get;
         set;
     }
-    private Text SlotText
+    protected Text SlotText
     {
         get 
         { 
@@ -78,6 +78,11 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
     public void GetSlotKey()
     {
         SlotItem?.UseItem();
+        if(SlotItem.GetType() == typeof(EmptyItem))
+        {
+            btn.onClick.RemoveAllListeners();
+            return;
+        }
         if(SlotItem.slotType != SlotType.Skills) 
         {
             InventoryItemBase temp = (InventoryItemBase)SlotItem;
@@ -87,7 +92,6 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
                 iconImage.sprite = null;
                 RemoveSlot(default);
             }
-            
         }
     }
     public void Install(IItemBase tempData, bool isStaticSlot)
@@ -104,7 +108,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
         if (pp.button == PointerEventData.InputButton.Left) UIManager.GetInstance().DraggingIcons(pp.position, iconImage.sprite);
         else return;
     }
-    public void OnEndDrag(PointerEventData pp)
+    public virtual void OnEndDrag(PointerEventData pp)
     {
         // 마우스 위치에 대한 RaycastResult 리스트 생성
         if (SlotItem == null || SlotItem.GetType() == typeof(EmptyItem)) return;
@@ -159,7 +163,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
         if (isStaticSlot) return;
         SlotItem = new EmptyItem(sprite);
     }
-    public virtual void ChangeSlot(IItemBase item)
+    public void ChangeSlot(IItemBase item)
     {
         
         if (isStaticSlot) return;
@@ -179,7 +183,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
     /// 슬롯아이템 스왑시
     /// </summary>
     /// <param name="item"></param>
-    public void SwapSlot( QuickSlot item)
+    public virtual void SwapSlot( QuickSlot item)
     {
         if (isStaticSlot) return;
         IItemBase tempItemBase = item.SlotItem;
