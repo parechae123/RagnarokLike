@@ -134,7 +134,7 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.U))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Weapons("10001","shield",playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.RightHand, 10, true, WeaponType.Shield,
+            UIManager.GetInstance().equipInven.GetItems(new Weapons("10001", "shield", ResourceManager.GetInstance().ItemIconAtlas.GetSprite("Wooden Shield"), new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.RightHand, 10, true, WeaponType.Shield,
                 new IApixBase<WeaponApixType> { firstLine = (BasicStatTypes.Str,10),abilityApixes = new (WeaponApixType, float)[3] {(WeaponApixType.AttackSpeed,0.3f), (WeaponApixType.CastingSpeed, 0.1f), (WeaponApixType.MATK, 0.3f) } }));
             
         }

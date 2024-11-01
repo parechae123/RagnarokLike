@@ -10,6 +10,7 @@ using System.IO;
 using UnityEditor;
 using Unity.VisualScripting;
 using System.Threading;
+using UnityEngine.U2D;
 
 /// <summary>
 /// 메니저 템플릿화
@@ -525,6 +526,8 @@ public class UIManager : Manager<UIManager>
             return mainCanvas;
         }
     }
+
+    private event Action<Vector3, string, Color, float?> textEffectFuc;
     private Image draggingIconImage;
     /// <summary>
     /// 0 = leftHand,1 = rightHand
@@ -534,6 +537,7 @@ public class UIManager : Manager<UIManager>
     /// 0 = head, 1 = chest, 2 = pants, 3= boots , 4 = gauntlet
     /// </summary>
     public InventorySlots[] equipWindowArmors;
+
     //캐스팅바 시리즈
     private RectTransform outerCastBar;
     private RectTransform OuterCastBar
@@ -750,6 +754,15 @@ public class UIManager : Manager<UIManager>
     {
         playerUI ??= new PlayerUI();
         playerUI?.ResetUI();
+    }
+    public void FontParticleRegist(Action<Vector3, string, Color, float?> action)
+    {
+        textEffectFuc = null;
+        textEffectFuc += action;
+    }
+    public void SpawnFloatText(Vector3 pos, string str, Color color, float size)
+    {
+        textEffectFuc?.Invoke(pos, str, color, size);
     }
 }
 public class SkillManager : Manager<SkillManager>

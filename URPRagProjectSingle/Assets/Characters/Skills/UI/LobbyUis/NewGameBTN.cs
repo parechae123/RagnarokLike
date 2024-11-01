@@ -19,7 +19,6 @@ public class NewGameBTN : MonoBehaviour
     private void Awake()
     {
         loadDone = new bool[labels.Length];
-
         transform.GetComponent<Button>().onClick.AddListener(() =>
         {
             for (int i = 0; i < labels.Length; i++)
@@ -32,5 +31,9 @@ public class NewGameBTN : MonoBehaviour
                 });
             }
         });
+    }
+    private void Start()
+    {
+        ResourceManager.GetInstance().SetAtlases();
     }
 }

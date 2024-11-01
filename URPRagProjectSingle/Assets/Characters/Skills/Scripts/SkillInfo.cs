@@ -235,19 +235,38 @@ public class SkillInfoInGame : IItemBase
         tempAnim.gameObject.SetActive(true);
         tempAnim.Play(skillName + "Effect");
         float tempTime = 0;
+        Color tempColor = Color.black;
+        switch (skill[castingSkillLevel].damageType)
+        {
+            case ValueType.Physical:
+                tempColor = Color.red;
+                break;
+            case ValueType.Magic:
+                tempColor = Color.cyan;
+                break;
+            case ValueType.Heal:
+                tempColor = Color.green;
+                break;
+            case ValueType.PhysicalRange:
+                tempColor = Color.magenta;
+                break;
+            case ValueType.TrueDamage:
+                tempColor = Color.white;
+                break;
+        }
         switch (objectiveType)
         {
             case ObjectiveType.None:
                 break;
             case ObjectiveType.OnlyTarget:
-                if (target != null) target.GetDamage(skill[CastingSkillLevel].TotalDamage(caster),skill[castingSkillLevel].damageType);
+                if (target != null) UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos+Vector3.up, target.GetDamage(skill[CastingSkillLevel].TotalDamage(caster), skill[castingSkillLevel].damageType).ToString("N0"),tempColor,1);
                 break;
             case ObjectiveType.Bounded:
                 Stats[] tempTargets = GetStats(new Vector2Int((int)castingPos.x, (int)castingPos.z));
                 for (int i = 0; i < tempTargets.Length; i++)
                 {
                     if (tempTargets[i] == caster) continue;
-                    tempTargets[i].GetDamage(skill[CastingSkillLevel].TotalDamage(caster), skill[castingSkillLevel].damageType);
+                    UIManager.GetInstance().SpawnFloatText(tempTargets[i].standingNode.worldPos + Vector3.up, tempTargets[i].GetDamage(skill[CastingSkillLevel].TotalDamage(caster), skill[castingSkillLevel].damageType).ToString("N0"), tempColor, 1);
                 }
                 break;
         }

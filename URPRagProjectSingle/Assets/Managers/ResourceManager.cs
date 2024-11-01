@@ -5,15 +5,40 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.U2D;
 
 public class ResourceManager : Manager<ResourceManager>
 {
+    private SpriteAtlas itemIconAtlas;
+    public SpriteAtlas ItemIconAtlas
+    {
+        get
+        {
+            if (itemIconAtlas == null) LoadAsync<SpriteAtlas>("ItemIconAtlas", (atlas) => { itemIconAtlas = atlas; });
+            return itemIconAtlas;
+        }
+    }
+    private SpriteAtlas skillIconAtlas;
+    public SpriteAtlas SkillIconAtlas
+    {
+        get
+        {
+            if (itemIconAtlas == null) LoadAsync<SpriteAtlas>("skillIconAtlas", (atlas) => { itemIconAtlas = atlas; });
+            return itemIconAtlas;
+        }
+    }
     public Dictionary<string, UnityEngine.Object> resourceDict;
     private uint loadTaskNum = 0;
     public uint LoadTaskNum
     {
         get { return loadTaskNum; }
     }
+    public void SetAtlases()
+    {
+        LoadAsync<SpriteAtlas>("SkillIconAtlas", (atlas) => { skillIconAtlas = atlas; });
+        LoadAsync<SpriteAtlas>("ItemIconAtlas", (atlas) => { itemIconAtlas = atlas; });
+    }
+
     public void LoadAsyncSkillInGameInfo(string key,Action<SkillInfoInGame> callback)
     {
         AsyncOperationHandle<SkillInfo> infoAsyncOP = Addressables.LoadAssetAsync<SkillInfo>(key);

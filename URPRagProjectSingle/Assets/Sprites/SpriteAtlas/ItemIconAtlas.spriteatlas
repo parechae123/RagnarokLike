@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ItemIcons
+  m_Name: ItemIconAtlas
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -473,5 +473,5 @@ SpriteAtlas:
   - Bread
   - Emerald Staff
   m_RenderDataMap: {}
-  m_Tag: ItemIcons
+  m_Tag: ItemIconAtlas
   m_IsVariant: 0

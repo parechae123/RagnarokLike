@@ -9,31 +9,36 @@ public class DamageDispenser : MonoBehaviour
     private ParticleSystemRenderer particleSystemRenderer;
     private new ParticleSystem particleSystem;
     public Sprite dd;
-    [ContextMenu("TestText")]
-
-    public void TestText()
+    private void Start()
     {
-        SpawnParticle(transform.position, "Hello world!", Color.red);
+        UIManager.GetInstance().FontParticleRegist(SpawnParticle);
     }
+    //미사용 함수
+    /*    [ContextMenu("TestText")]
 
-    public void SpawnParticle(Vector3 position, float amount, Color color, float? startSize = null)
-    {
-        var amountInt = Mathf.RoundToInt(amount);
-        if (amountInt == 0) return;
-        var str = amountInt.ToString();
-        if (amountInt > 0) str = "+" + str;
-        SpawnParticle(position, str, color, startSize);
-    }
+        public void TestText()
+        {
+            SpawnParticle(transform.position, "Hello world!", Color.red);
+        }
+
+        public void SpawnParticle(Vector3 position, float amount, Color color, float? startSize = null)
+        {
+            var amountInt = Mathf.RoundToInt(amount);
+            if (amountInt == 0) return;
+            var str = amountInt.ToString();
+            if (amountInt > 0) str = "+" + str;
+            SpawnParticle(position, str, color, startSize);
+        }*/
 
     public void SpawnParticle(Vector3 position, string message, Color color, float? startSize = null)
     {
-        var texCords = new Vector2[24]; //массив из 24 элемент - 23 символа + длина сообщения
+        var texCords = new Vector2[24]; // 24개의 요소를 가진 배열 - 23개의 문자 + 메시지 길이
         var messageLenght = Mathf.Min(23, message.Length);
         texCords[texCords.Length - 1] = new Vector2(0, messageLenght);
         for (int i = 0; i < texCords.Length; i++)
         {
             if (i >= messageLenght) break;
-            //Вызываем метод GetTextureCoordinates() из SymbolsTextureData для получения позиции символа
+            // SymbolsTextureData에서 GetTextureCoordinates() 메서드를 호출하여 문자 위치를 가져옴
             texCords[i] = textureData.GetTextureCoordinates(message[i]);
         }
 
@@ -41,26 +46,25 @@ public class DamageDispenser : MonoBehaviour
         var custom2Data = CreateCustomData(texCords, 12);
         var custom3Data = CreateCustomData(texCords, 12);
 
-        //Кэшируем ссылку на ParticleSystem
+        // ParticleSystem에 대한 참조를 캐시
         if (particleSystem == null) particleSystem = GetComponent<ParticleSystem>();
 
         if (particleSystemRenderer == null)
         {
-            //Если ссылка на ParticleSystemRenderer, кэшируем и убеждаемся в наличии нужных потоков
+            // ParticleSystemRenderer에 대한 참조를 캐시하고 필요한 스트림이 있는지 확인
             particleSystemRenderer = particleSystem.GetComponent<ParticleSystemRenderer>();
             var streams = new List<ParticleSystemVertexStream>();
             particleSystemRenderer.GetActiveVertexStreams(streams);
-            //Добавляем лишний поток Vector2(UV2, SizeXY, etc.), чтобы координаты в скрипте соответствовали координатам в шейдере
+            // UV2, SizeXY 등의 추가 스트림을 추가하여 스크립트의 좌표가 셰이더의 좌표와 일치하도록 함
             if (!streams.Contains(ParticleSystemVertexStream.UV2)) streams.Add(ParticleSystemVertexStream.UV2);
             if (!streams.Contains(ParticleSystemVertexStream.Custom1XYZW)) streams.Add(ParticleSystemVertexStream.Custom1XYZW);
             if (!streams.Contains(ParticleSystemVertexStream.Custom2XYZW)) streams.Add(ParticleSystemVertexStream.Custom2XYZW);
             particleSystemRenderer.SetActiveVertexStreams(streams);
         }
 
-        //Инициализируем параметры эммишена
-        //Цвет и позицию получаем из параметров метода
-        //Устанавливаем startSize3D по X, чтобы символы не растягивались и не сжимались
-        //при изменении длины сообщения
+        // 이미션 매개변수 초기화
+        // 색상과 위치는 메서드의 매개변수에서 가져옴
+        // 메시지 길이가 변할 때 문자가 늘어나거나 줄어들지 않도록 startSize3D의 X를 설정
         var emitParams = new ParticleSystem.EmitParams
         {
             startColor = color,
@@ -68,39 +72,38 @@ public class DamageDispenser : MonoBehaviour
             applyShapeToPosition = true,
             startSize3D = new Vector3(messageLenght, 1, 1)
         };
-        //Если мы хотим создавать частицы разного размера, то в параметрах SpawnParticle неоходимо
-        //передать нужное значение startSize
+        // 서로 다른 크기의 파티클을 생성하려면 SpawnParticle의 매개변수에서 startSize 값을 전달해야 함
         if (startSize.HasValue) emitParams.startSize3D *= startSize.Value * particleSystem.main.startSizeMultiplier;
-        //Непосредственно спаун частицы
+        // 파티클 스폰
         particleSystem.Emit(emitParams, 1);
 
-        //Передаем кастомные данные в нужные потоки
+        // 커스텀 데이터를 원하는 스트림에 전달
         var customData = new List<Vector4>();
-        //Получаем поток ParticleSystemCustomData.Custom1 из ParticleSystem
+        // ParticleSystem에서 ParticleSystemCustomData.Custom1 스트림을 가져옴
         particleSystem.GetCustomParticleData(customData, ParticleSystemCustomData.Custom1);
-        //Меняем данные последнего элемент, т.е. той частицы, которую мы только что создали
+        // 방금 생성한 파티클의 데이터를 변경
         customData[customData.Count - 1] = custom1Data;
-        //Возвращаем данные в ParticleSystem
+        // ParticleSystem에 데이터 반환
         particleSystem.SetCustomParticleData(customData, ParticleSystemCustomData.Custom1);
 
-        //Аналогично для ParticleSystemCustomData.Custom2
+        // ParticleSystemCustomData.Custom2에 대해 동일하게 처리
         particleSystem.GetCustomParticleData(customData, ParticleSystemCustomData.Custom2);
         customData[customData.Count - 1] = custom2Data;
         particleSystem.SetCustomParticleData(customData, ParticleSystemCustomData.Custom2);
     }
 
-    //Функция упаковки массива Vector2 с координатами символов во float
+    // 문자 좌표를 float로 패킹하는 함수
     public float PackFloat(Vector2[] vecs)
     {
         if (vecs == null || vecs.Length == 0) return 0;
-        //Поразрядно добавляем значения координат векторов в float
+        // 벡터 좌표 값을 비트별로 float에 추가
         var result = vecs[0].y * 10000 + vecs[0].x * 100000;
         if (vecs.Length > 1) result += vecs[1].y * 100 + vecs[1].x * 1000;
         if (vecs.Length > 2) result += vecs[2].y + vecs[2].x * 10;
         return result;
     }
 
-    //Функция создания Vector4 для потока с CustomData
+    // CustomData 스트림용 Vector4 생성 함수
     private Vector4 CreateCustomData(Vector2[] texCoords, int offset = 0)
     {
         var data = Vector4.zero;
@@ -129,4 +132,5 @@ public class DamageDispenser : MonoBehaviour
     {
         return Vector2.zero;
     }
+    
 }

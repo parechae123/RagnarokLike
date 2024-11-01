@@ -1,0 +1,85 @@
+----------------------------------------
+SUPER CONFETTI FX
+----------------------------------------
+
+1. Introduction
+2. Customizing confetti shapes
+3. Customizing confetti colors 
+4. Customizing emission & glowyness
+5. Scaling effects
+6. URP Upgrade
+7. Contact
+
+----------------------------------------
+1. INTRODUCTION
+----------------------------------------
+
+To use the effects, simply find a way to instantiate them, or drag & drop them into the scene.
+
+The effects will automatically start playing when the scene is running.
+
+To avoid errors on the Camera in in the Demo scenes, please import the Post-Processing package in the Package Manager.
+
+----------------------------------------
+2. CUSTOMIZING CONFETTI SHAPES
+----------------------------------------
+
+The effects uses a 4x4 spritesheet with 16 different confetti shapes.
+
+Which shape is picked is set in the Texture Sheet Animation settings of the parent particle system.
+Here you can select which 'Row' of the texture sheet you want to use, and which of the frames you want to use in 'Frame over Time'
+
+For a lot of the effects, these shapes will be picked at random between two constants, but you can also change this to use a single Constant frame.
+
+----------------------------------------
+3. CUSTOMIZING CONFETTI COLORS
+----------------------------------------
+
+Which colors the confetti, sparkles, shockwave and sparks are using, are all set in the Start Color at the top of the particle system.
+
+Several effects also use Color over Lifetime to fade them out near the end of their lifetime.
+
+----------------------------------------
+4. CUSTOMIZING EMISSION & GLOWYNESS
+----------------------------------------
+
+In order to view the effects of emission, make sure that you find a post processing solution that supports Bloom.
+
+For some versions of Unity, you can find a Post-Processing Stack on the Unity Asset Store, or in later versions, a Post-Processing solution should be available in the Package Manager.
+
+If you wish to change the glow for the Magic Confetti effects, locate the 'confetti4x4_magic' material in the Materials folder.
+
+You can see here that the Albedo is reduced from 1.0 to 0.7, this will slightly reduce the visibility of the color taken from the Particle System settings. 
+
+Emission in the same material is also set to 0.7, which will add a slight white glow, making it seem like the color is a bit washed out.
+
+If you want to have a much colorful glow, you could set Albedo to 1.4 and either reduce or turn off Emission completely.
+
+----------------------------------------
+5. SCALING EFFECTS
+----------------------------------------
+
+To scale an effect in the scene, simply use the default Scaling tool (Hotkey 'R'). You can also select the effect and type in the Scale in Transform manually.
+
+----------------------------------------
+6. URP Upgrade
+----------------------------------------
+
+To upgrade to URP find the 'Super Confetti FX/Upgrade' folder, double-click the Upgrade package and import to your project.
+
+----------------------------------------
+7. CONTACT
+----------------------------------------
+
+Twitter: @archanor
+Support: archanor.work@gmail.com
+
+For support or criticism, please contact me over e-mail.
+
+Follow me and my work on Twitter for updates and new VFX assets.
+
+Ratings & reviews are much appreciated!
+
+----------------------------------------
+
+Made by Kenneth "Archanor" Foldal Moe

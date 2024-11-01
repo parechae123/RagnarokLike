@@ -49,6 +49,7 @@ MonoBehaviour:
   textureData:
     texture: {fileID: 2800000, guid: f5b44b8372705084aa6b2a7e1d9afe98, type: 3}
     chars: 200021002a002c002d002e002f003a003b003c003d003e003f004100420043004400450046004700480049004a004b004c004d004e004f0050005100520053005400550056005700580059005a005b005c005d005e005f00a7002b003000310032003300340035003600370038003900
+  dd: {fileID: 0}
 --- !u!198 &3492755681695876626
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -64,7 +65,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -1029,8 +1030,8 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 1
-          value: 0.6
+          time: 0.9974365
+          value: 0.3345734
           inSlope: -0
           outSlope: -0
           tangentMode: 0
@@ -4823,7 +4824,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a49459d990a735a42ae922d403619312, type: 2}
+  - {fileID: 2100000, guid: 9c8d47039baa48847a1b20e9943c7613, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4855,7 +4856,7 @@ ParticleSystemRenderer:
   m_SortingFudge: 0
   m_NormalDirection: 1
   m_ShadowBias: 0
-  m_RenderAlignment: 0
+  m_RenderAlignment: 3
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
   m_EnableGPUInstancing: 1
@@ -4864,7 +4865,7 @@ ParticleSystemRenderer:
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
   m_UseCustomVertexStreams: 1
-  m_VertexStreams: 00010304
+  m_VertexStreams: 00010304052226
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}

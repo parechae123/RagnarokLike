@@ -46,6 +46,7 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: 21e86593f55c8454892738dd42dd9deb, type: 2}
   - {fileID: 11400000, guid: 827ae54a8f81fc146ae53a999020f82f, type: 2}
+  - {fileID: 11400000, guid: 4f90d5455ca613e498e18e7a541089e4, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -89,6 +90,7 @@ MonoBehaviour:
     - default
     - JobData
     - SkillInfo
+    - SpriteAtlas
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 3e0d6b2a105e5804c8fa0ad16e94480c, type: 2}

@@ -363,7 +363,7 @@ namespace PlayerDefines
 
             public Stats target;
             //방어력계산
-            public virtual void GetDamage(float value, ValueType valueType)
+            public virtual float GetDamage(float value, ValueType valueType)
             {
                 switch (valueType)
                 {
@@ -385,6 +385,7 @@ namespace PlayerDefines
                 }
 
                 HP -= value;
+                return value;
             }
             public virtual void AttackTarget(Stats target)
             {
@@ -396,11 +397,11 @@ namespace PlayerDefines
                 {
                     if (UnityEngine.Random.Range(1, 101) >  target.Evasion- accuracy)
                     {
-                        //TODO : MISS! DamageText 추가요망
+                        UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos + (Vector3.up * 2), "MISS!", new Color(0.47058f, 0.18039f, 0.45098f, 1), 1);
                         return;
                     }
                 }
-                target.GetDamage(attackDamage, ValueType.Physical);
+                UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos + (Vector3.up * 2), target.GetDamage(attackDamage, ValueType.Physical).ToString("N0"), Color.red, 1);
             }
             public virtual bool IsEnoughSP(float spCost)
             {
@@ -726,7 +727,7 @@ namespace PlayerDefines
                 {
                     if (UnityEngine.Random.Range(1, 101) > this.target.Evasion - TotalAccuracy)
                     {
-                        //TODO : MISS! DamageText 추가요망
+                        UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos + (Vector3.up * 2), "MISS!", new Color(120, 46, 115, 1), 1);
                         return;
                     }
                 }
@@ -734,13 +735,12 @@ namespace PlayerDefines
 
                 if (UnityEngine.Random.Range(1, 101) <= CriChance) 
                 {
-                    this.target.GetDamage(TotalAD * CriDamage,ValueType.Physical);
-                    //TODO : 크리티컬 전용 데미지 텍스트 추가요망
+                    
+                    UIManager.GetInstance().SpawnFloatText(this.target.standingNode.worldPos + Vector3.up, this.target.GetDamage(TotalAD * CriDamage, ValueType.Physical).ToString("N0"),Color.yellow,1f);
                 }
                 else
                 {
-                    this.target.GetDamage(TotalAD, ValueType.Physical);
-                    //TODO : 데미지 텍스트 추가요망
+                    UIManager.GetInstance().SpawnFloatText(this.target.standingNode.worldPos + Vector3.up, this.target.GetDamage(TotalAD, ValueType.Physical).ToString("N0"), Color.red, 1f);
                 }
 
             }
@@ -769,7 +769,7 @@ namespace PlayerDefines
                 return temp;
             }
             /// <summary>
-            /// TODO : 방어도 미구현으로 추후 사용 필요
+            /// 
             /// </summary>
             /// <returns></returns>
             public float GetArmorValue(bool isMDeff)
