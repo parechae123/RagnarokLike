@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.Y))
         {
-            UIManager.GetInstance().equipInven.GetItems(new Armors("20001","gabba", playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Chest, 10,
+            UIManager.GetInstance().equipInven.GetItems(new Armors("20002","gabba", playerSR.sprite, new BaseJobType[1] { BaseJobType.Novice }, 0, 0, EquipPart.Chest, 10,
                 new IApixBase<ArmorApixType> { firstLine = (BasicStatTypes.Str, 10), abilityApixes = new (ArmorApixType, float)[3] { (ArmorApixType.MaxHp, 0.3f), (ArmorApixType.MaxMana, 0.3f), (ArmorApixType.Evasion, 0.3f) } }, ArmorMat.PlateArmor,false));
 
         }

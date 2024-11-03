@@ -16,13 +16,13 @@ using TMPro.Examples;
 public class MonsterBase : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] MonsterStat monsterStat;
+    [SerializeField] public MonsterStat monsterStat;
     
 
     public Vector3 initialPos = new Vector3(-1000,-1000,-1000);
     Queue<Node> path = new Queue<Node>();
     [SerializeField] int recogDistance;
-    int RecogDistance { get { return recogDistance * 10; } }
+    public int RecogDistance { get { return recogDistance * 10; } }
     public float respawnSec = 0;
     Node playerNode
     {
@@ -60,7 +60,7 @@ public class MonsterBase : MonoBehaviour
         monsterStat = new MonsterStat(GridManager.GetInstance().PositionToNode(initialPos), 30, 10, 1, 3, 10, 1,0);
         transform.position = new Vector3(monsterStat.standingNode.nodeCenterPosition.x, monsterStat.standingNode.nodeFloor + 1.5f, monsterStat.standingNode.nodeCenterPosition.y);
         Debug.Log(monsterStat.standingNode.nodeCenterPosition);
-        PlayerCam.Instance.AddRotAction(SetFlipDIr);
+        PlayerCam.Instance.AddRotAction(animationDirrection);
         monsterSR = GetComponent<SpriteRenderer>();
         monsterStat.dieFunctions = null;
         monsterStat.dieFunctions += MonsterDie;
@@ -131,7 +131,7 @@ public class MonsterBase : MonoBehaviour
         currState = nextState;
         currState.Enter();
     }*/
-    private bool IsInRange(Vector2Int startPos, Vector2Int endPos, int distance)
+    public bool IsInRange(Vector2Int startPos, Vector2Int endPos, int distance)
     {
         //GridManager의 GetDistance와 같은 식, 정적메모리 접근 과중화를 막기 위해 별도로 작성함
         // 두 점 사이의 x와 y 좌표 차이 계산
@@ -174,34 +174,83 @@ public class MonsterBase : MonoBehaviour
         }
         return false;
     }
-    public void SetFlipDIr()
+    public Vector2Int SetFlipDIr()
     {
-        //몬스터로부터 플레이어의 상대거리를 구하고
-        Vector2Int dir = CurrentNode.nodeCenterPosition-Player.Instance.CurrentNode.nodeCenterPosition;
-        //카메라의 현재 위치를 기반으로해서 돌리는걸 구하면 될 거 같은데 아니면 삼각함수로 각도를 구하거나
-        if (PlayerCam.Instance.CameraDirrection == Vector2Int.up || PlayerCam.Instance.CameraDirrection == Vector2Int.right)
+        Vector2Int tempPos = CurrentNode.nodeCenterPosition - Player.Instance.CurrentNode.nodeCenterPosition;
+        if (tempPos.x != 0)
         {
-            if (dir.x > 0 && dir.y > 0)
+            if (tempPos.x > 0)
             {
-                isFlip = true;
+                tempPos = Vector2Int.right;
             }
-            else
+            else if (tempPos.x < 0)
             {
-                isFlip = false;
+                tempPos = Vector2Int.left;
             }
         }
         else
         {
-            if (dir.x > 0 && dir.y > 0)
+            if (tempPos.y > 0)
             {
-                isFlip = false;
+                tempPos = Vector2Int.up;
+            }
+            else if (tempPos.y < 0)
+            {
+                tempPos = Vector2Int.down;
+            }
+        }
+        return tempPos;
+    }
+
+    private void animationDirrection()
+    {
+        Vector2Int tempVecInt = SetFlipDIr() - PlayerCam.Instance.CameraDirrection;
+        //Debug.Log(tempVecInt);
+        sbyte maxValue = (sbyte)Mathf.Max(tempVecInt.x, tempVecInt.y);
+        sbyte minValue = (sbyte)Mathf.Min(tempVecInt.x, tempVecInt.y);
+        if (maxValue == default(sbyte) && minValue == default(sbyte))
+        {
+            isFlip = true;
+            return;
+        }
+        else if (maxValue == (sbyte)2 || minValue == (sbyte)-2)
+        {
+            isFlip = false;
+        }
+        else
+        {
+            if (PlayerCam.Instance.CameraDirrection.x == 0)
+            {
+                if ((maxValue < default(sbyte) && minValue < default(sbyte)) || (maxValue > default(sbyte) && minValue > default(sbyte)))
+                {
+                    isFlip = false;
+                    return;
+                }
+                else if ((maxValue > default(sbyte) && minValue < default(sbyte)) || (maxValue < default(sbyte) && minValue < default(sbyte)))
+                {
+                    isFlip = true;
+                    return;
+                }
             }
             else
             {
-                isFlip = true;
+                if ((maxValue < default(sbyte) && minValue < default(sbyte)) || (maxValue > default(sbyte) && minValue > default(sbyte)))
+                {
+                    isFlip = true;
+                    return;
+                }
+                else if ((maxValue > default(sbyte) && minValue < default(sbyte)) || (maxValue < default(sbyte) && minValue < default(sbyte)))
+                {
+                    isFlip = false;
+                    return;
+                }
             }
+
         }
+        isFlip = false;
+        return;
     }
+
     public IEnumerator Movement(Queue<Node> nodeQueue)
     {
         isMonsterMoving = true;
@@ -211,7 +260,6 @@ public class MonsterBase : MonoBehaviour
         Node playerLastNode;
         Vector3 tempVec;
 //        LinkedList<Node> list;
-        Vector3 lastStandingPos;
         Vector3 moveStartPos = Vector3.zero;
         while (nodeQueue.Count > 0)
         {
