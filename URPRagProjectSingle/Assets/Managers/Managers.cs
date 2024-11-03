@@ -801,6 +801,7 @@ public class MonsterManager : Manager<MonsterManager>
     {
         respawnMonsters[target].monster.Start();
         respawnMonsters[target].monster.gameObject.SetActive(true);
+        respawnMonsters[target].monster.ChangeState(new MIdleState(respawnMonsters[target].monster));
         respawnMonsters.RemoveAt(target);
     }
     public void UpdateRespawnTime(float deltatime)
@@ -811,6 +812,7 @@ public class MonsterManager : Manager<MonsterManager>
             if (respawnMonsters[i].leftRespawnTime <= 0)
             {
                 Respawn(i);
+
                 break;
             }
         }

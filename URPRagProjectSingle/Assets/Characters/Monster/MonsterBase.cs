@@ -17,24 +17,22 @@ public class MonsterBase : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] public MonsterStat monsterStat;
-    
-
     public Vector3 initialPos = new Vector3(-1000,-1000,-1000);
     Queue<Node> path = new Queue<Node>();
     [SerializeField] int recogDistance;
     public int RecogDistance { get { return recogDistance * 10; } }
     public float respawnSec = 0;
-    Node playerNode
+    public Node playerNode
     {
         get { return Player.Instance.playerLevelInfo.stat.standingNode; }
     }
-    [SerializeField] private bool isMonsterMoving = false;
+    public bool isMonsterMoving = false;
     private Node lastNode;
-    private Node blockingNode;
+    public Node blockingNode;
     private SpriteRenderer monsterSR;
     [SerializeField] private float searchTimer;
     [SerializeField] private float searchDelay;
-    [SerializeField] private bool alreadyResearch;
+    [SerializeField] public bool alreadyResearch;
     private float baseEXP = 1000;
     private float jobEXP = 50;
     public bool isFlip;
@@ -52,18 +50,26 @@ public class MonsterBase : MonoBehaviour
             monsterStat.standingNode.CharacterOnNode = monsterStat;
         }
     }
-
+    public IState currentStates;
+    public bool isAgressiveMob = false;
+    private Animator animator;
     public void Start()
     {
         if(initialPos == Vector3.one*(-1000)) initialPos = transform.position;
 
         monsterStat = new MonsterStat(GridManager.GetInstance().PositionToNode(initialPos), 30, 10, 1, 3, 10, 1,0);
         transform.position = new Vector3(monsterStat.standingNode.nodeCenterPosition.x, monsterStat.standingNode.nodeFloor + 1.5f, monsterStat.standingNode.nodeCenterPosition.y);
+        
+
         Debug.Log(monsterStat.standingNode.nodeCenterPosition);
         PlayerCam.Instance.AddRotAction(animationDirrection);
+        
         monsterSR = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+
         monsterStat.dieFunctions = null;
         monsterStat.dieFunctions += MonsterDie;
+        currentStates = new MIdleState(this);
     }
     private void Update()
     {
@@ -72,65 +78,18 @@ public class MonsterBase : MonoBehaviour
         {
             monsterStat.HPBar.transform.position = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + monsterSR.bounds.size.y, transform.position.z));
         }
-
-        if (IsInRange(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition, RecogDistance))
-        {
-            searchTimer += Time.deltaTime;
-            //공격로직
-            if (IsInRange(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition, monsterStat.CharactorAttackRange))
-            {
-                monsterStat.statTimer += Time.deltaTime;
-                if (monsterStat.attackSpeed <= monsterStat.statTimer)
-                {
-                    if (Player.Instance.playerLevelInfo.stat.isCharacterDie) return;
-                    monsterStat.AttackTarget(Player.Instance.playerLevelInfo.stat);
-                    monsterStat.statTimer = 0;
-                    return;
-                }
-            }
-            else
-            {
-                monsterStat.statTimer = 0;
-            }
-
-            //이동로직
-            if (searchTimer > searchDelay)
-            {
-                if (!isMonsterMoving)
-                {
-                    if (blockingNode != null)
-                    {
-                        
-                        if (blockingNode.CharacterOnNode != null&& blockingNode.CharacterOnNode != monsterStat)
-                        {
-                            if(!alreadyResearch)
-                            {
-                                alreadyResearch = true;
-                                MoveOrder();
-                            }
-                            return;
-                        }
-                    }
-                    MoveOrder();
-
-                }
-            }
-            if (searchTimer > searchDelay)
-            {
-                searchTimer = 0;
-            }
-        }
+        currentStates?.Execute();
 
 
 
     }
 
-/*    public void ChangeState(IState nextState) //미사용 함수, monster stateMachine 작업 완료시 필요
+    public void ChangeState(IState nextState) //미사용 함수, monster stateMachine 작업 완료시 필요
     {
-        currState.Exit();
-        currState = nextState;
-        currState.Enter();
-    }*/
+        currentStates.Exit();
+        currentStates = nextState;
+        currentStates.Enter();
+    }
     public bool IsInRange(Vector2Int startPos, Vector2Int endPos, int distance)
     {
         //GridManager의 GetDistance와 같은 식, 정적메모리 접근 과중화를 막기 위해 별도로 작성함
@@ -158,6 +117,7 @@ public class MonsterBase : MonoBehaviour
         Player.Instance.playerLevelInfo.GetBaseEXP(baseEXP);
         Player.Instance.playerLevelInfo.GetJobEXP(jobEXP);
         monsterStat.HPBar = null;
+        
     }
     public bool MoveOrder()
     {
