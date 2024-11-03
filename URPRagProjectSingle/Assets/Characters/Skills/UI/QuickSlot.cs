@@ -89,7 +89,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
             //TODO : 아이콘 아틀라스에서 이거 넣어주면됨
             if (temp.Amount <= 0)
             {
-                iconImage.sprite = null;
+                iconImage.sprite = ResourceManager.GetInstance().ItemIconAtlas.GetSprite("Empty"); ;
                 RemoveSlot(default);
             }
         }

@@ -22,8 +22,7 @@ public class InventorySlots : QuickSlot
         {
             if (value == null) 
             {
-                iconImage.sprite = null;
-                btn.interactable = false;
+                iconImage.sprite = ResourceManager.GetInstance().ItemIconAtlas.GetSprite("Empty") ;
                 btn.onClick.RemoveAllListeners();
                 itemData = null;
                 return;
@@ -131,7 +130,6 @@ public class InventorySlots : QuickSlot
     private void Reset()
     {
         slotNumber = (sbyte)transform.parent.GetSiblingIndex();
-
         switch (transform.parent.parent.name)
         {
             case "CosumeableTab":

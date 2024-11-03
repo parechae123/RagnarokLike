@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
     {
         get { return stateMachine; }
     }
-
+    [SerializeField]Transform shadowTR;
     private SpriteRenderer playerSR;
     [SerializeField] private Transform targetCell;
     [SerializeField] CursorStates playerCursorState = new CursorStates();
@@ -107,6 +107,7 @@ public class Player : MonoBehaviour
         playerSR = GetComponent<SpriteRenderer>();
         playerLevelInfo.baseLevelUP += playerLevelInfo.BaseLevelUP;
         playerLevelInfo.jobLevelUP += playerLevelInfo.JobLevelUP;
+        playerLevelInfo.stat.dieFunctions += PlayerDie;
         //쿨타임 부분 수정필요
     }
     private void Start()
@@ -123,9 +124,11 @@ public class Player : MonoBehaviour
 
     public void Update()
     {
+        transform.rotation = Camera.main.transform.rotation;
+        if (playerLevelInfo != null) if (playerLevelInfo.stat != null) if (playerLevelInfo.stat.isCharacterDie) return;
+        shadowTR.position = transform.position;
         MouseBinding();
         InTime();
-        transform.rotation = Camera.main.transform.rotation;
         //디버그용 키로 빼야함
         if(Input.GetKeyDown(KeyCode.Keypad0))
         {
@@ -615,6 +618,7 @@ public class Player : MonoBehaviour
         states.Enqueue(new AttackState(1, playerLevelInfo.stat.attackSpeed, "attackState", "idleState", false, playerLevelInfo.stat));
         states.Enqueue(new CastingState(1, playerLevelInfo.stat.attackSpeed, "castingState", "idleState", false));
         states.Enqueue(new DamagedState(1, 0.3f, "damagedState", "idleState", false));
+        states.Enqueue(new DieState(1, -1, "dieState", "dieState", false));
         stateMachine = new PlayerStateMachine(states.ToArray(),GetComponent<Animator>());
         StateMachine.ChangeState("idleState");
     }
@@ -628,6 +632,11 @@ public class Player : MonoBehaviour
             Gizmos.color = Color.cyan;
             Gizmos.DrawCube(new Vector3(tempNodeArray[i].nodeCenterPosition.x, transform.position.y, tempNodeArray[i].nodeCenterPosition.y), Vector3.one);
         }
+    }
+    public void PlayerDie()
+    {
+        stateMachine.ChangeState(stateMachine.SearchState("dieState") as DieState);
+        //TODO : 사망 연출 이곳에 등록
     }
 }
 [System.Serializable]
@@ -845,6 +854,7 @@ public class PlayerLevelInfo
         }
         return tempBool;
     }
+    
 }
 [System.Serializable]
 public class PlayerSkillTreeForPhase

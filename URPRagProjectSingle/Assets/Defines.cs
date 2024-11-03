@@ -181,10 +181,22 @@ namespace NeutralDefines
                 currentState?.Enter();                  //다음 상태값
                 AnimationChange();
             }
+            public void ChangeState(PlayerStates state)
+            {
+                currentState?.Exit();
+                currentState = state;
+                currentState?.Enter();
+                AnimationChange();
+            }
             public void AnimationChange()
             {
                 currentState?.SetAnimationSpeed(anim);
                 anim.Play(currentState.stateName + animationDirrection);
+            }
+            public void CamRotAnimChange()
+            {
+                currentState?.SetAnimationSpeed(anim);
+                anim.Play(currentState.stateName + animationDirrection, 0, anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
             }
 
             public PlayerStates SearchState(string stateName)

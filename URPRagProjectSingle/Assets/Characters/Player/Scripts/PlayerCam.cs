@@ -48,6 +48,7 @@ public class PlayerCam : MonoBehaviour
     public float cameraRotValue;
     public float rotationSensitivity;
     [SerializeField]private Vector2Int cameraDirrection;
+    public event Action monsterRot;
     public Vector2Int CameraDirrection
     {
         get 
@@ -93,7 +94,12 @@ public class PlayerCam : MonoBehaviour
         {
             cameraRotValue += Input.GetAxis("Mouse X") * rotationSensitivity;
             cameraNomalizedPos = GetCircle(cameraRotValue);
-            Player.Instance.StateMachine.AnimationChange();
+
+            if (cameraDirrection != CameraDirrection) 
+            {
+                Player.Instance.StateMachine.CamRotAnimChange();
+                monsterRot?.Invoke();
+            }
         }
 
     }
@@ -114,6 +120,10 @@ public class PlayerCam : MonoBehaviour
             float tempNum = a-b;
             return Mathf.Sqrt(tempNum*tempNum);
         }*/
+    public void AddRotAction(Action action)
+    {
+        monsterRot += action;
+    }
 }
 public enum Dirrections
 {

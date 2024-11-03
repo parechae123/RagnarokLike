@@ -129,6 +129,30 @@ namespace PlayerDefines
                 base.Exit();
             }
         }
+        public class DieState : PlayerStates
+        {
+            public DieState(float coolTime, float durationTime, string targetStateName, string nextStateName, bool isCancelableState) : base(coolTime, durationTime, targetStateName, nextStateName, isCancelableState)
+            {
+                isCancelableState = false;
+            }
+            public void SetDurationTime(float time)
+            {
+                durationTime = time;
+            }
+            public override void Enter()
+            {
+                base.Enter();
+            }
+            public override void Execute()
+            {
+
+
+            }
+            public override void Exit()
+            {
+                base.Exit();
+            }
+        }
 
 
 
@@ -259,7 +283,7 @@ namespace PlayerDefines
 
             public bool isCharacterDie
             {
-                get { return HP <= 0; }
+                get { return defaultMaxHP >= 0 ? HP <= 0 : false; }
             }
             public virtual bool isCharacterDamaged
             {
@@ -305,9 +329,12 @@ namespace PlayerDefines
                 set
                 {
                     Debug.Log((hp- value) +"몬스터 데미지");
+                    if (isCharacterDie) return;
+
                     hp = value;
                     if(isCharacterDie)
                     {
+                        hp = 0;
                         dieFunctions?.Invoke();
                     }
                 }
@@ -681,9 +708,13 @@ namespace PlayerDefines
                 }
                 set
                 {
-                    if(MaxHP < value) base.hp = MaxHP;
+                    if (hp > value)
+                    {
+                        Player.Instance.stateMachine.ChangeState(Player.Instance.stateMachine.SearchState("damagedState"));
+                    }
+                    if (MaxHP < value) base.hp = MaxHP;
                     else base.hp = value;
-                    
+
                     if (isCharacterDie)
                     {
                         dieFunctions?.Invoke();

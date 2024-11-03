@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayerDefines;
 using PlayerDefines.Stat;
-using Unity.VisualScripting;
 using System.Linq;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -11,7 +10,8 @@ using DG.Tweening.Plugins;
 using DG.Tweening;
 using DG.Tweening.Plugins.Core.PathCore;
 using System;
-using UnityEngine.UI;
+using PlayerDefines.States;
+using TMPro.Examples;
 
 public class MonsterBase : MonoBehaviour
 {
@@ -37,6 +37,7 @@ public class MonsterBase : MonoBehaviour
     [SerializeField] private bool alreadyResearch;
     private float baseEXP = 1000;
     private float jobEXP = 50;
+    public bool isFlip;
     public Node CurrentNode
     {
         get { return monsterStat.standingNode; }
@@ -59,7 +60,7 @@ public class MonsterBase : MonoBehaviour
         monsterStat = new MonsterStat(GridManager.GetInstance().PositionToNode(initialPos), 30, 10, 1, 3, 10, 1,0);
         transform.position = new Vector3(monsterStat.standingNode.nodeCenterPosition.x, monsterStat.standingNode.nodeFloor + 1.5f, monsterStat.standingNode.nodeCenterPosition.y);
         Debug.Log(monsterStat.standingNode.nodeCenterPosition);
-
+        PlayerCam.Instance.AddRotAction(SetFlipDIr);
         monsterSR = GetComponent<SpriteRenderer>();
         monsterStat.dieFunctions = null;
         monsterStat.dieFunctions += MonsterDie;
@@ -67,14 +68,19 @@ public class MonsterBase : MonoBehaviour
     private void Update()
     {
         transform.rotation = Camera.main.transform.rotation;
+        if (monsterStat.isCharacterDamaged)
+        {
+            monsterStat.HPBar.transform.position = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + monsterSR.bounds.size.y, transform.position.z));
+        }
+
         if (IsInRange(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition, RecogDistance))
         {
-            //공격로직
             searchTimer += Time.deltaTime;
-            monsterStat.statTimer += Time.deltaTime;
-            if(monsterStat.attackSpeed <= monsterStat.statTimer)
+            //공격로직
+            if (IsInRange(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition, monsterStat.CharactorAttackRange))
             {
-                if (IsInRange(monsterStat.standingNode.nodeCenterPosition,playerNode.nodeCenterPosition,monsterStat.CharactorAttackRange))
+                monsterStat.statTimer += Time.deltaTime;
+                if (monsterStat.attackSpeed <= monsterStat.statTimer)
                 {
                     if (Player.Instance.playerLevelInfo.stat.isCharacterDie) return;
                     monsterStat.AttackTarget(Player.Instance.playerLevelInfo.stat);
@@ -82,6 +88,11 @@ public class MonsterBase : MonoBehaviour
                     return;
                 }
             }
+            else
+            {
+                monsterStat.statTimer = 0;
+            }
+
             //이동로직
             if (searchTimer > searchDelay)
             {
@@ -109,12 +120,17 @@ public class MonsterBase : MonoBehaviour
                 searchTimer = 0;
             }
         }
-        if (monsterStat.isCharacterDamaged)
-        {
-            monsterStat.HPBar.transform.position = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + monsterSR.bounds.size.y, transform.position.z));
-        }
+
+
 
     }
+
+/*    public void ChangeState(IState nextState) //미사용 함수, monster stateMachine 작업 완료시 필요
+    {
+        currState.Exit();
+        currState = nextState;
+        currState.Enter();
+    }*/
     private bool IsInRange(Vector2Int startPos, Vector2Int endPos, int distance)
     {
         //GridManager의 GetDistance와 같은 식, 정적메모리 접근 과중화를 막기 위해 별도로 작성함
@@ -143,7 +159,7 @@ public class MonsterBase : MonoBehaviour
         Player.Instance.playerLevelInfo.GetJobEXP(jobEXP);
         monsterStat.HPBar = null;
     }
-    public void MoveOrder()
+    public bool MoveOrder()
     {
         LinkedList<Node> list = PathFinding(monsterStat.standingNode.nodeCenterPosition, playerNode.nodeCenterPosition);
         if (list.Count > 0)
@@ -154,9 +170,38 @@ public class MonsterBase : MonoBehaviour
 
             path = new Queue<Node>(list);
             if (path.Count > 0) { StartCoroutine(Movement(path)); }
+            return true;
+        }
+        return false;
+    }
+    public void SetFlipDIr()
+    {
+        //몬스터로부터 플레이어의 상대거리를 구하고
+        Vector2Int dir = CurrentNode.nodeCenterPosition-Player.Instance.CurrentNode.nodeCenterPosition;
+        //카메라의 현재 위치를 기반으로해서 돌리는걸 구하면 될 거 같은데 아니면 삼각함수로 각도를 구하거나
+        if (PlayerCam.Instance.CameraDirrection == Vector2Int.up || PlayerCam.Instance.CameraDirrection == Vector2Int.right)
+        {
+            if (dir.x > 0 && dir.y > 0)
+            {
+                isFlip = true;
+            }
+            else
+            {
+                isFlip = false;
+            }
+        }
+        else
+        {
+            if (dir.x > 0 && dir.y > 0)
+            {
+                isFlip = false;
+            }
+            else
+            {
+                isFlip = true;
+            }
         }
     }
-
     public IEnumerator Movement(Queue<Node> nodeQueue)
     {
         isMonsterMoving = true;

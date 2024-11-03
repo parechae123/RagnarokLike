@@ -685,48 +685,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DeathSheet_28
-      rect:
-        serializedVersion: 2
-        x: 719
-        y: 719
-        width: 21
-        height: 27
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 93bbea279d6186b48ae4f96419aa86bd
-      internalID: 1226864453
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DeathSheet_29
-      rect:
-        serializedVersion: 2
-        x: 707
-        y: 679
-        width: 50
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2c3b1898cdd5ff84ab36fd9ccc1ea4d4
-      internalID: 1321473960
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: DeathSheet_30
       rect:
         serializedVersion: 2

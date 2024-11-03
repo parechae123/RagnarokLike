@@ -154,8 +154,8 @@ public class InventoryItemBase : IItemBase
     }
     public void ResetIMG()
     {
-        //TODO : 여기는 스프라이트 아틀라스의 빈칸 아이콘으로 대체하자
-        itemSprite = null;
+        
+        itemSprite = ResourceManager.GetInstance().ItemIconAtlas.GetSprite("Empty");
     }
 }
 public class Equips : InventoryItemBase
