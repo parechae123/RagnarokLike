@@ -4,8 +4,10 @@ using UnityEngine;
 using PlayerDefines.States;
 using PlayerDefines.Stat;
 
+
 public class MIdleState : IState
 {
+    public string name { get { return "IdleState"; } }
     float timer;
     float searchTimer;
     bool isAgressiveMonster;
@@ -18,6 +20,7 @@ public class MIdleState : IState
     public void Enter()
     {
         timer = 0;
+        monster.ChangeAnim(name);
         if (monster.IsInRange(monster.CurrentNode.nodeCenterPosition, Player.Instance.CurrentNode.nodeCenterPosition, monster.RecogDistance))
         {
             if (!isAgressiveMonster && monster.monsterStat.isCharacterDamaged)
@@ -84,6 +87,7 @@ public class MIdleState : IState
 }
 public class MMoveState : IState
 {
+    public string name { get { return "MoveState"; } }
     float timer;
     float searchTime = 0.3f;
     MonsterBase monster;
@@ -94,6 +98,7 @@ public class MMoveState : IState
     public void Enter()
     {
         timer = 0;
+        monster.ChangeAnim(name);
         if (!monster.isMonsterMoving)
         {
             if (monster.blockingNode != null)
@@ -123,7 +128,16 @@ public class MMoveState : IState
             }
             else
             {
-                monster.ChangeState(new MIdleState(monster));
+                if (monster.IsInRange(monster.CurrentNode.nodeCenterPosition, Player.Instance.CurrentNode.nodeCenterPosition, monster.RecogDistance))
+                {
+                    monster.ChangeState(new MMoveState(monster));
+                    return;
+                }
+                else
+                {
+                    monster.ChangeState(new MIdleState(monster));
+                }
+
             }
             timer = 0;
         }
@@ -135,6 +149,7 @@ public class MMoveState : IState
 }
 public class MAttackState : IState
 {
+    public string name { get { return "AttackState"; } }
     float timer;
     MonsterBase monster;
     public MAttackState(MonsterBase monster)
@@ -144,6 +159,7 @@ public class MAttackState : IState
     public void Enter()
     {
         timer = 0;
+        monster.ChangeAnim(name);
     }
     public void Execute()
     {
@@ -171,6 +187,7 @@ public class MAttackState : IState
 
 public class MDamagedState : IState
 {
+    public string name { get { return "DamagedState"; } }
     float timer;
     float duration = 0.2f; 
     MonsterBase monster;
@@ -181,6 +198,7 @@ public class MDamagedState : IState
     public void Enter()
     {
         timer = 0;
+        monster.ChangeAnim(name);
     }
     public void Execute()
     {
@@ -196,18 +214,29 @@ public class MDamagedState : IState
 }
 public class MDieState : IState
 {
+    public string name { get { return "DieState"; } }
     MonsterBase monster;
+    private float removeTime { get { return 2f; } }
+    public float timer;
     public MDieState(MonsterBase monster)
     {
         this.monster = monster;
     }
     public void Enter()
     {
-        
+        timer = 0;
+        monster.ChangeAnim(name);
+        monster.monsterStat.HPBar = null;
     }
     public void Execute()
     {
-
+        timer += Time.deltaTime;
+        if (removeTime<= timer)
+        {
+            MonsterManager.GetInstance().AddRespawnList(monster);
+            monster.CurrentNode = null;
+            timer = 0;
+        }
     }
     public void Exit() 
     {

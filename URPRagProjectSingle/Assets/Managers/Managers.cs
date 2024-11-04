@@ -799,10 +799,15 @@ public class MonsterManager : Manager<MonsterManager>
     }
     public void Respawn(int target)
     {
-        respawnMonsters[target].monster.Start();
-        respawnMonsters[target].monster.gameObject.SetActive(true);
-        respawnMonsters[target].monster.ChangeState(new MIdleState(respawnMonsters[target].monster));
-        respawnMonsters.RemoveAt(target);
+
+        respawnMonsters[target].leftRespawnTime += 10;
+        if (respawnMonsters[target].monster.Respawn())
+        {
+            respawnMonsters.RemoveAt(target);
+            return;
+        }
+        
+
     }
     public void UpdateRespawnTime(float deltatime)
     {

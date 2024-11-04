@@ -12,6 +12,9 @@ using DG.Tweening.Plugins.Core.PathCore;
 using System;
 using PlayerDefines.States;
 using TMPro.Examples;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
+using JetBrains.Annotations;
 
 public class MonsterBase : MonoBehaviour
 {
@@ -30,12 +33,17 @@ public class MonsterBase : MonoBehaviour
     private Node lastNode;
     public Node blockingNode;
     private SpriteRenderer monsterSR;
-    [SerializeField] private float searchTimer;
-    [SerializeField] private float searchDelay;
+
     [SerializeField] public bool alreadyResearch;
     private float baseEXP = 1000;
     private float jobEXP = 50;
-    public bool isFlip;
+    public bool isFlip
+    {
+        set
+        {
+            monsterSR.flipX = value;
+        }
+    }
     public Node CurrentNode
     {
         get { return monsterStat.standingNode; }
@@ -74,14 +82,21 @@ public class MonsterBase : MonoBehaviour
     private void Update()
     {
         transform.rotation = Camera.main.transform.rotation;
-        if (monsterStat.isCharacterDamaged)
+        
+        if (monsterStat.isCharacterDamaged&& !monsterStat.isCharacterDie)
         {
             monsterStat.HPBar.transform.position = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + monsterSR.bounds.size.y, transform.position.z));
         }
+        else if(CurrentNode == null) { return; }
         currentStates?.Execute();
+        animationDirrection();
 
 
+    }
 
+    public void ChangeAnim(string name)
+    {
+        animator.Play(name);
     }
 
     public void ChangeState(IState nextState) //미사용 함수, monster stateMachine 작업 완료시 필요
@@ -89,6 +104,7 @@ public class MonsterBase : MonoBehaviour
         currentStates.Exit();
         currentStates = nextState;
         currentStates.Enter();
+        
     }
     public bool IsInRange(Vector2Int startPos, Vector2Int endPos, int distance)
     {
@@ -113,10 +129,10 @@ public class MonsterBase : MonoBehaviour
     }
     public void MonsterDie()
     {
-        MonsterManager.GetInstance().AddRespawnList(this);
+        ChangeState(new MDieState(this));
         Player.Instance.playerLevelInfo.GetBaseEXP(baseEXP);
         Player.Instance.playerLevelInfo.GetJobEXP(jobEXP);
-        monsterStat.HPBar = null;
+        
         
     }
     public bool MoveOrder()
@@ -164,18 +180,19 @@ public class MonsterBase : MonoBehaviour
 
     private void animationDirrection()
     {
+        if(CurrentNode == null) return;
         Vector2Int tempVecInt = SetFlipDIr() - PlayerCam.Instance.CameraDirrection;
         //Debug.Log(tempVecInt);
         sbyte maxValue = (sbyte)Mathf.Max(tempVecInt.x, tempVecInt.y);
         sbyte minValue = (sbyte)Mathf.Min(tempVecInt.x, tempVecInt.y);
         if (maxValue == default(sbyte) && minValue == default(sbyte))
         {
-            isFlip = true;
+            isFlip = false;
             return;
         }
         else if (maxValue == (sbyte)2 || minValue == (sbyte)-2)
         {
-            isFlip = false;
+            isFlip = true;
         }
         else
         {
@@ -183,12 +200,12 @@ public class MonsterBase : MonoBehaviour
             {
                 if ((maxValue < default(sbyte) && minValue < default(sbyte)) || (maxValue > default(sbyte) && minValue > default(sbyte)))
                 {
-                    isFlip = false;
+                    isFlip = true;
                     return;
                 }
                 else if ((maxValue > default(sbyte) && minValue < default(sbyte)) || (maxValue < default(sbyte) && minValue < default(sbyte)))
                 {
-                    isFlip = true;
+                    isFlip = false;
                     return;
                 }
             }
@@ -196,18 +213,18 @@ public class MonsterBase : MonoBehaviour
             {
                 if ((maxValue < default(sbyte) && minValue < default(sbyte)) || (maxValue > default(sbyte) && minValue > default(sbyte)))
                 {
-                    isFlip = true;
+                    isFlip = false;
                     return;
                 }
                 else if ((maxValue > default(sbyte) && minValue < default(sbyte)) || (maxValue < default(sbyte) && minValue < default(sbyte)))
                 {
-                    isFlip = false;
+                    isFlip = true;
                     return;
                 }
             }
 
         }
-        isFlip = false;
+        isFlip = true;
         return;
     }
 
@@ -422,5 +439,20 @@ public class MonsterBase : MonoBehaviour
 
         // 완성된 경로 리스트 반환
         return doubleCheckedNodes;
+    }
+    public bool Respawn()
+    {
+        Node respawnNode = GridManager.GetInstance().PositionToNode(initialPos);
+        if(respawnNode == null) return false;
+        if (respawnNode.CharacterOnNode != null) return false;
+        monsterStat.HP = float.MaxValue; 
+        gameObject.SetActive(true);
+
+        monsterStat.standingNode = respawnNode;
+        respawnNode.CharacterOnNode = monsterStat;
+        CurrentNode = respawnNode;
+        transform.position = respawnNode.worldPos+(Vector3.up*monsterSR.size.y);
+        ChangeState(new MIdleState(this));
+        return true;
     }
 }
