@@ -78,6 +78,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
     public void GetSlotKey()
     {
         SlotItem?.UseItem();
+        if (slotItem == null) return;
         if(SlotItem.GetType() == typeof(EmptyItem))
         {
             btn.onClick.RemoveAllListeners();

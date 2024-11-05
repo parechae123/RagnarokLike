@@ -401,8 +401,8 @@ namespace PlayerDefines
                         value -= value * (MagicDeff * 0.001f);
                         break;
                     case ValueType.Heal:
+                        //TODO : 받는 치유량 apix가 생기면 여기에
                         if(value > 0) value = -value;
-
                         break;
                     case ValueType.PhysicalRange:
                         value -= value * (Deff * 0.001f);
@@ -712,8 +712,20 @@ namespace PlayerDefines
                     {
                         Player.Instance.stateMachine.ChangeState(Player.Instance.stateMachine.SearchState("damagedState"));
                     }
-                    if (MaxHP < value) base.hp = MaxHP;
-                    else base.hp = value;
+
+                    if (MaxHP < value) 
+                    {
+                        if (hp < MaxHP)
+                        {
+                            UIManager.GetInstance().SpawnFloatText(Player.Instance.transform.position + (Vector3.up * 1.5f), $"+" + (MaxHP - hp).ToString("N0"), Color.green, 1f);
+                        }
+                        base.hp = MaxHP;
+                    }
+                    else
+                    {
+                        if (value > hp) UIManager.GetInstance().SpawnFloatText(Player.Instance.transform.position + (Vector3.up * 1.5f), $"+"+(value - hp).ToString("N0"), Color.green, 1f);
+                        base.hp = value;
+                    }
 
                     if (isCharacterDie)
                     {
@@ -731,8 +743,21 @@ namespace PlayerDefines
                 get { return base.sp; }
                 set 
                 {
-                    if (value > MaxSP) sp = MaxSP;
-                    else sp = value;
+                    if (value > MaxSP) 
+                    {
+                        if (sp < MaxSP)
+                        {
+                            UIManager.GetInstance().SpawnFloatText(Player.Instance.transform.position + (Vector3.up * 2f), "+"+(MaxSP - sp).ToString("N0"), Color.blue, 1f);
+                        }
+                        sp = MaxSP;
+                    }
+                    else 
+                    {
+                        if(value > sp) UIManager.GetInstance().SpawnFloatText(Player.Instance.transform.position + (Vector3.up * 2f), "+"+(value - sp).ToString("N0"), Color.blue, 1f);
+                        sp = value;
+                    } 
+                    
+                    
                     UIManager.GetInstance().PlayerMaxCurrSP = (MaxSP, sp);
                 }
             }

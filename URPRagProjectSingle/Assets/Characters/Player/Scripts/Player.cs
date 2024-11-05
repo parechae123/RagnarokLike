@@ -207,6 +207,7 @@ public class Player : MonoBehaviour
         if (playerLevelInfo.stat.statTimer >= playerLevelInfo.stat.RegenTime) 
         {
             playerLevelInfo.stat.HP += playerLevelInfo.stat.HPRegen;
+
             playerLevelInfo.stat.SP += playerLevelInfo.stat.SPRegen;
 
             playerLevelInfo.stat.statTimer = 0;
@@ -775,6 +776,8 @@ public class PlayerLevelInfo
         baseLevel += 1;
         stat.HP = float.MaxValue;
         stat.SP = float.MaxValue;
+        UIManager.GetInstance().SpawnFloatText(Player.Instance.transform.position + (Vector3.up * 2.5f), "Level UP", Color.white, 1.3f);
+        UIManager.GetInstance().MainCanvas.Find("UIPopups").Find("StatPopUp").gameObject.SetActive(true);
         Player.Instance.defaultEffects.baseLevelUp.Play(true);
         UIManager.GetInstance().UpdateLevel();
     }
@@ -828,6 +831,9 @@ public class PlayerLevelInfo
     {
         skillPoint += 1;
         jobLevel += 1;
+
+        UIManager.GetInstance().SpawnFloatText(Player.Instance.transform.position + (Vector3.up * 3.9f), "Skill UP", Color.cyan, 1.3f);
+        UIManager.GetInstance().MainCanvas.Find("UIPopups").Find("SkillPopUp").gameObject.SetActive(true);
         UIManager.GetInstance().UpdateLevel();
     }
     public void GetJobEXP(float exp)

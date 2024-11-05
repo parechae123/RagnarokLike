@@ -6,18 +6,18 @@ using UnityEngine.EventSystems;
 
 public class UIWIndowMover : MonoBehaviour,IDragHandler
 {
-    [SerializeField]private RectTransform targetWIndow;
+    [SerializeField]private RectTransform targetWindow;
     [SerializeField]private RectTransform rt;
 
     private void Awake()
     {
-        targetWIndow = targetWIndow != null ? targetWIndow : (RectTransform)transform.parent;
+        targetWindow = targetWindow != null ? targetWindow : (RectTransform)transform.parent;
         rt = rt != null ? rt : (RectTransform)transform;
     }
 
     public void OnDrag(PointerEventData PP)
     {
-        targetWIndow.position = PP.position;
+        targetWindow.position = PP.position;
         
         
     }

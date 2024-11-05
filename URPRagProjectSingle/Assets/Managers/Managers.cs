@@ -551,20 +551,6 @@ public class UIManager : Manager<UIManager>
             return outerCastBar;
         }
     }
-    private Slider JobExperienceBar
-    {
-        get 
-        {
-            return MainCanvas.Find("JobExperienceBar").GetComponent<Slider>();
-        }
-    }
-    private Slider BaseExperienceBar
-    {
-        get 
-        {
-            return MainCanvas.Find("BaseExperienceBar").GetComponent<Slider>(); 
-        }
-    }
     private Slider playerHPBar;
     private Slider PlayerHPBar
     {
@@ -718,7 +704,6 @@ public class UIManager : Manager<UIManager>
         }
 
     }
-
     public void SetCastingBarValue(float max,float curr)
     {
         CastingBarOnOff(true);

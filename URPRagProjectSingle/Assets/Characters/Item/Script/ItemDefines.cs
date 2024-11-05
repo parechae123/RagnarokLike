@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public enum BasicStatTypes
 {
@@ -508,6 +509,7 @@ public class Potions : Consumables
                     break;
                 case PotionType.SP:
                     Player.Instance.playerLevelInfo.stat.SP += valueOne;
+
                     break;
             }
 

@@ -11,10 +11,6 @@ using DG.Tweening;
 using DG.Tweening.Plugins.Core.PathCore;
 using System;
 using PlayerDefines.States;
-using TMPro.Examples;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
-using JetBrains.Annotations;
 
 public class MonsterBase : MonoBehaviour
 {

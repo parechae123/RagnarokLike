@@ -151,6 +151,7 @@ public class MAttackState : IState
 {
     public string name { get { return "AttackState"; } }
     float timer;
+    bool readyAttack = false;
     MonsterBase monster;
     public MAttackState(MonsterBase monster)
     {
@@ -159,18 +160,25 @@ public class MAttackState : IState
     public void Enter()
     {
         timer = 0;
-        monster.ChangeAnim(name);
+        readyAttack = false;
+        monster.ChangeAnim("IdleState");
     }
     public void Execute()
     {
         if (monster.IsInRange(monster.monsterStat.standingNode.nodeCenterPosition, monster.playerNode.nodeCenterPosition, monster.monsterStat.CharactorAttackRange))
         {
             timer += Time.deltaTime;
+            if(timer > (monster.monsterStat.attackSpeed*0.7f))
+            {
+                if (!readyAttack ) monster.ChangeAnim(name);
+                readyAttack = true;
+            }
             if (monster.monsterStat.attackSpeed <= timer)
             {
                 if (Player.Instance.playerLevelInfo.stat.isCharacterDie) return;
                 monster.monsterStat.AttackTarget(Player.Instance.playerLevelInfo.stat);
                 timer = 0;
+                monster.ChangeState(new MAttackState(monster));
                 return;
             }
         }
