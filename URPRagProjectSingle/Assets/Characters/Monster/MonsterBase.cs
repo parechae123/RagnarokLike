@@ -66,8 +66,8 @@ public class MonsterBase : MonoBehaviour
         if(initialPos == Vector3.one*(-1000)) initialPos = transform.position;
 
         monsterStat = new MonsterStat(GridManager.GetInstance().PositionToNode(initialPos), 30, 10, 1, 3, 10, 1,0);
-        transform.position = new Vector3(monsterStat.standingNode.nodeCenterPosition.x, monsterStat.standingNode.nodeFloor + 1.5f, monsterStat.standingNode.nodeCenterPosition.y);
-        
+        transform.position = CurrentNode.worldPos;
+        //new Vector3(monsterStat.standingNode.nodeCenterPosition.x, monsterStat.standingNode.nodeFloor + 1.5f, monsterStat.standingNode.nodeCenterPosition.y);
 
         Debug.Log(monsterStat.standingNode.nodeCenterPosition);
         PlayerCam.Instance.AddRotAction(animationDirrection);
@@ -451,7 +451,7 @@ public class MonsterBase : MonoBehaviour
         monsterStat.standingNode = respawnNode;
         respawnNode.CharacterOnNode = monsterStat;
         CurrentNode = respawnNode;
-        transform.position = respawnNode.worldPos+(Vector3.up*monsterSR.size.y);
+        transform.position = respawnNode.worldPos;
         ChangeState(new MIdleState(this));
         return true;
     }

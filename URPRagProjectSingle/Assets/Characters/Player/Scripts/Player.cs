@@ -96,6 +96,32 @@ public class Player : MonoBehaviour
     [SerializeField]Vector2Int playerLookDir;
     public KeyCode[] boundedKeys = new KeyCode[0];
     public KeyCode combKey;
+    [System.Serializable]
+    public class playerEffects
+    {
+        public playerEffects(Transform tr)
+        {
+            this.tr = tr;
+        }
+        Transform tr;
+        public ParticleSystem jobLevelUp
+        {
+            get { return tr.Find("JobLevelUp").GetComponent<ParticleSystem>(); }
+        }
+        public ParticleSystem baseLevelUp
+        {
+            get { return tr.Find("BaseLevelUp").GetComponent<ParticleSystem>(); }
+        }
+        public ParticleSystem healthPosion
+        {
+            get { return tr.Find("HPPosion").GetComponent<ParticleSystem>(); }
+        }
+        public ParticleSystem manaPosion
+        {
+            get { return tr.Find("ManaPosion").GetComponent<ParticleSystem>(); }
+        }
+    }
+    [SerializeField] public playerEffects defaultEffects;
     public Vector2Int PlayerLookDir
     {
         get { return playerLookDir; }
@@ -112,13 +138,12 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
-
-
         InstallizeStates();
         SetCurrentNodeAndPosition();
+        SetPlayerPositionToCenterPos();
         playerLevelInfo.stat.moveFunction += PlayerMoveOrder;
         playerCursorState.changeState(cursorState.defaultCurser);
-
+        defaultEffects = new playerEffects(transform.Find("HeadPoint"));
         SetBindKey();
     }
 
@@ -166,11 +191,11 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.P))
         {
-            UIManager.GetInstance().consumeInven.GetItems(new Potions("30001","체력 포션",playerSR.sprite,100,PotionType.HP,100));
+            UIManager.GetInstance().consumeInven.GetItems(new Potions("30001","체력 포션", ResourceManager.GetInstance().ItemIconAtlas.GetSprite("Red Potion"), 100,PotionType.HP,100));
         }
         if(Input.GetKeyDown(KeyCode.LeftBracket))
         {
-            UIManager.GetInstance().consumeInven.GetItems(new Potions("30002","마나 포션",playerSR.sprite,100,PotionType.SP,100));
+            UIManager.GetInstance().consumeInven.GetItems(new Potions("30002","마나 포션", ResourceManager.GetInstance().ItemIconAtlas.GetSprite("Blue Potion"), 100,PotionType.SP,100));
         }
         KeyBoardBinding();
         StateMachine.CurrentState.Execute();
@@ -240,7 +265,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void SetPlayerPositionToCenterPos()
     {
-        transform.position = new Vector3(CurrentNode.nodeCenterPosition.x, CurrentNode.nodeFloor + (playerSR.bounds.size.y) + 0.5f, CurrentNode.nodeCenterPosition.y);
+        transform.position = CurrentNode.worldPos;
     }
     #endregion
     #region 움직임,공격 관련
@@ -267,7 +292,7 @@ public class Player : MonoBehaviour
                     break;
                 }
                 tempNodePosArray[i] = nodePreview.First().worldPos;
-                tempNodePosArray[i].y += playerSR.bounds.size.y;
+                //tempNodePosArray[i].y += playerSR.bounds.size.y;
             }
             else
             {
@@ -354,10 +379,10 @@ public class Player : MonoBehaviour
                     nodePreview.Clear();
                     break;
                 }
-                
-                tempNodePosArray[i].x = nodePreview.First().nodeCenterPosition.x;
+                tempNodePosArray[i] = nodePreview.First().worldPos;
+                /*tempNodePosArray[i].x = nodePreview.First().nodeCenterPosition.x;
                 tempNodePosArray[i].y = nodePreview.First().nodeFloor + (playerSR.bounds.size.y) + 0.5f;
-                tempNodePosArray[i].z = nodePreview.First().nodeCenterPosition.y;
+                tempNodePosArray[i].z = nodePreview.First().nodeCenterPosition.y;*/
             }
             else
             {
@@ -748,12 +773,16 @@ public class PlayerLevelInfo
     {
         statusPoint += (short)(3 + (baseLevel / 5));
         baseLevel += 1;
+        stat.HP = float.MaxValue;
+        stat.SP = float.MaxValue;
+        Player.Instance.defaultEffects.baseLevelUp.Play(true);
         UIManager.GetInstance().UpdateLevel();
     }
     public void GetBaseEXP(float exp)
     {
         CurrBaseExp += exp;
         UIManager.GetInstance().UpdateExp(CurrBaseExp, MaxBaseExp, CurrJobExp, MaxJobExp);
+        Player.Instance.defaultEffects.jobLevelUp.Play(true);
     }
     #endregion
     #region JobLevel관련 함수

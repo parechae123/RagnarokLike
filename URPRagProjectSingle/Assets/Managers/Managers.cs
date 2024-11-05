@@ -58,7 +58,7 @@ public class Node
     //예약된 길인지
     public Vector3 worldPos
     {
-        get {return new Vector3(nodeCenterPosition.x,((float)nodeFloor+0.5f),nodeCenterPosition.y); }
+        get {return new Vector3(nodeCenterPosition.x,((float)nodeFloor+1),nodeCenterPosition.y); }
     }
     public bool isEmptyNode(Stats stat)
     {
