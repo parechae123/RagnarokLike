@@ -67,12 +67,13 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
         {
             for (int j = 0; j < skillBtns.GetLength(0); j++)
             {
-                skillBtns[j, i].skillBTN = transform.GetChild((i * skillBtns.GetLength(0)) + j).GetChild(0).GetComponent<Button>();
+                skillBtns[j, i].skillBTN = transform.GetChild((i * skillBtns.GetLength(0)) + j).GetChild(0).GetChild(0).GetComponent<Button>();
                 skillBtns[j, i].skillBTN.interactable = false;
                 skillBtns[j, i].skillBTN.image.sprite = null;
                 skillBtns[j, i].skillBTN.gameObject.TryGetComponent<QuickSlot>(out QuickSlot tempQuickSlot);
-                skillBtns[j, i].skillBTN.transform.parent.GetChild(1).GetComponent<Text>().text = string.Empty;
-                skillBtns[j, i].skillBTN.transform.parent.GetChild(2).GetComponent<Text>().text = string.Empty;
+                skillBtns[j, i].skillBTN.transform.parent.parent.GetChild(1).GetComponent<Text>().text = string.Empty;
+                skillBtns[j, i].skillBTN.transform.parent.parent.GetChild(2).GetComponent<Text>().text = string.Empty;
+
 #if UNITY_EDITOR
                 EditorUtility.SetDirty(this);
 #endif
@@ -137,14 +138,14 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
             skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.interactable = true;
 
             //targetInspector.isSkillSlotFilled.Add(tempArray);
-            skillBtns[tempArray.Item1, tempArray.Item2].levelText = skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(1).GetComponent<Text>();  //스킬 레벨 세팅
+            skillBtns[tempArray.Item1, tempArray.Item2].levelText = skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.parent.GetChild(1).GetComponent<Text>();  //스킬 레벨 세팅
             skillBtns[tempArray.Item1, tempArray.Item2].levelText.color = Color.black;  //스킬 레벨 세팅
             skillBtns[tempArray.Item1, tempArray.Item2].levelText.text = string.Empty;
-            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(2).GetComponent<Text>().color = Color.black;  //스킬 이름 세팅
-            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(2).GetComponent<Text>().text =
+            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.parent.GetChild(2).GetComponent<Text>().color = Color.black;  //스킬 이름 세팅
+            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.parent.GetChild(2).GetComponent<Text>().text =
                 targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.skillName;
 
-            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(2).GetComponent<Text>().resizeTextForBestFit = true;
+            skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.parent.GetChild(2).GetComponent<Text>().resizeTextForBestFit = true;
             skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.image.sprite =
                 targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.skillIcon;
             if (callOnAwake)
@@ -153,10 +154,10 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
                 Array.Resize<SkillInfoInGame>(ref skillInfos, skillInfos.Length + 1);
                 skillInfos[skillInfos.Length - 1] = tempInGameSkill;
                 skillBtns[tempArray.Item1, tempArray.Item2].levelText.text = string.Empty;
-                skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.gameObject.AddComponent<QuickSlot>().Install(tempInGameSkill, true);
+                skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.parent.gameObject.AddComponent<QuickSlot>().Install(tempInGameSkill, true);
                 int currIndex = i;
-                skillBtns[tempArray.Item1, tempArray.Item2].castingLevelDownBTN = skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(3).GetComponent<Button>();
-                skillBtns[tempArray.Item1, tempArray.Item2].castingLevelUpBTN = skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.GetChild(4).GetComponent<Button>();
+                skillBtns[tempArray.Item1, tempArray.Item2].castingLevelDownBTN = skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.parent.GetChild(3).GetComponent<Button>();
+                skillBtns[tempArray.Item1, tempArray.Item2].castingLevelUpBTN = skillBtns[tempArray.Item1, tempArray.Item2].skillBTN.transform.parent.parent.GetChild(4).GetComponent<Button>();
 
                 skillBtns[tempArray.Item1, tempArray.Item2].castingLevelDownBTN.onClick.AddListener(() =>
                 {

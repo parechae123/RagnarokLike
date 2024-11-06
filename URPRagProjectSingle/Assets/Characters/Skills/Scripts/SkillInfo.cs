@@ -24,6 +24,7 @@ public class SkillInfo : ScriptableObject
     public byte maxSkillLevel;
     public byte nowSkillLeve;
     public byte castingSkillLevel;
+
     public bool isSkillLearned
     {
         get;
@@ -132,6 +133,9 @@ public class SkillInfoInGame : IItemBase
     {
         get { return isSkillLearned; }
     }
+
+    public float goalCool;
+
     public SlotType slotType { get { return SlotType.Skills; } }
 
 
@@ -270,6 +274,9 @@ public class SkillInfoInGame : IItemBase
                 }
                 break;
         }
+        SkillManager.GetInstance().SetSkillCoolTime(skillName, skill[CastingSkillLevel].coolTime);
+        Debug.Log("카운팅 시작");
+        SkillManager.GetInstance().activatedCDTimer = true;
         for (int i = 0; i < tempAnim.runtimeAnimatorController.animationClips.Length; i++)
         {
             tempTime += tempAnim.runtimeAnimatorController.animationClips[i].length;

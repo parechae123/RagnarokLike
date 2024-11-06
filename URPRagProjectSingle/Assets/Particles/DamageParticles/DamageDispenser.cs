@@ -8,7 +8,6 @@ public class DamageDispenser : MonoBehaviour
 
     private ParticleSystemRenderer particleSystemRenderer;
     private new ParticleSystem particleSystem;
-    public Sprite dd;
     private void Start()
     {
         UIManager.GetInstance().FontParticleRegist(SpawnParticle);
@@ -44,7 +43,6 @@ public class DamageDispenser : MonoBehaviour
 
         var custom1Data = CreateCustomData(texCords);
         var custom2Data = CreateCustomData(texCords, 12);
-        var custom3Data = CreateCustomData(texCords, 12);
 
         // ParticleSystem에 대한 참조를 캐시
         if (particleSystem == null) particleSystem = GetComponent<ParticleSystem>();

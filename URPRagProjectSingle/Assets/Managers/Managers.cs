@@ -752,25 +752,57 @@ public class UIManager : Manager<UIManager>
 }
 public class SkillManager : Manager<SkillManager>
 {
-    public SkillInfoInGame[] skillInfo = new SkillInfoInGame[0];
-
-    public void AddSkillInfo(SkillInfoInGame addItem)
+    public List<SkillInfoInGame> skillInfo = new List<SkillInfoInGame>();
+    public List<SkillInfoInGame> coolDownSkills = new List<SkillInfoInGame>();
+    public bool activatedCDTimer;
+    float skillTimer = 0;
+    float GC
     {
-        int length = skillInfo.Length;
-        Array.Resize(ref skillInfo, length+1);
-        skillInfo[length] = addItem;
+        get { return Player.Instance.playerLevelInfo.stat.GlobalCooltimePercent * 1.2f; }
     }
-    public SkillInfoInGame SearchSkillInfo(string skillName)
+    public void SetSkillCoolTime(string name,float coolTime)
     {
-        for (int i = 0; i < skillInfo.Length; i++)
+        foreach (SkillInfoInGame skill in skillInfo)
         {
-            
-            if (skillInfo[i].skillName == skillName)
+            if (skill.skillName != name) continue;
+            else
             {
-                return skillInfo[i];
+                coolDownSkills.Add(skill);
+                skill.goalCool = coolTime;
             }
         }
-        return null;
+    }
+    public void UpdateSkillCoolTime()
+    {
+        if (coolDownSkills.Count <= 0 && !activatedCDTimer) 
+        {
+            skillTimer = 0;
+            return;
+        } 
+        skillTimer += Time.deltaTime;
+        if(skillTimer >= GC)
+        {
+            activatedCDTimer = false;
+            if (coolDownSkills.Count <= 0)
+            {
+                return;
+            }
+        }
+
+        for(int i = 0;i < coolDownSkills.Count; i++)
+        {
+            coolDownSkills[i].goalCool -= Time.deltaTime;
+
+            if (coolDownSkills[i].goalCool <= 0) 
+            {
+                Debug.Log(skillTimer);
+                coolDownSkills.Remove(coolDownSkills[i]);
+            } 
+        }
+    }
+    public void AddSkillInfo(SkillInfoInGame addItem)
+    {
+        skillInfo.Add(addItem);
     }
 }
 public class MonsterManager : Manager<MonsterManager>

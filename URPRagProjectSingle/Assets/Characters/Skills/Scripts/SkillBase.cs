@@ -16,6 +16,7 @@ public class SkillBase : ScriptableObject
     public float defaultValue;
     public ValueType damageType;
     public float coefficient;
+    public float coolTime;
     /// <summary>
     /// 
     /// </summary>
@@ -63,6 +64,7 @@ public class SkillBase : ScriptableObject
         skillBound = targetObject.skillBound;
         spCost = targetObject.spCost;
         defaultCastingTime = targetObject.defaultCastingTime;
+        coolTime = targetObject.coolTime;
         skillRange = targetObject.skillRange;
         skillDuration = targetObject.skillDuration;
     }
@@ -80,6 +82,7 @@ public class SkillBaseInGameData
     public float defaultValue;
     public ValueType damageType;
     public float coefficient;
+    public float coolTime;
     /// <summary>
     /// 
     /// </summary>
@@ -128,6 +131,7 @@ public class SkillBaseInGameData
         defaultValue = targetObject.defaultValue;
         damageType = targetObject.damageType;
         coefficient = targetObject.coefficient;
+        coolTime = targetObject.coolTime;
         coefficientType = targetObject.coefficientType;
         skillBound = targetObject.skillBound;
         spCost = targetObject.spCost;

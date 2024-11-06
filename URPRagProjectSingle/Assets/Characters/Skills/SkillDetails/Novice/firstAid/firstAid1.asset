@@ -18,6 +18,7 @@ MonoBehaviour:
   defaultValue: 10
   damageType: 2
   coefficient: 0.1
+  coolTime: 0
   coefficientType: 2
   skillBound: 0
   spCost: 10

@@ -25,6 +25,14 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
             btn.interactable = false;
             iconImage.sprite = value.IconIMG;
 
+            if(slotItem != null )
+            {
+                if (slotItem.slotType == SlotType.Skills)
+                {
+                    SkillManager.GetInstance().skillInfo.Remove((SkillInfoInGame)slotItem);
+                }
+            }
+
             btn.interactable = true;
             slotItem = value;
             
@@ -32,6 +40,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
             {
                 btn.onClick.RemoveAllListeners();
                 btn.onClick.AddListener(GetSlotKey);
+
             }
         }
     }
@@ -173,6 +182,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
             SkillInfoInGame temp = (SkillInfoInGame)item;
             SlotItem = new SkillInfoInGame(temp);
             SlotText.text = item.slotNumberInfo;
+            SkillManager.GetInstance().AddSkillInfo((SkillInfoInGame)slotItem);
         }
         else
         {

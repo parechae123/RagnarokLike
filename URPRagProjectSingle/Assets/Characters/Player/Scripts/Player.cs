@@ -154,6 +154,7 @@ public class Player : MonoBehaviour
         shadowTR.position = transform.position;
         MouseBinding();
         InTime();
+        SkillManager.GetInstance().UpdateSkillCoolTime();
         //디버그용 키로 빼야함
         if(Input.GetKeyDown(KeyCode.Keypad0))
         {

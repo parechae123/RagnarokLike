@@ -17,7 +17,7 @@ public class DispenserTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            UIManager.GetInstance().SpawnFloatText(transform.position, "asdf123", Color.red, 1);
+            UIManager.GetInstance().SpawnFloatText(transform.position, "SSSsss", Color.red, 1);
         }
     }
 }

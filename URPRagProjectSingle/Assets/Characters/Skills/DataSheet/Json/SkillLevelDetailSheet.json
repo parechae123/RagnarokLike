@@ -11,7 +11,8 @@
 "spCost": "10",
 "defaultCastingTime": "0",
 "skillRange": "0",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0"
 },
 {
 "skillName": "deadActing",
@@ -25,7 +26,8 @@
 "spCost": "10",
 "defaultCastingTime": "0",
 "skillRange": "0",
-"skillDuration": "300"
+"skillDuration": "300",
+"coolTime": "1"
 },
 {
 "skillName": "bash",
@@ -39,7 +41,8 @@
 "spCost": "8",
 "defaultCastingTime": "0.9",
 "skillRange": "1",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.9"
 },
 {
 "skillName": "bash",
@@ -53,7 +56,8 @@
 "spCost": "9",
 "defaultCastingTime": "0.8",
 "skillRange": "1",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.8"
 },
 {
 "skillName": "bash",
@@ -63,11 +67,12 @@
 "damageType": "Physical",
 "coefficient": "1",
 "coefficientType": "Physical",
-"skillBound": "3",
+"skillBound": "0",
 "spCost": "10",
 "defaultCastingTime": "0.7",
 "skillRange": "1",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.7"
 },
 {
 "skillName": "bash",
@@ -81,7 +86,8 @@
 "spCost": "11",
 "defaultCastingTime": "0.6",
 "skillRange": "1",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.6"
 },
 {
 "skillName": "bash",
@@ -95,7 +101,8 @@
 "spCost": "12",
 "defaultCastingTime": "0.5",
 "skillRange": "1",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.5"
 },
 {
 "skillName": "bash",
@@ -109,7 +116,8 @@
 "spCost": "13",
 "defaultCastingTime": "0.4",
 "skillRange": "1",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.4"
 },
 {
 "skillName": "bash",
@@ -123,7 +131,8 @@
 "spCost": "14",
 "defaultCastingTime": "0.3",
 "skillRange": "1",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.3"
 },
 {
 "skillName": "bash",
@@ -137,7 +146,8 @@
 "spCost": "15",
 "defaultCastingTime": "0.2",
 "skillRange": "1",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.2"
 },
 {
 "skillName": "bash",
@@ -151,7 +161,8 @@
 "spCost": "16",
 "defaultCastingTime": "0.099999999999998",
 "skillRange": "1",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.099999999999998"
 },
 {
 "skillName": "bash",
@@ -165,7 +176,8 @@
 "spCost": "17",
 "defaultCastingTime": "0",
 "skillRange": "1",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0"
 },
 {
 "skillName": "magnum break",
@@ -179,7 +191,8 @@
 "spCost": "15",
 "defaultCastingTime": "1.5",
 "skillRange": "0",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.5"
 },
 {
 "skillName": "magnum break",
@@ -193,7 +206,8 @@
 "spCost": "18",
 "defaultCastingTime": "1.2",
 "skillRange": "0",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.5"
 },
 {
 "skillName": "magnum break",
@@ -207,7 +221,8 @@
 "spCost": "21",
 "defaultCastingTime": "0.9",
 "skillRange": "0",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.5"
 },
 {
 "skillName": "magnum break",
@@ -221,7 +236,8 @@
 "spCost": "24",
 "defaultCastingTime": "0.6",
 "skillRange": "0",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.5"
 },
 {
 "skillName": "magnum break",
@@ -235,6 +251,7 @@
 "spCost": "30",
 "defaultCastingTime": "0.3",
 "skillRange": "0",
-"skillDuration": "0"
+"skillDuration": "0",
+"coolTime": "0.5"
 }
 ]
