@@ -111,6 +111,22 @@ public class SkillBaseInGameData
         switch (damageType)
         {
             case ValueType.Physical:
+                return defaultValue + (caster.TotalAD * coefficient);
+            case ValueType.Magic:
+                return defaultValue + (caster.TotalAP * coefficient);
+            case ValueType.Heal:
+                return -1 * (defaultValue + (caster.TotalAP * coefficient));
+            case ValueType.PhysicalRange:
+                return defaultValue+ (caster.TotalAccuracy* coefficient);
+            default:
+                return 0;
+        }
+    }
+    public float TotalDamage(PlayerStat caster)
+    {
+        switch (damageType)
+        {
+            case ValueType.Physical:
                 return defaultValue + (caster.attackDamage * coefficient);
             case ValueType.Magic:
                 return defaultValue + (caster.abilityPower * coefficient);
@@ -121,7 +137,6 @@ public class SkillBaseInGameData
             default:
                 return 0;
         }
-
     }
     public SkillBaseInGameData(SkillBase targetObject)
     {

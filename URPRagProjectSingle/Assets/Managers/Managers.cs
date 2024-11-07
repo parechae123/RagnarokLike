@@ -754,6 +754,17 @@ public class SkillManager : Manager<SkillManager>
 {
     public List<SkillInfoInGame> skillInfo = new List<SkillInfoInGame>();
     public List<SkillInfoInGame> coolDownSkills = new List<SkillInfoInGame>();
+    private List<buffTime> buffTimer = new List<buffTime>();
+    public class buffTime
+    {
+        public buffTime(float leftTime,Action action)
+        {
+            this.leftTime = leftTime;
+            this.func = action;
+        }
+        public float leftTime;
+        public Action func;
+    }
     public bool activatedCDTimer;
     float skillTimer = 0;
     float GC
@@ -762,30 +773,54 @@ public class SkillManager : Manager<SkillManager>
     }
     public void SetSkillCoolTime(string name,float coolTime)
     {
+        activatedCDTimer = true;
         foreach (SkillInfoInGame skill in skillInfo)
         {
             if (skill.skillName != name) continue;
             else
             {
+                skill.originCool = 10;
+                skill.goalCool = 10;
                 coolDownSkills.Add(skill);
-                skill.goalCool = coolTime;
             }
         }
     }
+    public void RegistBuffTimer(float time, Action action)
+    {
+        buffTimer.Add(new buffTime(time, action));
+    }
     public void UpdateSkillCoolTime()
     {
+        for (int i = 0; i < buffTimer.Count; i++)
+        {
+            buffTimer[i].leftTime -= Time.deltaTime;
+            if (buffTimer[i].leftTime<= 0)
+            {
+                buffTimer[i].func.Invoke();
+                buffTimer.RemoveAt(i);
+                i--;
+            }
+        }
         if (coolDownSkills.Count <= 0 && !activatedCDTimer) 
         {
             skillTimer = 0;
             return;
         } 
         skillTimer += Time.deltaTime;
-        if(skillTimer >= GC)
+        if(skillTimer <= GC&& activatedCDTimer)
+        {
+            foreach (SkillInfoInGame item in skillInfo)
+            {
+                item.iconRenderer.fillAmount =  skillTimer/ GC;
+            }
+        }
+        else if(activatedCDTimer)
         {
             activatedCDTimer = false;
-            if (coolDownSkills.Count <= 0)
+            skillTimer = 0;
+            foreach (SkillInfoInGame item in skillInfo)
             {
-                return;
+                item.iconRenderer.fillAmount = 1;
             }
         }
 
@@ -793,10 +828,14 @@ public class SkillManager : Manager<SkillManager>
         {
             coolDownSkills[i].goalCool -= Time.deltaTime;
 
+            coolDownSkills[i].iconRenderer.fillAmount = 1-(coolDownSkills[i].goalCool / coolDownSkills[i].originCool);
             if (coolDownSkills[i].goalCool <= 0) 
             {
                 Debug.Log(skillTimer);
+                coolDownSkills[i].originCool = 0;
+                coolDownSkills[i].goalCool = 0;
                 coolDownSkills.Remove(coolDownSkills[i]);
+                i--;
             } 
         }
     }

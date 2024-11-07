@@ -23,16 +23,28 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
         set
         {
             btn.interactable = false;
-            iconImage.sprite = value.IconIMG;
 
+            iconImage.sprite = value.IconIMG;
+            IconBackground.sprite = value.IconIMG;
             if(slotItem != null )
             {
                 if (slotItem.slotType == SlotType.Skills)
                 {
-                    SkillManager.GetInstance().skillInfo.Remove((SkillInfoInGame)slotItem);
+                    SkillInfoInGame temp = (SkillInfoInGame)slotItem;
+                    SkillManager.GetInstance().skillInfo.Remove(temp);
+                    temp.iconRenderer = iconImage;
                 }
             }
 
+            if (value.slotType == SlotType.Skills)
+            {
+                iconImage.type = Image.Type.Filled;
+                iconImage.fillClockwise = true;
+                iconImage.fillOrigin = 2;
+                SkillInfoInGame temp = (SkillInfoInGame)value;
+                temp.iconRenderer = iconImage;
+            }
+            else iconImage.type = Image.Type.Simple;
             btn.interactable = true;
             slotItem = value;
             
@@ -61,6 +73,18 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
         { 
             
             return btn.image;
+        }
+    }
+    private Image iconBackground;
+    public Image IconBackground
+    {
+        get 
+        {
+            if (iconBackground == null)
+            {
+                iconBackground = btn.transform.parent.GetComponent<Image>();
+            }
+            return iconBackground;
         }
     }
     private Text slotText

@@ -291,8 +291,8 @@ namespace PlayerDefines
             }
             public Action<Vector3, bool> moveFunction;
             public Action dieFunctions;//TODO : 사망 연출 등록필요
-
             
+
             public Stats(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange,float evasion)
             {
                 standingNode = initializeNode;
@@ -312,13 +312,31 @@ namespace PlayerDefines
                 get;
                 set;
             }
-            protected float defaultEvasion;
+
+            public virtual float TotalAD
+            {
+                get { return attackDamage; }
+            }
+            public virtual float TotalAP
+            {
+                //현재 AP와 int값에만 영향받음, 추후 장비영향 추가하여야함
+                get { return abilityPower; }
+                set { if (value >= 0) abilityPower = value; }
+            }
+            //적중률
+            public virtual float TotalAccuracy
+            {
+                get { return accuracy; }
+            }
+
+            public float defaultCasting = 1;
+            public float defaultEvasion;
             public virtual float Evasion
             {
                 get { return defaultEvasion; }
             }
 
-            protected float defaultMaxHP;
+            public float defaultMaxHP;
             protected float hp;
             public virtual float HP
             {
@@ -339,7 +357,7 @@ namespace PlayerDefines
                     }
                 }
             }
-            protected float defaultSP;
+            public float defaultSP;
             protected float sp;
             public virtual float SP
             {
@@ -351,7 +369,7 @@ namespace PlayerDefines
 
                 }
             }
-            protected float moveSpeed;
+            public float moveSpeed;
             public virtual float MoveSpeed 
             {
                 get { return moveSpeed; }
@@ -465,7 +483,6 @@ namespace PlayerDefines
             {
                 get { return MaxHP > hp; }
             }
-
             public override float MoveSpeed { get => base.moveSpeed+GetArmorApixValue(ArmorApixType.MoveSpeed); }
 
             #region 장비 관련
@@ -482,7 +499,7 @@ namespace PlayerDefines
                             armors[0].Amount = 1;
                             armors[0].isEquiped = false;
                             UIManager.GetInstance().equipInven.GetItems(armors[0]);
-                            BasicStatus.SetChangeAbleStatus(armors[0].apixList.firstLine.Item1, -armors[0].apixList.firstLine.Item2);
+                            BasicStatus.SetChangeAbleStatus(armors[0].apixList.statLine.Item1, -armors[0].apixList.statLine.Item2);
                             armors[0] = value;
                             UIManager.GetInstance().equipWindowArmors[0].SlotItem = value;
                             successChange = true;
@@ -491,7 +508,7 @@ namespace PlayerDefines
                             armors[1].Amount = 1;
                             armors[1].isEquiped = false;
                             UIManager.GetInstance().equipInven.GetItems(armors[1]);
-                            BasicStatus.SetChangeAbleStatus(armors[1].apixList.firstLine.Item1, -armors[1].apixList.firstLine.Item2);
+                            BasicStatus.SetChangeAbleStatus(armors[1].apixList.statLine.Item1, -armors[1].apixList.statLine.Item2);
                             armors[1] = value;
                             UIManager.GetInstance().equipWindowArmors[1].SlotItem = value;
                             successChange = true;
@@ -500,7 +517,7 @@ namespace PlayerDefines
                             armors[2].Amount = 1;
                             armors[2].isEquiped = false;
                             UIManager.GetInstance().equipInven.GetItems(armors[2]);
-                            BasicStatus.SetChangeAbleStatus(armors[2].apixList.firstLine.Item1, -armors[2].apixList.firstLine.Item2);
+                            BasicStatus.SetChangeAbleStatus(armors[2].apixList.statLine.Item1, -armors[2].apixList.statLine.Item2);
                             armors[2] = value;
                             UIManager.GetInstance().equipWindowArmors[2].SlotItem = value;
                             successChange = true;
@@ -509,7 +526,7 @@ namespace PlayerDefines
                             armors[3].Amount = 1;
                             armors[3].isEquiped = false;
                             UIManager.GetInstance().equipInven.GetItems(armors[3]);
-                            BasicStatus.SetChangeAbleStatus(armors[3].apixList.firstLine.Item1, -armors[3].apixList.firstLine.Item2);
+                            BasicStatus.SetChangeAbleStatus(armors[3].apixList.statLine.Item1, -armors[3].apixList.statLine.Item2);
                             armors[3] = value;
                             UIManager.GetInstance().equipWindowArmors[3].SlotItem = value;
                             successChange = true;
@@ -518,7 +535,7 @@ namespace PlayerDefines
                             armors[4].Amount = 1;
                             armors[4].isEquiped = false;
                             UIManager.GetInstance().equipInven.GetItems(armors[4]);
-                            BasicStatus.SetChangeAbleStatus(armors[4].apixList.firstLine.Item1, -armors[4].apixList.firstLine.Item2);
+                            BasicStatus.SetChangeAbleStatus(armors[4].apixList.statLine.Item1, -armors[4].apixList.statLine.Item2);
                             armors[4] = value;
                             UIManager.GetInstance().equipWindowArmors[4].SlotItem = value;
                             successChange = true;
@@ -527,7 +544,7 @@ namespace PlayerDefines
                     if (successChange)
                     {
                         UIManager.GetInstance().equipInven.RemoveItem(value);
-                        BasicStatus.SetChangeAbleStatus(value.apixList.firstLine.Item1, value.apixList.firstLine.Item2);
+                        BasicStatus.SetChangeAbleStatus(value.apixList.statLine.Item1, value.apixList.statLine.Item2);
                         UIManager.GetInstance().PlayerMaxCurrHP = (MaxHP, HP);
                         UIManager.GetInstance().PlayerMaxCurrSP = (MaxSP, SP);
                     }
@@ -545,7 +562,7 @@ namespace PlayerDefines
                             weapons[0].isEquiped = false;
                             weapons[0].Amount = 1;
                             UIManager.GetInstance().equipInven.GetItems(weapons[0]);
-                            BasicStatus.SetChangeAbleStatus(weapons[0].apixList.firstLine.Item1, -weapons[0].apixList.firstLine.Item2);
+                            BasicStatus.SetChangeAbleStatus(weapons[0].apixList.statLine.Item1, -weapons[0].apixList.statLine.Item2);
                             weapons[0] = value;
                             UIManager.GetInstance().equipWindowWeapons[0].SlotItem = value;
                             UIManager.GetInstance().equipInven.RemoveItem(value);
@@ -555,7 +572,7 @@ namespace PlayerDefines
                             weapons[1].isEquiped = false;
                             weapons[1].Amount = 1;
                             UIManager.GetInstance().equipInven.GetItems(weapons[1]);
-                            BasicStatus.SetChangeAbleStatus(weapons[1].apixList.firstLine.Item1, -weapons[1].apixList.firstLine.Item2);
+                            BasicStatus.SetChangeAbleStatus(weapons[1].apixList.statLine.Item1, -weapons[1].apixList.statLine.Item2);
                             weapons[1] = value;
                             UIManager.GetInstance().equipWindowWeapons[1].SlotItem = value;
                             UIManager.GetInstance().equipInven.RemoveItem(value);
@@ -565,7 +582,7 @@ namespace PlayerDefines
                                 weapons[0].Amount = 1;
                                 weapons[0].isEquiped = false;
                                 UIManager.GetInstance().equipInven.GetItems(weapons[0]);
-                                BasicStatus.SetChangeAbleStatus(weapons[0].apixList.firstLine.Item1, -weapons[0].apixList.firstLine.Item2);
+                                BasicStatus.SetChangeAbleStatus(weapons[0].apixList.statLine.Item1, -weapons[0].apixList.statLine.Item2);
                                 weapons[0] = new Weapons(EquipPart.LeftHand);
                                 UIManager.GetInstance().equipWindowWeapons[0].SlotItem = null;
 
@@ -575,7 +592,7 @@ namespace PlayerDefines
                             weapons[0].isEquiped = false;
                             weapons[0].Amount = 1;
                             UIManager.GetInstance().equipInven.GetItems(weapons[0]);
-                            BasicStatus.SetChangeAbleStatus(weapons[0].apixList.firstLine.Item1, -weapons[0].apixList.firstLine.Item2);
+                            BasicStatus.SetChangeAbleStatus(weapons[0].apixList.statLine.Item1, -weapons[0].apixList.statLine.Item2);
                             weapons[0] = value;
                             UIManager.GetInstance().equipWindowWeapons[0].SlotItem = value;
                             UIManager.GetInstance().equipInven.RemoveItem(value);
@@ -586,7 +603,7 @@ namespace PlayerDefines
                                 weapons[1].Amount = 1;
                                 UIManager.GetInstance().equipInven.GetItems(weapons[1]);
                                 weapons[1].isEquiped = false;
-                                BasicStatus.SetChangeAbleStatus(weapons[1].apixList.firstLine.Item1, -weapons[1].apixList.firstLine.Item2);
+                                BasicStatus.SetChangeAbleStatus(weapons[1].apixList.statLine.Item1, -weapons[1].apixList.statLine.Item2);
                                 weapons[1] = new Weapons(EquipPart.RightHand);
                                 UIManager.GetInstance().equipWindowWeapons[1].SlotItem = null;
                             }
@@ -595,7 +612,7 @@ namespace PlayerDefines
                     if (successChange)
                     {
                         UIManager.GetInstance().equipInven.RemoveItem(value);
-                        BasicStatus.SetChangeAbleStatus(value.apixList.firstLine.Item1, value.apixList.firstLine.Item2);
+                        BasicStatus.SetChangeAbleStatus(value.apixList.statLine.Item1, value.apixList.statLine.Item2);
 
                         UIManager.GetInstance().PlayerMaxCurrHP = (MaxHP, HP);
                         UIManager.GetInstance().PlayerMaxCurrSP = (MaxSP, SP);
@@ -610,20 +627,20 @@ namespace PlayerDefines
                 SP = sp;
             }
             //어택데미지
-            public float TotalAD
+            public override float TotalAD
             {
                 get { return attackDamage + (BasicStatus.Strength * 3) + (BasicStatus.Luck * 0.6f) + GetWeaponValue(false)+GetWeaponApixValue(WeaponApixType.ATK); ; }
             }
-            public float TotalAP
+            public override float TotalAP
             {
                 //현재 AP와 int값에만 영향받음, 추후 장비영향 추가하여야함
                 get { return abilityPower + (BasicStatus.Inteligence*2) + (BasicStatus.Luck * 0.4f) + GetWeaponValue(true) + GetWeaponApixValue(WeaponApixType.MATK); }
                 set { if(value>=0) abilityPower = value; }
             }
             //적중률
-            public int TotalAccuracy
+            public override float TotalAccuracy
             {
-                get { return (int)(accuracy + (BasicStatus.Dexterity * 1.5f) + (BasicStatus.Luck * 0.3f) + GetWeaponApixValue(WeaponApixType.Accuracy));}
+                get { return (accuracy + (BasicStatus.Dexterity * 1.5f) + (BasicStatus.Luck * 0.3f) + GetWeaponApixValue(WeaponApixType.Accuracy));}
             }
 
             //공격속도
@@ -641,7 +658,7 @@ namespace PlayerDefines
             {
                 get 
                 {
-                    float tempCT = 1 - ((BasicStatus.Dexterity * 0.006f) + (BasicStatus.Inteligence * 0.003f) + GetWeaponApixValue(WeaponApixType.CastingSpeed) + GetArmorMatValue(WeaponApixType.CastingSpeed));
+                    float tempCT = defaultCasting - ( (BasicStatus.Dexterity * 0.006f) + (BasicStatus.Inteligence * 0.003f) + GetWeaponApixValue(WeaponApixType.CastingSpeed) + GetArmorMatValue(WeaponApixType.CastingSpeed));
                     return tempCT <0? 0:tempCT;
                 }
             }
@@ -651,7 +668,7 @@ namespace PlayerDefines
                 get 
                 {
                     float tempGC = (1 - (BasicStatus.Agility * 0.006f));
-                    return tempGC < 0? 0: tempGC; 
+                    return tempGC < 0.01? 0.01f: tempGC; 
                 }
             }
             public override float Evasion
@@ -661,10 +678,10 @@ namespace PlayerDefines
                     return defaultEvasion + ((BasicStatus.Agility / 3) * 2) + (BasicStatus.Luck  * 0.4f)+GetArmorApixValue(ArmorApixType.Evasion);
                 }
             }
-
+            public int defaultCriChance = 0;
             public int CriChance
             {
-                get { return (int)(BasicStatus.Luck * 0.8f) + (int)GetWeaponApixValue(WeaponApixType.CriticalChance); } 
+                get { return defaultCriChance+(int)(BasicStatus.Luck * 0.8f) + (int)GetWeaponApixValue(WeaponApixType.CriticalChance); } 
             }
             public float defaultCriDamage = 2;
             public float CriDamage
@@ -690,10 +707,10 @@ namespace PlayerDefines
                     return temp < 750f ? temp : 750f;
                 }
             }
-
+            public float defaultHPRegen = 0;
             public float HPRegen 
             {
-                get { return (MaxHP / 100f) + (GetArmorApixValue(ArmorApixType.HpRegen)); }
+                get { return (MaxHP / 100f) + (GetArmorApixValue(ArmorApixType.HpRegen))+ defaultHPRegen; }
             }
             public float MaxHP 
             {
@@ -734,6 +751,7 @@ namespace PlayerDefines
                     UIManager.GetInstance().PlayerMaxCurrHP = (MaxHP, hp);
                 }
             }
+            public float defaultSPRegen = 0;
             public float MaxSP
             {
                 get { return base.defaultSP + GetArmorApixValue(ArmorApixType.MaxMana) + (this.BasicStatus.Inteligence * 7f); }
@@ -763,7 +781,7 @@ namespace PlayerDefines
             }
             public float SPRegen
             {
-                get { return (MaxSP / 100f) + (GetArmorApixValue(ArmorApixType.ManaRegen)); }
+                get { return (MaxSP / 100f) + (GetArmorApixValue(ArmorApixType.ManaRegen))+ defaultSPRegen; }
             }
             #endregion
             public override bool IsEnoughSP(float spCost)

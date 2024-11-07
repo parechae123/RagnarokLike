@@ -22,7 +22,7 @@ public enum WeaponApixType
 }
 public enum ArmorApixType
 {
-    //완료,   완료,     완료,     완료  완료      미완  완료
+    //완료,   완료,     완료,     완료  완료      완료  완료      완료
     MaxMana, ManaRegen, MaxHp, HpRegen, MoveSpeed, deff, Evasion, magicDeff
 }
 public enum EquipPart
@@ -55,7 +55,7 @@ public enum ArmorMat
 /// <typeparam name="T">ApixEnumTypeOnly</typeparam>
 public struct IApixBase<T> where T : Enum
 {
-    public (BasicStatTypes, int) firstLine;
+    public (BasicStatTypes, int) statLine;
     public (T, float)[] abilityApixes; 
 }
 public interface IArmorBase : IItemBase
@@ -534,7 +534,7 @@ public class foods : Consumables
 }
 public class buffItems : Consumables
 {
-    //버프시스템 구현 필요한데 이건 준교수님께 여쭤봐야할듯
+    //타이머로 계산
 }
 
 

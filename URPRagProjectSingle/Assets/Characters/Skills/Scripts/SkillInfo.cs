@@ -2,8 +2,12 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using PlayerDefines.Stat;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.Rendering.DebugUI;
 [CreateAssetMenu(fileName = "new SkillInfo", menuName = "Skill/SkillInfomations")]
 [System.Serializable]
 public class SkillInfo : ScriptableObject
@@ -125,6 +129,7 @@ public class SkillInfoInGame : IItemBase
             return CastingSkillLevel == 0 ? (isSkillLearned ? 1.ToString() : string.Empty  ) : (CastingSkillLevel+1).ToString();
         }
     }
+    public Image iconRenderer;
     public bool isSkillLearned
     {
         get { return (nowSkillLevel > 0);}
@@ -135,6 +140,7 @@ public class SkillInfoInGame : IItemBase
     }
 
     public float goalCool;
+    public float originCool;
 
     public SlotType slotType { get { return SlotType.Skills; } }
 
@@ -202,11 +208,13 @@ public class SkillInfoInGame : IItemBase
     }
     public void UseItem()
     {
+        if (SkillManager.GetInstance().activatedCDTimer || goalCool != 0) return;
         if (!isSkillLearned) return;
         quickSlotFuncs?.Invoke();
     }
     public void SetSkillObjectToPlayer()
     {
+        if (SkillManager.GetInstance().activatedCDTimer|| Player.Instance.StateMachine.CurrentState.stateName == "castingState") return;
         Player.Instance.SkillObj = this;
     }
     
@@ -276,7 +284,7 @@ public class SkillInfoInGame : IItemBase
         }
         SkillManager.GetInstance().SetSkillCoolTime(skillName, skill[CastingSkillLevel].coolTime);
         Debug.Log("카운팅 시작");
-        SkillManager.GetInstance().activatedCDTimer = true;
+
         for (int i = 0; i < tempAnim.runtimeAnimatorController.animationClips.Length; i++)
         {
             tempTime += tempAnim.runtimeAnimatorController.animationClips[i].length;
@@ -319,5 +327,300 @@ public class SkillInfoInGame : IItemBase
             }
         }
         return outPutStats;
+    }
+}
+public interface IBuffs
+{
+    string buffName
+    {
+        get;
+        set;
+    }
+    float buffValue
+    {
+        get;
+        set;
+    }
+    float duration
+    {
+        get;
+        set;
+    }
+    byte buffLevel
+    {
+        get;
+        set;
+    }
+    void ApplyBuff();
+    void RemoveBuff();
+}
+
+public class Buff
+{
+    IBuffs[] buffs = new IBuffs[0];
+
+}
+
+
+public class PlayerOffensiveBuff : IBuffs
+{
+    PlayerOffensiveBuff(string buffName,float buffValue,float time, byte buffLevel,WeaponApixType type ,Stats target)
+    {
+        this.target = target;
+        this.buffValue = buffValue;
+        this.buffName = buffName;
+        duration = time;
+        this.buffLevel = buffLevel;
+        this.buffType = type;
+    }
+    Stats target;
+    public string buffName
+    {
+        get;
+        set;
+    }
+    public float buffValue
+    {
+        get;
+        set;
+    }
+    public float duration
+    {
+        get;
+        set;
+    }
+    public byte buffLevel
+    {
+        get;
+        set;
+    }
+    private WeaponApixType buffType;
+
+
+
+    public float GetTargetInstance
+    {
+        get
+        {
+            switch (buffType)
+            {
+                case WeaponApixType.CriticalDMG:
+                    if (target.GetType() != typeof(PlayerStat)) return 0;
+                    return ((PlayerStat)target).defaultCriDamage;
+                case WeaponApixType.CriticalChance:
+                    if (target.GetType() != typeof(PlayerStat)) return 0;
+                    return ((PlayerStat)target).defaultCriChance;
+                case WeaponApixType.ATK:
+                    return target.attackDamage;
+                case WeaponApixType.MATK:
+                    return target.abilityPower;
+                case WeaponApixType.AttackSpeed:
+                    return target.attackSpeed;
+                case WeaponApixType.CastingSpeed:
+                    return target.defaultCasting;
+                case WeaponApixType.MaxHP:
+                    return target.defaultMaxHP;
+                case WeaponApixType.Accuracy:
+                    return target.accuracy;
+                default:
+                    return 0;
+            }
+        }
+        set
+        {
+            switch (buffType)
+            {
+                case WeaponApixType.CriticalDMG:
+                    if (target.GetType() != typeof(PlayerStat)) break;
+                    ((PlayerStat)target).defaultCriDamage += value;
+                    break;
+                case WeaponApixType.CriticalChance:
+                    if (target.GetType() != typeof(PlayerStat)) break;
+                    ((PlayerStat)target).defaultCriChance += (int)value;
+                    break;
+                case WeaponApixType.ATK:
+                    target.attackDamage += value;
+                    break;
+                case WeaponApixType.MATK:
+                    target.abilityPower += value;
+                    break;
+                case WeaponApixType.AttackSpeed:
+                    target.attackSpeed -= value;
+                    break;
+                case WeaponApixType.CastingSpeed:
+                    target.defaultCasting -= value;
+                    break;
+                case WeaponApixType.MaxHP:
+                    target.defaultMaxHP += value;
+                    break;
+                case WeaponApixType.Accuracy:
+                    target.accuracy += value;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+
+    public void ApplyBuff()
+    {
+        SkillManager.GetInstance().RegistBuffTimer(duration, RemoveBuff);
+        GetTargetInstance += buffValue;
+    }
+    public void RemoveBuff()
+    {
+        GetTargetInstance -= buffValue;
+    }
+}
+
+public class PlayerDeffensiveBuff : IBuffs
+{
+    PlayerDeffensiveBuff(string buffName,float buffValue, float time, byte buffLevel, ArmorApixType type,Stats stat)
+    {
+        this.buffName = buffName;
+        this.buffValue = buffValue;
+        duration = time;
+        this.buffLevel = buffLevel;
+        this.buffType = type;
+        target = stat;
+    }
+    Stats target;
+    public string buffName
+    {
+        get;
+        set;
+    }
+    public float buffValue
+    {
+        get;
+        set;
+    }
+    public float duration
+    {
+        get;
+        set;
+    }
+    public byte buffLevel
+    {
+        get;
+        set;
+    }
+    public float GetTargetInstance
+    {
+        get 
+        {
+            switch (buffType)
+            {
+                case ArmorApixType.MaxMana:
+                    return target.defaultSP;
+                case ArmorApixType.ManaRegen:
+                    if (target.GetType() != typeof(PlayerStat)) return 0;
+                    return ((PlayerStat)target).defaultSPRegen;
+                case ArmorApixType.MaxHp:
+                    return target.defaultMaxHP;
+                case ArmorApixType.HpRegen:
+                    if (target.GetType() != typeof(PlayerStat)) return 0;
+                    return ((PlayerStat)target).defaultHPRegen;
+                case ArmorApixType.MoveSpeed:
+                    return target.moveSpeed;
+                case ArmorApixType.deff:
+                    return target.deff;
+                case ArmorApixType.Evasion:
+                    return target.defaultEvasion;
+                case ArmorApixType.magicDeff:
+                    return target.magicDeff;
+                default:
+                    return 0;
+            }
+        }
+        set
+        {
+            switch (buffType)
+            {
+                case ArmorApixType.MaxMana:
+                    target.defaultSP = value;
+                    return;
+                case ArmorApixType.ManaRegen:
+                    if (target.GetType() != typeof(PlayerStat)) return;
+                    ((PlayerStat)target).defaultSPRegen = value;
+                    return;
+                case ArmorApixType.MaxHp:
+                    target.defaultMaxHP = value;
+                    return;
+                case ArmorApixType.HpRegen:
+                    if (target.GetType() != typeof(PlayerStat)) return;
+                    ((PlayerStat)target).defaultHPRegen = value;
+                    return;
+                case ArmorApixType.MoveSpeed:
+                    target.moveSpeed = value;
+                    return;
+                case ArmorApixType.deff:
+                    target.deff = value;
+                    return;
+                case ArmorApixType.Evasion:
+                    target.defaultEvasion = value;
+                    return;
+                case ArmorApixType.magicDeff:
+                    target.magicDeff = value;
+                    return;
+            }
+        }
+    }
+    private ArmorApixType buffType;
+    public void ApplyBuff()
+    {
+        SkillManager.GetInstance().RegistBuffTimer(duration, RemoveBuff);
+        GetTargetInstance += buffValue;
+    }
+    public void RemoveBuff()
+    {
+        GetTargetInstance -= buffValue;
+    }
+}
+/// <summary>
+/// 플레이어에게만 적용 가능
+/// </summary>
+public class PlayerStatBuff : IBuffs
+{
+    PlayerStatBuff(string buffName,float buffValue, float time, byte buffLevel, BasicStatTypes type, PlayerStat stat)
+    {
+        this.buffName = buffName;
+        this.buffValue = buffValue;
+        this.duration = time;
+        this.buffLevel = buffLevel;
+        buffType = type;
+        target = stat;
+    }
+    PlayerStat target;
+    public string buffName
+    {
+        get;
+        set;
+    }
+    public float buffValue
+    {
+        get;
+        set;
+    }
+    public float duration
+    {
+        get;
+        set;
+    }
+    public byte buffLevel
+    {
+        get;
+        set;
+    }
+    public BasicStatTypes buffType;
+    public void ApplyBuff()
+    {
+        target.BasicStatus.SetChangeAbleStatus(buffType, (int)buffValue);
+        SkillManager.GetInstance().RegistBuffTimer(duration, RemoveBuff);
+    }
+    public void RemoveBuff()
+    {
+        target.BasicStatus.SetChangeAbleStatus(buffType, (int)-buffValue);
     }
 }
