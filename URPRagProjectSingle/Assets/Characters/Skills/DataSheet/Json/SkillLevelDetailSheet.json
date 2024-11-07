@@ -12,7 +12,13 @@
 "defaultCastingTime": "0",
 "skillRange": "0",
 "skillDuration": "0",
-"coolTime": "0"
+"coolTime": "0",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "deadActing",
@@ -27,7 +33,13 @@
 "defaultCastingTime": "0",
 "skillRange": "0",
 "skillDuration": "300",
-"coolTime": "1"
+"coolTime": "1",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "bash",
@@ -42,7 +54,13 @@
 "defaultCastingTime": "0.9",
 "skillRange": "1",
 "skillDuration": "0",
-"coolTime": "0.9"
+"coolTime": "0.9",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "bash",
@@ -57,7 +75,13 @@
 "defaultCastingTime": "0.8",
 "skillRange": "1",
 "skillDuration": "0",
-"coolTime": "0.8"
+"coolTime": "0.8",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "bash",
@@ -72,7 +96,13 @@
 "defaultCastingTime": "0.7",
 "skillRange": "1",
 "skillDuration": "0",
-"coolTime": "0.7"
+"coolTime": "0.7",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "bash",
@@ -87,7 +117,13 @@
 "defaultCastingTime": "0.6",
 "skillRange": "1",
 "skillDuration": "0",
-"coolTime": "0.6"
+"coolTime": "0.6",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "bash",
@@ -102,7 +138,13 @@
 "defaultCastingTime": "0.5",
 "skillRange": "1",
 "skillDuration": "0",
-"coolTime": "0.5"
+"coolTime": "0.5",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "bash",
@@ -117,7 +159,13 @@
 "defaultCastingTime": "0.4",
 "skillRange": "1",
 "skillDuration": "0",
-"coolTime": "0.4"
+"coolTime": "0.4",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "bash",
@@ -132,7 +180,13 @@
 "defaultCastingTime": "0.3",
 "skillRange": "1",
 "skillDuration": "0",
-"coolTime": "0.3"
+"coolTime": "0.3",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "bash",
@@ -147,7 +201,13 @@
 "defaultCastingTime": "0.2",
 "skillRange": "1",
 "skillDuration": "0",
-"coolTime": "0.2"
+"coolTime": "0.2",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "bash",
@@ -162,7 +222,13 @@
 "defaultCastingTime": "0.099999999999998",
 "skillRange": "1",
 "skillDuration": "0",
-"coolTime": "0.099999999999998"
+"coolTime": "0.099999999999998",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "bash",
@@ -177,7 +243,13 @@
 "defaultCastingTime": "0",
 "skillRange": "1",
 "skillDuration": "0",
-"coolTime": "0"
+"coolTime": "0",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "magnum break",
@@ -192,7 +264,13 @@
 "defaultCastingTime": "1.5",
 "skillRange": "0",
 "skillDuration": "0",
-"coolTime": "0.5"
+"coolTime": "0.5",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "magnum break",
@@ -207,7 +285,13 @@
 "defaultCastingTime": "1.2",
 "skillRange": "0",
 "skillDuration": "0",
-"coolTime": "0.5"
+"coolTime": "0.5",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "magnum break",
@@ -222,7 +306,13 @@
 "defaultCastingTime": "0.9",
 "skillRange": "0",
 "skillDuration": "0",
-"coolTime": "0.5"
+"coolTime": "0.5",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "magnum break",
@@ -237,7 +327,13 @@
 "defaultCastingTime": "0.6",
 "skillRange": "0",
 "skillDuration": "0",
-"coolTime": "0.5"
+"coolTime": "0.5",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
 },
 {
 "skillName": "magnum break",
@@ -252,6 +348,117 @@
 "defaultCastingTime": "0.3",
 "skillRange": "0",
 "skillDuration": "0",
-"coolTime": "0.5"
+"coolTime": "0.5",
+"buffTypeOne": "None",
+"buffValueOne": "0",
+"buffTypeTwo": "None",
+"buffValueTwo": "0",
+"buffTypeThree": "None",
+"buffValueThree": "0"
+},
+{
+"skillName": "bless",
+"koreanSkillName": "블래스",
+"skillLevel": "1",
+"defaultValue": "2",
+"damageType": "Physical",
+"coefficient": "0",
+"coefficientType": "Physical",
+"skillBound": "0",
+"spCost": "10",
+"defaultCastingTime": "1",
+"skillRange": "1",
+"skillDuration": "300",
+"coolTime": "1",
+"buffTypeOne": "BasicStatTypes.Str",
+"buffValueOne": "2",
+"buffTypeTwo": "BasicStatTypes.Dex",
+"buffValueTwo": "2",
+"buffTypeThree": "BasicStatTypes.Luk",
+"buffValueThree": "2"
+},
+{
+"skillName": "bless",
+"koreanSkillName": "블래스",
+"skillLevel": "2",
+"defaultValue": "4",
+"damageType": "Physical",
+"coefficient": "0",
+"coefficientType": "Physical",
+"skillBound": "0",
+"spCost": "20",
+"defaultCastingTime": "1",
+"skillRange": "1",
+"skillDuration": "300",
+"coolTime": "1",
+"buffTypeOne": "BasicStatTypes.Str",
+"buffValueOne": "4",
+"buffTypeTwo": "BasicStatTypes.Dex",
+"buffValueTwo": "4",
+"buffTypeThree": "BasicStatTypes.Luk",
+"buffValueThree": "4"
+},
+{
+"skillName": "bless",
+"koreanSkillName": "블래스",
+"skillLevel": "3",
+"defaultValue": "6",
+"damageType": "Physical",
+"coefficient": "0",
+"coefficientType": "Physical",
+"skillBound": "0",
+"spCost": "30",
+"defaultCastingTime": "1",
+"skillRange": "1",
+"skillDuration": "300",
+"coolTime": "1",
+"buffTypeOne": "BasicStatTypes.Str",
+"buffValueOne": "6",
+"buffTypeTwo": "BasicStatTypes.Dex",
+"buffValueTwo": "6",
+"buffTypeThree": "BasicStatTypes.Luk",
+"buffValueThree": "6"
+},
+{
+"skillName": "bless",
+"koreanSkillName": "블래스",
+"skillLevel": "4",
+"defaultValue": "8",
+"damageType": "Physical",
+"coefficient": "0",
+"coefficientType": "Physical",
+"skillBound": "0",
+"spCost": "40",
+"defaultCastingTime": "1",
+"skillRange": "1",
+"skillDuration": "300",
+"coolTime": "1",
+"buffTypeOne": "BasicStatTypes.Str",
+"buffValueOne": "8",
+"buffTypeTwo": "BasicStatTypes.Dex",
+"buffValueTwo": "8",
+"buffTypeThree": "BasicStatTypes.Luk",
+"buffValueThree": "8"
+},
+{
+"skillName": "bless",
+"koreanSkillName": "블래스",
+"skillLevel": "5",
+"defaultValue": "10",
+"damageType": "Physical",
+"coefficient": "0",
+"coefficientType": "Physical",
+"skillBound": "0",
+"spCost": "50",
+"defaultCastingTime": "1",
+"skillRange": "1",
+"skillDuration": "300",
+"coolTime": "1",
+"buffTypeOne": "BasicStatTypes.Str",
+"buffValueOne": "10",
+"buffTypeTwo": "BasicStatTypes.Dex",
+"buffValueTwo": "10",
+"buffTypeThree": "BasicStatTypes.Luk",
+"buffValueThree": "10"
 }
 ]

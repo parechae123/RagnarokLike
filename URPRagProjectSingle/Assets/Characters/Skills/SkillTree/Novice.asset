@@ -33,6 +33,7 @@ MonoBehaviour:
           defaultValue: 10
           damageType: 0
           coefficient: 0.8
+          coolTime: 0
           coefficientType: 0
           skillBound: 0
           spCost: 8
@@ -45,6 +46,7 @@ MonoBehaviour:
           defaultValue: 20
           damageType: 0
           coefficient: 0.9
+          coolTime: 0
           coefficientType: 0
           skillBound: 0
           spCost: 9
@@ -57,6 +59,7 @@ MonoBehaviour:
           defaultValue: 30
           damageType: 0
           coefficient: 1
+          coolTime: 0
           coefficientType: 0
           skillBound: 3
           spCost: 10
@@ -69,6 +72,7 @@ MonoBehaviour:
           defaultValue: 40
           damageType: 0
           coefficient: 1.1
+          coolTime: 0
           coefficientType: 0
           skillBound: 0
           spCost: 11
@@ -81,6 +85,7 @@ MonoBehaviour:
           defaultValue: 50
           damageType: 0
           coefficient: 1.2
+          coolTime: 0
           coefficientType: 0
           skillBound: 0
           spCost: 12
@@ -93,6 +98,7 @@ MonoBehaviour:
           defaultValue: 55
           damageType: 0
           coefficient: 1.5
+          coolTime: 0
           coefficientType: 0
           skillBound: 0
           spCost: 13
@@ -105,6 +111,7 @@ MonoBehaviour:
           defaultValue: 60
           damageType: 0
           coefficient: 1.6
+          coolTime: 0
           coefficientType: 0
           skillBound: 0
           spCost: 14
@@ -117,6 +124,7 @@ MonoBehaviour:
           defaultValue: 65
           damageType: 0
           coefficient: 1.7
+          coolTime: 0
           coefficientType: 0
           skillBound: 0
           spCost: 15
@@ -129,6 +137,7 @@ MonoBehaviour:
           defaultValue: 70
           damageType: 0
           coefficient: 1.8
+          coolTime: 0
           coefficientType: 0
           skillBound: 0
           spCost: 16
@@ -141,6 +150,7 @@ MonoBehaviour:
           defaultValue: 75
           damageType: 0
           coefficient: 2.3
+          coolTime: 0
           coefficientType: 0
           skillBound: 0
           spCost: 17
@@ -152,7 +162,9 @@ MonoBehaviour:
           type: 3}
         maxSkillLevel: 10
         nowSkillLevel: 0
-        castingSkillLevel: 0
+        iconRenderer: {fileID: 0}
+        goalCool: 0
+        originCool: 0
       positionOnSkillTree: {x: 0, y: 0}
       skillGetConditions: []
     - thisSkillInScriptableOBJ: {fileID: 11400000, guid: b66f4df48d0d2ca4ab7715b477ab0f93,
@@ -171,6 +183,7 @@ MonoBehaviour:
           defaultValue: 5
           damageType: 0
           coefficient: 1.2
+          coolTime: 0
           coefficientType: 0
           skillBound: 1
           spCost: 15
@@ -183,6 +196,7 @@ MonoBehaviour:
           defaultValue: 15
           damageType: 0
           coefficient: 1.35
+          coolTime: 0
           coefficientType: 0
           skillBound: 1
           spCost: 18
@@ -195,6 +209,7 @@ MonoBehaviour:
           defaultValue: 25
           damageType: 0
           coefficient: 1.5
+          coolTime: 0
           coefficientType: 0
           skillBound: 1
           spCost: 21
@@ -207,6 +222,7 @@ MonoBehaviour:
           defaultValue: 35
           damageType: 0
           coefficient: 1.65
+          coolTime: 0
           coefficientType: 0
           skillBound: 1
           spCost: 24
@@ -219,6 +235,7 @@ MonoBehaviour:
           defaultValue: 50
           damageType: 0
           coefficient: 2.3
+          coolTime: 0
           coefficientType: 0
           skillBound: 1
           spCost: 30
@@ -230,9 +247,96 @@ MonoBehaviour:
           type: 3}
         maxSkillLevel: 5
         nowSkillLevel: 0
-        castingSkillLevel: 0
+        iconRenderer: {fileID: 0}
+        goalCool: 0
+        originCool: 0
       positionOnSkillTree: {x: 300, y: 0}
       skillGetConditions:
       - targetIndex: 0
         targetLevel: 5
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 11fb386b1b0b81147830b8eb1d9cfb9b,
+        type: 2}
+      thisSkill:
+        skillName: bless
+        jobName: SwordMan
+        skillStatus: 0
+        skillType: 3
+        objectiveType: 1
+        skillPosition: 0
+        skill:
+        - skillName: bless
+          koreanSkillName: "\uBE14\uB798\uC2A4"
+          skillLevel: 1
+          defaultValue: 2
+          damageType: 0
+          coefficient: 0
+          coolTime: 1
+          coefficientType: 0
+          skillBound: 0
+          spCost: 10
+          defaultCastingTime: 1
+          skillRange: 1
+          skillDuration: 300
+        - skillName: bless
+          koreanSkillName: "\uBE14\uB798\uC2A4"
+          skillLevel: 2
+          defaultValue: 4
+          damageType: 0
+          coefficient: 0
+          coolTime: 1
+          coefficientType: 0
+          skillBound: 0
+          spCost: 20
+          defaultCastingTime: 1
+          skillRange: 1
+          skillDuration: 300
+        - skillName: bless
+          koreanSkillName: "\uBE14\uB798\uC2A4"
+          skillLevel: 3
+          defaultValue: 6
+          damageType: 0
+          coefficient: 0
+          coolTime: 1
+          coefficientType: 0
+          skillBound: 0
+          spCost: 30
+          defaultCastingTime: 1
+          skillRange: 1
+          skillDuration: 300
+        - skillName: bless
+          koreanSkillName: "\uBE14\uB798\uC2A4"
+          skillLevel: 4
+          defaultValue: 8
+          damageType: 0
+          coefficient: 0
+          coolTime: 1
+          coefficientType: 0
+          skillBound: 0
+          spCost: 40
+          defaultCastingTime: 1
+          skillRange: 1
+          skillDuration: 300
+        - skillName: bless
+          koreanSkillName: "\uBE14\uB798\uC2A4"
+          skillLevel: 5
+          defaultValue: 10
+          damageType: 0
+          coefficient: 0
+          coolTime: 1
+          coefficientType: 0
+          skillBound: 0
+          spCost: 50
+          defaultCastingTime: 1
+          skillRange: 1
+          skillDuration: 300
+        skillIcon: {fileID: 21300000, guid: df5153fca31c9bf47b2d36359b5dd373, type: 3}
+        effectOBJPrefab: {fileID: 8522138926694928871, guid: 099831c921ff04f40be263e17bb36237,
+          type: 3}
+        maxSkillLevel: 5
+        nowSkillLevel: 0
+        iconRenderer: {fileID: 0}
+        goalCool: 0
+        originCool: 0
+      positionOnSkillTree: {x: 300, y: 200}
+      skillGetConditions: []
   SkilltreeResolution: {x: 800, y: 600}

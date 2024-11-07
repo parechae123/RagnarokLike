@@ -211,7 +211,14 @@ public class SkillBaseObjectOnly
     public float defaultCastingTime;
     public byte skillRange;
     public float skillDuration;
+    public string buffTypeOne;
+    public float buffValueOne;
+    public string buffTypeTwo;
+    public float buffValueTwo;
+    public string buffTypeThree;
+    public float buffValueThree;
 }
+
 [System.Serializable]
 public class SkillInfoObjectOnly
 {

@@ -30,5 +30,13 @@
 "skillType": "Active",
 "objectiveType": "Bounded",
 "skillPosition": "self"
+},
+{
+"skillName": "bless",
+"maxSkillLevel": "5",
+"jobName": "SwordMan",
+"skillType": "buff",
+"objectiveType": "OnlyTarget",
+"skillPosition": "self"
 }
 ]

@@ -25,3 +25,9 @@ MonoBehaviour:
   defaultCastingTime: 0
   skillRange: 1
   skillDuration: 0
+  buffTypeOne: None
+  buffValueOne: 0
+  buffTypeTwo: None
+  buffValueTwo: 0
+  buffTypeThree: None
+  buffValueThree: 0

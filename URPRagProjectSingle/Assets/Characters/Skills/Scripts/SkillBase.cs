@@ -35,6 +35,14 @@ public class SkillBase : ScriptableObject
     [SerializeField] public byte skillRange;
     [Header("스킬 지속시간")]
     [SerializeField] public float skillDuration;
+
+    [SerializeField] public string buffTypeOne;
+    [SerializeField] public float buffValueOne;
+    [SerializeField] public string buffTypeTwo;
+    [SerializeField] public float buffValueTwo;
+    [SerializeField] public string buffTypeThree;
+    [SerializeField] public float buffValueThree;
+
     public float TotalDamage(Stats caster)
     {
         switch (damageType)
@@ -67,10 +75,18 @@ public class SkillBase : ScriptableObject
         coolTime = targetObject.coolTime;
         skillRange = targetObject.skillRange;
         skillDuration = targetObject.skillDuration;
+        buffTypeOne = targetObject.buffTypeOne;
+        buffValueOne = targetObject.buffValueOne;
+        buffTypeTwo = targetObject.buffTypeTwo;
+        buffValueTwo = targetObject.buffValueTwo;
+        buffTypeThree = targetObject.buffTypeThree;
+        buffValueThree  = targetObject.buffValueThree;
     }
 
 #endif
 }
+
+
 [System.Serializable]
 public class SkillBaseInGameData
 {
@@ -106,6 +122,10 @@ public class SkillBaseInGameData
     [SerializeField] public byte skillRange;
     [Header("스킬 지속시간")]
     [SerializeField] public float skillDuration;
+
+    public (string, float)[] buffSet;
+
+
     public float TotalDamage(Stats caster)
     {
         switch (damageType)
@@ -153,6 +173,15 @@ public class SkillBaseInGameData
         defaultCastingTime = targetObject.defaultCastingTime;
         skillRange = targetObject.skillRange;
         skillDuration = targetObject.skillDuration;
+        if (targetObject.buffTypeOne != "None") buffSet = new (string, float)[1];
+        if(targetObject.buffTypeTwo != "None") buffSet = new (string, float)[2];
+        if (targetObject.buffTypeThree != "None") buffSet = new (string, float)[3];
+        buffSet[0].Item1 = targetObject.buffTypeOne;
+        buffSet[0].Item2 = targetObject.buffValueOne;
+        buffSet[1].Item1 = targetObject.buffTypeTwo;
+        buffSet[1].Item2 = targetObject.buffValueTwo;
+        buffSet[2].Item1 = targetObject.buffTypeThree;
+        buffSet[2].Item2 = targetObject.buffValueThree;
     }
 
 }

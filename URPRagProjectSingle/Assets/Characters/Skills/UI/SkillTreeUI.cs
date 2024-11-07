@@ -150,7 +150,16 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
                 targetSkillTreeBase.skillIconsInSkilltree[i].thisSkill.skillIcon;
             if (callOnAwake)
             {
-                SkillInfoInGame tempInGameSkill = new SkillInfoInGame(targetSkillTreeBase.skillIconsInSkilltree[i].thisSkillInScriptableOBJ);
+                SkillInfoInGame tempInGameSkill;
+                if (targetSkillTreeBase.skillIconsInSkilltree[i].thisSkillInScriptableOBJ.skillType == SkillType.buff)
+                {
+                    //TODO : skillInfoInGame 말고 buffSkillInfoIngame객체를 새로 만들어야할듯함
+                    tempInGameSkill = new SkillInfoInGame(targetSkillTreeBase.skillIconsInSkilltree[i].thisSkillInScriptableOBJ);
+                }
+                else
+                {
+                    tempInGameSkill = new SkillInfoInGame(targetSkillTreeBase.skillIconsInSkilltree[i].thisSkillInScriptableOBJ);
+                }
                 Array.Resize<SkillInfoInGame>(ref skillInfos, skillInfos.Length + 1);
                 skillInfos[skillInfos.Length - 1] = tempInGameSkill;
                 skillBtns[tempArray.Item1, tempArray.Item2].levelText.text = string.Empty;

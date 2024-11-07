@@ -757,12 +757,16 @@ public class SkillManager : Manager<SkillManager>
     private List<buffTime> buffTimer = new List<buffTime>();
     public class buffTime
     {
-        public buffTime(float leftTime,Action action)
+        public buffTime(string name,float leftTime,byte buffLevel,Action action)
         {
+            this.buffName = name;
             this.leftTime = leftTime;
+            this.buffLevel = buffLevel;
             this.func = action;
         }
+        public string buffName;
         public float leftTime;
+        public byte buffLevel;
         public Action func;
     }
     public bool activatedCDTimer;
@@ -785,9 +789,24 @@ public class SkillManager : Manager<SkillManager>
             }
         }
     }
-    public void RegistBuffTimer(float time, Action action)
+    public void RegistBuffTimer(string name,float time,byte level, Action action)
     {
-        buffTimer.Add(new buffTime(time, action));
+        foreach (buffTime item in buffTimer)
+        {
+            if(item.buffName == name)
+            {
+                if (item.buffLevel > level)
+                {
+                    action.Invoke();
+                    return;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        buffTimer.Add(new buffTime(name,time, level,action));
     }
     public void UpdateSkillCoolTime()
     {

@@ -331,22 +331,7 @@ public class SkillInfoInGame : IItemBase
 }
 public interface IBuffs
 {
-    string buffName
-    {
-        get;
-        set;
-    }
     float buffValue
-    {
-        get;
-        set;
-    }
-    float duration
-    {
-        get;
-        set;
-    }
-    byte buffLevel
     {
         get;
         set;
@@ -357,43 +342,77 @@ public interface IBuffs
 
 public class Buff
 {
+    string buffName;
+    float time;
+    byte buffLevel;
+    Action applyBuffs, removeBuffs;
     IBuffs[] buffs = new IBuffs[0];
+    public void BuffSetting(BuffSetting[] buffs)
+    {
+        if (buffs.Length <= 0) return;
+        buffName = buffs[0].buffName;
+        time = buffs[0].time;
+        buffLevel = buffs[0].buffLevel;
+        Array.Resize(ref this.buffs ,buffs.Length);
+        for (int i = 0; i<buffs.Length; i++)
+        {
+            if (buffs[i].buffType.GetType() == typeof(WeaponApixType))
+            {
+                this.buffs[i] = new OffensiveBuff(buffs[i].buffValue, (WeaponApixType)buffs[i].buffType, buffs[i].stat);
+            }
+            else if (buffs[i].buffType.GetType() == typeof(ArmorApixType))
+            {
+                this.buffs[i] = new DeffensiveBuff(buffs[i].buffValue,(ArmorApixType)buffs[i].buffType, buffs[i].stat);
+            }
+            else if (buffs[i].buffType.GetType() == typeof(BasicStatTypes)&& buffs[i].stat.GetType() == typeof(PlayerStat))
+            {
+                this.buffs[i] = new StatBuff(buffs[i].buffValue, (BasicStatTypes)buffs[i].buffType, ((PlayerStat)buffs[i].stat));
+            }
+            applyBuffs += this.buffs[i].ApplyBuff;
+            removeBuffs += this.buffs[i].RemoveBuff;
+        }
+        applyBuffs.Invoke();
+        SkillManager.GetInstance().RegistBuffTimer(buffName,time,buffLevel,removeBuffs);
+    }
 
 }
 
 
-public class PlayerOffensiveBuff : IBuffs
+public class BuffSetting
 {
-    PlayerOffensiveBuff(string buffName,float buffValue,float time, byte buffLevel,WeaponApixType type ,Stats target)
+    public BuffSetting(string buffName,float buffValue,float time,byte buffLevel,Enum buffType,Stats stat)
+    {
+        this.buffName = buffName;
+        this.buffValue = buffValue;
+        this.time = time;
+        this.buffLevel = buffLevel;
+        this.buffType = buffType;
+        this.stat = stat;
+    }
+    public string buffName;
+    public float buffValue;
+    public float time;
+    public byte buffLevel;
+    public Enum buffType;
+    public Stats stat;
+}
+
+public class OffensiveBuff : IBuffs
+{
+    public OffensiveBuff(float buffValue,WeaponApixType type ,Stats target)
     {
         this.target = target;
         this.buffValue = buffValue;
-        this.buffName = buffName;
-        duration = time;
-        this.buffLevel = buffLevel;
         this.buffType = type;
     }
     Stats target;
-    public string buffName
-    {
-        get;
-        set;
-    }
+
     public float buffValue
     {
         get;
         set;
     }
-    public float duration
-    {
-        get;
-        set;
-    }
-    public byte buffLevel
-    {
-        get;
-        set;
-    }
+
     private WeaponApixType buffType;
 
 
@@ -465,7 +484,6 @@ public class PlayerOffensiveBuff : IBuffs
 
     public void ApplyBuff()
     {
-        SkillManager.GetInstance().RegistBuffTimer(duration, RemoveBuff);
         GetTargetInstance += buffValue;
     }
     public void RemoveBuff()
@@ -474,34 +492,16 @@ public class PlayerOffensiveBuff : IBuffs
     }
 }
 
-public class PlayerDeffensiveBuff : IBuffs
+public class DeffensiveBuff : IBuffs
 {
-    PlayerDeffensiveBuff(string buffName,float buffValue, float time, byte buffLevel, ArmorApixType type,Stats stat)
+    public DeffensiveBuff(float buffValue, ArmorApixType type,Stats stat)
     {
-        this.buffName = buffName;
         this.buffValue = buffValue;
-        duration = time;
-        this.buffLevel = buffLevel;
         this.buffType = type;
         target = stat;
     }
     Stats target;
-    public string buffName
-    {
-        get;
-        set;
-    }
     public float buffValue
-    {
-        get;
-        set;
-    }
-    public float duration
-    {
-        get;
-        set;
-    }
-    public byte buffLevel
     {
         get;
         set;
@@ -570,7 +570,6 @@ public class PlayerDeffensiveBuff : IBuffs
     private ArmorApixType buffType;
     public void ApplyBuff()
     {
-        SkillManager.GetInstance().RegistBuffTimer(duration, RemoveBuff);
         GetTargetInstance += buffValue;
     }
     public void RemoveBuff()
@@ -581,34 +580,16 @@ public class PlayerDeffensiveBuff : IBuffs
 /// <summary>
 /// 플레이어에게만 적용 가능
 /// </summary>
-public class PlayerStatBuff : IBuffs
+public class StatBuff : IBuffs
 {
-    PlayerStatBuff(string buffName,float buffValue, float time, byte buffLevel, BasicStatTypes type, PlayerStat stat)
+    public StatBuff(float buffValue,BasicStatTypes type, PlayerStat stat)
     {
-        this.buffName = buffName;
         this.buffValue = buffValue;
-        this.duration = time;
-        this.buffLevel = buffLevel;
         buffType = type;
         target = stat;
     }
     PlayerStat target;
-    public string buffName
-    {
-        get;
-        set;
-    }
     public float buffValue
-    {
-        get;
-        set;
-    }
-    public float duration
-    {
-        get;
-        set;
-    }
-    public byte buffLevel
     {
         get;
         set;
@@ -617,7 +598,6 @@ public class PlayerStatBuff : IBuffs
     public void ApplyBuff()
     {
         target.BasicStatus.SetChangeAbleStatus(buffType, (int)buffValue);
-        SkillManager.GetInstance().RegistBuffTimer(duration, RemoveBuff);
     }
     public void RemoveBuff()
     {
