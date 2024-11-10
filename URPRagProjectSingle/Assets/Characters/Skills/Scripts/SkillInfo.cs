@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.ResourceManagement.ResourceProviders.Simulation;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Rendering.DebugUI;
@@ -105,6 +106,7 @@ public class SkillInfoInGame : IItemBase
     public byte maxSkillLevel;
     public byte nowSkillLevel;
     private byte castingSkillLevel =1;
+    public int leftTick;
     public byte CastingSkillLevel
     {
         get
@@ -138,9 +140,7 @@ public class SkillInfoInGame : IItemBase
     {
         get { return isSkillLearned; }
     }
-
-    public float goalCool;
-    public float originCool;
+    public int originTick;
 
     public SlotType slotType { get { return SlotType.Skills; } }
 
@@ -208,13 +208,13 @@ public class SkillInfoInGame : IItemBase
     }
     public void UseItem()
     {
-        if (SkillManager.GetInstance().activatedCDTimer || goalCool != 0) return;
+        if (leftTick != 0) return;
         if (!isSkillLearned) return;
         quickSlotFuncs?.Invoke();
     }
-    public void SetSkillObjectToPlayer()
+    public virtual void SetSkillObjectToPlayer()
     {
-        if (SkillManager.GetInstance().activatedCDTimer|| Player.Instance.StateMachine.CurrentState.stateName == "castingState") return;
+        if (Player.Instance.StateMachine.CurrentState.stateName == "castingState") return;
         Player.Instance.SkillObj = this;
     }
     
@@ -239,7 +239,7 @@ public class SkillInfoInGame : IItemBase
                 break;
         }
     }*/
-    public void SkillCastTargetPlace(Vector3 castingPos,Stats target,Stats caster)
+    public virtual void SkillCastTargetPlace(Vector3 castingPos,Stats target,Stats caster)
     {
         Debug.Log(skillName + "사용했어용~~");
         Animator tempAnim = GetNonPlayingSkillEffect();
@@ -248,7 +248,7 @@ public class SkillInfoInGame : IItemBase
         tempAnim.Play(skillName + "Effect");
         float tempTime = 0;
         Color tempColor = Color.black;
-        switch (skill[castingSkillLevel].damageType)
+        switch (skill[CastingSkillLevel].damageType)
         {
             case ValueType.Physical:
                 tempColor = Color.red;
@@ -271,18 +271,18 @@ public class SkillInfoInGame : IItemBase
             case ObjectiveType.None:
                 break;
             case ObjectiveType.OnlyTarget:
-                if (target != null) UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos+Vector3.up, target.GetDamage(skill[CastingSkillLevel].TotalDamage(caster), skill[castingSkillLevel].damageType).ToString("N0"),tempColor,1);
+                if (target != null) UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos+Vector3.up, target.GetDamage(skill[CastingSkillLevel].TotalDamage(caster), skill[CastingSkillLevel].damageType).ToString("N0"),tempColor,1);
                 break;
             case ObjectiveType.Bounded:
                 Stats[] tempTargets = GetStats(new Vector2Int((int)castingPos.x, (int)castingPos.z));
                 for (int i = 0; i < tempTargets.Length; i++)
                 {
                     if (tempTargets[i] == caster) continue;
-                    UIManager.GetInstance().SpawnFloatText(tempTargets[i].standingNode.worldPos + Vector3.up, tempTargets[i].GetDamage(skill[CastingSkillLevel].TotalDamage(caster), skill[castingSkillLevel].damageType).ToString("N0"), tempColor, 1);
+                    UIManager.GetInstance().SpawnFloatText(tempTargets[i].standingNode.worldPos + Vector3.up, tempTargets[i].GetDamage(skill[CastingSkillLevel].TotalDamage(caster), skill[CastingSkillLevel].damageType).ToString("N0"), tempColor, 1);
                 }
                 break;
         }
-        SkillManager.GetInstance().SetSkillCoolTime(skillName, skill[CastingSkillLevel].coolTime);
+        SkillManager.GetInstance().SetSkillCoolTime(skillName, skill[CastingSkillLevel].coolTimeTick);
         Debug.Log("카운팅 시작");
 
         for (int i = 0; i < tempAnim.runtimeAnimatorController.animationClips.Length; i++)
@@ -294,7 +294,137 @@ public class SkillInfoInGame : IItemBase
             if (tempAnim != null) tempAnim.gameObject.SetActive(false);
         });
     }
-    public Stats[] GetStats(Vector2Int nodePos)
+    public virtual Stats[] GetStats(Vector2Int nodePos)
+    {
+        Stats[] outPutStats = new Stats[0];
+        int boundMax = skill[CastingSkillLevel].SkillBound;
+        for (int i = -boundMax; i <= boundMax; i++)
+        {
+            for (int j = -boundMax; j <= boundMax; j++)
+            {
+                if ((i*i) + (j*j) <= boundMax * boundMax)
+                {
+                    Vector2Int tempVec = new Vector2Int(i, j) + nodePos;
+                    if (GridManager.GetInstance().grids.ContainsKey(tempVec))
+                    {
+                        if (GridManager.GetInstance().grids[tempVec].CharacterOnNode != null)
+                        {
+                            Array.Resize(ref outPutStats, outPutStats.Length+1);
+                            outPutStats[outPutStats.Length - 1] = GridManager.GetInstance().grids[tempVec].CharacterOnNode;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else continue;
+
+            }
+        }
+        return outPutStats;
+    }
+    public void ResetAction()
+    {
+        quickSlotFuncs = null;
+    }
+}
+[System.Serializable]
+public class BuffSkillInfoInGame : SkillInfoInGame
+{
+    [Header("스킬 이펙트 오브젝트 프리팹, 아이콘")]
+    private Animator[] effectOBJs = new Animator[0];//씬 내의 이펙트 오브젝트
+    [SerializeField] private GameObject effectOBJPrefab;
+    private byte castingSkillLevel =1;
+    public new BuffSkillBaseInGameData[] skill;
+
+
+    public BuffSkillInfoInGame(SkillInfo data) : base(data)
+    {
+        skillName = data.skillName;
+        jobName = data.jobName;
+        skillType = data.skillType;
+        objectiveType = data.objectiveType;
+        skillPosition = data.skillPosition;
+        skill = ConvertInGameData(data.skill);
+        effectOBJPrefab = data.effectOBJPrefab;
+        skillIcon = data.skillIcon;
+        maxSkillLevel = data.maxSkillLevel;
+        base.ResetAction();
+        quickSlotFuncs += SetSkillObjectToPlayer;
+    }
+    public BuffSkillInfoInGame(BuffSkillInfoInGame data) : base(data)
+    {
+        skillName = data.skillName;
+        jobName = data.jobName;
+        skillType = data.skillType;
+        objectiveType = data.objectiveType;
+        skillPosition = data.skillPosition;
+        skill = data.skill;
+        effectOBJPrefab = data.effectOBJPrefab;
+        skillIcon = data.skillIcon;
+        nowSkillLevel = data.nowSkillLevel;
+        castingSkillLevel = data.castingSkillLevel;
+        maxSkillLevel = data.maxSkillLevel;
+        base.ResetAction();
+        quickSlotFuncs += SetSkillObjectToPlayer;
+    }
+    private BuffSkillBaseInGameData[] ConvertInGameData(SkillBase[] skills)
+    {
+        BuffSkillBaseInGameData[] tempInGameData = new BuffSkillBaseInGameData[skills.Length];
+        for (int i = 0; i < tempInGameData.Length; i++)
+        {
+            tempInGameData[i] = new BuffSkillBaseInGameData(skills[i]);
+        }
+        return tempInGameData;
+    }
+    public override void SkillCastTargetPlace(Vector3 castingPos,Stats target,Stats caster)
+    {
+        Debug.Log(skillName + "사용했어용~~");
+        Animator tempAnim = GetNonPlayingSkillEffect();
+        tempAnim.transform.position = castingPos;
+        tempAnim.gameObject.SetActive(true);
+        tempAnim.Play(skillName + "Effect");
+        float tempTime = 0;
+        switch (objectiveType)
+        {
+            case ObjectiveType.None:
+                break;
+            case ObjectiveType.OnlyTarget:
+                if (target != null) 
+                { 
+                    UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos+Vector3.up, $"{skillName}!!",Color.cyan,1.5f);
+                    target.buffs.AcceptBuff(new BuffOBJ() {buffName = skillName,buffLevel = CastingSkillLevel, buffs= skill[CastingSkillLevel].buffSet,buffTargets = target,leftTick = skill[CastingSkillLevel].skillDuration });
+                }
+                break;
+            case ObjectiveType.Bounded:
+                Stats[] tempTargets = GetStats(new Vector2Int((int)castingPos.x, (int)castingPos.z));
+                for (int i = 0; i < tempTargets.Length; i++)
+                {
+                    if (tempTargets[i] == caster) continue;
+                    target.buffs.AcceptBuff(new BuffOBJ() { buffName = skillName, buffLevel = CastingSkillLevel, buffs = skill[CastingSkillLevel].buffSet, buffTargets = target, leftTick = skill[CastingSkillLevel].skillDuration });
+                    UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos + Vector3.up, $"{skillName}!!", Color.cyan, 1.5f);
+                    
+                }
+                break;
+        }
+        SkillManager.GetInstance().SetSkillCoolTime(skillName, skill[CastingSkillLevel].coolTimeTick);
+        Debug.Log("카운팅 시작");
+
+        for (int i = 0; i < tempAnim.runtimeAnimatorController.animationClips.Length; i++)
+        {
+            tempTime += tempAnim.runtimeAnimatorController.animationClips[i].length;
+        }
+        DOVirtual.DelayedCall(tempTime, () =>
+        {
+            if (tempAnim != null) tempAnim.gameObject.SetActive(false);
+        });
+    }
+    public override Stats[] GetStats(Vector2Int nodePos)
     {
         Stats[] outPutStats = new Stats[0];
         int boundMax = skill[CastingSkillLevel].SkillBound;
@@ -329,6 +459,30 @@ public class SkillInfoInGame : IItemBase
         return outPutStats;
     }
 }
+
+public struct BuffOBJ
+{
+    public string buffName;
+    public IBuffs[] buffs;
+    public int leftTick;
+    public byte buffLevel;
+    public Stats buffTargets;
+    public void ApplyBuffs()
+    {
+        for (sbyte i = 0; i < buffs.Length; i++)
+        {
+            buffs[i].SetTarget(buffTargets);
+            buffs[i].ApplyBuff();
+        }
+    }
+    public void RemoveBuffs()
+    {
+        for (sbyte i = 0; i < buffs.Length; i++)
+        {
+            buffs[i].RemoveBuff();
+        }
+    }
+}
 public interface IBuffs
 {
     float buffValue
@@ -336,76 +490,21 @@ public interface IBuffs
         get;
         set;
     }
+    bool SetTarget(Stats aa);
     void ApplyBuff();
     void RemoveBuff();
 }
 
-public class Buff
-{
-    string buffName;
-    float time;
-    byte buffLevel;
-    Action applyBuffs, removeBuffs;
-    IBuffs[] buffs = new IBuffs[0];
-    public void BuffSetting(BuffSetting[] buffs)
-    {
-        if (buffs.Length <= 0) return;
-        buffName = buffs[0].buffName;
-        time = buffs[0].time;
-        buffLevel = buffs[0].buffLevel;
-        Array.Resize(ref this.buffs ,buffs.Length);
-        for (int i = 0; i<buffs.Length; i++)
-        {
-            if (buffs[i].buffType.GetType() == typeof(WeaponApixType))
-            {
-                this.buffs[i] = new OffensiveBuff(buffs[i].buffValue, (WeaponApixType)buffs[i].buffType, buffs[i].stat);
-            }
-            else if (buffs[i].buffType.GetType() == typeof(ArmorApixType))
-            {
-                this.buffs[i] = new DeffensiveBuff(buffs[i].buffValue,(ArmorApixType)buffs[i].buffType, buffs[i].stat);
-            }
-            else if (buffs[i].buffType.GetType() == typeof(BasicStatTypes)&& buffs[i].stat.GetType() == typeof(PlayerStat))
-            {
-                this.buffs[i] = new StatBuff(buffs[i].buffValue, (BasicStatTypes)buffs[i].buffType, ((PlayerStat)buffs[i].stat));
-            }
-            applyBuffs += this.buffs[i].ApplyBuff;
-            removeBuffs += this.buffs[i].RemoveBuff;
-        }
-        applyBuffs.Invoke();
-        SkillManager.GetInstance().RegistBuffTimer(buffName,time,buffLevel,removeBuffs);
-    }
 
-}
-
-
-public class BuffSetting
-{
-    public BuffSetting(string buffName,float buffValue,float time,byte buffLevel,Enum buffType,Stats stat)
-    {
-        this.buffName = buffName;
-        this.buffValue = buffValue;
-        this.time = time;
-        this.buffLevel = buffLevel;
-        this.buffType = buffType;
-        this.stat = stat;
-    }
-    public string buffName;
-    public float buffValue;
-    public float time;
-    public byte buffLevel;
-    public Enum buffType;
-    public Stats stat;
-}
 
 public class OffensiveBuff : IBuffs
 {
-    public OffensiveBuff(float buffValue,WeaponApixType type ,Stats target)
+    public OffensiveBuff(float buffValue,WeaponApixType type)
     {
-        this.target = target;
         this.buffValue = buffValue;
         this.buffType = type;
     }
-    Stats target;
+    public Stats target;
 
     public float buffValue
     {
@@ -480,7 +579,11 @@ public class OffensiveBuff : IBuffs
             }
         }
     }
-
+    public bool SetTarget(Stats target)
+    {
+        this.target = target;
+        return true;
+    }
 
     public void ApplyBuff()
     {
@@ -494,11 +597,10 @@ public class OffensiveBuff : IBuffs
 
 public class DeffensiveBuff : IBuffs
 {
-    public DeffensiveBuff(float buffValue, ArmorApixType type,Stats stat)
+    public DeffensiveBuff(float buffValue, ArmorApixType type)
     {
         this.buffValue = buffValue;
         this.buffType = type;
-        target = stat;
     }
     Stats target;
     public float buffValue
@@ -568,6 +670,12 @@ public class DeffensiveBuff : IBuffs
         }
     }
     private ArmorApixType buffType;
+
+    public bool SetTarget(Stats target)
+    {
+        this.target = target;
+        return true;
+    }
     public void ApplyBuff()
     {
         GetTargetInstance += buffValue;
@@ -582,11 +690,10 @@ public class DeffensiveBuff : IBuffs
 /// </summary>
 public class StatBuff : IBuffs
 {
-    public StatBuff(float buffValue,BasicStatTypes type, PlayerStat stat)
+    public StatBuff(float buffValue,BasicStatTypes type)
     {
         this.buffValue = buffValue;
         buffType = type;
-        target = stat;
     }
     PlayerStat target;
     public float buffValue
@@ -595,6 +702,12 @@ public class StatBuff : IBuffs
         set;
     }
     public BasicStatTypes buffType;
+    public bool SetTarget(Stats target)
+    {
+        if (target.GetType() != typeof(PlayerStat)) return false;
+        this.target = (PlayerStat)target;
+        return true;
+    }
     public void ApplyBuff()
     {
         target.BasicStatus.SetChangeAbleStatus(buffType, (int)buffValue);

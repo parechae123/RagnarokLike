@@ -37,6 +37,6 @@
 "jobName": "SwordMan",
 "skillType": "buff",
 "objectiveType": "OnlyTarget",
-"skillPosition": "self"
+"skillPosition": "cursor"
 }
 ]

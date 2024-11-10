@@ -811,6 +811,7 @@ public class PlayerLevelInfo
         {
             foreach (SkillInfoInGame item in playerOwnSkills[classPhase].playerOwnSkills)
             {
+                if (item == null) continue;
                 if (item.skillName == skill[targetSkillIndex].thisSkill.skillName)
                 {
                     if (item.nowSkillLevel < item.maxSkillLevel)
@@ -851,6 +852,7 @@ public class PlayerLevelInfo
     /// <returns></returns>
     public bool[] isLearnAble(int targetLearnSkillIndex,int classPhase, SkillIconsInSkilltree skillTree)
     {
+        //TODO : index 3이상부터 오류 발생 수정 시급
         bool[] tempBool = new bool[skillTree[targetLearnSkillIndex].skillGetConditions.Length];
         (string,byte,bool)[] conditionSkillNames = new (string, byte,bool)[skillTree[targetLearnSkillIndex].skillGetConditions.Length];
         
@@ -867,6 +869,7 @@ public class PlayerLevelInfo
             {
                 foreach (SkillInfoInGame item in playerOwnSkills[classPhase].playerOwnSkills)
                 {
+                    if (item == null) continue;
                     for (int i = 0; i < conditionSkillNames.Length; i++)
                     {
                         if (conditionSkillNames[i].Item1 == item.skillName)

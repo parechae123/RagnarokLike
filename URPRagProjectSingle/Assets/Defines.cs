@@ -170,8 +170,15 @@ namespace NeutralDefines
                 temp.casting = null;
                 temp.targetStat = null;
                 temp.castPos = Vector3.down*100;
-
-                temp.casting += skillInfo.SkillCastTargetPlace;
+                if (skillInfo.skillType == SkillType.Active)
+                {
+                    temp.casting += skillInfo.SkillCastTargetPlace;
+                }
+                else if(skillInfo.skillType == SkillType.buff)
+                {
+                    temp.casting += ((BuffSkillInfoInGame)skillInfo).SkillCastTargetPlace;
+                }
+                
                 temp.castPos = skillPos;
                 temp.targetStat = targetStat;
                 if(skillInfo.skillPosition != SkillPosition.self) Player.Instance.SetCharactorDirrection(Player.Instance.transform.position, skillPos);

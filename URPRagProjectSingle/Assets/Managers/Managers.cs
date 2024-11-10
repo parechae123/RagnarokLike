@@ -753,110 +753,98 @@ public class UIManager : Manager<UIManager>
 public class SkillManager : Manager<SkillManager>
 {
     public List<SkillInfoInGame> skillInfo = new List<SkillInfoInGame>();
-    public List<SkillInfoInGame> coolDownSkills = new List<SkillInfoInGame>();
-    private List<buffTime> buffTimer = new List<buffTime>();
+    public List<buffTime> buffTimer = new List<buffTime>();
     public class buffTime
     {
-        public buffTime(string name,float leftTime,byte buffLevel,Action action)
+        public buffTime(string buffName,int leftTime,Action action, Action<string> hashAction)
         {
-            this.buffName = name;
-            this.leftTime = leftTime;
-            this.buffLevel = buffLevel;
+            this.buffName = buffName;
+            this.leftTick = leftTime;
             this.func = action;
+            this.hashAction = hashAction;
         }
-        public string buffName;
-        public float leftTime;
-        public byte buffLevel;
+        private string buffName;
+        public float leftTick;
         public Action func;
+        public Action<string> hashAction;
+        public void End()
+        {
+            func.Invoke();
+            hashAction.Invoke(buffName);
+        }
     }
-    public bool activatedCDTimer;
     float skillTimer = 0;
+    float tickTime = 0.3f;
     float GC
     {
         get { return Player.Instance.playerLevelInfo.stat.GlobalCooltimePercent * 1.2f; }
     }
-    public void SetSkillCoolTime(string name,float coolTime)
+    public void SetSkillCoolTime(string name,int tick)
     {
-        activatedCDTimer = true;
+        int tempTick = Mathf.RoundToInt((GC / tickTime));
         foreach (SkillInfoInGame skill in skillInfo)
         {
-            if (skill.skillName != name) continue;
-            else
+            if (skill.skillName != name)
             {
-                skill.originCool = 10;
-                skill.goalCool = 10;
-                coolDownSkills.Add(skill);
-            }
-        }
-    }
-    public void RegistBuffTimer(string name,float time,byte level, Action action)
-    {
-        foreach (buffTime item in buffTimer)
-        {
-            if(item.buffName == name)
-            {
-                if (item.buffLevel > level)
+                if(tempTick < skill.leftTick)
                 {
-                    action.Invoke();
-                    return;
+                    continue;
                 }
                 else
                 {
-                    break;
+                    skill.leftTick = tempTick;
+                    skill.originTick = tempTick;
                 }
             }
+            else
+            {
+                skill.originTick = tick < tempTick ? tempTick : tick;
+                skill.leftTick = tick < tempTick ? tempTick : tick;
+            }
         }
-        buffTimer.Add(new buffTime(name,time, level,action));
+    }
+    public void RegistBuffTimer(string buffName,int tick, Action action,Action<string> hashAction)
+    {
+        buffTimer.Add(new buffTime(buffName,tick,action,hashAction));
     }
     public void UpdateSkillCoolTime()
     {
-        for (int i = 0; i < buffTimer.Count; i++)
-        {
-            buffTimer[i].leftTime -= Time.deltaTime;
-            if (buffTimer[i].leftTime<= 0)
-            {
-                buffTimer[i].func.Invoke();
-                buffTimer.RemoveAt(i);
-                i--;
-            }
-        }
-        if (coolDownSkills.Count <= 0 && !activatedCDTimer) 
-        {
-            skillTimer = 0;
-            return;
-        } 
         skillTimer += Time.deltaTime;
-        if(skillTimer <= GC&& activatedCDTimer)
+        if (tickTime > skillTimer) return;
+        if (buffTimer.Count > 0)
         {
-            foreach (SkillInfoInGame item in skillInfo)
+            for (int i = 0; i < buffTimer.Count; i++)
             {
-                item.iconRenderer.fillAmount =  skillTimer/ GC;
-            }
-        }
-        else if(activatedCDTimer)
-        {
-            activatedCDTimer = false;
-            skillTimer = 0;
-            foreach (SkillInfoInGame item in skillInfo)
-            {
-                item.iconRenderer.fillAmount = 1;
-            }
-        }
-
-        for(int i = 0;i < coolDownSkills.Count; i++)
-        {
-            coolDownSkills[i].goalCool -= Time.deltaTime;
-
-            coolDownSkills[i].iconRenderer.fillAmount = 1-(coolDownSkills[i].goalCool / coolDownSkills[i].originCool);
-            if (coolDownSkills[i].goalCool <= 0) 
-            {
-                Debug.Log(skillTimer);
-                coolDownSkills[i].originCool = 0;
-                coolDownSkills[i].goalCool = 0;
-                coolDownSkills.Remove(coolDownSkills[i]);
-                i--;
+                buffTimer[i].leftTick -= 1;
+                if (buffTimer[i].leftTick <= 0)
+                {
+                    buffTimer[i].func.Invoke();
+                    buffTimer.RemoveAt(i);
+                    i--;
+                }
             } 
         }
+        for (int i = 0; i< skillInfo.Count; i++)
+        {
+            if (skillInfo[i].leftTick > 0)
+            {
+                if (skillInfo[i].leftTick == 1)
+                {
+                    skillInfo[i].iconRenderer.fillAmount = 1;
+                    skillInfo[i].leftTick = 0;
+                    skillInfo[i].originTick = 0;
+                    continue;
+                }
+                else
+                {
+                    skillInfo[i].iconRenderer.fillAmount = (skillInfo[i].originTick - skillInfo[i].leftTick) /Mathf.Floor(skillInfo[i].originTick);
+                }
+                skillInfo[i].leftTick--;
+                
+            }
+            else continue;
+        }
+        skillTimer = 0;
     }
     public void AddSkillInfo(SkillInfoInGame addItem)
     {

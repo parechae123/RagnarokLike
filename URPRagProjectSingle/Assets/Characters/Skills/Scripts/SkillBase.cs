@@ -16,7 +16,7 @@ public class SkillBase : ScriptableObject
     public float defaultValue;
     public ValueType damageType;
     public float coefficient;
-    public float coolTime;
+    public int coolTimeTick;
     /// <summary>
     /// 
     /// </summary>
@@ -34,7 +34,7 @@ public class SkillBase : ScriptableObject
     [Header("스킬 사거리")]
     [SerializeField] public byte skillRange;
     [Header("스킬 지속시간")]
-    [SerializeField] public float skillDuration;
+    [SerializeField] public int skillDuration;
 
     [SerializeField] public string buffTypeOne;
     [SerializeField] public float buffValueOne;
@@ -72,7 +72,7 @@ public class SkillBase : ScriptableObject
         skillBound = targetObject.skillBound;
         spCost = targetObject.spCost;
         defaultCastingTime = targetObject.defaultCastingTime;
-        coolTime = targetObject.coolTime;
+        coolTimeTick = targetObject.coolTimeTick;
         skillRange = targetObject.skillRange;
         skillDuration = targetObject.skillDuration;
         buffTypeOne = targetObject.buffTypeOne;
@@ -80,7 +80,7 @@ public class SkillBase : ScriptableObject
         buffTypeTwo = targetObject.buffTypeTwo;
         buffValueTwo = targetObject.buffValueTwo;
         buffTypeThree = targetObject.buffTypeThree;
-        buffValueThree  = targetObject.buffValueThree;
+        buffValueThree = targetObject.buffValueThree;
     }
 
 #endif
@@ -98,7 +98,7 @@ public class SkillBaseInGameData
     public float defaultValue;
     public ValueType damageType;
     public float coefficient;
-    public float coolTime;
+    public int coolTimeTick;
     /// <summary>
     /// 
     /// </summary>
@@ -107,7 +107,7 @@ public class SkillBaseInGameData
 
     public ValueType coefficientType;
     [Header("스킬 범위")]
-    [SerializeField] private byte skillBound;
+    [SerializeField] protected byte skillBound;
     public byte SkillBound
     {
         get { return skillBound; }
@@ -121,9 +121,8 @@ public class SkillBaseInGameData
     [Header("스킬 사거리")]
     [SerializeField] public byte skillRange;
     [Header("스킬 지속시간")]
-    [SerializeField] public float skillDuration;
+    [SerializeField] public int skillDuration;
 
-    public (string, float)[] buffSet;
 
 
     public float TotalDamage(Stats caster)
@@ -137,27 +136,27 @@ public class SkillBaseInGameData
             case ValueType.Heal:
                 return -1 * (defaultValue + (caster.TotalAP * coefficient));
             case ValueType.PhysicalRange:
-                return defaultValue+ (caster.TotalAccuracy* coefficient);
+                return defaultValue + (caster.TotalAccuracy * coefficient);
             default:
                 return 0;
         }
     }
-    public float TotalDamage(PlayerStat caster)
+/*    public float TotalDamage(PlayerStat caster)
     {
         switch (damageType)
         {
             case ValueType.Physical:
-                return defaultValue + (caster.attackDamage * coefficient);
+                return defaultValue + (caster.TotalAD * coefficient);
             case ValueType.Magic:
-                return defaultValue + (caster.abilityPower * coefficient);
+                return defaultValue + (caster.TotalAP * coefficient);
             case ValueType.Heal:
-                return -1 * (defaultValue + (caster.abilityPower * coefficient));
+                return -1 * (defaultValue + (caster.TotalAP * coefficient));
             case ValueType.PhysicalRange:
-                return defaultValue+ (caster.accuracy* coefficient);
+                return defaultValue + (caster.TotalAccuracy * coefficient);
             default:
                 return 0;
         }
-    }
+    }*/
     public SkillBaseInGameData(SkillBase targetObject)
     {
         skillName = new string(targetObject.skillName);
@@ -166,24 +165,101 @@ public class SkillBaseInGameData
         defaultValue = targetObject.defaultValue;
         damageType = targetObject.damageType;
         coefficient = targetObject.coefficient;
-        coolTime = targetObject.coolTime;
+        coolTimeTick = targetObject.coolTimeTick;
         coefficientType = targetObject.coefficientType;
         skillBound = targetObject.skillBound;
         spCost = targetObject.spCost;
         defaultCastingTime = targetObject.defaultCastingTime;
         skillRange = targetObject.skillRange;
         skillDuration = targetObject.skillDuration;
-        if (targetObject.buffTypeOne != "None") buffSet = new (string, float)[1];
-        if(targetObject.buffTypeTwo != "None") buffSet = new (string, float)[2];
-        if (targetObject.buffTypeThree != "None") buffSet = new (string, float)[3];
-        buffSet[0].Item1 = targetObject.buffTypeOne;
-        buffSet[0].Item2 = targetObject.buffValueOne;
-        buffSet[1].Item1 = targetObject.buffTypeTwo;
-        buffSet[1].Item2 = targetObject.buffValueTwo;
-        buffSet[2].Item1 = targetObject.buffTypeThree;
-        buffSet[2].Item2 = targetObject.buffValueThree;
+    }
+}
+[System.Serializable]
+public class BuffSkillBaseInGameData : SkillBaseInGameData
+{
+    public IBuffs[] buffSet;
+    public BuffSkillBaseInGameData(SkillBase targetObject) : base(targetObject)
+    {
+        skillName = new string(targetObject.skillName);
+        koreanSkillName = new string(targetObject.koreanSkillName);
+        skillLevel = targetObject.skillLevel;
+        defaultValue = targetObject.defaultValue;
+        damageType = targetObject.damageType;
+        coefficient = targetObject.coefficient;
+        coolTimeTick = targetObject.coolTimeTick;
+        coefficientType = targetObject.coefficientType;
+        skillBound = targetObject.skillBound;
+        spCost = targetObject.spCost;
+        defaultCastingTime = targetObject.defaultCastingTime;
+        skillRange = targetObject.skillRange;
+        skillDuration = targetObject.skillDuration;
+
+        if (targetObject.buffTypeOne != "None")
+        {
+            buffSet = new IBuffs[1];
+            SetBuffType(targetObject.buffTypeOne,targetObject.buffValueOne,0);
+        }
+        if (targetObject.buffTypeTwo != "None")
+        {
+            Array.Resize(ref buffSet, 2);
+            SetBuffType(targetObject.buffTypeTwo, targetObject.buffValueTwo, 1);
+        }
+        if (targetObject.buffTypeThree != "None")
+        {
+            Array.Resize(ref buffSet, 3);
+            SetBuffType(targetObject.buffTypeThree, targetObject.buffValueThree, 2);
+        }
     }
 
+    public void SetBuffType(string typeString,float targetValue,int targetIndex)
+    {
+        if (typeString.Substring(0, typeString.IndexOf('.')) == "WeaponApixType")
+        {
+            string apixString = typeString.Substring(typeString.IndexOf('.') + 1, typeString.Length);
+            WeaponApixType result;
+
+            bool success = Enum.TryParse(apixString, true, out result);
+            if (success)
+            {
+                buffSet[targetIndex] = new OffensiveBuff(targetValue, result);
+            }
+            else
+            {
+                Debug.LogError($"올바르지 않습니다. 현재 buffString : {apixString}");
+            }
+        }
+        else if (typeString.Substring(0, typeString.IndexOf('.')) == "ArmorApixType")
+        {
+            string apixString = typeString.Substring(typeString.IndexOf('.') + 1, typeString.Length);
+            ArmorApixType result;
+
+            bool success = Enum.TryParse(apixString, true, out result);  // Enum.TryParse 사용
+            if (success)
+            {
+                buffSet[targetIndex] = new DeffensiveBuff(targetValue, result);
+            }
+            else
+            {
+                Debug.LogError($"올바르지 않습니다. 현재 buffString : {apixString}");
+            }
+
+        }
+        else if (typeString.Substring(0, typeString.IndexOf('.')) == "BasicStatTypes")
+        {
+            string apixString = typeString.Substring(typeString.IndexOf('.') + 1, typeString.Length- (typeString.IndexOf('.') + 1));
+            BasicStatTypes result;
+
+            bool success = Enum.TryParse(apixString, true, out result);  // Enum.TryParse 사용
+            if (success)
+            {
+                buffSet[targetIndex] = new StatBuff(targetValue, result);
+            }
+            else
+            {
+                Debug.LogError($"올바르지 않습니다. 현재 buffString : {apixString}");
+            }
+        }
+    }
 }
 
 
@@ -203,5 +279,5 @@ public enum ObjectiveType
 }
 public enum ValueType
 {
-    Physical, Magic, Heal,PhysicalRange,TrueDamage
+    Physical, Magic, Heal, PhysicalRange, TrueDamage
 }

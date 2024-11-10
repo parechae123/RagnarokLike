@@ -204,13 +204,13 @@ public class SkillBaseObjectOnly
     public float defaultValue;
     public ValueType damageType;
     public float coefficient;
-    public float coolTime;
+    public int coolTimeTick;
     public ValueType coefficientType;
     public byte skillBound;
     public float spCost;
     public float defaultCastingTime;
     public byte skillRange;
-    public float skillDuration;
+    public int skillDuration;
     public string buffTypeOne;
     public float buffValueOne;
     public string buffTypeTwo;

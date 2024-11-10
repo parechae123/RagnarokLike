@@ -154,7 +154,7 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
                 if (targetSkillTreeBase.skillIconsInSkilltree[i].thisSkillInScriptableOBJ.skillType == SkillType.buff)
                 {
                     //TODO : skillInfoInGame 말고 buffSkillInfoIngame객체를 새로 만들어야할듯함
-                    tempInGameSkill = new SkillInfoInGame(targetSkillTreeBase.skillIconsInSkilltree[i].thisSkillInScriptableOBJ);
+                    tempInGameSkill = new BuffSkillInfoInGame(targetSkillTreeBase.skillIconsInSkilltree[i].thisSkillInScriptableOBJ);
                 }
                 else
                 {

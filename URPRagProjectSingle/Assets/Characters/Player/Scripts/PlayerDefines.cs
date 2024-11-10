@@ -312,7 +312,63 @@ namespace PlayerDefines
                 get;
                 set;
             }
+            public class AcceptedBuffs
+            {
+                List<BuffOBJ> buffs = new List<BuffOBJ>();
+                
+                HashSet<string> buffHash = new HashSet<string>();
+                public void HashAction(string name)
+                {
+                    buffHash.Remove(name);
+                }
+                public void AcceptBuff(BuffOBJ target)
+                {
+                    if (buffHash.Contains(target.buffName))
+                    {
+                        if (SearchBuff(target.buffLevel, target.buffName))
+                        {
+                            target.ApplyBuffs();
+                            SkillManager.GetInstance().RegistBuffTimer(target.buffName,target.leftTick, target.RemoveBuffs, HashAction);
+                            buffs.Add(target);
+                            buffHash.Add(target.buffName);
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        target.ApplyBuffs();
+                        SkillManager.GetInstance().RegistBuffTimer(target.buffName, target.leftTick, target.RemoveBuffs, HashAction);
+                        buffs.Add(target);
+                        buffHash.Add(target.buffName);
+                    }
+                }
+                public bool SearchBuff(byte buffLevel,string buffName)
+                {
+                    for (int i = 0; i<buffs.Count; i++)
+                    {
+                        if (buffs[i].buffName == buffName)
+                        {
+                            if (buffs[i].buffLevel > buffLevel)
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                buffs[i].RemoveBuffs();
+                                buffs.RemoveAt(i);
+                                return true;
+                            }
+                        }
+                        else continue;
+                    }
+                    return true;
+                }
+            }
 
+            public AcceptedBuffs buffs = new AcceptedBuffs();
             public virtual float TotalAD
             {
                 get { return attackDamage; }

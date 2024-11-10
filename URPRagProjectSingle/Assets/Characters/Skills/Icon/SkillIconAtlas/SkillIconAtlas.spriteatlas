@@ -252,7 +252,7 @@ SpriteAtlas:
   - S_Blood_splash
   - S_claydrain
   - S_Combo_knock
-  - S_Blue_firework
+  - bless
   - S_mistery_hit
   - S_fullsight
   - S_devilwake
