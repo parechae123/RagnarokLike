@@ -760,17 +760,19 @@ public class SkillManager : Manager<SkillManager>
         {
             this.buffName = buffName;
             this.leftTick = leftTime;
-            this.func = action;
+            this.removeFunc = action;
             this.hashAction = hashAction;
         }
-        private string buffName;
+        public string buffName;
         public float leftTick;
-        public Action func;
+        public byte buffLevel;
+        public Action removeFunc;
         public Action<string> hashAction;
         public void End()
         {
-            func.Invoke();
+            removeFunc.Invoke();
             hashAction.Invoke(buffName);
+            SkillManager.GetInstance().buffTimer.Remove(this);
         }
     }
     float skillTimer = 0;
@@ -803,9 +805,9 @@ public class SkillManager : Manager<SkillManager>
             }
         }
     }
-    public void RegistBuffTimer(string buffName,int tick, Action action,Action<string> hashAction)
+    public void RegistBuffTimer(buffTime buffTimer)
     {
-        buffTimer.Add(new buffTime(buffName,tick,action,hashAction));
+        this.buffTimer.Add(buffTimer);
     }
     public void UpdateSkillCoolTime()
     {
@@ -818,8 +820,7 @@ public class SkillManager : Manager<SkillManager>
                 buffTimer[i].leftTick -= 1;
                 if (buffTimer[i].leftTick <= 0)
                 {
-                    buffTimer[i].func.Invoke();
-                    buffTimer.RemoveAt(i);
+                    buffTimer[i].End();
                     i--;
                 }
             } 

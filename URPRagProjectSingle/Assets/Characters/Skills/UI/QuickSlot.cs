@@ -41,8 +41,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
                 iconImage.type = Image.Type.Filled;
                 iconImage.fillClockwise = true;
                 iconImage.fillOrigin = 2;
-                SkillInfoInGame temp = (SkillInfoInGame)value;
-                temp.iconRenderer = iconImage;
+                ((SkillInfoInGame)value).iconRenderer = iconImage;
             }
             else iconImage.type = Image.Type.Simple;
             btn.interactable = true;
@@ -204,7 +203,15 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
         if (item.slotType == SlotType.Skills)
         {
             SkillInfoInGame temp = (SkillInfoInGame)item;
-            SlotItem = new SkillInfoInGame(temp);
+            if(temp.skillType == SkillType.Active)
+            {
+                SlotItem = new SkillInfoInGame(temp);
+            }
+            else if (temp.skillType == SkillType.buff)
+            {
+                SlotItem = (BuffSkillInfoInGame)temp;
+            }
+
             SlotText.text = item.slotNumberInfo;
             SkillManager.GetInstance().AddSkillInfo((SkillInfoInGame)slotItem);
         }

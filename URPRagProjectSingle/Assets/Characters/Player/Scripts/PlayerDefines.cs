@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
+using static SkillManager;
 namespace PlayerDefines
 {
     namespace States
@@ -314,12 +315,20 @@ namespace PlayerDefines
             }
             public class AcceptedBuffs
             {
-                List<BuffOBJ> buffs = new List<BuffOBJ>();
+                List<buffTime> buffs = new List<buffTime>();
                 
                 HashSet<string> buffHash = new HashSet<string>();
                 public void HashAction(string name)
                 {
                     buffHash.Remove(name);
+                    for (int i = 0; i < buffs.Count; i++)
+                    {
+                        if (buffs[i].buffName == name)
+                        {
+                            buffs.RemoveAt(i);
+                            return;
+                        }
+                    }
                 }
                 public void AcceptBuff(BuffOBJ target)
                 {
@@ -328,8 +337,12 @@ namespace PlayerDefines
                         if (SearchBuff(target.buffLevel, target.buffName))
                         {
                             target.ApplyBuffs();
-                            SkillManager.GetInstance().RegistBuffTimer(target.buffName,target.leftTick, target.RemoveBuffs, HashAction);
-                            buffs.Add(target);
+                            Action<string> nameAction = new Action<string>(HashAction);
+                            Action removeAction = new Action(target.RemoveBuffs);
+
+                            buffTime tempTimer = new buffTime(target.buffName, target.leftTick, removeAction, nameAction);
+                            SkillManager.GetInstance().RegistBuffTimer(tempTimer);
+                            buffs.Add(tempTimer);
                             buffHash.Add(target.buffName);
                         }
                         else
@@ -340,8 +353,12 @@ namespace PlayerDefines
                     else
                     {
                         target.ApplyBuffs();
-                        SkillManager.GetInstance().RegistBuffTimer(target.buffName, target.leftTick, target.RemoveBuffs, HashAction);
-                        buffs.Add(target);
+                        Action<string> nameAction = new Action<string>(HashAction);
+                        Action removeAction = new Action(target.RemoveBuffs);
+
+                        buffTime tempTimer = new buffTime(target.buffName, target.leftTick, removeAction, nameAction);
+                        SkillManager.GetInstance().RegistBuffTimer(tempTimer);
+                        buffs.Add(tempTimer);
                         buffHash.Add(target.buffName);
                     }
                 }
@@ -351,14 +368,13 @@ namespace PlayerDefines
                     {
                         if (buffs[i].buffName == buffName)
                         {
-                            if (buffs[i].buffLevel > buffLevel)
+                            if (buffs[i].buffLevel> buffLevel)
                             {
                                 return false;
                             }
                             else
                             {
-                                buffs[i].RemoveBuffs();
-                                buffs.RemoveAt(i);
+                                buffs[i].End();
                                 return true;
                             }
                         }
