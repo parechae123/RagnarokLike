@@ -551,12 +551,12 @@ public class UIManager : Manager<UIManager>
             return outerCastBar;
         }
     }
-    private Slider playerHPBar;
-    private Slider PlayerHPBar
+    private Image playerHPBar;
+    private Image PlayerHPBar
     {
         get 
         {
-            if (playerHPBar == null) playerHPBar = MainCanvas.Find("PlayerHPBar").GetComponent<Slider>();
+            if (playerHPBar == null) playerHPBar = MainCanvas.Find("PlayerHPBar").GetComponent<Image>();
             return playerHPBar;
         }
     }
@@ -625,19 +625,18 @@ public class UIManager : Manager<UIManager>
     public (float,float) PlayerMaxCurrHP
     {
         set 
-        { 
-            PlayerHPBar.maxValue = value.Item1;
-            PlayerHPBar.value = value.Item2;
-            HpText.text = value.Item2.ToString("0") + '/' + value.Item1.ToString("0");
+        {
+            PlayerHPBar.material.SetFloat("_FillAmount", value.Item2 / value.Item1); 
+            //HpText.text = value.Item2.ToString("0") + '/' + value.Item1.ToString("0");
         }
     }
 
-    private Slider playerSPBar;
-    private Slider PlayerSPBar
+    private Image playerSPBar;
+    private Image PlayerSPBar
     {
         get 
         {
-            if (playerSPBar == null) playerSPBar = MainCanvas.Find("PlayerSPBar").GetComponent<Slider>();
+            if (playerSPBar == null) playerSPBar = MainCanvas.Find("PlayerSPBar").GetComponent<Image>();
             return playerSPBar;
         }
     }
@@ -659,10 +658,9 @@ public class UIManager : Manager<UIManager>
     public (float,float) PlayerMaxCurrSP
     {
         set 
-        { 
-            PlayerSPBar.maxValue = value.Item1;
-            PlayerSPBar.value = value.Item2;
-            SpText.text = value.Item2.ToString("0") +'/'+ value.Item1.ToString("0");
+        {
+            PlayerSPBar.material.SetFloat("_FillAmount", value.Item2 / value.Item1);
+            //SpText.text = value.Item2.ToString("0") +'/'+ value.Item1.ToString("0");
         }
     }
 

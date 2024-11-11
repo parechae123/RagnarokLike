@@ -118,6 +118,7 @@ public class SkillTreeEditorTool : EditorWindow
                     else if (Event.current.type == EventType.MouseUp)
                     {
                         selectedSkillNode.Item1.positionOnSkillTree = new Vector2Int((int)(selectedSkillNode.Item1.positionOnSkillTree.x / 100f)*100, (int)(selectedSkillNode.Item1.positionOnSkillTree.y / 100f) * 100);
+                        targetSkillTree.SaveAsset();
                         Repaint();
                     }
                 }
@@ -248,7 +249,7 @@ public class SkillTreeEditorTool : EditorWindow
             targetSkillTree = ScriptableObject.CreateInstance<SkillTreeBase>();
             tempPath = Path.Combine(skillTreeSavePath, $"{fileName + ".asset"}");
             AssetDatabase.CreateAsset(targetSkillTree, tempPath);
-            AssetDatabase.SaveAssets();
+            targetSkillTree.SaveAsset();
         }
 
     }
@@ -280,6 +281,7 @@ public class SkillTreeEditorTool : EditorWindow
                 targetSkillTree.skillIconsInSkilltree[targetIndex].thisSkill.maxSkillLevel :targetLevel);
         }
         makingConnection = false;
+        targetSkillTree.SaveAsset();
     }
     private void RemoveSkillNode()
     {
@@ -311,6 +313,7 @@ public class SkillTreeEditorTool : EditorWindow
 
             }
         }
+        targetSkillTree.SaveAsset();
     }
 }
 #endif

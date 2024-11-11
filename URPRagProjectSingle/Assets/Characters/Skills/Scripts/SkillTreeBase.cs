@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new SkillTree", menuName = "Skill/SkillTree")]
@@ -21,6 +22,15 @@ public class SkillTreeBase : ScriptableObject
     [SerializeField] JobRoot jobRoot;
     [SerializeField]public SkillIconsInSkilltree skillIconsInSkilltree;
     public Vector2Int SkilltreeResolution;
+
+    public void SaveAsset()
+    {
+        EditorUtility.SetDirty(this);
+
+        // 프로젝트에 저장
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
 }
 [System.Serializable]
 public class SkillIconsInSkilltree
@@ -48,7 +58,10 @@ public class SkillIconsInSkilltree
         int skillLength = skills.Length;
         Array.Resize(ref skills, skillLength + 1);
         skills[skillLength] = new SkillGetConditionTable(data);
+        AssetDatabase.Refresh();
+        AssetDatabase.SaveAssets();
     }
+
 
 }
 [System.Serializable]

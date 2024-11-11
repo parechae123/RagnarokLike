@@ -82,7 +82,15 @@ public class SkillBase : ScriptableObject
         buffTypeThree = targetObject.buffTypeThree;
         buffValueThree = targetObject.buffValueThree;
     }
+    public void SaveAsset()
+    {
+        // 변경 사항을 Dirty 상태로 표시하여 Unity가 인식하도록 함
+        EditorUtility.SetDirty(this);
 
+        // 프로젝트에 저장
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
 #endif
 }
 

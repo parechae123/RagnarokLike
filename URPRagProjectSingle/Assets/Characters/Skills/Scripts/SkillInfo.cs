@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using PlayerDefines.Stat;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.ResourceManagement.ResourceProviders.Simulation;
@@ -80,7 +81,14 @@ public class SkillInfo : ScriptableObject
         skillIcon = Image;
         effectOBJPrefab = prefab;
     }
+    public void SaveAsset()
+    {
+        EditorUtility.SetDirty(this);
 
+        // 프로젝트에 저장
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
 #endif
 }
 [System.Serializable]

@@ -125,11 +125,12 @@ public class DataReader : MonoBehaviour
                     AssetDatabase.CreateAsset(skillbase, skillDetailPath);
                     skillinfo.AddSkillDetailData(skillbase);
 
-                    AssetDatabase.SaveAssets();
+                    skillbase.SaveAsset();
                     
                     Debug.Log(skillInfoArray[i].skillName + skillbaseArray[J].skillLevel);
                 }
             }
+            skillinfo.SaveAsset();
             string skillInfoPath = Path.Combine(skillInfoScriptableObjectPath, skillInfoArray[i].jobName);
             if (!AssetDatabase.IsValidFolder(skillInfoPath))
             {
