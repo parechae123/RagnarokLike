@@ -9,6 +9,7 @@ public class NewGameBTN : MonoBehaviour
 {
     public string[] labels = new string[0];
     public bool[] loadDone = new bool[0];
+    private bool btnUsed = false;
     private bool allDone
     {
         get 
@@ -21,6 +22,8 @@ public class NewGameBTN : MonoBehaviour
         loadDone = new bool[labels.Length];
         transform.GetComponent<Button>().onClick.AddListener(() =>
         {
+            if (btnUsed) return;
+            btnUsed = true;
             for (int i = 0; i < labels.Length; i++)
             {
                 int currNum = i;
