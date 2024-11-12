@@ -413,7 +413,7 @@ public class BuffSkillInfoInGame : SkillInfoInGame
                 Stats[] tempTargets = GetStats(new Vector2Int((int)castingPos.x, (int)castingPos.z));
                 for (int i = 0; i < tempTargets.Length; i++)
                 {
-                    if (tempTargets[i] == caster) continue;
+                    //if (tempTargets[i] == caster) continue;
                     target.buffs.AcceptBuff(new BuffOBJ() { buffName = skillName, buffLevel = CastingSkillLevel, buffs = skill[CastingSkillLevel].buffSet, buffTargets = target, leftTick = skill[CastingSkillLevel].skillDuration });
                     UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos + Vector3.up, $"{skillName}!!", Color.cyan, 1.5f);
                     

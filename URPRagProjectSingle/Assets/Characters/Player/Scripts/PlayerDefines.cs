@@ -340,7 +340,7 @@ namespace PlayerDefines
                             Action<string> nameAction = new Action<string>(HashAction);
                             Action removeAction = new Action(target.RemoveBuffs);
 
-                            buffTime tempTimer = new buffTime(target.buffName, target.leftTick, removeAction, nameAction);
+                            buffTime tempTimer = new buffTime(target.buffName, target.leftTick, target.buffLevel,removeAction, nameAction);
                             SkillManager.GetInstance().RegistBuffTimer(tempTimer);
                             buffs.Add(tempTimer);
                             buffHash.Add(target.buffName);
@@ -356,7 +356,7 @@ namespace PlayerDefines
                         Action<string> nameAction = new Action<string>(HashAction);
                         Action removeAction = new Action(target.RemoveBuffs);
 
-                        buffTime tempTimer = new buffTime(target.buffName, target.leftTick, removeAction, nameAction);
+                        buffTime tempTimer = new buffTime(target.buffName, target.leftTick,target.buffLevel, removeAction, nameAction);
                         SkillManager.GetInstance().RegistBuffTimer(tempTimer);
                         buffs.Add(tempTimer);
                         buffHash.Add(target.buffName);

@@ -209,7 +209,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
             }
             else if (temp.skillType == SkillType.buff)
             {
-                SlotItem = (BuffSkillInfoInGame)temp;
+                SlotItem = new BuffSkillInfoInGame((BuffSkillInfoInGame)temp);
             }
 
             SlotText.text = item.slotNumberInfo;

@@ -44,19 +44,21 @@ Shader "Unlit/MaskedTexture"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // 메인 텍스처와 마스크 텍스처에서 픽셀을 샘플링
-                fixed4 mainColor = tex2D(_MainTex, i.uv) * _ColorTint;
-                fixed4 maskColor = tex2D(_MaskTex, i.uv);
+
+
+                fixed4 col = tex2D(_MainTex, i.uv);
 
                 // 그레이스케일 값 계산
-                //float gray = dot(mainColor.rgb, float3(0.2989, 0.5870, 0.1140)); // 기본적인 그레이스케일 계산
-                
-                //mainColor.rgb = gray.xxx * float3(_ColorTint.r, _ColorTint.g, _ColorTint.b);
+                float grey = dot(col.rgb, float3(0.299, 0.587, 0.114));
+                fixed4 grayColor = fixed4(grey, grey, grey, col.a); // 그레이스케일 색상
+                fixed4 maskColor = tex2D(_MaskTex, i.uv);
 
-                // 마스크 텍스처의 알파 값을 사용하여 주 텍스처에 마스킹 적용
-                mainColor.a *= maskColor.a;
+                // 프로퍼티에서 파란색 추가
+                fixed4 finalColor = grayColor + _ColorTint; // 그레이스케일과 blueColor 결합
 
-                return mainColor;
+                finalColor.a *= maskColor.a;
+
+                return finalColor; // 최종 색상 반환
             }
 
             ENDCG

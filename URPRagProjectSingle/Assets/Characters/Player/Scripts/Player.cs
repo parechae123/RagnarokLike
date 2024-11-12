@@ -581,13 +581,16 @@ public class Player : MonoBehaviour
                     {
                         //공격이 가능한지 먼저 판별, 공격 가능 시
                         playerLevelInfo.stat.target = GridManager.GetInstance().grids[pos].CharacterOnNode;
+                        if (skillObj.skillType != SkillType.buff && playerLevelInfo.stat.target == playerLevelInfo.stat) { SkillObj = null; playerLevelInfo.stat.target = null;return; }
+
                         if (GridManager.GetInstance().IsInRange(playerLevelInfo.stat.standingNode, playerLevelInfo.stat.target.standingNode, playerLevelInfo.stat.CharactorAttackRange))
                         {
                             playerCursorState.changeState(cursorState.skillTargeting);
+
                             StateMachine.ChangeState(SkillObj.skill[SkillObj.CastingSkillLevel].defaultCastingTime,
-                                SkillObj,
-                                playerLevelInfo.stat.target,
-                                playerLevelInfo.stat.target.standingNode.worldPos);
+                            SkillObj,
+                            playerLevelInfo.stat.target,
+                            playerLevelInfo.stat.target.standingNode.worldPos);
                         }
                         //공격 불가 시
                         else

@@ -754,10 +754,11 @@ public class SkillManager : Manager<SkillManager>
     public List<buffTime> buffTimer = new List<buffTime>();
     public class buffTime
     {
-        public buffTime(string buffName,int leftTime,Action action, Action<string> hashAction)
+        public buffTime(string buffName,int leftTime,byte buffLevel,Action action, Action<string> hashAction)
         {
             this.buffName = buffName;
             this.leftTick = leftTime;
+            this.buffLevel = buffLevel;
             this.removeFunc = action;
             this.hashAction = hashAction;
         }
