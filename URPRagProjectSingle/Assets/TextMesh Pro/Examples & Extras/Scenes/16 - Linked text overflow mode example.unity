@@ -577,22 +577,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The <#ffff80>Linked</color> Overflow text mode makes it possible to <#ffff80>link</color>
-    text objects together to allow text to flow from one object to another.
-
-
-    As
-    the text fills a given text container, the text exceeding this container will
-    automatically flow to the <#ffff80>linked</color> text object.
-
-
-    This feature
-    is located in the text Overflow options and available with both TextMeshPro components.
-
-
-    The
-    text Overflow - Linked mode makes it possible to create sophisticated text layout
-    similar to those seen in magazines and web pages.'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -795,22 +780,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The <#ffff80>Linked</color> Overflow text mode makes it possible to <#ffff80>link</color>
-    text objects together to allow text to flow from one object to another.
-
-
-    As
-    the text fills a given text container, the text exceeding this container will
-    automatically flow to the <#ffff80>linked</color> text object.
-
-
-    This feature
-    is located in the text Overflow options and available with both TextMeshPro components.
-
-
-    The
-    text Overflow - Linked mode makes it possible to create sophisticated text layout
-    similar to those seen in magazines and web pages.'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -1017,22 +987,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The <#ffff80>Linked</color> Overflow text mode makes it possible to <#ffff80>link</color>
-    text objects together to allow text to flow from one object to another.
-
-
-    As
-    the text fills a given text container, the text exceeding this container will
-    automatically flow to the <#ffff80>linked</color> text object.
-
-
-    This feature
-    is located in the text Overflow options and available with both TextMeshPro components.
-
-
-    The
-    text Overflow - Linked mode makes it possible to create sophisticated text layout
-    similar to those seen in magazines and web pages.'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}

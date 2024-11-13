@@ -752,27 +752,88 @@ public class SkillManager : Manager<SkillManager>
 {
     public List<SkillInfoInGame> skillInfo = new List<SkillInfoInGame>();
     public List<buffTime> buffTimer = new List<buffTime>();
+    public Image[] buffIcons;
+    public Image[] BuffIcons
+    {
+        get
+        {
+            if(buffIcons == null)
+            {
+                buffIcons = new Image[5];
+                for (byte i = 0; i < buffIcons.Length; i++)
+                {
+                    buffIcons[i] = UIManager.GetInstance().MainCanvas.Find("Buffs").GetChild(i).GetChild(0).GetComponent<Image>();
+                    buffIcons[i].transform.parent.gameObject.SetActive(false);
+                }
+            }
+            return buffIcons;
+        }
+    }
+    public HashSet<int> buffIconMap = new HashSet<int>();
     public class buffTime
     {
-        public buffTime(string buffName,int leftTime,byte buffLevel,Action action, Action<string> hashAction)
+        public buffTime(string buffName,int leftTime,byte buffLevel,Action action, Action<string> hashAction,bool isPlayerAccepted)
         {
             this.buffName = buffName;
             this.leftTick = leftTime;
+            this.originTick = leftTime;
             this.buffLevel = buffLevel;
             this.removeFunc = action;
             this.hashAction = hashAction;
+            if (isPlayerAccepted) 
+            {
+                iconIndex = SkillManager.GetInstance().GetIconIndex();
+                if(iconIndex > -1)
+                {
+                    icon = GetInstance().BuffIcons[iconIndex];
+                    icon.sprite = ResourceManager.GetInstance().SkillIconAtlas.GetSprite(buffName);
+                    icon.transform.parent.GetComponent<Image>().sprite = ResourceManager.GetInstance().SkillIconAtlas.GetSprite(buffName);
+                    GetInstance().buffIconMap.Add(iconIndex);
+                    if (!icon.transform.parent.gameObject.activeSelf) icon.transform.parent.gameObject.SetActive(true);
+                }
+            }
         }
         public string buffName;
-        public float leftTick;
+        public int leftTick;
+        public int originTick;
         public byte buffLevel;
+
+        private sbyte iconIndex;
+        private Image icon { get; set; }
         public Action removeFunc;
         public Action<string> hashAction;
+
+        public void UpdateTimer()
+        {
+            leftTick -= 1;
+            if(icon != null)
+            {
+                icon.fillAmount = leftTick / Mathf.Floor(originTick);
+                
+            }
+        }
         public void End()
         {
             removeFunc.Invoke();
             hashAction.Invoke(buffName);
-            SkillManager.GetInstance().buffTimer.Remove(this);
+            if(iconIndex >= 0)
+            {
+                GetInstance().buffIconMap.Remove(iconIndex);
+                icon.transform.parent.gameObject.SetActive(false);
+            }
+            GetInstance().buffTimer.Remove(this);
         }
+    }
+    public sbyte GetIconIndex()
+    {
+        for (sbyte i = 0; i < BuffIcons.Length; i++)
+        {
+            if (!buffIconMap.Contains(i))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
     float skillTimer = 0;
     float tickTime = 0.3f;
@@ -816,7 +877,7 @@ public class SkillManager : Manager<SkillManager>
         {
             for (int i = 0; i < buffTimer.Count; i++)
             {
-                buffTimer[i].leftTick -= 1;
+                buffTimer[i].UpdateTimer();
                 if (buffTimer[i].leftTick <= 0)
                 {
                     buffTimer[i].End();

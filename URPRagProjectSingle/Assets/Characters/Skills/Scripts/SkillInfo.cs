@@ -219,6 +219,7 @@ public class SkillInfoInGame : IItemBase
         if (leftTick != 0) return;
         if (!isSkillLearned) return;
         quickSlotFuncs?.Invoke();
+
     }
     public virtual void SetSkillObjectToPlayer()
     {
@@ -406,7 +407,7 @@ public class BuffSkillInfoInGame : SkillInfoInGame
                 if (target != null) 
                 { 
                     UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos+Vector3.up, $"{skillName}!!",Color.cyan,1.5f);
-                    target.buffs.AcceptBuff(new BuffOBJ() {buffName = skillName,buffLevel = CastingSkillLevel, buffs= skill[CastingSkillLevel].buffSet,buffTargets = target,leftTick = skill[CastingSkillLevel].skillDuration });
+                    target.AcceptBuff(new BuffOBJ() {buffName = skillName,buffLevel = CastingSkillLevel, buffs= skill[CastingSkillLevel].buffSet,buffTargets = target,leftTick = skill[CastingSkillLevel].skillDuration });
                 }
                 break;
             case ObjectiveType.Bounded:
@@ -414,7 +415,7 @@ public class BuffSkillInfoInGame : SkillInfoInGame
                 for (int i = 0; i < tempTargets.Length; i++)
                 {
                     //if (tempTargets[i] == caster) continue;
-                    target.buffs.AcceptBuff(new BuffOBJ() { buffName = skillName, buffLevel = CastingSkillLevel, buffs = skill[CastingSkillLevel].buffSet, buffTargets = target, leftTick = skill[CastingSkillLevel].skillDuration });
+                    target.AcceptBuff(new BuffOBJ() { buffName = skillName, buffLevel = CastingSkillLevel, buffs = skill[CastingSkillLevel].buffSet, buffTargets = target, leftTick = skill[CastingSkillLevel].skillDuration });
                     UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos + Vector3.up, $"{skillName}!!", Color.cyan, 1.5f);
                     
                 }

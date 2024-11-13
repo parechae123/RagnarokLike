@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BlueScaleMat
-  m_Shader: {fileID: 4800000, guid: fdb5ccbdfcffeeb489ecc1178a90af3a, type: 3}
+  m_Shader: {fileID: 4800000, guid: 3a8af4295d91c484b862677506a3daa4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -135,6 +135,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BlueColor: {r: 0, g: 0, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorTint: {r: 0.3254717, g: 0.3296355, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

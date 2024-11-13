@@ -17,7 +17,7 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 75f108199c71ab24199ab4c9a5d1a5dd
   m_SerializeEntries:
-  - m_GUID: 056711449330bcc40a6681adb628d69a
+  - m_GUID: 4faf3bf01fbd93a48923e52bc43ce471
     m_Address: SkillIconAtlas
     m_ReadOnly: 0
     m_SerializedLabels:

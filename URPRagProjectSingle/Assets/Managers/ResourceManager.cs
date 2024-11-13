@@ -23,8 +23,8 @@ public class ResourceManager : Manager<ResourceManager>
     {
         get
         {
-            if (itemIconAtlas == null) LoadAsync<SpriteAtlas>("skillIconAtlas", (atlas) => { itemIconAtlas = atlas; });
-            return itemIconAtlas;
+            if (skillIconAtlas == null) LoadAsync<SpriteAtlas>("SkillIconAtlas", (atlas) => { skillIconAtlas = atlas; });
+            return skillIconAtlas;
         }
     }
     public Dictionary<string, UnityEngine.Object> resourceDict;

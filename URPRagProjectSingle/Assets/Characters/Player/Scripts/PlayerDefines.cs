@@ -313,78 +313,75 @@ namespace PlayerDefines
                 get;
                 set;
             }
-            public class AcceptedBuffs
+            #region buffList
+            protected List<buffTime> buffs = new List<buffTime>();
+
+            protected HashSet<string> buffHash = new HashSet<string>();
+            protected virtual void HashAction(string name)
             {
-                List<buffTime> buffs = new List<buffTime>();
-                
-                HashSet<string> buffHash = new HashSet<string>();
-                public void HashAction(string name)
+                buffHash.Remove(name);
+                for (int i = 0; i < buffs.Count; i++)
                 {
-                    buffHash.Remove(name);
-                    for (int i = 0; i < buffs.Count; i++)
+                    if (buffs[i].buffName == name)
                     {
-                        if (buffs[i].buffName == name)
-                        {
-                            buffs.RemoveAt(i);
-                            return;
-                        }
+                        buffs.RemoveAt(i);
+                        return;
                     }
                 }
-                public void AcceptBuff(BuffOBJ target)
+            }
+            public virtual void AcceptBuff(BuffOBJ target)
+            {
+                if (buffHash.Contains(target.buffName))
                 {
-                    if (buffHash.Contains(target.buffName))
-                    {
-                        if (SearchBuff(target.buffLevel, target.buffName))
-                        {
-                            target.ApplyBuffs();
-                            Action<string> nameAction = new Action<string>(HashAction);
-                            Action removeAction = new Action(target.RemoveBuffs);
-
-                            buffTime tempTimer = new buffTime(target.buffName, target.leftTick, target.buffLevel,removeAction, nameAction);
-                            SkillManager.GetInstance().RegistBuffTimer(tempTimer);
-                            buffs.Add(tempTimer);
-                            buffHash.Add(target.buffName);
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
-                    else
+                    if (SearchBuff(target.buffLevel, target.buffName))
                     {
                         target.ApplyBuffs();
                         Action<string> nameAction = new Action<string>(HashAction);
                         Action removeAction = new Action(target.RemoveBuffs);
 
-                        buffTime tempTimer = new buffTime(target.buffName, target.leftTick,target.buffLevel, removeAction, nameAction);
+                        buffTime tempTimer = new buffTime(target.buffName, target.leftTick, target.buffLevel, removeAction, nameAction, false);
                         SkillManager.GetInstance().RegistBuffTimer(tempTimer);
                         buffs.Add(tempTimer);
                         buffHash.Add(target.buffName);
                     }
-                }
-                public bool SearchBuff(byte buffLevel,string buffName)
-                {
-                    for (int i = 0; i<buffs.Count; i++)
+                    else
                     {
-                        if (buffs[i].buffName == buffName)
-                        {
-                            if (buffs[i].buffLevel> buffLevel)
-                            {
-                                return false;
-                            }
-                            else
-                            {
-                                buffs[i].End();
-                                return true;
-                            }
-                        }
-                        else continue;
+                        return;
                     }
-                    return true;
+                }
+                else
+                {
+                    target.ApplyBuffs();
+                    Action<string> nameAction = new Action<string>(HashAction);
+                    Action removeAction = new Action(target.RemoveBuffs);
+
+                    buffTime tempTimer = new buffTime(target.buffName, target.leftTick, target.buffLevel, removeAction, nameAction, false);
+                    SkillManager.GetInstance().RegistBuffTimer(tempTimer);
+                    buffs.Add(tempTimer);
+                    buffHash.Add(target.buffName);
                 }
             }
-
-            public AcceptedBuffs buffs = new AcceptedBuffs();
+            protected bool SearchBuff(byte buffLevel, string buffName)
+            {
+                for (int i = 0; i < buffs.Count; i++)
+                {
+                    if (buffs[i].buffName == buffName)
+                    {
+                        if (buffs[i].buffLevel > buffLevel)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            buffs[i].End();
+                            return true;
+                        }
+                    }
+                    else continue;
+                }
+                return true;
+            } 
+            #endregion
             public virtual float TotalAD
             {
                 get { return attackDamage; }
@@ -692,7 +689,40 @@ namespace PlayerDefines
                 }
             }
             #endregion
+            #region 버프 관련
+            public override void AcceptBuff(BuffOBJ target)
+            {
+                if (buffHash.Contains(target.buffName))
+                {
+                    if (SearchBuff(target.buffLevel, target.buffName))
+                    {
+                        target.ApplyBuffs();
+                        Action<string> nameAction = new Action<string>(HashAction);
+                        Action removeAction = new Action(target.RemoveBuffs);
 
+                        buffTime tempTimer = new buffTime(target.buffName, target.leftTick, target.buffLevel, removeAction, nameAction, true);
+                        SkillManager.GetInstance().RegistBuffTimer(tempTimer);
+                        buffs.Add(tempTimer);
+                        buffHash.Add(target.buffName);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    target.ApplyBuffs();
+                    Action<string> nameAction = new Action<string>(HashAction);
+                    Action removeAction = new Action(target.RemoveBuffs);
+
+                    buffTime tempTimer = new buffTime(target.buffName, target.leftTick, target.buffLevel, removeAction, nameAction, true);
+                    SkillManager.GetInstance().RegistBuffTimer(tempTimer);
+                    buffs.Add(tempTimer);
+                    buffHash.Add(target.buffName);
+                }
+            } 
+            #endregion
             public PlayerStat(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange,float evasion) : base(initializeNode, hp,sp, moveSpeed, attackSpeed, attackDamage,attackRange,evasion)
             {
                 HP = hp;
