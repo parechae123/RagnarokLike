@@ -17,7 +17,7 @@ MonoBehaviour:
   jobRoot: 0
   skillIconsInSkilltree:
     skills:
-    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: d5a998ccc06844243a24f7ca49f52b89,
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: ea10530e9519d6f43a739ba86a886d43,
         type: 2}
       thisSkill:
         skillName: bash
@@ -33,7 +33,7 @@ MonoBehaviour:
           defaultValue: 10
           damageType: 0
           coefficient: 0.8
-          coolTimeTick: 0
+          coolTimeTick: 3
           coefficientType: 0
           skillBound: 0
           spCost: 8
@@ -46,7 +46,7 @@ MonoBehaviour:
           defaultValue: 20
           damageType: 0
           coefficient: 0.9
-          coolTimeTick: 0
+          coolTimeTick: 2
           coefficientType: 0
           skillBound: 0
           spCost: 9
@@ -59,9 +59,9 @@ MonoBehaviour:
           defaultValue: 30
           damageType: 0
           coefficient: 1
-          coolTimeTick: 0
+          coolTimeTick: 2
           coefficientType: 0
-          skillBound: 3
+          skillBound: 0
           spCost: 10
           defaultCastingTime: 0.7
           skillRange: 1
@@ -72,7 +72,7 @@ MonoBehaviour:
           defaultValue: 40
           damageType: 0
           coefficient: 1.1
-          coolTimeTick: 0
+          coolTimeTick: 2
           coefficientType: 0
           skillBound: 0
           spCost: 11
@@ -85,7 +85,7 @@ MonoBehaviour:
           defaultValue: 50
           damageType: 0
           coefficient: 1.2
-          coolTimeTick: 0
+          coolTimeTick: 1
           coefficientType: 0
           skillBound: 0
           spCost: 12
@@ -98,7 +98,7 @@ MonoBehaviour:
           defaultValue: 55
           damageType: 0
           coefficient: 1.5
-          coolTimeTick: 0
+          coolTimeTick: 1
           coefficientType: 0
           skillBound: 0
           spCost: 13
@@ -111,7 +111,7 @@ MonoBehaviour:
           defaultValue: 60
           damageType: 0
           coefficient: 1.6
-          coolTimeTick: 0
+          coolTimeTick: 1
           coefficientType: 0
           skillBound: 0
           spCost: 14
@@ -124,7 +124,7 @@ MonoBehaviour:
           defaultValue: 65
           damageType: 0
           coefficient: 1.7
-          coolTimeTick: 0
+          coolTimeTick: 1
           coefficientType: 0
           skillBound: 0
           spCost: 15
@@ -158,7 +158,8 @@ MonoBehaviour:
           skillRange: 1
           skillDuration: 0
         skillIcon: {fileID: 21300000, guid: a19cebe0599724c469f757f6e0b2d9a4, type: 3}
-        effectOBJPrefab: {fileID: 1407303529245236996, guid: 94f4e57f500d82349b21830f88e14d62,
+        skillEffectController: {fileID: 0}
+        effectOBJPrefab: {fileID: 1594639563662522969, guid: abd8a1c1394153a4a903e4ec54a145d3,
           type: 3}
         maxSkillLevel: 10
         nowSkillLevel: 0
@@ -167,7 +168,93 @@ MonoBehaviour:
         originTick: 0
       positionOnSkillTree: {x: 0, y: 0}
       skillGetConditions: []
-    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: b66f4df48d0d2ca4ab7715b477ab0f93,
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 9cfe7c63bbfe4594bad22f153e10c55e,
+        type: 2}
+      thisSkill:
+        skillName: bless
+        jobName: SwordMan
+        skillStatus: 0
+        skillType: 3
+        objectiveType: 1
+        skillPosition: 1
+        skill:
+        - skillName: bless
+          koreanSkillName: "\uBE14\uB798\uC2A4"
+          skillLevel: 1
+          defaultValue: 2
+          damageType: 0
+          coefficient: 0
+          coolTimeTick: 3
+          coefficientType: 0
+          skillBound: 0
+          spCost: 10
+          defaultCastingTime: 1
+          skillRange: 1
+          skillDuration: 10
+        - skillName: bless
+          koreanSkillName: "\uBE14\uB798\uC2A4"
+          skillLevel: 2
+          defaultValue: 4
+          damageType: 0
+          coefficient: 0
+          coolTimeTick: 3
+          coefficientType: 0
+          skillBound: 0
+          spCost: 20
+          defaultCastingTime: 1
+          skillRange: 1
+          skillDuration: 20
+        - skillName: bless
+          koreanSkillName: "\uBE14\uB798\uC2A4"
+          skillLevel: 3
+          defaultValue: 6
+          damageType: 0
+          coefficient: 0
+          coolTimeTick: 3
+          coefficientType: 0
+          skillBound: 0
+          spCost: 30
+          defaultCastingTime: 1
+          skillRange: 1
+          skillDuration: 30
+        - skillName: bless
+          koreanSkillName: "\uBE14\uB798\uC2A4"
+          skillLevel: 4
+          defaultValue: 8
+          damageType: 0
+          coefficient: 0
+          coolTimeTick: 3
+          coefficientType: 0
+          skillBound: 0
+          spCost: 40
+          defaultCastingTime: 1
+          skillRange: 1
+          skillDuration: 40
+        - skillName: bless
+          koreanSkillName: "\uBE14\uB798\uC2A4"
+          skillLevel: 5
+          defaultValue: 10
+          damageType: 0
+          coefficient: 0
+          coolTimeTick: 3
+          coefficientType: 0
+          skillBound: 0
+          spCost: 50
+          defaultCastingTime: 1
+          skillRange: 1
+          skillDuration: 50
+        skillIcon: {fileID: 21300000, guid: df5153fca31c9bf47b2d36359b5dd373, type: 3}
+        skillEffectController: {fileID: 0}
+        effectOBJPrefab: {fileID: 1594639563662522969, guid: 8c220b6c249811b4fac2f448ebca24f0,
+          type: 3}
+        maxSkillLevel: 5
+        nowSkillLevel: 0
+        leftTick: 0
+        iconRenderer: {fileID: 0}
+        originTick: 0
+      positionOnSkillTree: {x: 400, y: 200}
+      skillGetConditions: []
+    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 12c02d40fd63249419410ee4fd70de48,
         type: 2}
       thisSkill:
         skillName: magnum break
@@ -183,7 +270,7 @@ MonoBehaviour:
           defaultValue: 5
           damageType: 0
           coefficient: 1.2
-          coolTimeTick: 0
+          coolTimeTick: 10
           coefficientType: 0
           skillBound: 1
           spCost: 15
@@ -196,7 +283,7 @@ MonoBehaviour:
           defaultValue: 15
           damageType: 0
           coefficient: 1.35
-          coolTimeTick: 0
+          coolTimeTick: 10
           coefficientType: 0
           skillBound: 1
           spCost: 18
@@ -209,7 +296,7 @@ MonoBehaviour:
           defaultValue: 25
           damageType: 0
           coefficient: 1.5
-          coolTimeTick: 0
+          coolTimeTick: 10
           coefficientType: 0
           skillBound: 1
           spCost: 21
@@ -222,7 +309,7 @@ MonoBehaviour:
           defaultValue: 35
           damageType: 0
           coefficient: 1.65
-          coolTimeTick: 0
+          coolTimeTick: 10
           coefficientType: 0
           skillBound: 1
           spCost: 24
@@ -235,7 +322,7 @@ MonoBehaviour:
           defaultValue: 50
           damageType: 0
           coefficient: 2.3
-          coolTimeTick: 0
+          coolTimeTick: 10
           coefficientType: 0
           skillBound: 1
           spCost: 30
@@ -243,100 +330,16 @@ MonoBehaviour:
           skillRange: 0
           skillDuration: 0
         skillIcon: {fileID: 21300000, guid: 4867db53aa592a64a851c36645423699, type: 3}
-        effectOBJPrefab: {fileID: 1407303529245236996, guid: eb93008d4dda4754f867c07b578b98dd,
+        skillEffectController: {fileID: 0}
+        effectOBJPrefab: {fileID: 1594639563662522969, guid: 1994dd7c574ce704484826e7561f9263,
           type: 3}
         maxSkillLevel: 5
         nowSkillLevel: 0
         leftTick: 0
         iconRenderer: {fileID: 0}
         originTick: 0
-      positionOnSkillTree: {x: 300, y: 0}
+      positionOnSkillTree: {x: 400, y: 0}
       skillGetConditions:
       - targetIndex: 0
-        targetLevel: 5
-    - thisSkillInScriptableOBJ: {fileID: 11400000, guid: 11fb386b1b0b81147830b8eb1d9cfb9b,
-        type: 2}
-      thisSkill:
-        skillName: bless
-        jobName: SwordMan
-        skillStatus: 0
-        skillType: 3
-        objectiveType: 1
-        skillPosition: 0
-        skill:
-        - skillName: bless
-          koreanSkillName: "\uBE14\uB798\uC2A4"
-          skillLevel: 1
-          defaultValue: 2
-          damageType: 0
-          coefficient: 0
-          coolTimeTick: 0
-          coefficientType: 0
-          skillBound: 0
-          spCost: 10
-          defaultCastingTime: 1
-          skillRange: 1
-          skillDuration: 300
-        - skillName: bless
-          koreanSkillName: "\uBE14\uB798\uC2A4"
-          skillLevel: 2
-          defaultValue: 4
-          damageType: 0
-          coefficient: 0
-          coolTimeTick: 0
-          coefficientType: 0
-          skillBound: 0
-          spCost: 20
-          defaultCastingTime: 1
-          skillRange: 1
-          skillDuration: 300
-        - skillName: bless
-          koreanSkillName: "\uBE14\uB798\uC2A4"
-          skillLevel: 3
-          defaultValue: 6
-          damageType: 0
-          coefficient: 0
-          coolTimeTick: 0
-          coefficientType: 0
-          skillBound: 0
-          spCost: 30
-          defaultCastingTime: 1
-          skillRange: 1
-          skillDuration: 300
-        - skillName: bless
-          koreanSkillName: "\uBE14\uB798\uC2A4"
-          skillLevel: 4
-          defaultValue: 8
-          damageType: 0
-          coefficient: 0
-          coolTimeTick: 0
-          coefficientType: 0
-          skillBound: 0
-          spCost: 40
-          defaultCastingTime: 1
-          skillRange: 1
-          skillDuration: 300
-        - skillName: bless
-          koreanSkillName: "\uBE14\uB798\uC2A4"
-          skillLevel: 5
-          defaultValue: 10
-          damageType: 0
-          coefficient: 0
-          coolTimeTick: 0
-          coefficientType: 0
-          skillBound: 0
-          spCost: 50
-          defaultCastingTime: 1
-          skillRange: 1
-          skillDuration: 300
-        skillIcon: {fileID: 21300000, guid: df5153fca31c9bf47b2d36359b5dd373, type: 3}
-        effectOBJPrefab: {fileID: 8522138926694928871, guid: 099831c921ff04f40be263e17bb36237,
-          type: 3}
-        maxSkillLevel: 5
-        nowSkillLevel: 0
-        leftTick: 0
-        iconRenderer: {fileID: 0}
-        originTick: 0
-      positionOnSkillTree: {x: 300, y: 200}
-      skillGetConditions: []
+        targetLevel: 0
   SkilltreeResolution: {x: 800, y: 600}

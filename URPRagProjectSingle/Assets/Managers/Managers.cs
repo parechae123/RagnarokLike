@@ -58,7 +58,7 @@ public class Node
     //예약된 길인지
     public Vector3 worldPos
     {
-        get {return new Vector3(nodeCenterPosition.x,((float)nodeFloor+1),nodeCenterPosition.y); }
+        get {return new Vector3(nodeCenterPosition.x,((float)nodeFloor),nodeCenterPosition.y); }
     }
     public bool isEmptyNode(Stats stat)
     {
@@ -752,6 +752,7 @@ public class SkillManager : Manager<SkillManager>
 {
     public List<SkillInfoInGame> skillInfo = new List<SkillInfoInGame>();
     public List<buffTime> buffTimer = new List<buffTime>();
+    public Dictionary<string, EffectController> skillEffects = new Dictionary<string, EffectController>();
     public Image[] buffIcons;
     public Image[] BuffIcons
     {
@@ -823,6 +824,41 @@ public class SkillManager : Manager<SkillManager>
             }
             GetInstance().buffTimer.Remove(this);
         }
+    }
+
+    public bool SkillEffect(Vector3 position, float size, string effectName,float rot)
+    {
+        if (size <= 0) size = 1;
+        if (skillEffects.ContainsKey(effectName))
+        {
+            if (skillEffects[effectName] != null)
+            {
+                skillEffects[effectName].PlayOrder(position, size*Vector3.one,rot);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public void RegistVFXDict(string name,GameObject prefab)
+    {
+        if(skillEffects.ContainsKey(name))
+        {
+            if (skillEffects[name] != null) return;
+            skillEffects[name] = new GameObject(name + "Effect").AddComponent<EffectController>();
+            skillEffects[name].prefab = prefab;
+            skillEffects[name].SetDurationTime();
+            return;
+        }
+        skillEffects.Add(name, new GameObject(name + "Effect").AddComponent<EffectController>());
+        skillEffects[name].prefab = prefab;
+        skillEffects[name].SetDurationTime();
     }
     public sbyte GetIconIndex()
     {

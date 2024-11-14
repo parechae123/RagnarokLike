@@ -104,7 +104,7 @@ public class DataReader : MonoBehaviour
 
             iconPath = Path.Combine(iconPath, $"{skillinfo.skillName}.png");
             fxPath = Path.Combine(fxPath, $"{skillinfo.skillName}.prefab");
-            skillinfo.SetSkillAsset(AssetDatabase.LoadAssetAtPath<Sprite>(iconPath), AssetDatabase.LoadAssetAtPath<GameObject>(fxPath));
+            skillinfo.SetSkillAsset(AssetDatabase.LoadAssetAtPath<Sprite>(iconPath),  AssetDatabase.LoadAssetAtPath<GameObject>(fxPath));
             for (uint J = 0; J < skillbaseArray.Length; J++)
             {
                 if (skillInfoArray[i].skillName == skillbaseArray[J].skillName)

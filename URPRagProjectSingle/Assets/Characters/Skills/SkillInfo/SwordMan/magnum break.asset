@@ -18,12 +18,12 @@ MonoBehaviour:
   objectiveType: 2
   skillPosition: 0
   skill:
-  - {fileID: 11400000, guid: da83dc95bebd88045a1de3ab48b7b3c5, type: 2}
-  - {fileID: 11400000, guid: 62a54d6f12cdecf4e837e977c7ef5228, type: 2}
-  - {fileID: 11400000, guid: fbff17a103f5a0946b5c2cfdf669af4e, type: 2}
-  - {fileID: 11400000, guid: 2e19dadddc7f57e41bcae8a44533988b, type: 2}
-  - {fileID: 11400000, guid: 0d10a384b3dc6ca4eaf33febc94d5f6a, type: 2}
-  effectOBJPrefab: {fileID: 1407303529245236996, guid: eb93008d4dda4754f867c07b578b98dd,
+  - {fileID: 11400000, guid: 75d3f189fb2c7804cb0e9e287e68e3ae, type: 2}
+  - {fileID: 11400000, guid: 85a2e3bcbc2e9af4aa3840b2ade61134, type: 2}
+  - {fileID: 11400000, guid: f62fefc051a8e5c4eb9b6298214c788b, type: 2}
+  - {fileID: 11400000, guid: 3510aea3e6628384280d702571e78b25, type: 2}
+  - {fileID: 11400000, guid: d2668a1aeb6f4454ab94eb91a675a58f, type: 2}
+  effectOBJPrefab: {fileID: 1594639563662522969, guid: 1994dd7c574ce704484826e7561f9263,
     type: 3}
   skillIcon: {fileID: 21300000, guid: 4867db53aa592a64a851c36645423699, type: 3}
   maxSkillLevel: 5

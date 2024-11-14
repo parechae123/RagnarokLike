@@ -18,17 +18,17 @@ MonoBehaviour:
   objectiveType: 1
   skillPosition: 1
   skill:
-  - {fileID: 11400000, guid: 4ee7774923874be4da79df0986509039, type: 2}
-  - {fileID: 11400000, guid: aed5032fa4231bc47a2ba1f856baa8a6, type: 2}
-  - {fileID: 11400000, guid: 2d48ef6a2d9c2bd41a5122951bee79e0, type: 2}
-  - {fileID: 11400000, guid: d106aea1b684cf04f9582ce6d8637a81, type: 2}
-  - {fileID: 11400000, guid: 31243d7eb55e3e142bff7a81cc338e75, type: 2}
-  - {fileID: 11400000, guid: c34f9f01eaec83946bf853e0ad88bfca, type: 2}
-  - {fileID: 11400000, guid: 8cf9829a34801334ca7f09d2e055e196, type: 2}
-  - {fileID: 11400000, guid: 7f9404c7b16a41148be695e7b631d8b2, type: 2}
-  - {fileID: 11400000, guid: 11779c32d89880047919e1880662d6a4, type: 2}
-  - {fileID: 11400000, guid: 952f073fc2b1a954685186ac99ffb4f2, type: 2}
-  effectOBJPrefab: {fileID: 1407303529245236996, guid: 94f4e57f500d82349b21830f88e14d62,
+  - {fileID: 11400000, guid: 2a87f9c4aa6995348a375af9318f80dc, type: 2}
+  - {fileID: 11400000, guid: b430e98c702f56c4fae430559369f4a9, type: 2}
+  - {fileID: 11400000, guid: 06fd7b57a1b6e004cbee3cec50a258ab, type: 2}
+  - {fileID: 11400000, guid: c46eca6a6b036e84aaa26326e737748b, type: 2}
+  - {fileID: 11400000, guid: a3728fac081d5084692c7c8ddecfe1e3, type: 2}
+  - {fileID: 11400000, guid: f55141617edc5e24a83c3fafec7921d5, type: 2}
+  - {fileID: 11400000, guid: 7e77925dee4a7b6468759d630a6cfefe, type: 2}
+  - {fileID: 11400000, guid: 125be8de50115dd409c238e8f32fc2f2, type: 2}
+  - {fileID: 11400000, guid: e61e2b63253c9894ba4114c4a3ec41bf, type: 2}
+  - {fileID: 11400000, guid: d5ed1848c65bb584eac9a7de61d8e610, type: 2}
+  effectOBJPrefab: {fileID: 5729601862203788733, guid: abd8a1c1394153a4a903e4ec54a145d3,
     type: 3}
   skillIcon: {fileID: 21300000, guid: a19cebe0599724c469f757f6e0b2d9a4, type: 3}
   maxSkillLevel: 10

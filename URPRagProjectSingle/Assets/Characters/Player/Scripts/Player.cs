@@ -515,9 +515,7 @@ public class Player : MonoBehaviour
                 if (tempNode != null)
                 {
                     if(!targetCell.gameObject.activeSelf) targetCell.gameObject.SetActive(true);
-                    targetCell.position = new Vector3(GridManager.GetInstance().PositionToNode(groundHit[0].point).nodeCenterPosition.x,
-                    GridManager.GetInstance().PositionToNode(groundHit[0].point).nodeFloor,
-                    GridManager.GetInstance().PositionToNode(groundHit[0].point).nodeCenterPosition.y);
+                    targetCell.position = GridManager.GetInstance().PositionToNode(groundHit[0].point).worldPos;
                 }
 
             }

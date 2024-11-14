@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using PlayerDefines.Stat;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -66,9 +67,9 @@ public class SkillInfo : ScriptableObject
         skillType = lastestInfo.skillType;
         objectiveType = lastestInfo.objectiveType;
         skillPosition = lastestInfo.skillPosition;
-        SetSkillAsset(lastestInfo.skillIcon, lastestInfo.effectOBJPrefab);
+        SetSkillAsset(lastestInfo.skillIcon,lastestInfo.effectOBJPrefab);
     }
-    public void SetSkillAsset(Sprite Image,GameObject prefab)
+    public void SetSkillAsset(Sprite Image, GameObject prefab)
     {
         if (Image == null || prefab == null)
         {
@@ -80,6 +81,7 @@ public class SkillInfo : ScriptableObject
         }
         skillIcon = Image;
         effectOBJPrefab = prefab;
+        
     }
     public void SaveAsset()
     {
@@ -101,6 +103,7 @@ public class SkillInfoInGame : IItemBase
     public string jobName;
     public SkillStatus skillStatus;
 
+
     [Header("스킬 유형")]
     public SkillType skillType;
     [SerializeField] public ObjectiveType objectiveType;
@@ -109,7 +112,7 @@ public class SkillInfoInGame : IItemBase
     [SerializeField] public Sprite skillIcon;
 
     [Header("스킬 이펙트 오브젝트 프리팹, 아이콘")]
-    private Animator[] effectOBJs = new Animator[0];//씬 내의 이펙트 오브젝트
+
     [SerializeField] private GameObject effectOBJPrefab;
     public byte maxSkillLevel;
     public byte nowSkillLevel;
@@ -192,28 +195,6 @@ public class SkillInfoInGame : IItemBase
         }
         return tempInGameData;
     }
-    /// <summary>
-    /// 비 사용중인 이펙트 오브젝트의 애니메이션을 반환해줍니다.
-    /// </summary>
-    /// <returns></returns>
-    public Animator GetNonPlayingSkillEffect()
-    {
-        for (int i = 0; i < effectOBJs.Length; i++)
-        {
-            if (effectOBJs[i].gameObject.activeSelf)
-            {
-                continue;
-            }
-            else
-            {
-                return effectOBJs[i];
-            }
-        }
-        int tempNum = effectOBJs.Length;
-        Array.Resize(ref effectOBJs, tempNum + 1);
-        effectOBJs[tempNum] = GameObject.Instantiate(effectOBJPrefab).GetComponent<Animator>();
-        return effectOBJs[tempNum];
-    }
     public void UseItem()
     {
         if (leftTick != 0) return;
@@ -251,11 +232,8 @@ public class SkillInfoInGame : IItemBase
     public virtual void SkillCastTargetPlace(Vector3 castingPos,Stats target,Stats caster)
     {
         Debug.Log(skillName + "사용했어용~~");
-        Animator tempAnim = GetNonPlayingSkillEffect();
-        tempAnim.transform.position = castingPos;
-        tempAnim.gameObject.SetActive(true);
-        tempAnim.Play(skillName + "Effect");
-        float tempTime = 0;
+
+
         Color tempColor = Color.black;
         switch (skill[CastingSkillLevel].damageType)
         {
@@ -291,17 +269,22 @@ public class SkillInfoInGame : IItemBase
                 }
                 break;
         }
+        float angle = 0;
+        if(target != null) 
+        {
+            angle = MathF.Atan2(target.standingNode.nodeCenterPosition.y - caster.standingNode.nodeCenterPosition.y, caster.standingNode.nodeCenterPosition.x - target.standingNode.nodeCenterPosition.x);
+            angle *= Mathf.Rad2Deg;
+            angle -= 90f;
+        }
+        if (!SkillManager.GetInstance().SkillEffect(castingPos, skill[castingSkillLevel].SkillBound, skillName, angle))
+        {
+            SkillManager.GetInstance().RegistVFXDict(skillName, effectOBJPrefab);
+            SkillManager.GetInstance().SkillEffect(castingPos, skill[castingSkillLevel].SkillBound, skillName, angle);
+        }
+
         SkillManager.GetInstance().SetSkillCoolTime(skillName, skill[CastingSkillLevel].coolTimeTick);
         Debug.Log("카운팅 시작");
 
-        for (int i = 0; i < tempAnim.runtimeAnimatorController.animationClips.Length; i++)
-        {
-            tempTime += tempAnim.runtimeAnimatorController.animationClips[i].length;
-        }
-        DOVirtual.DelayedCall(tempTime, () =>
-        {
-            if (tempAnim != null) tempAnim.gameObject.SetActive(false);
-        });
     }
     public virtual Stats[] GetStats(Vector2Int nodePos)
     {
@@ -394,11 +377,7 @@ public class BuffSkillInfoInGame : SkillInfoInGame
     public override void SkillCastTargetPlace(Vector3 castingPos,Stats target,Stats caster)
     {
         Debug.Log(skillName + "사용했어용~~");
-        Animator tempAnim = GetNonPlayingSkillEffect();
-        tempAnim.transform.position = castingPos;
-        tempAnim.gameObject.SetActive(true);
-        tempAnim.Play(skillName + "Effect");
-        float tempTime = 0;
+
         switch (objectiveType)
         {
             case ObjectiveType.None:
@@ -421,17 +400,14 @@ public class BuffSkillInfoInGame : SkillInfoInGame
                 }
                 break;
         }
+        if (!SkillManager.GetInstance().SkillEffect(castingPos, skill[castingSkillLevel].SkillBound, skillName, 0))
+        {
+            SkillManager.GetInstance().RegistVFXDict(skillName, effectOBJPrefab);
+            SkillManager.GetInstance().SkillEffect(castingPos, skill[castingSkillLevel].SkillBound, skillName, 0);
+        }
         SkillManager.GetInstance().SetSkillCoolTime(skillName, skill[CastingSkillLevel].coolTimeTick);
         Debug.Log("카운팅 시작");
 
-        for (int i = 0; i < tempAnim.runtimeAnimatorController.animationClips.Length; i++)
-        {
-            tempTime += tempAnim.runtimeAnimatorController.animationClips[i].length;
-        }
-        DOVirtual.DelayedCall(tempTime, () =>
-        {
-            if (tempAnim != null) tempAnim.gameObject.SetActive(false);
-        });
     }
     public override Stats[] GetStats(Vector2Int nodePos)
     {

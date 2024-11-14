@@ -19,7 +19,7 @@ MonoBehaviour:
   skillPosition: 0
   skill:
   - {fileID: 11400000, guid: 88f73316d7ede514fb314e2b4d94f2ef, type: 2}
-  effectOBJPrefab: {fileID: 1407303529245236996, guid: 5391aaad421b0f142962b2443368cda3,
+  effectOBJPrefab: {fileID: 1594639563662522969, guid: 32d8cc5ffde2fe346a487cfe785e5000,
     type: 3}
   skillIcon: {fileID: 21300000, guid: 9f922002032136c4687b8dced9bc624c, type: 3}
   maxSkillLevel: 1

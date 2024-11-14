@@ -241,8 +241,8 @@ namespace PlayerDefines
                 if (durationTime <= skillTimer)
                 {
                     UIManager.GetInstance().CastingBarOnOff(false);
-                    casting.Invoke(castPos,targetStat,Player.Instance.playerLevelInfo.stat);
                     Player.Instance.StateMachine.ChangeState(nextStateName);
+                    casting.Invoke(castPos,targetStat,Player.Instance.playerLevelInfo.stat);
                     skillTimer = 0;
                 }
 

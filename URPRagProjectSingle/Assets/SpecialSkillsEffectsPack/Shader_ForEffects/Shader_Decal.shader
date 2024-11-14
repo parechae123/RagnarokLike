@@ -138,7 +138,7 @@
 							float3 wpos = mul(unity_CameraToWorld, vpos).xyz;
 							float3 opos = mul(unity_WorldToObject, float4(wpos,1)).xyz;
 							float3 objAbs = abs(opos);
-							clip(0.5f - objAbs);
+							clip(objAbs);
 
 							i.texcoord = saturate(opos.xz + 0.5) * _MainTex_ST.xy + _MainTex_ST.zw;
 							i.texcoord2 = saturate(opos.xz + 0.5) * _NormalTex_ST.xy + _NormalTex_ST.zw;

@@ -148,11 +148,11 @@ namespace NeutralDefines
                 anim.speed = 1;
                 CastingState temp = (CastingState)SearchState("castingState");
                 if (currentState == temp) return;
-                skillPos.y += 0.9f;
                 if(targetStat != null&&skillInfo.objectiveType == ObjectiveType.OnlyTarget)
                 {
                     skillPos = (targetStat.standingNode.worldPos + Player.Instance.playerLevelInfo.stat.standingNode.worldPos);
                     skillPos.x = skillPos.x / 2f;
+                    skillPos.y = skillPos.y / 2f;
                     skillPos.z = skillPos.z / 2f;
                 }
 

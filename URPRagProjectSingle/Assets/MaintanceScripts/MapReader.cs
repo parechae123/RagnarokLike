@@ -45,12 +45,13 @@ public class MapReader : MonoBehaviour
         Array.Resize(ref sameArrayFloor, 0);
         for (byte i = 0; i < targetMaps.Length; i++)
         {
+            if (targetMaps[i] == null) continue;
             for (ushort s = 0; s < targetMaps[i].transform.childCount; s++)
             {
                 Array.Resize<Vector2Int>(ref blockPositions, blockPositions.Length + 1);
                 blockPositions[blockPositions.Length-1] = new Vector2Int((int)targetMaps[i].transform.GetChild(s).position.x,(int)targetMaps[i].transform.GetChild(s).position.z);
                 Array.Resize<sbyte>(ref sameArrayFloor, sameArrayFloor.Length + 1);
-                sameArrayFloor[sameArrayFloor.Length - 1] = (sbyte)targetMaps[i].transform.GetChild(s).position.y;
+                sameArrayFloor[sameArrayFloor.Length - 1] = (sbyte)i;
             }
         }
     }
