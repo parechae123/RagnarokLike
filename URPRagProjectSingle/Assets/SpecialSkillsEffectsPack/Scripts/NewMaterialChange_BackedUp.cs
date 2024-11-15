@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewMaterialChange : MonoBehaviour
+public class NewMaterialChange_BackedUp : MonoBehaviour
 {
     public bool isParticleSystem;
     public Material m_inputMaterial;
