@@ -12,7 +12,7 @@ using DG.Tweening.Plugins.Core.PathCore;
 using System;
 using PlayerDefines.States;
 
-public class MonsterBase : MonoBehaviour
+public class MonsterBase : MonoBehaviour ,ICameraTracker
 {
     // Start is called before the first frame update
     [SerializeField] public MonsterStat monsterStat;
@@ -66,7 +66,7 @@ public class MonsterBase : MonoBehaviour
         //new Vector3(monsterStat.standingNode.nodeCenterPosition.x, monsterStat.standingNode.nodeFloor + 1.5f, monsterStat.standingNode.nodeCenterPosition.y);
 
         Debug.Log(monsterStat.standingNode.nodeCenterPosition);
-        PlayerCam.Instance.AddRotAction(animationDirrection);
+        
         
         monsterSR = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -74,10 +74,11 @@ public class MonsterBase : MonoBehaviour
         monsterStat.dieFunctions = null;
         monsterStat.dieFunctions += MonsterDie;
         currentStates = new MIdleState(this);
+        RegistCameraAction();
+
     }
     private void Update()
     {
-        transform.rotation = Camera.main.transform.rotation;
         
         if (monsterStat.isCharacterDamaged&& !monsterStat.isCharacterDie)
         {
@@ -85,10 +86,28 @@ public class MonsterBase : MonoBehaviour
         }
         else if(CurrentNode == null) { return; }
         currentStates?.Execute();
-        animationDirrection();
+
 
 
     }
+
+    #region 카메라 세팅
+    public void RegistCameraAction()
+    {
+        PlayerCam.Instance.rotDirrection += animationDirrection; 
+        PlayerCam.Instance.rotations += FollowCamera;
+        animationDirrection();
+    }
+    public void UnRegistCameraAction()
+    {
+        PlayerCam.Instance.rotDirrection -= animationDirrection; 
+    }
+    public void FollowCamera()
+    {
+        transform.rotation = Camera.main.transform.rotation;
+    }
+    
+    #endregion
 
     public void ChangeAnim(string name)
     {
@@ -241,6 +260,7 @@ public class MonsterBase : MonoBehaviour
             monsterOnNode = GridManager.GetInstance().PositionToNode(transform.position);
             playerLastNode = playerNode;
             moveStartPos = transform.position;
+            moveStartPos.y = 0f;
             while (timer <= secPerMove)
             {
                 timer += Time.deltaTime;
@@ -293,6 +313,7 @@ public class MonsterBase : MonoBehaviour
         float timer = 0f;
         float secPerMove = 1f / monsterStat.MoveSpeed;
         Vector3 moveStartPos = transform.position;
+        moveStartPos.y = 0f;
         Vector3 tempVec;
         Debug.LogError($"이때 끊기니?");
         while (true)

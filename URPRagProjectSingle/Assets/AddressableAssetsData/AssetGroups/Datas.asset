@@ -41,6 +41,24 @@ MonoBehaviour:
     m_SerializedLabels:
     - JobData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e03c39dd8354e214dbb0d2dc46264a94
+    m_Address: Apixes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemDatas
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c355fc84b72cca4eb7ba60f62b46b9f
+    m_Address: Miscs
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemDatas
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 447b9624c85c3044f8442035e268f221
+    m_Address: Posions
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemDatas
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b1ab8ed4be16e204fa7da75b33343685, type: 2}
   m_SchemaSet:

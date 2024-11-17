@@ -1,0 +1,50 @@
+[
+{
+"itemCode": "10001",
+"itemName": "작은 체력포션",
+"goldValue": "100",
+"iconName": "Red Potion",
+"potionType": "HP",
+"valueOne": "30"
+},
+{
+"itemCode": "10002",
+"itemName": "작은 마나포션",
+"goldValue": "100",
+"iconName": "Blue Potion",
+"potionType": "SP",
+"valueOne": "15"
+},
+{
+"itemCode": "10003",
+"itemName": "체력포션",
+"goldValue": "400",
+"iconName": "Red Potion 2",
+"potionType": "HP",
+"valueOne": "90"
+},
+{
+"itemCode": "10004",
+"itemName": "마나포션",
+"goldValue": "400",
+"iconName": "Blue Potion 2",
+"potionType": "SP",
+"valueOne": "45"
+},
+{
+"itemCode": "10005",
+"itemName": "거대한 체력포션",
+"goldValue": "700",
+"iconName": "Red Potion 3",
+"potionType": "HP",
+"valueOne": "270"
+},
+{
+"itemCode": "10006",
+"itemName": "거대한 마나포션",
+"goldValue": "700",
+"iconName": "Blue Potion 3",
+"potionType": "SP",
+"valueOne": "135"
+}
+]

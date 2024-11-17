@@ -17,7 +17,7 @@ using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour,ICameraTracker
 {
     public PlayerLevelInfo playerLevelInfo;
     private static Player instance;
@@ -141,15 +141,16 @@ public class Player : MonoBehaviour
         InstallizeStates();
         SetCurrentNodeAndPosition();
         SetPlayerPositionToCenterPos();
+        RegistCameraAction();
         playerLevelInfo.stat.moveFunction += PlayerMoveOrder;
         playerCursorState.changeState(cursorState.defaultCurser);
         defaultEffects = new playerEffects(transform.Find("HeadPoint"));
         SetBindKey();
+        
     }
 
     public void Update()
     {
-        transform.rotation = Camera.main.transform.rotation;
         if (playerLevelInfo != null) if (playerLevelInfo.stat != null) if (playerLevelInfo.stat.isCharacterDie) return;
         shadowTR.position = transform.position;
         MouseBinding();
@@ -202,6 +203,7 @@ public class Player : MonoBehaviour
         StateMachine.CurrentState.Execute();
 
     }
+
     private void InTime() 
     {
         playerLevelInfo.stat.statTimer += Time.deltaTime;
@@ -214,6 +216,7 @@ public class Player : MonoBehaviour
             playerLevelInfo.stat.statTimer = 0;
         }
     }
+    
     public bool SetTargetNode(Vector3 point)
     {
         Node tempNode = GridManager.GetInstance().PositionToNode(point);
@@ -257,6 +260,22 @@ public class Player : MonoBehaviour
         }
         
     }
+
+    public void RegistCameraAction()
+    {
+        PlayerCam.Instance.rotations += FollowCamera;
+        PlayerCam.Instance.rotDirrection += StateMachine.CamRotAnimChange;
+    }
+    public void UnRegistCameraAction()
+    {
+        PlayerCam.Instance.rotations -= FollowCamera;
+        PlayerCam.Instance.rotDirrection -= StateMachine.CamRotAnimChange;
+    }
+    public void FollowCamera()
+    {
+        transform.rotation = Camera.main.transform.rotation;
+    }
+
     #region 플레이어 노드 관련 함수
     public void SetCurrentNodeAndPosition()
     {

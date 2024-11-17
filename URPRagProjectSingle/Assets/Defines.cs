@@ -267,6 +267,12 @@ namespace NeutralDefines
     }
     
 }
+public interface ICameraTracker
+{
+    void RegistCameraAction();
+    void UnRegistCameraAction();
+    void FollowCamera();
+}
 public class Positions : ItemInfo
 {
     private Sprite itemIcon;

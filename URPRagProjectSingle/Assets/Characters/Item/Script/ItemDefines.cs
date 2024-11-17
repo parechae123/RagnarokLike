@@ -466,6 +466,18 @@ public class Weapons : Equips
         }
     }
 }
+public class Miscs : InventoryItemBase
+{
+    public Miscs(string itemCode, string itemName, Sprite itemSprite, float goldValue)
+    {
+        this.itemCode = itemCode;
+        this.itemName = itemName;
+        Amount = 1;
+        this.itemSprite = itemSprite;
+        this.goldValue = goldValue;
+        ResetEvent();
+    }
+}
 
 public class Consumables : InventoryItemBase
 {

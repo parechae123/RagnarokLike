@@ -91,6 +91,7 @@ MonoBehaviour:
     - JobData
     - SkillInfo
     - SpriteAtlas
+    - ItemDatas
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 3e0d6b2a105e5804c8fa0ad16e94480c, type: 2}

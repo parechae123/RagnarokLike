@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerCam : MonoBehaviour
@@ -48,7 +49,8 @@ public class PlayerCam : MonoBehaviour
     public float cameraRotValue;
     public float rotationSensitivity;
     [SerializeField]private Vector2Int cameraDirrection;
-    public event Action monsterRot;
+    public event Action rotDirrection;
+    public event Action rotations;
     public Vector2Int CameraDirrection
     {
         get 
@@ -84,6 +86,14 @@ public class PlayerCam : MonoBehaviour
     {
         instance = this;
     }
+    private void Start()
+    {
+        Distance -= Input.GetAxis("Mouse ScrollWheel") * wheelSpeed;
+        transform.position = ((cameraNomalizedPos) * Distance) + (Vector3.up * height) + playerTarget.position;
+        transform.eulerAngles = new Vector3((Mathf.Rad2Deg * Mathf.Atan2(GetXRotAxis(playerTarget.position, transform.position), playerTarget.position.y - transform.position.y)) - 90, Mathf.Rad2Deg * Mathf.Atan2(playerTarget.position.x - transform.position.x, playerTarget.position.z - transform.position.z), 0);
+        rotations.Invoke();
+        rotDirrection.Invoke();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -92,13 +102,13 @@ public class PlayerCam : MonoBehaviour
         transform.eulerAngles = new Vector3((Mathf.Rad2Deg * Mathf.Atan2(GetXRotAxis(playerTarget.position, transform.position), playerTarget.position.y - transform.position.y)) - 90, Mathf.Rad2Deg * Mathf.Atan2(playerTarget.position.x - transform.position.x, playerTarget.position.z - transform.position.z), 0);
         if (Input.GetKey(KeyCode.Mouse1))
         {
+            rotations.Invoke();
             cameraRotValue += Input.GetAxis("Mouse X") * rotationSensitivity;
             cameraNomalizedPos = GetCircle(cameraRotValue);
 
             if (cameraDirrection != CameraDirrection) 
             {
-                Player.Instance.StateMachine.CamRotAnimChange();
-                monsterRot?.Invoke();
+                rotDirrection?.Invoke();
             }
         }
 
@@ -120,10 +130,6 @@ public class PlayerCam : MonoBehaviour
             float tempNum = a-b;
             return Mathf.Sqrt(tempNum*tempNum);
         }*/
-    public void AddRotAction(Action action)
-    {
-        monsterRot += action;
-    }
 }
 public enum Dirrections
 {

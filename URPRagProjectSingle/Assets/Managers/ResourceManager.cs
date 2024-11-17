@@ -27,6 +27,34 @@ public class ResourceManager : Manager<ResourceManager>
             return skillIconAtlas;
         }
     }
+    private ApixDatas apixDatas;
+    public ApixDatas ApixDatas
+    {
+        get 
+        { 
+            if (apixDatas == null) LoadAsync<ApixDatas>("Apixes", (Apixes) => { apixDatas = Apixes; });
+            return apixDatas;
+        }
+    }
+    private PosionDatas posionDatas;
+    public PosionDatas PosionDatas
+    {
+        get 
+        { 
+            if (posionDatas == null) LoadAsync<PosionDatas>("Posions", (PosionDatas) => { posionDatas = PosionDatas; });
+            return posionDatas;
+        }
+    }
+    private MiscDatas miscDatas;
+    public MiscDatas MiscDatas
+    {
+        get 
+        { 
+            if (miscDatas == null) LoadAsync<MiscDatas>("Miscs", (MiscDatas) => { miscDatas = MiscDatas; });
+            return miscDatas;
+        }
+    }
+
     public Dictionary<string, UnityEngine.Object> resourceDict;
     private uint loadTaskNum = 0;
     public uint LoadTaskNum
