@@ -17,4 +17,8 @@ MonoBehaviour:
     itemName: "\uC824\uB9AC"
     goldValue: 7
     iconName: jelly
+  - itemCode: 30002
+    itemName: "\uAE30\uBB18\uCC0C"
+    goldValue: 7
+    iconName: gimotti
   sheet: {fileID: 102900000, guid: 074a3fe8cbf4ea947a43f55598c9cbef, type: 3}

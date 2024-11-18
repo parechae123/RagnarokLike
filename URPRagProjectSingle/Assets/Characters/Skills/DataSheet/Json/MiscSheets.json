@@ -4,5 +4,11 @@
 "itemName": "젤리",
 "goldValue": "7",
 "iconName": "jelly"
+},
+{
+"itemCode": "30002",
+"itemName": "기묘찌",
+"goldValue": "7",
+"iconName": "gimotti"
 }
 ]

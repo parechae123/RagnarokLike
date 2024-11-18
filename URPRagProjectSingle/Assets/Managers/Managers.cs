@@ -7,10 +7,6 @@ using PlayerDefines;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.IO;
-using UnityEditor;
-using Unity.VisualScripting;
-using System.Threading;
-using UnityEngine.U2D;
 
 /// <summary>
 /// 메니저 템플릿화
