@@ -10,13 +10,12 @@ using System;
 using System.Text;
 #region Posion
     [CreateAssetMenu(fileName = "Cosumes", menuName = "Items/Cosumes", order = 0)]
-    public class PosionDatas : ScriptableObject
+    public class PosionDatas : ScriptableObject, IDataFunc
     {
         [SerializeField] public PosionData[] items;
-        public DefaultAsset sheet;
-        public void GetSheetValue()
+        public void GetSheetValue(string json)
         {
-            items = JsonConvert.DeserializeObject<PosionData[]>(new TableConvert().Json(sheet));
+            items = JsonConvert.DeserializeObject<PosionData[]>(json);
             EditorUtility.SetDirty(this);
 
             // 프로젝트에 저장
@@ -84,20 +83,6 @@ using System.Text;
             return json.ToString();
         }
     }
-
-    [CustomEditor(typeof(PosionDatas))]
-    public class CosumeSCOEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-            PosionDatas temp = (PosionDatas)target;
-            if (GUILayout.Button("소모품 파싱"))
-            {
-                temp.GetSheetValue();
-            }
-        }
-    }
     [System.Serializable]
     public class PosionData : ItemList
     {
@@ -114,4 +99,7 @@ public class ItemList
     public float goldValue;
     public string iconName;
 }
-
+public interface IDataFunc
+{
+    void GetSheetValue(string json);
+}

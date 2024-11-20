@@ -947,6 +947,11 @@ public class SkillManager : Manager<SkillManager>
 public class MonsterManager : Manager<MonsterManager>
 {
     List<RespawnBox> respawnMonsters = new List<RespawnBox>();
+    private DropManaging drop;
+    public DropManaging Drop
+    {
+        get { if (drop == null) drop = new DropManaging(); return drop;  }
+    }
     public void AddRespawnList(MonsterBase targetMonster)
     {
         targetMonster.gameObject.SetActive(false);

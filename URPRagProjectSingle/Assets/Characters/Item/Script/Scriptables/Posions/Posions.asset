@@ -49,4 +49,3 @@ MonoBehaviour:
     iconName: Blue Potion 3
     potionType: 1
     valueOne: 135
-  sheet: {fileID: 102900000, guid: c49a054e6776bbb41bd08c1bc0874064, type: 3}

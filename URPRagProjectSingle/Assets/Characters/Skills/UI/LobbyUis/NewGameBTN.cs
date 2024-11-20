@@ -19,11 +19,13 @@ public class NewGameBTN : MonoBehaviour
     }
     private void Awake()
     {
-        loadDone = new bool[labels.Length];
+        
+        transform.GetComponent<Button>().interactable = false;
         transform.GetComponent<Button>().onClick.AddListener(() =>
         {
             if (btnUsed) return;
             btnUsed = true;
+
             for (int i = 0; i < labels.Length; i++)
             {
                 int currNum = i;
@@ -37,6 +39,17 @@ public class NewGameBTN : MonoBehaviour
     }
     private void Start()
     {
-        ResourceManager.GetInstance().SetAtlases();
+        loadDone = new bool[6];
+        ResourceManager.GetInstance().SetAtlases((done,arr) =>
+        {
+            loadDone[arr] = done;
+            if (allDone)
+            {
+                Debug.Log("테이블 가져옴");
+                loadDone = new bool[labels.Length];
+                transform.GetComponent<Button>().interactable = true;
+            }
+            
+        });
     }
 }

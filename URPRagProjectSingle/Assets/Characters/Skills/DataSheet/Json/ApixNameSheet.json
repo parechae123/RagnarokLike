@@ -1,0 +1,86 @@
+[
+{
+"eng_Name": "Str",
+"lo_Name": "힘의"
+},
+{
+"eng_Name": "AGI",
+"lo_Name": "민첩의"
+},
+{
+"eng_Name": "Vit",
+"lo_Name": "강인의"
+},
+{
+"eng_Name": "Int",
+"lo_Name": "지능의"
+},
+{
+"eng_Name": "Dex",
+"lo_Name": "손재주의"
+},
+{
+"eng_Name": "Luk",
+"lo_Name": "행운의"
+},
+{
+"eng_Name": "CriticalDMG",
+"lo_Name": "치명적인"
+},
+{
+"eng_Name": "CriticalChance",
+"lo_Name": "날카로운"
+},
+{
+"eng_Name": "ATK",
+"lo_Name": "위력적인"
+},
+{
+"eng_Name": "MATK",
+"lo_Name": "신비로운"
+},
+{
+"eng_Name": "AttackSpeed",
+"lo_Name": "기민한"
+},
+{
+"eng_Name": "CastingSpeed",
+"lo_Name": "신속한"
+},
+{
+"eng_Name": "MaxHp",
+"lo_Name": "버티는"
+},
+{
+"eng_Name": "Accuracy",
+"lo_Name": "정확한"
+},
+{
+"eng_Name": "MaxMana",
+"lo_Name": "초월적인"
+},
+{
+"eng_Name": "ManaRegen",
+"lo_Name": "영감받은"
+},
+{
+"eng_Name": "HpRegen",
+"lo_Name": "싱그러운"
+},
+{
+"eng_Name": "MoveSpeed",
+"lo_Name": "발빠른"
+},
+{
+"eng_Name": "deff",
+"lo_Name": "단단한"
+},
+{
+"eng_Name": "Evasion",
+"lo_Name": "반응하는"
+},
+{
+"eng_Name": "magicDeff",
+"lo_Name": "저항하는"
+}
+]

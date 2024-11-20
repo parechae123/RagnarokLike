@@ -36,8 +36,6 @@ public class DropItems : MonoBehaviour , ICameraTracker
         }
         set 
         {
-            if (value == null) ItemOff();//DropItemQueue를 만들어 다음 값이 null일 경우 enqueue해주어야할듯
-
             itemInfo = value; 
         }
     }
@@ -58,20 +56,25 @@ public class DropItems : MonoBehaviour , ICameraTracker
             default:
                 break;
         }
+        Release();
     }
     public void InitialIzeItem(InventoryItemBase itemInfo, Vector3 worldPos)
     {
-        
+        gameObject.SetActive(true);
         UnRegistCameraAction();
         ItemInfo = itemInfo;
         SR.sprite = itemInfo.IconIMG;
         transform.position = worldPos;
         RegistCameraAction();
     }
-    public void ItemOff()
+    public void Release()
     {
+        
         UnRegistCameraAction();
+        ItemInfo = null;
+        SR.sprite = null;
         gameObject.SetActive(false);
+        MonsterManager.GetInstance().Drop.items.Enqueue(this);
     }
     public void RegistCameraAction()
     {

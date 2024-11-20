@@ -36,6 +36,15 @@ public class ResourceManager : Manager<ResourceManager>
             return apixDatas;
         }
     }
+    private NameDatas nameSheet;
+    public NameDatas NameSheet
+    {
+        get 
+        { 
+            if (nameSheet == null) LoadAsync<NameDatas>("NameData", (NameData) => { nameSheet = NameData; });
+            return nameSheet;
+        }
+    }
     private PosionDatas posionDatas;
     public PosionDatas PosionDatas
     {
@@ -61,10 +70,15 @@ public class ResourceManager : Manager<ResourceManager>
     {
         get { return loadTaskNum; }
     }
-    public void SetAtlases()
+    public void SetAtlases(Action<bool,int> allDone)
     {
-        LoadAsync<SpriteAtlas>("SkillIconAtlas", (atlas) => { skillIconAtlas = atlas; });
-        LoadAsync<SpriteAtlas>("ItemIconAtlas", (atlas) => { itemIconAtlas = atlas; });
+        LoadAsync<SpriteAtlas>("SkillIconAtlas", (atlas) => { skillIconAtlas = atlas; allDone.Invoke(true, 0); });
+        LoadAsync<SpriteAtlas>("ItemIconAtlas", (atlas) => { itemIconAtlas = atlas; allDone.Invoke(true, 1); });
+        LoadAsync<ApixDatas>("Apixes", (data) => { apixDatas = data; allDone.Invoke(true, 2); });
+        LoadAsync<NameDatas>("NameData", (data) => { nameSheet= data; allDone.Invoke(true, 3); });
+        LoadAsync<PosionDatas>("Posions", (data) => { posionDatas = data; allDone.Invoke(true, 4); });
+        LoadAsync<MiscDatas>("Miscs", (data) => { miscDatas = data; allDone.Invoke(true, 5); });
+
     }
 
     public void LoadAsyncSkillInGameInfo(string key,Action<SkillInfoInGame> callback)

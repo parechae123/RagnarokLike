@@ -3,21 +3,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DropTest : MonoBehaviour
+public class DropManaging
 {
-    // Start is called before the first frame update
-    void Start()
+    public Queue<DropItems> items = new Queue<DropItems>();
+    public void SpawnEquipItem(Vector3 position,byte level)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        ApixSlotMachine(3, Enum.GetValues(typeof(WeaponApixType)).Length, false);
+        if(items.Count > 0)
         {
-            ApixSlotMachine(3, Enum.GetValues(typeof(WeaponApixType)).Length, false);
-            new GameObject("DropItems").AddComponent<DropItems>().InitialIzeItem(AssembleEquips(0),transform.position);
+            items.Dequeue().InitialIzeItem(AssembleEquips(level), position);
+        }
+        else
+        {
+            new GameObject("DropItems").AddComponent<DropItems>().InitialIzeItem(AssembleEquips(level), position);
+        }
+    }
+    /// <summary>
+    /// 사용 시 아이템 코드 확인 요망
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="item"></param>
+    public void SpawnMisc(Vector3 position,MiscData item)
+    {
+        ApixSlotMachine(3, Enum.GetValues(typeof(WeaponApixType)).Length, false);
+        if(items.Count > 0)
+        {
+            items.Dequeue().InitialIzeItem(new Miscs(item.itemCode.ToString(),item.itemName,ResourceManager.GetInstance().ItemIconAtlas.GetSprite(item.iconName),item.goldValue), position);
+        }
+        else
+        {
+            new GameObject("DropItems").AddComponent<DropItems>().InitialIzeItem(new Miscs(item.itemCode.ToString(), item.itemName, ResourceManager.GetInstance().ItemIconAtlas.GetSprite(item.iconName), item.goldValue), position);
+        }
+    }
+    /// <summary>
+    /// 사용 시 아이템 코드 확인 요망
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="item"></param>
+    public void SpawnCosume(Vector3 position,PosionData item)
+    {
+        ApixSlotMachine(3, Enum.GetValues(typeof(WeaponApixType)).Length, false);
+        if(items.Count > 0)
+        {
+            items.Dequeue().InitialIzeItem(new Potions(item.itemCode.ToString(),item.itemName,ResourceManager.GetInstance().ItemIconAtlas.GetSprite(item.iconName),item.goldValue,item.potionType,item.goldValue), position);
+        }
+        else
+        {
+            new GameObject("DropItems").AddComponent<DropItems>().InitialIzeItem(new Potions(item.itemCode.ToString(), item.itemName, ResourceManager.GetInstance().ItemIconAtlas.GetSprite(item.iconName), item.goldValue, item.potionType, item.goldValue), position);
         }
     }
 
@@ -25,10 +57,21 @@ public class DropTest : MonoBehaviour
     {
         EquipPart itemPart = (EquipPart)Random(0, Enum.GetValues(typeof(EquipPart)).Length);
         //무기 종류에 속하는 장비일 경우
-        ApixesData datas = ResourceManager.GetInstance().ApixDatas.items[level / 5];
+        int itemLevel = level / 5;
+        ApixesData datas = ResourceManager.GetInstance().ApixDatas.items[itemLevel];
+        string name = string.Empty;
         if (itemPart == EquipPart.LeftHand|| itemPart == EquipPart.RightHand || itemPart == EquipPart.TwoHanded)
         {
+            
             WeaponType weaponType = (WeaponType)Random(0, Enum.GetValues(typeof(WeaponType)).Length);
+            if (weaponType == WeaponType.Shield) itemPart = EquipPart.LeftHand;
+            else if(weaponType != WeaponType.Shield&& itemPart != EquipPart.TwoHanded)
+            {
+                itemPart = EquipPart.RightHand;
+            }
+
+            if (weaponType == WeaponType.Bow) itemPart = EquipPart.TwoHanded;
+
             BaseJobType[] jobs = GetEquipAbleJobs(weaponType);
             int statType = Random(0, Enum.GetValues(typeof(BasicStatTypes)).Length);
             int apixCount = Random(0, 4);
@@ -42,14 +85,19 @@ public class DropTest : MonoBehaviour
             {
                 apix.abilityApixes[i] = ((WeaponApixType)weaponApixes[i], Random(datas.weaponApixes[weaponApixes[i]].minValue, datas.weaponApixes[weaponApixes[i]].maxValue));
             }
-
-            return new Weapons(weaponType.ToString(), weaponType.ToString(), ResourceManager.GetInstance().ItemIconAtlas.GetSprite(itemPart.ToString()), jobs, level, level * 800f, itemPart,
-                Random(ResourceManager.GetInstance().ApixDatas.items[level / 5].weaponMinValue, ResourceManager.GetInstance().ApixDatas.items[level / 5].weaponMaxValue),
+            if (apix.abilityApixes.Length != 0) name += ResourceManager.GetInstance().NameSheet.GetApixNameValue(apix.abilityApixes[0].Item1.ToString()) + ' ';
+            name += ResourceManager.GetInstance().NameSheet.GetApixNameValue(apix.statLine.Item1.ToString()) + ' ';
+            name += ResourceManager.GetInstance().NameSheet.GetLevelNameValue(itemLevel)+' ';
+            name += ResourceManager.GetInstance().NameSheet.GetEquipNameValue(itemPart.ToString()) + ' ';
+            name += ResourceManager.GetInstance().NameSheet.GetEquipNameValue(weaponType.ToString());
+            Debug.Log(name);
+            return new Weapons(weaponType.ToString(), name, ResourceManager.GetInstance().ItemIconAtlas.GetSprite(itemPart.ToString()), jobs, level, level * 800f, itemPart,
+                Random(ResourceManager.GetInstance().ApixDatas.items[itemLevel].weaponMinValue, ResourceManager.GetInstance().ApixDatas.items[itemLevel].weaponMaxValue),
                 weaponType == WeaponType.Cane, weaponType, apix);
         }
         else
         {
-            ArmorMat armorType = (ArmorMat)Random(0, Enum.GetValues(typeof(ArmorMat)).Length);
+            ArmorMat armorType = (ArmorMat)Random(0, Enum.GetValues(typeof(ArmorMat)).Length-1);
             int statType = Random(0, Enum.GetValues(typeof(BasicStatTypes)).Length);
             int apixCount = Random(0, 4);
             IApixBase<ArmorApixType> apix = new IApixBase<ArmorApixType>
@@ -67,9 +115,13 @@ public class DropTest : MonoBehaviour
             {
                 jobs[i] = (BaseJobType)i;
             }
-
-            return new Armors(armorType.ToString(), armorType.ToString(), ResourceManager.GetInstance().ItemIconAtlas.GetSprite(itemPart.ToString()),jobs ,  level, level * 800f, itemPart,
-                Random(ResourceManager.GetInstance().ApixDatas.items[level / 5].armorMinValue, ResourceManager.GetInstance().ApixDatas.items[level / 5].armorMaxValue),
+            if(apix.abilityApixes.Length != 0) name += ResourceManager.GetInstance().NameSheet.GetApixNameValue(apix.abilityApixes[0].Item1.ToString()) + ' ';
+            name += ResourceManager.GetInstance().NameSheet.GetApixNameValue(apix.statLine.Item1.ToString()) + ' ';
+            name += ResourceManager.GetInstance().NameSheet.GetLevelNameValue(itemLevel) + ' ';
+            name += ResourceManager.GetInstance().NameSheet.GetEquipNameValue(armorType.ToString() + itemPart.ToString());
+            Debug.Log(name);
+            return new Armors(armorType.ToString(), name, ResourceManager.GetInstance().ItemIconAtlas.GetSprite(itemPart.ToString()),jobs ,  level, level * 800f, itemPart,
+                Random(ResourceManager.GetInstance().ApixDatas.items[itemLevel].armorMinValue, ResourceManager.GetInstance().ApixDatas.items[itemLevel].armorMaxValue),
                   apix, armorType, armorType == ArmorMat.Cloth);
         }
     }

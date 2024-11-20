@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01b3adc7117bca3489aa0b4d7b6f6e0f, type: 3}
+  m_Name: NameData
+  m_EditorClassIdentifier: 
+  equipNames:
+  - eng_Name: LeatherHead
+    lo_Name: "\uAC00\uC8FD \uBAA8\uC790"
+  - eng_Name: LeatherChest
+    lo_Name: "\uAC00\uC8FD \uD749\uAC11"
+  - eng_Name: LeatherPants
+    lo_Name: "\uAC00\uC8FD \uACBD\uAC11"
+  - eng_Name: LeatherBoots
+    lo_Name: "\uAC00\uC8FD \uAD70\uD654"
+  - eng_Name: LeatherGauntlet
+    lo_Name: "\uAC00\uC8FD \uC7A5\uAC11"
+  - eng_Name: ClothHead
+    lo_Name: "\uCC9C \uBA38\uB9AC\uB760"
+  - eng_Name: ClothChest
+    lo_Name: "\uCC9C \uC0C1\uC758"
+  - eng_Name: ClothPants
+    lo_Name: "\uCC9C \uBC14\uC9C0"
+  - eng_Name: ClothBoots
+    lo_Name: "\uCC9C \uC2E0\uBC1C"
+  - eng_Name: ClothGauntlet
+    lo_Name: "\uCC9C \uC7A5\uAC11"
+  - eng_Name: PlateArmorHead
+    lo_Name: "\uD310\uAE08 \uD5EC\uBA67"
+  - eng_Name: PlateArmorChest
+    lo_Name: "\uD310\uAE08 \uAC11\uC637"
+  - eng_Name: PlateArmorPants
+    lo_Name: "\uD310\uAE08 \uACBD\uAC11"
+  - eng_Name: PlateArmorBoots
+    lo_Name: "\uD310\uAE08 \uC7A5\uD654"
+  - eng_Name: PlateArmorGauntlet
+    lo_Name: "\uD310\uAE08 \uAC74\uD2C0\uB81B"
+  - eng_Name: Shield
+    lo_Name: "\uBC29\uD328"
+  - eng_Name: Sword
+    lo_Name: "\uAC80"
+  - eng_Name: Bow
+    lo_Name: "\uD65C"
+  - eng_Name: Cane
+    lo_Name: "\uC9C0\uD321\uC774"
+  - eng_Name: BluntWeapon
+    lo_Name: "\uB454\uAE30"
+  - eng_Name: Dagger
+    lo_Name: "\uB2E8\uAC80"
+  - eng_Name: TwoHanded
+    lo_Name: "\uC591\uC190"
+  - eng_Name: LeftHand
+    lo_Name: "\uC67C\uC190"
+  - eng_Name: RightHand
+    lo_Name: "\uC624\uB978\uC190"
+  apixNames:
+  - eng_Name: Str
+    lo_Name: "\uD798\uC758"
+  - eng_Name: AGI
+    lo_Name: "\uBBFC\uCCA9\uC758"
+  - eng_Name: Vit
+    lo_Name: "\uAC15\uC778\uC758"
+  - eng_Name: Int
+    lo_Name: "\uC9C0\uB2A5\uC758"
+  - eng_Name: Dex
+    lo_Name: "\uC190\uC7AC\uC8FC\uC758"
+  - eng_Name: Luk
+    lo_Name: "\uD589\uC6B4\uC758"
+  - eng_Name: CriticalDMG
+    lo_Name: "\uCE58\uBA85\uC801\uC778"
+  - eng_Name: CriticalChance
+    lo_Name: "\uB0A0\uCE74\uB85C\uC6B4"
+  - eng_Name: ATK
+    lo_Name: "\uC704\uB825\uC801\uC778"
+  - eng_Name: MATK
+    lo_Name: "\uC2E0\uBE44\uB85C\uC6B4"
+  - eng_Name: AttackSpeed
+    lo_Name: "\uAE30\uBBFC\uD55C"
+  - eng_Name: CastingSpeed
+    lo_Name: "\uC2E0\uC18D\uD55C"
+  - eng_Name: MaxHp
+    lo_Name: "\uBC84\uD2F0\uB294"
+  - eng_Name: Accuracy
+    lo_Name: "\uC815\uD655\uD55C"
+  - eng_Name: MaxMana
+    lo_Name: "\uCD08\uC6D4\uC801\uC778"
+  - eng_Name: ManaRegen
+    lo_Name: "\uC601\uAC10\uBC1B\uC740"
+  - eng_Name: HpRegen
+    lo_Name: "\uC2F1\uADF8\uB7EC\uC6B4"
+  - eng_Name: MoveSpeed
+    lo_Name: "\uBC1C\uBE60\uB978"
+  - eng_Name: deff
+    lo_Name: "\uB2E8\uB2E8\uD55C"
+  - eng_Name: Evasion
+    lo_Name: "\uBC18\uC751\uD558\uB294"
+  - eng_Name: magicDeff
+    lo_Name: "\uC800\uD56D\uD558\uB294"
+  levelNames:
+  - eng_Name: Rusty
+    lo_Name: "\uB179\uC2A8"
+  - eng_Name: Worn
+    lo_Name: "\uB0A1\uC740"
+  - eng_Name: Basic
+    lo_Name: "\uAE30\uBCF8\uC801\uC778"
+  - eng_Name: Simple
+    lo_Name: "\uB2E8\uC21C\uD55C"
+  - eng_Name: Cracked
+    lo_Name: "\uAE08\uC774 \uAC04"
+  - eng_Name: Fine
+    lo_Name: "\uC138\uB828\uB41C"
+  - eng_Name: Sturdy
+    lo_Name: "\uD2BC\uD2BC\uD55C"
+  - eng_Name: Polished
+    lo_Name: "\uC724\uC774 \uB098\uB294"
+  - eng_Name: Gleaming
+    lo_Name: "\uBC18\uC9DD\uC774\uB294"
+  - eng_Name: Reinforced
+    lo_Name: "\uAC15\uD654\uB41C"
+  - eng_Name: Sharp
+    lo_Name: "\uB0A0\uCE74\uB85C\uC6B4"
+  - eng_Name: Tempered
+    lo_Name: "\uB2E8\uB828\uB41C"
+  - eng_Name: Shining
+    lo_Name: "\uBE5B\uB098\uB294"
+  - eng_Name: Hardened
+    lo_Name: "\uB2E8\uB2E8\uD574\uC9C4"
+  - eng_Name: Balanced
+    lo_Name: "\uADE0\uD615 \uC7A1\uD78C"
+  - eng_Name: Exquisite
+    lo_Name: "\uC815\uAD50\uD55C"
+  - eng_Name: Refined
+    lo_Name: "\uC815\uC81C\uB41C"
+  - eng_Name: Radiant
+    lo_Name: "\uB208\uBD80\uC2E0"
+  - eng_Name: Honed
+    lo_Name: "\uAC08\uACE0 \uB2E6\uC740"
+  - eng_Name: Glorious
+    lo_Name: "\uC601\uAD11\uC2A4\uB7EC\uC6B4"
