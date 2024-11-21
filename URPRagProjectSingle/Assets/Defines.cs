@@ -226,7 +226,7 @@ namespace NeutralDefines
         {
             [SerializeField] private Texture2D defaultCursorIMG;
             [SerializeField] private Texture2D noneClickAbleIMG;
-            [SerializeField] private Texture2D grabCursorIMG;
+            [SerializeField] private Texture2D itemCursorIMG;
             [SerializeField] private Texture2D attackAbleCursorIMG;
             [SerializeField] private Texture2D skillTargetingCursorIMG;
             public cursorState CurrentCursorState
@@ -246,8 +246,8 @@ namespace NeutralDefines
                     case cursorState.noneClickAbleState:
                         Cursor.SetCursor(noneClickAbleIMG, Vector2.left + Vector2.up, CursorMode.Auto);
                         break;
-                    case cursorState.grabCursor:
-                        Cursor.SetCursor(grabCursorIMG, Vector2.left + Vector2.up, CursorMode.Auto);
+                    case cursorState.itemCursor:
+                        Cursor.SetCursor(itemCursorIMG, Vector2.left + Vector2.up, CursorMode.Auto);
                         break;
                     case cursorState.attackAble:
                         Cursor.SetCursor(attackAbleCursorIMG, Vector2.left + Vector2.up, CursorMode.Auto);
@@ -261,7 +261,7 @@ namespace NeutralDefines
         }
         public enum cursorState
         {
-            defaultCurser, noneClickAbleState, grabCursor, attackAble, skillTargeting
+            defaultCurser, noneClickAbleState, itemCursor, attackAble, skillTargeting
         }
 
     }

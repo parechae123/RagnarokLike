@@ -6,16 +6,16 @@ using UnityEngine;
 public class DropManaging
 {
     public Queue<DropItems> items = new Queue<DropItems>();
-    public void SpawnEquipItem(Vector3 position,byte level)
+    public void SpawnEquipItem(Vector3 position,byte level,bool isWeaponOnly= false,bool isArmorOnly = false)
     {
         ApixSlotMachine(3, Enum.GetValues(typeof(WeaponApixType)).Length, false);
         if(items.Count > 0)
         {
-            items.Dequeue().InitialIzeItem(AssembleEquips(level), position);
+            items.Dequeue().InitialIzeItem(AssembleEquips(level,isWeaponOnly,isArmorOnly), position);
         }
         else
         {
-            new GameObject("DropItems").AddComponent<DropItems>().InitialIzeItem(AssembleEquips(level), position);
+            new GameObject("DropItems").AddComponent<DropItems>().InitialIzeItem(AssembleEquips(level, isWeaponOnly, isArmorOnly), position);
         }
     }
     /// <summary>
@@ -25,6 +25,7 @@ public class DropManaging
     /// <param name="item"></param>
     public void SpawnMisc(Vector3 position,MiscData item)
     {
+        if ((item == null)) return;
         ApixSlotMachine(3, Enum.GetValues(typeof(WeaponApixType)).Length, false);
         if(items.Count > 0)
         {
@@ -53,9 +54,23 @@ public class DropManaging
         }
     }
 
-    public Equips AssembleEquips(byte level)
+    public Equips AssembleEquips(byte level,bool weaponOnly,bool armorOnly)
     {
-        EquipPart itemPart = (EquipPart)Random(0, Enum.GetValues(typeof(EquipPart)).Length);
+        EquipPart itemPart;
+        if (weaponOnly)
+        {
+            itemPart = (EquipPart)Random(5, (int)EquipPart.TwoHanded);
+        }
+        else if(armorOnly)
+        {
+            itemPart = (EquipPart)Random(0, (int)EquipPart.Gauntlet);
+        }
+        else
+        {
+            itemPart = (EquipPart)Random(0, Enum.GetValues(typeof(EquipPart)).Length);
+        }
+
+        
         //무기 종류에 속하는 장비일 경우
         int itemLevel = level / 5;
         ApixesData datas = ResourceManager.GetInstance().ApixDatas.items[itemLevel];

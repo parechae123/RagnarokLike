@@ -1,0 +1,1495 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 384bd899977b3b04589552738f4c8e31, type: 3}
+  m_Name: Apixes
+  m_EditorClassIdentifier: 
+  items:
+  - level: 0
+    weaponApixes:
+    - apixType: 0
+      minValue: 0
+      maxValue: 0
+    - apixType: 1
+      minValue: 0
+      maxValue: 0
+    - apixType: 2
+      minValue: 0
+      maxValue: 0
+    - apixType: 3
+      minValue: 0
+      maxValue: 0
+    - apixType: 4
+      minValue: 0
+      maxValue: 0
+    - apixType: 5
+      minValue: 0
+      maxValue: 0
+    - apixType: 6
+      minValue: 0
+      maxValue: 0
+    - apixType: 7
+      minValue: 0
+      maxValue: 0
+    armorApixes:
+    - apixType: 0
+      minValue: 0
+      maxValue: 0
+    - apixType: 1
+      minValue: 0
+      maxValue: 0
+    - apixType: 2
+      minValue: 0
+      maxValue: 0
+    - apixType: 3
+      minValue: 0
+      maxValue: 0
+    - apixType: 4
+      minValue: 0
+      maxValue: 0
+    - apixType: 5
+      minValue: 0
+      maxValue: 0
+    - apixType: 6
+      minValue: 0
+      maxValue: 0
+    - apixType: 7
+      minValue: 0
+      maxValue: 0
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 0
+    - apixType: 1
+      minValue: 1
+      maxValue: 0
+    - apixType: 2
+      minValue: 1
+      maxValue: 0
+    - apixType: 3
+      minValue: 1
+      maxValue: 0
+    - apixType: 4
+      minValue: 1
+      maxValue: 0
+    - apixType: 5
+      minValue: 1
+      maxValue: 0
+    armorMaxValue: 0
+    armorMinValue: 0
+    weaponMaxValue: 0
+    weaponMinValue: 0
+  - level: 5
+    weaponApixes:
+    - apixType: 0
+      minValue: 2.5
+      maxValue: 6
+    - apixType: 1
+      minValue: 2.5
+      maxValue: 1
+    - apixType: 2
+      minValue: 6
+      maxValue: 7
+    - apixType: 3
+      minValue: 4
+      maxValue: 10
+    - apixType: 4
+      minValue: 0.0034999999
+      maxValue: 0.0175
+    - apixType: 5
+      minValue: 0.0034999999
+      maxValue: 0.0175
+    - apixType: 6
+      minValue: 30
+      maxValue: 40
+    - apixType: 7
+      minValue: 4.5
+      maxValue: 6
+    armorApixes:
+    - apixType: 0
+      minValue: 20
+      maxValue: 27.5
+    - apixType: 1
+      minValue: 0.14999999
+      maxValue: 0.39999998
+    - apixType: 2
+      minValue: 25
+      maxValue: 35
+    - apixType: 3
+      minValue: 0.25
+      maxValue: 0.59999996
+    - apixType: 4
+      minValue: 0.074999996
+      maxValue: 0.19999999
+    - apixType: 5
+      minValue: 25
+      maxValue: 40
+    - apixType: 6
+      minValue: 0.19999999
+      maxValue: 0.5
+    - apixType: 7
+      minValue: 25
+      maxValue: 40
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 1
+    - apixType: 1
+      minValue: 1
+      maxValue: 1
+    - apixType: 2
+      minValue: 1
+      maxValue: 1
+    - apixType: 3
+      minValue: 1
+      maxValue: 1
+    - apixType: 4
+      minValue: 1
+      maxValue: 1
+    - apixType: 5
+      minValue: 1
+      maxValue: 1
+    armorMaxValue: 60
+    armorMinValue: 30
+    weaponMaxValue: 30
+    weaponMinValue: 20
+  - level: 10
+    weaponApixes:
+    - apixType: 0
+      minValue: 5
+      maxValue: 12
+    - apixType: 1
+      minValue: 5
+      maxValue: 2
+    - apixType: 2
+      minValue: 12
+      maxValue: 14
+    - apixType: 3
+      minValue: 8
+      maxValue: 20
+    - apixType: 4
+      minValue: 0.0069999998
+      maxValue: 0.035
+    - apixType: 5
+      minValue: 0.0069999998
+      maxValue: 0.035
+    - apixType: 6
+      minValue: 60
+      maxValue: 80
+    - apixType: 7
+      minValue: 9
+      maxValue: 12
+    armorApixes:
+    - apixType: 0
+      minValue: 40
+      maxValue: 55
+    - apixType: 1
+      minValue: 0.29999998
+      maxValue: 0.79999995
+    - apixType: 2
+      minValue: 50
+      maxValue: 70
+    - apixType: 3
+      minValue: 0.5
+      maxValue: 1.1999999
+    - apixType: 4
+      minValue: 0.14999999
+      maxValue: 0.39999998
+    - apixType: 5
+      minValue: 50
+      maxValue: 80
+    - apixType: 6
+      minValue: 0.39999998
+      maxValue: 1
+    - apixType: 7
+      minValue: 50
+      maxValue: 80
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 2
+    - apixType: 1
+      minValue: 1
+      maxValue: 2
+    - apixType: 2
+      minValue: 1
+      maxValue: 2
+    - apixType: 3
+      minValue: 1
+      maxValue: 2
+    - apixType: 4
+      minValue: 1
+      maxValue: 2
+    - apixType: 5
+      minValue: 1
+      maxValue: 2
+    armorMaxValue: 120
+    armorMinValue: 60
+    weaponMaxValue: 60
+    weaponMinValue: 40
+  - level: 15
+    weaponApixes:
+    - apixType: 0
+      minValue: 7.5
+      maxValue: 18
+    - apixType: 1
+      minValue: 7.5
+      maxValue: 3
+    - apixType: 2
+      minValue: 18
+      maxValue: 21
+    - apixType: 3
+      minValue: 12
+      maxValue: 30
+    - apixType: 4
+      minValue: 0.0105
+      maxValue: 0.052500002
+    - apixType: 5
+      minValue: 0.0105
+      maxValue: 0.052500002
+    - apixType: 6
+      minValue: 90
+      maxValue: 120
+    - apixType: 7
+      minValue: 13.5
+      maxValue: 18
+    armorApixes:
+    - apixType: 0
+      minValue: 60
+      maxValue: 82.5
+    - apixType: 1
+      minValue: 0.45
+      maxValue: 1.1999999
+    - apixType: 2
+      minValue: 75
+      maxValue: 105
+    - apixType: 3
+      minValue: 0.75
+      maxValue: 1.8
+    - apixType: 4
+      minValue: 0.225
+      maxValue: 0.59999996
+    - apixType: 5
+      minValue: 75
+      maxValue: 120
+    - apixType: 6
+      minValue: 0.59999996
+      maxValue: 1.5
+    - apixType: 7
+      minValue: 75
+      maxValue: 120
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 3
+    - apixType: 1
+      minValue: 1
+      maxValue: 3
+    - apixType: 2
+      minValue: 1
+      maxValue: 3
+    - apixType: 3
+      minValue: 1
+      maxValue: 3
+    - apixType: 4
+      minValue: 1
+      maxValue: 3
+    - apixType: 5
+      minValue: 1
+      maxValue: 3
+    armorMaxValue: 180
+    armorMinValue: 90
+    weaponMaxValue: 90
+    weaponMinValue: 60
+  - level: 20
+    weaponApixes:
+    - apixType: 0
+      minValue: 10
+      maxValue: 24
+    - apixType: 1
+      minValue: 10
+      maxValue: 4
+    - apixType: 2
+      minValue: 24
+      maxValue: 28
+    - apixType: 3
+      minValue: 16
+      maxValue: 40
+    - apixType: 4
+      minValue: 0.0139999995
+      maxValue: 0.07
+    - apixType: 5
+      minValue: 0.0139999995
+      maxValue: 0.07
+    - apixType: 6
+      minValue: 120
+      maxValue: 160
+    - apixType: 7
+      minValue: 18
+      maxValue: 24
+    armorApixes:
+    - apixType: 0
+      minValue: 80
+      maxValue: 110
+    - apixType: 1
+      minValue: 0.59999996
+      maxValue: 1.5999999
+    - apixType: 2
+      minValue: 100
+      maxValue: 140
+    - apixType: 3
+      minValue: 1
+      maxValue: 2.3999999
+    - apixType: 4
+      minValue: 0.29999998
+      maxValue: 0.79999995
+    - apixType: 5
+      minValue: 100
+      maxValue: 160
+    - apixType: 6
+      minValue: 0.79999995
+      maxValue: 2
+    - apixType: 7
+      minValue: 100
+      maxValue: 160
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 4
+    - apixType: 1
+      minValue: 1
+      maxValue: 4
+    - apixType: 2
+      minValue: 1
+      maxValue: 4
+    - apixType: 3
+      minValue: 1
+      maxValue: 4
+    - apixType: 4
+      minValue: 1
+      maxValue: 4
+    - apixType: 5
+      minValue: 1
+      maxValue: 4
+    armorMaxValue: 240
+    armorMinValue: 120
+    weaponMaxValue: 120
+    weaponMinValue: 80
+  - level: 25
+    weaponApixes:
+    - apixType: 0
+      minValue: 12.5
+      maxValue: 30.000002
+    - apixType: 1
+      minValue: 12.5
+      maxValue: 5
+    - apixType: 2
+      minValue: 30.000002
+      maxValue: 35
+    - apixType: 3
+      minValue: 20
+      maxValue: 50
+    - apixType: 4
+      minValue: 0.0175
+      maxValue: 0.087500006
+    - apixType: 5
+      minValue: 0.0175
+      maxValue: 0.087500006
+    - apixType: 6
+      minValue: 150
+      maxValue: 200
+    - apixType: 7
+      minValue: 22.5
+      maxValue: 30.000002
+    armorApixes:
+    - apixType: 0
+      minValue: 100
+      maxValue: 137.5
+    - apixType: 1
+      minValue: 0.75
+      maxValue: 2
+    - apixType: 2
+      minValue: 125
+      maxValue: 175
+    - apixType: 3
+      minValue: 1.25
+      maxValue: 3
+    - apixType: 4
+      minValue: 0.375
+      maxValue: 1
+    - apixType: 5
+      minValue: 125
+      maxValue: 200
+    - apixType: 6
+      minValue: 1
+      maxValue: 2.5
+    - apixType: 7
+      minValue: 125
+      maxValue: 200
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 4
+    - apixType: 1
+      minValue: 1
+      maxValue: 4
+    - apixType: 2
+      minValue: 1
+      maxValue: 4
+    - apixType: 3
+      minValue: 1
+      maxValue: 4
+    - apixType: 4
+      minValue: 1
+      maxValue: 4
+    - apixType: 5
+      minValue: 1
+      maxValue: 4
+    armorMaxValue: 300
+    armorMinValue: 150
+    weaponMaxValue: 150
+    weaponMinValue: 100
+  - level: 30
+    weaponApixes:
+    - apixType: 0
+      minValue: 15
+      maxValue: 36
+    - apixType: 1
+      minValue: 15
+      maxValue: 6
+    - apixType: 2
+      minValue: 36
+      maxValue: 42
+    - apixType: 3
+      minValue: 24
+      maxValue: 60
+    - apixType: 4
+      minValue: 0.021
+      maxValue: 0.105000004
+    - apixType: 5
+      minValue: 0.021
+      maxValue: 0.105000004
+    - apixType: 6
+      minValue: 180
+      maxValue: 240
+    - apixType: 7
+      minValue: 27
+      maxValue: 36
+    armorApixes:
+    - apixType: 0
+      minValue: 120
+      maxValue: 165
+    - apixType: 1
+      minValue: 0.9
+      maxValue: 2.3999999
+    - apixType: 2
+      minValue: 150
+      maxValue: 210
+    - apixType: 3
+      minValue: 1.5
+      maxValue: 3.6
+    - apixType: 4
+      minValue: 0.45
+      maxValue: 1.1999999
+    - apixType: 5
+      minValue: 150
+      maxValue: 240
+    - apixType: 6
+      minValue: 1.1999999
+      maxValue: 3
+    - apixType: 7
+      minValue: 150
+      maxValue: 240
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 5
+    - apixType: 1
+      minValue: 1
+      maxValue: 5
+    - apixType: 2
+      minValue: 1
+      maxValue: 5
+    - apixType: 3
+      minValue: 1
+      maxValue: 5
+    - apixType: 4
+      minValue: 1
+      maxValue: 5
+    - apixType: 5
+      minValue: 1
+      maxValue: 5
+    armorMaxValue: 360
+    armorMinValue: 180
+    weaponMaxValue: 180
+    weaponMinValue: 120
+  - level: 35
+    weaponApixes:
+    - apixType: 0
+      minValue: 17.5
+      maxValue: 42
+    - apixType: 1
+      minValue: 17.5
+      maxValue: 7
+    - apixType: 2
+      minValue: 42
+      maxValue: 49
+    - apixType: 3
+      minValue: 28
+      maxValue: 70
+    - apixType: 4
+      minValue: 0.0245
+      maxValue: 0.1225
+    - apixType: 5
+      minValue: 0.0245
+      maxValue: 0.1225
+    - apixType: 6
+      minValue: 210
+      maxValue: 280
+    - apixType: 7
+      minValue: 31.5
+      maxValue: 42
+    armorApixes:
+    - apixType: 0
+      minValue: 140
+      maxValue: 192.5
+    - apixType: 1
+      minValue: 1.05
+      maxValue: 2.8
+    - apixType: 2
+      minValue: 175
+      maxValue: 245
+    - apixType: 3
+      minValue: 1.75
+      maxValue: 4.2
+    - apixType: 4
+      minValue: 0.525
+      maxValue: 1.4
+    - apixType: 5
+      minValue: 175
+      maxValue: 280
+    - apixType: 6
+      minValue: 1.4
+      maxValue: 3.5
+    - apixType: 7
+      minValue: 175
+      maxValue: 280
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 6
+    - apixType: 1
+      minValue: 1
+      maxValue: 6
+    - apixType: 2
+      minValue: 1
+      maxValue: 6
+    - apixType: 3
+      minValue: 1
+      maxValue: 6
+    - apixType: 4
+      minValue: 1
+      maxValue: 6
+    - apixType: 5
+      minValue: 1
+      maxValue: 6
+    armorMaxValue: 420
+    armorMinValue: 210
+    weaponMaxValue: 210
+    weaponMinValue: 140
+  - level: 40
+    weaponApixes:
+    - apixType: 0
+      minValue: 20
+      maxValue: 48
+    - apixType: 1
+      minValue: 20
+      maxValue: 8
+    - apixType: 2
+      minValue: 48
+      maxValue: 56
+    - apixType: 3
+      minValue: 32
+      maxValue: 80
+    - apixType: 4
+      minValue: 0.027999999
+      maxValue: 0.14
+    - apixType: 5
+      minValue: 0.027999999
+      maxValue: 0.14
+    - apixType: 6
+      minValue: 240
+      maxValue: 320
+    - apixType: 7
+      minValue: 36
+      maxValue: 48
+    armorApixes:
+    - apixType: 0
+      minValue: 160
+      maxValue: 220
+    - apixType: 1
+      minValue: 1.1999999
+      maxValue: 3.1999998
+    - apixType: 2
+      minValue: 200
+      maxValue: 280
+    - apixType: 3
+      minValue: 2
+      maxValue: 4.7999997
+    - apixType: 4
+      minValue: 0.59999996
+      maxValue: 1.5999999
+    - apixType: 5
+      minValue: 200
+      maxValue: 320
+    - apixType: 6
+      minValue: 1.5999999
+      maxValue: 4
+    - apixType: 7
+      minValue: 200
+      maxValue: 320
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 7
+    - apixType: 1
+      minValue: 1
+      maxValue: 7
+    - apixType: 2
+      minValue: 1
+      maxValue: 7
+    - apixType: 3
+      minValue: 1
+      maxValue: 7
+    - apixType: 4
+      minValue: 1
+      maxValue: 7
+    - apixType: 5
+      minValue: 1
+      maxValue: 7
+    armorMaxValue: 480
+    armorMinValue: 240
+    weaponMaxValue: 240
+    weaponMinValue: 160
+  - level: 45
+    weaponApixes:
+    - apixType: 0
+      minValue: 22.5
+      maxValue: 54.000004
+    - apixType: 1
+      minValue: 22.5
+      maxValue: 9
+    - apixType: 2
+      minValue: 54.000004
+      maxValue: 63
+    - apixType: 3
+      minValue: 36
+      maxValue: 90
+    - apixType: 4
+      minValue: 0.0315
+      maxValue: 0.1575
+    - apixType: 5
+      minValue: 0.0315
+      maxValue: 0.1575
+    - apixType: 6
+      minValue: 270
+      maxValue: 360
+    - apixType: 7
+      minValue: 40.5
+      maxValue: 54.000004
+    armorApixes:
+    - apixType: 0
+      minValue: 180
+      maxValue: 247.5
+    - apixType: 1
+      minValue: 1.35
+      maxValue: 3.6
+    - apixType: 2
+      minValue: 225
+      maxValue: 315
+    - apixType: 3
+      minValue: 2.25
+      maxValue: 5.4
+    - apixType: 4
+      minValue: 0.675
+      maxValue: 1.8
+    - apixType: 5
+      minValue: 225
+      maxValue: 360
+    - apixType: 6
+      minValue: 1.8
+      maxValue: 4.5
+    - apixType: 7
+      minValue: 225
+      maxValue: 360
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 8
+    - apixType: 1
+      minValue: 1
+      maxValue: 8
+    - apixType: 2
+      minValue: 1
+      maxValue: 8
+    - apixType: 3
+      minValue: 1
+      maxValue: 8
+    - apixType: 4
+      minValue: 1
+      maxValue: 8
+    - apixType: 5
+      minValue: 1
+      maxValue: 8
+    armorMaxValue: 540
+    armorMinValue: 270
+    weaponMaxValue: 270
+    weaponMinValue: 180
+  - level: 50
+    weaponApixes:
+    - apixType: 0
+      minValue: 25
+      maxValue: 60.000004
+    - apixType: 1
+      minValue: 25
+      maxValue: 10
+    - apixType: 2
+      minValue: 60.000004
+      maxValue: 70
+    - apixType: 3
+      minValue: 40
+      maxValue: 100
+    - apixType: 4
+      minValue: 0.035
+      maxValue: 0.17500001
+    - apixType: 5
+      minValue: 0.035
+      maxValue: 0.17500001
+    - apixType: 6
+      minValue: 300
+      maxValue: 400
+    - apixType: 7
+      minValue: 45
+      maxValue: 60.000004
+    armorApixes:
+    - apixType: 0
+      minValue: 200
+      maxValue: 275
+    - apixType: 1
+      minValue: 1.5
+      maxValue: 4
+    - apixType: 2
+      minValue: 250
+      maxValue: 350
+    - apixType: 3
+      minValue: 2.5
+      maxValue: 6
+    - apixType: 4
+      minValue: 0.75
+      maxValue: 2
+    - apixType: 5
+      minValue: 250
+      maxValue: 400
+    - apixType: 6
+      minValue: 2
+      maxValue: 5
+    - apixType: 7
+      minValue: 250
+      maxValue: 400
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 8
+    - apixType: 1
+      minValue: 1
+      maxValue: 8
+    - apixType: 2
+      minValue: 1
+      maxValue: 8
+    - apixType: 3
+      minValue: 1
+      maxValue: 8
+    - apixType: 4
+      minValue: 1
+      maxValue: 8
+    - apixType: 5
+      minValue: 1
+      maxValue: 8
+    armorMaxValue: 600
+    armorMinValue: 300
+    weaponMaxValue: 300
+    weaponMinValue: 200
+  - level: 55
+    weaponApixes:
+    - apixType: 0
+      minValue: 27.5
+      maxValue: 66
+    - apixType: 1
+      minValue: 27.5
+      maxValue: 11
+    - apixType: 2
+      minValue: 66
+      maxValue: 77
+    - apixType: 3
+      minValue: 44
+      maxValue: 110
+    - apixType: 4
+      minValue: 0.0385
+      maxValue: 0.19250001
+    - apixType: 5
+      minValue: 0.0385
+      maxValue: 0.19250001
+    - apixType: 6
+      minValue: 330
+      maxValue: 440
+    - apixType: 7
+      minValue: 49.5
+      maxValue: 66
+    armorApixes:
+    - apixType: 0
+      minValue: 220
+      maxValue: 302.5
+    - apixType: 1
+      minValue: 1.65
+      maxValue: 4.4
+    - apixType: 2
+      minValue: 275
+      maxValue: 385
+    - apixType: 3
+      minValue: 2.75
+      maxValue: 6.6
+    - apixType: 4
+      minValue: 0.825
+      maxValue: 2.2
+    - apixType: 5
+      minValue: 275
+      maxValue: 440
+    - apixType: 6
+      minValue: 2.2
+      maxValue: 5.5
+    - apixType: 7
+      minValue: 275
+      maxValue: 440
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 9
+    - apixType: 1
+      minValue: 1
+      maxValue: 9
+    - apixType: 2
+      minValue: 1
+      maxValue: 9
+    - apixType: 3
+      minValue: 1
+      maxValue: 9
+    - apixType: 4
+      minValue: 1
+      maxValue: 9
+    - apixType: 5
+      minValue: 1
+      maxValue: 9
+    armorMaxValue: 660
+    armorMinValue: 330
+    weaponMaxValue: 330
+    weaponMinValue: 220
+  - level: 60
+    weaponApixes:
+    - apixType: 0
+      minValue: 30
+      maxValue: 72
+    - apixType: 1
+      minValue: 30
+      maxValue: 12
+    - apixType: 2
+      minValue: 72
+      maxValue: 84
+    - apixType: 3
+      minValue: 48
+      maxValue: 120
+    - apixType: 4
+      minValue: 0.042
+      maxValue: 0.21000001
+    - apixType: 5
+      minValue: 0.042
+      maxValue: 0.21000001
+    - apixType: 6
+      minValue: 360
+      maxValue: 480
+    - apixType: 7
+      minValue: 54
+      maxValue: 72
+    armorApixes:
+    - apixType: 0
+      minValue: 240
+      maxValue: 330
+    - apixType: 1
+      minValue: 1.8
+      maxValue: 4.7999997
+    - apixType: 2
+      minValue: 300
+      maxValue: 420
+    - apixType: 3
+      minValue: 3
+      maxValue: 7.2
+    - apixType: 4
+      minValue: 0.9
+      maxValue: 2.3999999
+    - apixType: 5
+      minValue: 300
+      maxValue: 480
+    - apixType: 6
+      minValue: 2.3999999
+      maxValue: 6
+    - apixType: 7
+      minValue: 300
+      maxValue: 480
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 10
+    - apixType: 1
+      minValue: 1
+      maxValue: 10
+    - apixType: 2
+      minValue: 1
+      maxValue: 10
+    - apixType: 3
+      minValue: 1
+      maxValue: 10
+    - apixType: 4
+      minValue: 1
+      maxValue: 10
+    - apixType: 5
+      minValue: 1
+      maxValue: 10
+    armorMaxValue: 720
+    armorMinValue: 360
+    weaponMaxValue: 360
+    weaponMinValue: 240
+  - level: 65
+    weaponApixes:
+    - apixType: 0
+      minValue: 32.5
+      maxValue: 78
+    - apixType: 1
+      minValue: 32.5
+      maxValue: 13
+    - apixType: 2
+      minValue: 78
+      maxValue: 91
+    - apixType: 3
+      minValue: 52
+      maxValue: 130
+    - apixType: 4
+      minValue: 0.0455
+      maxValue: 0.2275
+    - apixType: 5
+      minValue: 0.0455
+      maxValue: 0.2275
+    - apixType: 6
+      minValue: 390
+      maxValue: 520
+    - apixType: 7
+      minValue: 58.5
+      maxValue: 78
+    armorApixes:
+    - apixType: 0
+      minValue: 260
+      maxValue: 357.5
+    - apixType: 1
+      minValue: 1.9499999
+      maxValue: 5.2
+    - apixType: 2
+      minValue: 325
+      maxValue: 455
+    - apixType: 3
+      minValue: 3.25
+      maxValue: 7.7999997
+    - apixType: 4
+      minValue: 0.97499996
+      maxValue: 2.6
+    - apixType: 5
+      minValue: 325
+      maxValue: 520
+    - apixType: 6
+      minValue: 2.6
+      maxValue: 6.5
+    - apixType: 7
+      minValue: 325
+      maxValue: 520
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 11
+    - apixType: 1
+      minValue: 1
+      maxValue: 11
+    - apixType: 2
+      minValue: 1
+      maxValue: 11
+    - apixType: 3
+      minValue: 1
+      maxValue: 11
+    - apixType: 4
+      minValue: 1
+      maxValue: 11
+    - apixType: 5
+      minValue: 1
+      maxValue: 11
+    armorMaxValue: 780
+    armorMinValue: 390
+    weaponMaxValue: 390
+    weaponMinValue: 260
+  - level: 70
+    weaponApixes:
+    - apixType: 0
+      minValue: 35
+      maxValue: 84
+    - apixType: 1
+      minValue: 35
+      maxValue: 14
+    - apixType: 2
+      minValue: 84
+      maxValue: 98
+    - apixType: 3
+      minValue: 56
+      maxValue: 140
+    - apixType: 4
+      minValue: 0.049
+      maxValue: 0.245
+    - apixType: 5
+      minValue: 0.049
+      maxValue: 0.245
+    - apixType: 6
+      minValue: 420
+      maxValue: 560
+    - apixType: 7
+      minValue: 63
+      maxValue: 84
+    armorApixes:
+    - apixType: 0
+      minValue: 280
+      maxValue: 385
+    - apixType: 1
+      minValue: 2.1
+      maxValue: 5.6
+    - apixType: 2
+      minValue: 350
+      maxValue: 490
+    - apixType: 3
+      minValue: 3.5
+      maxValue: 8.4
+    - apixType: 4
+      minValue: 1.05
+      maxValue: 2.8
+    - apixType: 5
+      minValue: 350
+      maxValue: 560
+    - apixType: 6
+      minValue: 2.8
+      maxValue: 7
+    - apixType: 7
+      minValue: 350
+      maxValue: 560
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 12
+    - apixType: 1
+      minValue: 1
+      maxValue: 12
+    - apixType: 2
+      minValue: 1
+      maxValue: 12
+    - apixType: 3
+      minValue: 1
+      maxValue: 12
+    - apixType: 4
+      minValue: 1
+      maxValue: 12
+    - apixType: 5
+      minValue: 1
+      maxValue: 12
+    armorMaxValue: 840
+    armorMinValue: 420
+    weaponMaxValue: 420
+    weaponMinValue: 280
+  - level: 75
+    weaponApixes:
+    - apixType: 0
+      minValue: 37.5
+      maxValue: 90
+    - apixType: 1
+      minValue: 37.5
+      maxValue: 15
+    - apixType: 2
+      minValue: 90
+      maxValue: 105
+    - apixType: 3
+      minValue: 60
+      maxValue: 150
+    - apixType: 4
+      minValue: 0.0525
+      maxValue: 0.26250002
+    - apixType: 5
+      minValue: 0.0525
+      maxValue: 0.26250002
+    - apixType: 6
+      minValue: 450
+      maxValue: 600
+    - apixType: 7
+      minValue: 67.5
+      maxValue: 90
+    armorApixes:
+    - apixType: 0
+      minValue: 300
+      maxValue: 412.5
+    - apixType: 1
+      minValue: 2.25
+      maxValue: 6
+    - apixType: 2
+      minValue: 375
+      maxValue: 525
+    - apixType: 3
+      minValue: 3.75
+      maxValue: 9
+    - apixType: 4
+      minValue: 1.125
+      maxValue: 3
+    - apixType: 5
+      minValue: 375
+      maxValue: 600
+    - apixType: 6
+      minValue: 3
+      maxValue: 7.5
+    - apixType: 7
+      minValue: 375
+      maxValue: 600
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 12
+    - apixType: 1
+      minValue: 1
+      maxValue: 12
+    - apixType: 2
+      minValue: 1
+      maxValue: 12
+    - apixType: 3
+      minValue: 1
+      maxValue: 12
+    - apixType: 4
+      minValue: 1
+      maxValue: 12
+    - apixType: 5
+      minValue: 1
+      maxValue: 12
+    armorMaxValue: 900
+    armorMinValue: 450
+    weaponMaxValue: 450
+    weaponMinValue: 300
+  - level: 80
+    weaponApixes:
+    - apixType: 0
+      minValue: 40
+      maxValue: 96
+    - apixType: 1
+      minValue: 40
+      maxValue: 16
+    - apixType: 2
+      minValue: 96
+      maxValue: 112
+    - apixType: 3
+      minValue: 64
+      maxValue: 160
+    - apixType: 4
+      minValue: 0.055999998
+      maxValue: 0.28
+    - apixType: 5
+      minValue: 0.055999998
+      maxValue: 0.28
+    - apixType: 6
+      minValue: 480
+      maxValue: 640
+    - apixType: 7
+      minValue: 72
+      maxValue: 96
+    armorApixes:
+    - apixType: 0
+      minValue: 320
+      maxValue: 440
+    - apixType: 1
+      minValue: 2.3999999
+      maxValue: 6.3999996
+    - apixType: 2
+      minValue: 400
+      maxValue: 560
+    - apixType: 3
+      minValue: 4
+      maxValue: 9.599999
+    - apixType: 4
+      minValue: 1.1999999
+      maxValue: 3.1999998
+    - apixType: 5
+      minValue: 400
+      maxValue: 640
+    - apixType: 6
+      minValue: 3.1999998
+      maxValue: 8
+    - apixType: 7
+      minValue: 400
+      maxValue: 640
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 13
+    - apixType: 1
+      minValue: 1
+      maxValue: 13
+    - apixType: 2
+      minValue: 1
+      maxValue: 13
+    - apixType: 3
+      minValue: 1
+      maxValue: 13
+    - apixType: 4
+      minValue: 1
+      maxValue: 13
+    - apixType: 5
+      minValue: 1
+      maxValue: 13
+    armorMaxValue: 960
+    armorMinValue: 480
+    weaponMaxValue: 480
+    weaponMinValue: 320
+  - level: 85
+    weaponApixes:
+    - apixType: 0
+      minValue: 42.5
+      maxValue: 102.00001
+    - apixType: 1
+      minValue: 42.5
+      maxValue: 17
+    - apixType: 2
+      minValue: 102.00001
+      maxValue: 119
+    - apixType: 3
+      minValue: 68
+      maxValue: 170
+    - apixType: 4
+      minValue: 0.059499998
+      maxValue: 0.2975
+    - apixType: 5
+      minValue: 0.059499998
+      maxValue: 0.2975
+    - apixType: 6
+      minValue: 510
+      maxValue: 680
+    - apixType: 7
+      minValue: 76.5
+      maxValue: 102.00001
+    armorApixes:
+    - apixType: 0
+      minValue: 340
+      maxValue: 467.5
+    - apixType: 1
+      minValue: 2.55
+      maxValue: 6.7999997
+    - apixType: 2
+      minValue: 425
+      maxValue: 595
+    - apixType: 3
+      minValue: 4.25
+      maxValue: 10.2
+    - apixType: 4
+      minValue: 1.275
+      maxValue: 3.3999999
+    - apixType: 5
+      minValue: 425
+      maxValue: 680
+    - apixType: 6
+      minValue: 3.3999999
+      maxValue: 8.5
+    - apixType: 7
+      minValue: 425
+      maxValue: 680
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 14
+    - apixType: 1
+      minValue: 1
+      maxValue: 14
+    - apixType: 2
+      minValue: 1
+      maxValue: 14
+    - apixType: 3
+      minValue: 1
+      maxValue: 14
+    - apixType: 4
+      minValue: 1
+      maxValue: 14
+    - apixType: 5
+      minValue: 1
+      maxValue: 14
+    armorMaxValue: 1020
+    armorMinValue: 510
+    weaponMaxValue: 510
+    weaponMinValue: 340
+  - level: 90
+    weaponApixes:
+    - apixType: 0
+      minValue: 45
+      maxValue: 108.00001
+    - apixType: 1
+      minValue: 45
+      maxValue: 18
+    - apixType: 2
+      minValue: 108.00001
+      maxValue: 126
+    - apixType: 3
+      minValue: 72
+      maxValue: 180
+    - apixType: 4
+      minValue: 0.063
+      maxValue: 0.315
+    - apixType: 5
+      minValue: 0.063
+      maxValue: 0.315
+    - apixType: 6
+      minValue: 540
+      maxValue: 720
+    - apixType: 7
+      minValue: 81
+      maxValue: 108.00001
+    armorApixes:
+    - apixType: 0
+      minValue: 360
+      maxValue: 495
+    - apixType: 1
+      minValue: 2.7
+      maxValue: 7.2
+    - apixType: 2
+      minValue: 450
+      maxValue: 630
+    - apixType: 3
+      minValue: 4.5
+      maxValue: 10.8
+    - apixType: 4
+      minValue: 1.35
+      maxValue: 3.6
+    - apixType: 5
+      minValue: 450
+      maxValue: 720
+    - apixType: 6
+      minValue: 3.6
+      maxValue: 9
+    - apixType: 7
+      minValue: 450
+      maxValue: 720
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 15
+    - apixType: 1
+      minValue: 1
+      maxValue: 15
+    - apixType: 2
+      minValue: 1
+      maxValue: 15
+    - apixType: 3
+      minValue: 1
+      maxValue: 15
+    - apixType: 4
+      minValue: 1
+      maxValue: 15
+    - apixType: 5
+      minValue: 1
+      maxValue: 15
+    armorMaxValue: 1080
+    armorMinValue: 540
+    weaponMaxValue: 540
+    weaponMinValue: 360
+  - level: 95
+    weaponApixes:
+    - apixType: 0
+      minValue: 47.5
+      maxValue: 114.00001
+    - apixType: 1
+      minValue: 47.5
+      maxValue: 19
+    - apixType: 2
+      minValue: 114.00001
+      maxValue: 133
+    - apixType: 3
+      minValue: 76
+      maxValue: 190
+    - apixType: 4
+      minValue: 0.0665
+      maxValue: 0.3325
+    - apixType: 5
+      minValue: 0.0665
+      maxValue: 0.3325
+    - apixType: 6
+      minValue: 570
+      maxValue: 760
+    - apixType: 7
+      minValue: 85.5
+      maxValue: 114.00001
+    armorApixes:
+    - apixType: 0
+      minValue: 380
+      maxValue: 522.5
+    - apixType: 1
+      minValue: 2.85
+      maxValue: 7.6
+    - apixType: 2
+      minValue: 475
+      maxValue: 665
+    - apixType: 3
+      minValue: 4.75
+      maxValue: 11.4
+    - apixType: 4
+      minValue: 1.425
+      maxValue: 3.8
+    - apixType: 5
+      minValue: 475
+      maxValue: 760
+    - apixType: 6
+      minValue: 3.8
+      maxValue: 9.5
+    - apixType: 7
+      minValue: 475
+      maxValue: 760
+    statApixes:
+    - apixType: 0
+      minValue: 1
+      maxValue: 16
+    - apixType: 1
+      minValue: 1
+      maxValue: 16
+    - apixType: 2
+      minValue: 1
+      maxValue: 16
+    - apixType: 3
+      minValue: 1
+      maxValue: 16
+    - apixType: 4
+      minValue: 1
+      maxValue: 16
+    - apixType: 5
+      minValue: 1
+      maxValue: 16
+    armorMaxValue: 1140
+    armorMinValue: 570
+    weaponMaxValue: 570
+    weaponMinValue: 380

@@ -521,7 +521,7 @@ public class OffensiveBuff : IBuffs
                     return target.attackSpeed;
                 case WeaponApixType.CastingSpeed:
                     return target.defaultCasting;
-                case WeaponApixType.MaxHP:
+                case WeaponApixType.MaxHp:
                     return target.defaultMaxHP;
                 case WeaponApixType.Accuracy:
                     return target.accuracy;
@@ -553,7 +553,7 @@ public class OffensiveBuff : IBuffs
                 case WeaponApixType.CastingSpeed:
                     target.defaultCasting -= value;
                     break;
-                case WeaponApixType.MaxHP:
+                case WeaponApixType.MaxHp:
                     target.defaultMaxHP += value;
                     break;
                 case WeaponApixType.Accuracy:

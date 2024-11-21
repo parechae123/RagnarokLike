@@ -290,7 +290,7 @@ namespace PlayerDefines
             {
                 get { return defaultMaxHP > hp; }
             }
-            public Action<Vector3, bool> moveFunction;
+            public Action<Vector3, Action,int> moveFunction;
             public Action dieFunctions;//TODO : 사망 연출 등록필요
             
 
@@ -468,7 +468,11 @@ namespace PlayerDefines
 
             public float attackSpeed;
             public float statTimer;
-            private byte charactorAttackRange;
+            [SerializeField]private byte charactorAttackRange;
+            public byte pureAttackRange
+            {
+                get { return charactorAttackRange; }
+            }
             public int CharactorAttackRange
             {
                 get { return charactorAttackRange*10; }
@@ -816,7 +820,7 @@ namespace PlayerDefines
             }
             public float MaxHP 
             {
-                get { return defaultMaxHP + (this.BasicStatus.Vitality * 10f)*(1f+GetArmorMatValue(WeaponApixType.MaxHP)); }
+                get { return defaultMaxHP + (this.BasicStatus.Vitality * 10f)*(1f+GetArmorMatValue(WeaponApixType.MaxHp)); }
             }
 
             public override float HP
@@ -980,10 +984,13 @@ namespace PlayerDefines
                 return temp;
             }
         }
+        [System.Serializable]
         public class MonsterStat : Stats
         {
-            public MonsterStat(Node initializeNode, float hp, float sp, float moveSpeed, float attackSpeed, float attackDamage, byte attackRange, float evasion) : base(initializeNode, hp, sp, moveSpeed, attackSpeed, attackDamage, attackRange,evasion)
+            public byte monsterLevel = 0;
+            public MonsterStat(byte monsterLevel,Node initializeNode, float hp, float sp, float moveSpeed, float attackSpeed, float attackDamage, byte attackRange, float evasion) : base(initializeNode, hp, sp, moveSpeed, attackSpeed, attackDamage, attackRange,evasion)
             {
+                this.monsterLevel=monsterLevel;
                 HP = hp;
                 SP = sp;
             }

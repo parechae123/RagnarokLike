@@ -291,7 +291,7 @@ public class Player : MonoBehaviour,ICameraTracker
     #endregion
     #region 움직임,공격 관련
 
-    public void PlayerMove(bool isMoveToAttack = false)
+    public void PlayerMove(Action arriveAction, int arriveDistanceFromTargetPos = -1)
     {
         float moveSpeedPerSec = 1 / playerLevelInfo.stat.MoveSpeed;
         if (nodePreview.Count <= 0) return;
@@ -306,6 +306,16 @@ public class Player : MonoBehaviour,ICameraTracker
         {
             if (CurrentNode != nodePreview.First())
             {
+                if (arriveDistanceFromTargetPos != -1)
+                {
+                    if (arriveDistanceFromTargetPos >= nodePreview.First().H)
+                    {
+                        Array.Resize(ref tempNodePosArray, i);
+                        nodePreview.Clear();
+                        break;
+                    }
+                }
+
                 if (nodePreview.First().CharacterOnNode != null && playerLevelInfo.stat != nodePreview.First().CharacterOnNode)
                 {
                     Array.Resize(ref tempNodePosArray, i);
@@ -326,110 +336,15 @@ public class Player : MonoBehaviour,ICameraTracker
 
         transform.DOKill(false);
         arriveTime = tempNodePosArray.Length * moveSpeedPerSec;
-        if (isMoveToAttack)
+        DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(() =>
         {
-            DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(() =>
-            {
-                if (GridManager.GetInstance().AttackOrder(playerLevelInfo.stat, playerLevelInfo.stat.target,playerLevelInfo.stat.CharactorAttackRange))
-                {
-                    //현재 상태가 attackState가 아닐 경우
-                    if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
-                    {
-                        StateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
-                        //attackState로 바꿉니다
-                        StateMachine.ChangeState("attackState");
-                    }
-                }
-            }).SetEase(Ease.Linear);
-        }
-        else
-        {
-            DOPath(transform, tempPath, tempNodePosArray.Length * moveSpeedPerSec).SetEase(Ease.Linear).OnComplete(()=>
-            {
-                //stateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
-            });
-        }
-        return;
-
-
-        /*        Vector3 targetVector = new Vector3(nodePreview.First().nodeCenterPosition.x, currentNode.nodeFloor + (playerSR.bounds.size.y) + 0.5f, nodePreview.First().nodeCenterPosition.y);
-                transform.DOMove(targetVector, moveSpeedPerSec).OnComplete(() =>
-                {
-                    if (nodePreview.Count > 0)
-                    {
-                        currentNode = nodePreview.First();
-                        nodePreview.RemoveFirst();
-                        PlayerMove();
-                    }
-                    else
-                    {
-                        //SetPlayerPositionToCenterPos();
-                    }
-
-
-                }).SetEase(Ease.Linear);*/
-
-    }
-    public void PlayerMove(SkillInfoInGame skill, byte arriveDistanceFromTargetPos = 0)
-    {
-        float moveSpeedPerSec = 1 / playerLevelInfo.stat.MoveSpeed;
-        if (nodePreview.Count <= 0) return;
-        if (CurrentNode == nodePreview.First())
-        {
-            nodePreview.RemoveFirst();
-        }
-
-        Vector3[] tempNodePosArray = new Vector3[nodePreview.Count];
-
-        for (short i = 0; i < tempNodePosArray.Length; i++)
-        {
-            if (CurrentNode != nodePreview.First())
-            {
-                if (arriveDistanceFromTargetPos != 0)
-                {
-                    if (arriveDistanceFromTargetPos >= nodePreview.First().H)
-                    {
-                        Array.Resize(ref tempNodePosArray, i);
-                        nodePreview.Clear();
-                        break;
-                    }
-                }
-                if (nodePreview.First().CharacterOnNode != null && playerLevelInfo.stat != nodePreview.First().CharacterOnNode)
-                {
-                    Array.Resize(ref tempNodePosArray, i);
-                    nodePreview.Clear();
-                    break;
-                }
-                tempNodePosArray[i] = nodePreview.First().worldPos;
-                /*tempNodePosArray[i].x = nodePreview.First().nodeCenterPosition.x;
-                tempNodePosArray[i].y = nodePreview.First().nodeFloor + (playerSR.bounds.size.y) + 0.5f;
-                tempNodePosArray[i].z = nodePreview.First().nodeCenterPosition.y;*/
-            }
-            else
-            {
-                --i;
-            }
-            nodePreview.RemoveFirst();
-        }
-
-        Path tempPath = new Path(PathType.Linear, tempNodePosArray, 1);
-
-        arriveTime = tempNodePosArray.Length * moveSpeedPerSec;
-
-        transform.DOKill(false);
-        DOPath(transform, tempPath, arriveTime).SetEase(Ease.Linear).OnComplete(() =>
-        {
-            //현재 상태가 CastingState가 아닐 경우
-            if (StateMachine.CurrentState != StateMachine.SearchState("castingState"))
-            {
-                stateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
-                //CastingState로 바꿉니다
-                StateMachine.ChangeState(SkillObj.skill[SkillObj.CastingSkillLevel].defaultCastingTime,SkillObj, playerLevelInfo.stat.target, playerLevelInfo.stat.target.standingNode.worldPos);
-                SkillObj = null;
+            if (arriveAction != null) 
+            { 
+                arriveAction();
+                arriveAction = null;
             }
         }).SetEase(Ease.Linear);
         return;
-
 
 
     }
@@ -449,7 +364,7 @@ public class Player : MonoBehaviour,ICameraTracker
             {
                 target.DOKill(false);
                 targetNode = null;
-                target.position = CurrentNode.worldPos+(Vector3.up* (CurrentNode.nodeFloor));
+                SetPlayerPositionToCenterPos();
                 //PlayerMoveOrder(path.wps[path.wpLengths.Length-1]);
                 stateMachine.ChangeState("idleState");
                 return;
@@ -494,6 +409,7 @@ public class Player : MonoBehaviour,ICameraTracker
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] groundHit = Physics.RaycastAll(ray, 1000f, 8);
+        RaycastHit[] ItemHit = Physics.RaycastAll(ray, 1000f, 128);
         RaycastHit[] monsterHit = Physics.RaycastAll(ray, 1000f, 64);
 
         if (isSearchCastTarget)
@@ -520,7 +436,12 @@ public class Player : MonoBehaviour,ICameraTracker
             playerCursorState.changeState(cursorState.defaultCurser);
             return;
         }
-        if (monsterHit.Length > 0)
+        if (ItemHit.Length > 0)
+        {
+            playerCursorState.changeState(cursorState.itemCursor);
+            if (targetCell.gameObject.activeSelf) targetCell.gameObject.SetActive(false);
+        }
+        else if (monsterHit.Length > 0)
         {
             playerCursorState.changeState(cursorState.attackAble);
             if (targetCell.gameObject.activeSelf) targetCell.gameObject.SetActive(false);
@@ -547,29 +468,28 @@ public class Player : MonoBehaviour,ICameraTracker
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
-
+            if(ItemHit.Length > 0)
+            {
+                if (GridManager.GetInstance().IsInRange(playerLevelInfo.stat.standingNode, GridManager.GetInstance().PositionToNode(ItemHit[0].transform.position),10)) 
+                {
+                    ItemHit[0].transform.GetComponent<DropItems>().GetItem();
+                }
+                else
+                {
+                    PlayerMoveOrder(GridManager.GetInstance().PositionToNode(ItemHit[0].transform.position).worldPos, () => { ItemHit[0].transform.GetComponent<DropItems>().GetItem(); });
+                }
+                
+            }
             if (monsterHit.Length > 0)
             {
                 if (SetTargetMonster(monsterHit[0].transform))
                 {
-                    if (GridManager.GetInstance().AttackOrder(playerLevelInfo.stat
-                        , GridManager.GetInstance().PositionToNode(monsterHit[0].point)?.CharacterOnNode
-                        ,playerLevelInfo.stat.CharactorAttackRange
-                        ))
-                    {
-                        //현재 상태가 attackState가 아닐 경우
-                        if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
-                        {
-                            //attackState로 바꿉니다
-                            StateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
-                            StateMachine.ChangeState("attackState");
-                        }
-                    }
+                    GridManager.GetInstance().AttackOrder(playerLevelInfo.stat, GridManager.GetInstance().PositionToNode(monsterHit[0].point)?.CharacterOnNode, playerLevelInfo.stat.CharactorAttackRange, SetAttackState);
                 }
             }
             else if (groundHit.Length > 0)
             {
-                PlayerMoveOrder(groundHit[0].point);
+                PlayerMoveOrder(groundHit[0].point,null);
             }
 
         }
@@ -616,7 +536,7 @@ public class Player : MonoBehaviour,ICameraTracker
                             if (SetTargetNode(GridManager.GetInstance().grids[pos].worldPos))
                             {
                                 if (stateMachine.CurrentState.stateName == "castingState") return;
-                                PlayerMove(SkillObj, SkillObj.skill[SkillObj.CastingSkillLevel].skillRange);
+                                PlayerMove(SetCastingState, SkillObj.skill[SkillObj.CastingSkillLevel].skillRange);
                                 StateMachine.ChangeState("moveState");
 
                             }
@@ -643,7 +563,7 @@ public class Player : MonoBehaviour,ICameraTracker
         stateMachine.SetDirrection(ref playerLookDir, start, end);
     }
 
-    public void PlayerMoveOrder(Vector3 targetPosition, bool isMoveToAttack = false)
+/*    public void PlayerMoveOrder(Vector3 targetPosition, bool isMoveToAttack = false)
     {
         if (!StateMachine.CurrentState.isCancelableState)
         {
@@ -655,7 +575,20 @@ public class Player : MonoBehaviour,ICameraTracker
             PlayerMove(isMoveToAttack);
             StateMachine.ChangeState("moveState");
         }
-
+    }*/
+    public void PlayerMoveOrder(Vector3 targetPosition,Action arriveAction,int range = -1)
+    {
+        range = range != -1 ? range - 1 : range ;
+        if (!StateMachine.CurrentState.isCancelableState)
+        {
+            isMotionBookCancel = true;
+            return;
+        }
+        if (SetTargetNode(targetPosition))
+        {
+            PlayerMove(arriveAction,range);
+            StateMachine.ChangeState("moveState");
+        }
     }
     #endregion
     private void InstallizeStates()
@@ -685,6 +618,26 @@ public class Player : MonoBehaviour,ICameraTracker
     {
         stateMachine.ChangeState(stateMachine.SearchState("dieState") as DieState);
         //TODO : 사망 연출 이곳에 등록
+    }
+    public void SetAttackState()
+    {
+        //현재 상태가 attackState가 아닐 경우
+        if (StateMachine.CurrentState != StateMachine.SearchState("attackState"))
+        {
+            //attackState로 바꿉니다
+            StateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
+            StateMachine.ChangeState("attackState");
+        }
+    }
+    public void SetCastingState()
+    {
+        if (StateMachine.CurrentState != StateMachine.SearchState("castingState"))
+        {
+            stateMachine.SetDirrection(ref playerLookDir, playerLevelInfo.stat.standingNode.nodeCenterPosition, playerLevelInfo.stat.target.standingNode.nodeCenterPosition);
+            //CastingState로 바꿉니다
+            StateMachine.ChangeState(SkillObj.skill[SkillObj.CastingSkillLevel].defaultCastingTime, SkillObj, playerLevelInfo.stat.target, playerLevelInfo.stat.target.standingNode.worldPos);
+            SkillObj = null;
+        }
     }
 }
 [System.Serializable]

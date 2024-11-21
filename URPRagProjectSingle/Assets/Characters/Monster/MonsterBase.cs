@@ -12,11 +12,28 @@ using DG.Tweening.Plugins.Core.PathCore;
 using System;
 using PlayerDefines.States;
 
-public class MonsterBase : MonoBehaviour ,ICameraTracker
+public class MonsterBase : MonoBehaviour, ICameraTracker
 {
     // Start is called before the first frame update
+    [System.Serializable]
+    public class DropTable
+    {
+        public bool isWeaponDrop;
+        public int weaponRate;
+        public bool isArmorDrop;
+        public int armorRate;
+        public DropInfos[] dropInfos;
+        [System.Serializable]
+        public struct DropInfos
+        {
+            public SlotType slotType;
+            public int code;
+            public int dropRate;
+        }
+    }
+    public DropTable dropItems;
     [SerializeField] public MonsterStat monsterStat;
-    public Vector3 initialPos = new Vector3(-1000,-1000,-1000);
+    public Vector3 initialPos = new Vector3(-1000, -1000, -1000);
     Queue<Node> path = new Queue<Node>();
     [SerializeField] int recogDistance;
     public int RecogDistance { get { return recogDistance * 10; } }
@@ -59,15 +76,26 @@ public class MonsterBase : MonoBehaviour ,ICameraTracker
     private Animator animator;
     public void Start()
     {
-        if(initialPos == Vector3.one*(-1000)) initialPos = transform.position;
+        if (initialPos == Vector3.one * (-1000)) initialPos = transform.position;
 
-        monsterStat = new MonsterStat(GridManager.GetInstance().PositionToNode(initialPos), 30, 10, 1, 3, 10, 1,0);
+        if (monsterStat == null)
+        {
+            monsterStat = new MonsterStat(0, GridManager.GetInstance().PositionToNode(initialPos), 30, 10, 2, 3, 10, 1, 0);
+        }
+        else
+        {
+            monsterStat = new MonsterStat(monsterStat.monsterLevel
+                , GridManager.GetInstance().PositionToNode(initialPos)
+                , monsterStat.defaultMaxHP, monsterStat.defaultSP, monsterStat.MoveSpeed, monsterStat.attackSpeed, monsterStat.attackDamage,
+                monsterStat.pureAttackRange, monsterStat.Evasion);
+        }
+
         transform.position = CurrentNode.worldPos;
         //new Vector3(monsterStat.standingNode.nodeCenterPosition.x, monsterStat.standingNode.nodeFloor + 1.5f, monsterStat.standingNode.nodeCenterPosition.y);
 
         Debug.Log(monsterStat.standingNode.nodeCenterPosition);
-        
-        
+
+
         monsterSR = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
 
@@ -79,12 +107,12 @@ public class MonsterBase : MonoBehaviour ,ICameraTracker
     }
     private void Update()
     {
-        
-        if (monsterStat.isCharacterDamaged&& !monsterStat.isCharacterDie)
+
+        if (monsterStat.isCharacterDamaged && !monsterStat.isCharacterDie)
         {
             monsterStat.HPBar.transform.position = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + monsterSR.bounds.size.y, transform.position.z));
         }
-        else if(CurrentNode == null) { return; }
+        else if (CurrentNode == null) { return; }
         currentStates?.Execute();
 
 
@@ -94,19 +122,19 @@ public class MonsterBase : MonoBehaviour ,ICameraTracker
     #region 카메라 세팅
     public void RegistCameraAction()
     {
-        PlayerCam.Instance.rotDirrection += animationDirrection; 
+        PlayerCam.Instance.rotDirrection += animationDirrection;
         PlayerCam.Instance.rotations += FollowCamera;
         animationDirrection();
     }
     public void UnRegistCameraAction()
     {
-        PlayerCam.Instance.rotDirrection -= animationDirrection; 
+        PlayerCam.Instance.rotDirrection -= animationDirrection;
     }
     public void FollowCamera()
     {
         transform.rotation = Camera.main.transform.rotation;
     }
-    
+
     #endregion
 
     public void ChangeAnim(string name)
@@ -119,7 +147,7 @@ public class MonsterBase : MonoBehaviour ,ICameraTracker
         currentStates.Exit();
         currentStates = nextState;
         currentStates.Enter();
-        
+
     }
     public bool IsInRange(Vector2Int startPos, Vector2Int endPos, int distance)
     {
@@ -147,8 +175,38 @@ public class MonsterBase : MonoBehaviour ,ICameraTracker
         ChangeState(new MDieState(this));
         Player.Instance.playerLevelInfo.GetBaseEXP(baseEXP);
         Player.Instance.playerLevelInfo.GetJobEXP(jobEXP);
-        
-        
+        ItemDrop();
+
+    }
+    public bool RollDice(int chance)
+    {
+        int tempCode = UnityEngine.Random.Range(0, 101);
+        Debug.Log($"주사위{tempCode},드랍률{chance}");
+        return tempCode <= chance;
+    }
+    public void ItemDrop()
+    {
+        if (dropItems.isWeaponDrop|| dropItems.isArmorDrop)
+        {
+            bool weaponDrop = RollDice(dropItems.weaponRate);
+            bool armorDrop = RollDice(dropItems.armorRate);
+            if ( (weaponDrop && armorDrop) && (dropItems.isWeaponDrop && dropItems.isArmorDrop) ) MonsterManager.GetInstance().Drop.SpawnEquipItem(transform.position, monsterStat.monsterLevel);
+            else if (weaponDrop&& dropItems.isWeaponDrop) MonsterManager.GetInstance().Drop.SpawnEquipItem(transform.position, monsterStat.monsterLevel,true,false);
+            else if(armorDrop&& dropItems.isArmorDrop) MonsterManager.GetInstance().Drop.SpawnEquipItem(transform.position, monsterStat.monsterLevel, false, true);
+        }
+        for (int i = 0; i < dropItems.dropInfos.Length;i++)
+        {
+            if (!RollDice(dropItems.dropInfos[i].dropRate)) continue;
+            switch (dropItems.dropInfos[i].slotType)
+            {
+                case SlotType.ConsumableItem:
+                    MonsterManager.GetInstance().Drop.SpawnCosume(transform.position, ResourceManager.GetInstance().PosionDatas.items[dropItems.dropInfos[i].code]);
+                    break;
+                case SlotType.MISC:
+                    MonsterManager.GetInstance().Drop.SpawnMisc(transform.position, ResourceManager.GetInstance().MiscDatas.items[dropItems.dropInfos[i].code]);
+                    break;
+            }
+        }
     }
     public bool MoveOrder()
     {
@@ -266,7 +324,7 @@ public class MonsterBase : MonoBehaviour ,ICameraTracker
                 timer += Time.deltaTime;
 
                 monsterOnNode = GridManager.GetInstance().PositionToNode(transform.position);
-                tempVec = (nextNode.worldPos - moveStartPos) * (secPerMove * timer);
+                tempVec = (nextNode.worldPos - moveStartPos) * (timer /secPerMove);
                 tempVec.y = nextNode.nodeFloor;
                 transform.position = tempVec + moveStartPos;
 
@@ -319,7 +377,7 @@ public class MonsterBase : MonoBehaviour ,ICameraTracker
         while (true)
         {
             timer += Time.deltaTime;
-            tempVec = (nextNode.worldPos - moveStartPos) * (secPerMove * timer);
+            tempVec = (nextNode.worldPos - moveStartPos) * (timer/ secPerMove);
             yield return null;
             tempVec.y = nextNode.nodeFloor;
             if (nextNode.CharacterOnNode != monsterStat&& nextNode.CharacterOnNode != null) 

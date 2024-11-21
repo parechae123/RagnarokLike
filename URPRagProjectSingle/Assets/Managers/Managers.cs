@@ -415,27 +415,33 @@ public class GridManager : Manager<GridManager>
         }
         return tempVec;
     }
-    public bool AttackOrder(Stats attackerStat,Stats targetStat,int range)
+    public void AttackOrder(Stats attackerStat,Stats targetStat,int range,Action setAttackState)
     {
         if (attackerStat.target != targetStat)
         {
             attackerStat.target = targetStat;
         }
-        if (targetStat == null || attackerStat == null) return false;
+        if (targetStat == null || attackerStat == null) return;
         if(range == 10)
         {
             if (IsMeleeAttackAble(attackerStat.standingNode, targetStat.standingNode))
             {
                 if (targetStat.isCharacterDie)
                 {
-                    return false;
+                    return;
                 }
-                return true;
+                else
+                {
+                    setAttackState();
+                    setAttackState = null;
+                }
+                return;
             }
             else
             {
-                attackerStat.moveFunction(new Vector3(targetStat.standingNode.nodeCenterPosition.x, targetStat.standingNode.nodeFloor, targetStat.standingNode.nodeCenterPosition.y), true);
-                return false;
+                attackerStat.moveFunction(new Vector3(targetStat.standingNode.nodeCenterPosition.x, targetStat.standingNode.nodeFloor, targetStat.standingNode.nodeCenterPosition.y), setAttackState,attackerStat.CharactorAttackRange);
+                setAttackState = null;
+                return;
             }
         }
         else
@@ -446,9 +452,10 @@ public class GridManager : Manager<GridManager>
             if (tempList.Max(node => node.H) <= range)
             {
                 //여기다가 스테이트머신 attack 넣으면됨
-                return true;
+                setAttackState();
+                return;
             }
-            return false;
+            return;
         }
     }
     public bool IsInRange(Node attackerNode, Node targetNode, int range)
