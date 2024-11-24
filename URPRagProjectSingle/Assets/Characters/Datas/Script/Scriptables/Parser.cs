@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.TerrainTools;
 using UnityEngine;
-[CreateAssetMenu(fileName = "Parser", menuName = "Items/TableParser", order = 0)]
+[CreateAssetMenu(fileName = "Parser", menuName = "custom/TableParser", order = 0)]
 public class Parser : ScriptableObject
 {
     public ScriptableObject[] datas;

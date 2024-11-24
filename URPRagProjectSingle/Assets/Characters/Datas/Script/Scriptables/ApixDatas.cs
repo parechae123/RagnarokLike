@@ -18,7 +18,7 @@ public class ApixesData
     public float weaponMinValue;
 }
 
-[CreateAssetMenu(fileName = "Apixes", menuName = "Items/Apixes", order = 0)]
+[CreateAssetMenu(fileName = "Apixes", menuName = "custom/Items/Apixes", order = 0)]
 public class ApixDatas : ScriptableObject
 {
     [SerializeField] public ApixesData[] items;

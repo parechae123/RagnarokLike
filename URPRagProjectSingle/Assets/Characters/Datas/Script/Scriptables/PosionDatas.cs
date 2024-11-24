@@ -9,7 +9,7 @@ using System.IO;
 using System;
 using System.Text;
 #region Posion
-    [CreateAssetMenu(fileName = "Cosumes", menuName = "Items/Cosumes", order = 0)]
+    [CreateAssetMenu(fileName = "Cosumes", menuName = "custom/Items/Cosumes", order = 0)]
     public class PosionDatas : ScriptableObject, IDataFunc
     {
         [SerializeField] public PosionData[] items;

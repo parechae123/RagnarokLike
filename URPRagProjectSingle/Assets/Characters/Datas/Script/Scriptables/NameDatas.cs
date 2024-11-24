@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using static NameDatas;
 using static UnityEditor.Progress;
-[CreateAssetMenu(fileName ="NameData", menuName = "Items/names", order = 0)]
+[CreateAssetMenu(fileName ="NameData", menuName = "custom/Items/names", order = 0)]
 public class NameDatas : ScriptableObject
 {
     public EquipNames[] equipNames;

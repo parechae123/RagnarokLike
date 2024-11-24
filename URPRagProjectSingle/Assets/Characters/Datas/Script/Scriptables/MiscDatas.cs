@@ -8,7 +8,7 @@ public class MiscData : ItemList
 {
 
 }
-[CreateAssetMenu(fileName = "Miscs", menuName = "Items/Miscs", order = 0)]
+[CreateAssetMenu(fileName = "Miscs", menuName = "custom/Items/Miscs", order = 0)]
 public class MiscDatas : ScriptableObject, IDataFunc
 {
     [SerializeField] public MiscData[] items;
