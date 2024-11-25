@@ -532,6 +532,7 @@ public class UIManager : Manager<UIManager>
 
     private event Action<Vector3, string, Color, float?> textEffectFuc;
     private Image draggingIconImage;
+    public SlotInfo slotInfo = new SlotInfo();
     /// <summary>
     /// 0 = leftHand,1 = rightHand
     /// </summary>

@@ -2,8 +2,10 @@ using DG.Tweening;
 using PlayerDefines.Stat;
 using PlayerDefines.States;
 using System;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace NeutralDefines
 {
@@ -478,5 +480,188 @@ public class BasicStatus
                 break;
         }
         updateStat?.Invoke();
+    }
+}
+public class SlotInfo
+{
+
+    private RectTransform tr;
+    public RectTransform TR 
+    { 
+        get 
+        { 
+            if (tr == null)
+            {
+                tr = (RectTransform)UIManager.GetInstance().MainCanvas.Find("SlotInfo").transform;
+            }
+            return tr;
+        }
+    }
+    private Image outLine;
+    public Image OutLine
+    { 
+        get 
+        { 
+            if (outLine == null)
+            {
+                outLine = TR.Find("OutLine").GetComponent<Image>();
+            }
+            return outLine;
+        }
+    }
+
+    private TextMeshProUGUI nameText;
+    public TextMeshProUGUI NameText
+    {
+        get 
+        {
+            if (nameText == null)
+            {
+                nameText = TR.Find("NameText").GetComponent<TextMeshProUGUI>();
+            }
+            return nameText;
+        }
+    }
+
+    private TextMeshProUGUI rankText;
+    public TextMeshProUGUI RankText
+    {
+        get
+        {
+            if (rankText == null)
+            {
+                rankText = TR.Find("RankText").GetComponent<TextMeshProUGUI>();
+            }
+            return rankText;
+        }
+    }
+
+    private TextMeshProUGUI typeText;
+    public TextMeshProUGUI TypeText
+    {
+        get
+        {
+            if (typeText == null)
+            {
+                typeText = TR.Find("TypeText").GetComponent<TextMeshProUGUI>();
+            }
+            return typeText;
+        }
+    }
+    private TextMeshProUGUI valueText;
+    public TextMeshProUGUI ValueText
+    {
+        get
+        {
+            if (valueText == null)
+            {
+                valueText = TR.Find("ValueText").GetComponent<TextMeshProUGUI>();
+            }
+            return valueText;
+        }
+    }
+    private TextMeshProUGUI apixText;
+    public TextMeshProUGUI ApixText
+    {
+        get
+        {
+            if (apixText == null)
+            {
+                apixText = TR.Find("ApixText").GetComponent<TextMeshProUGUI>();
+            }
+            return apixText;
+        }
+    }
+    private TextMeshProUGUI apixValueText;
+    public TextMeshProUGUI ApixValueText
+    {
+        get
+        {
+            if (apixValueText == null)
+            {
+                apixValueText = TR.Find("ApixValueText").GetComponent<TextMeshProUGUI>();
+            }
+            return apixValueText;
+        }
+    }
+    private TextMeshProUGUI priceText;
+    public TextMeshProUGUI PriceText
+    {
+        get
+        {
+            if (priceText == null)
+            {
+                priceText = TR.Find("PriceText").GetComponent<TextMeshProUGUI>();
+            }
+            return priceText;
+        }
+    }
+    private TextMeshProUGUI flavorText;
+    public TextMeshProUGUI FlavorText
+    {
+        get
+        {
+            if (flavorText == null)
+            {
+                flavorText = TR.Find("FlavorText").GetComponent<TextMeshProUGUI>();
+            }
+            return flavorText;
+        }
+    }
+
+    public void SetText(Consumables consumables)
+    {
+        
+    }
+    public void SetText(Equips equips,int apixCount)
+    {
+        Color itemColor = Color.white;
+        switch (apixCount)
+        {
+            case 0:
+                itemColor = Color.white;
+                RankText.text = "일반";
+                RankText.color = itemColor;
+                break;
+            case 1:
+                itemColor = Color.blue;
+                RankText.text = "고급";
+                RankText.color = itemColor;
+                break;
+            case 2:
+                itemColor = Color.yellow;
+                RankText.text = "희귀";
+                RankText.color = itemColor;
+                break;
+            case 3:
+                itemColor = new Color32(243, 115, 33, 255);
+                RankText.text = "전설";
+                RankText.color = itemColor;
+                break;
+            default:
+                RankText.text = "알 수 없음";
+                RankText.color = itemColor;
+                break;
+        }
+        NameText.text = equips.itemName;
+        if(equips.GetPart == EquipPart.LeftHand|| equips.GetPart == EquipPart.RightHand|| equips.GetPart == EquipPart.TwoHanded)
+        {
+            TypeText.text = $"무기({ResourceManager.GetInstance().NameSheet.GetEquipNameValue(((Weapons)equips).WeaponType.ToString())})";
+        }
+        else
+        {
+            TypeText.text = $"방어구({ResourceManager.GetInstance().NameSheet.GetEquipNameValue(((Weapons)equips).WeaponType.ToString())})";
+        }
+        FlavorText.text = string.Empty;
+        //TODO : 어픽스와 골드만 하면됨
+        
+    }
+    public void SetText(Miscs miscs)
+    {
+
+    }
+    public void SetText(SkillInfoInGame skill)
+    {
+
     }
 }

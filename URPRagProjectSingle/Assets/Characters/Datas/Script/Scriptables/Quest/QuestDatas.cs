@@ -26,9 +26,10 @@ public class ScriptableQuest
     public string questName;
     public string description;
     public int level;
+    public ScriptableQuestCondition[] condition;
 
     [System.Serializable]
-    class ScriptableQuestCondition
+    public class ScriptableQuestCondition
     {
         public QuestType questType;
         public string targetCode;

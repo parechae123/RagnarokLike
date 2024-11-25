@@ -382,6 +382,7 @@ public class Armors : Equips
 public class Weapons : Equips
 {
     WeaponType weaponType;
+    public WeaponType WeaponType { get { return weaponType; } }
     public IApixBase<WeaponApixType> apixList;
     bool isMATKWeapon;
     public bool IsMATKWeapon { get { return isMATKWeapon; } }
