@@ -8,11 +8,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler 
+public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler , IPointerExitHandler, IPointerDownHandler
 {
     #region 변수
     public KeyCode slotKey;
-
+    private bool isViewingSlotInfo;
     private IItemBase slotItem;
     public virtual IItemBase SlotItem
     {
@@ -141,6 +141,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
         if (pp.button == PointerEventData.InputButton.Left) UIManager.GetInstance().DraggingIcons(pp.position, iconImage.sprite);
         else return;
     }
+
     public virtual void OnEndDrag(PointerEventData pp)
     {
         // 마우스 위치에 대한 RaycastResult 리스트 생성
@@ -186,6 +187,34 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
         }
         RemoveSlot(default);
     }
+
+    public virtual void OnPointerDown(PointerEventData eventData) 
+    {
+        if(SlotItem == null) return;
+        if(eventData.button == PointerEventData.InputButton.Right)
+        {
+            if(!isViewingSlotInfo)
+            {
+                SlotItem.FloatInfo(eventData.position);
+                isViewingSlotInfo = true;
+            }
+            else
+            {
+                UIManager.GetInstance().SlotInfo.TR.gameObject.SetActive(false);
+                isViewingSlotInfo = false;
+            }
+
+        }
+    }
+    public virtual void OnPointerExit(PointerEventData eventData) 
+    {
+        if (isViewingSlotInfo)
+        {
+            UIManager.GetInstance().SlotInfo.TR.gameObject.SetActive(false);
+            isViewingSlotInfo = false;
+        }
+    }
+
     /// <summary>
     /// 그냥 추가시
     /// </summary>
@@ -213,7 +242,7 @@ public class QuickSlot :  MonoBehaviour, IDragHandler, IEndDragHandler
             }
 
             SlotText.text = item.slotNumberInfo;
-            SkillManager.GetInstance().AddSkillInfo((SkillInfoInGame)slotItem);
+            SkillManager.GetInstance().AddSkillInfo((SkillInfoInGame)SlotItem);
         }
         else
         {
@@ -256,6 +285,7 @@ public interface IItemBase
         get;
     }
     void UseItem();
+    void FloatInfo(Vector3 pos);
 }
 public class EmptyItem: IItemBase
 {
@@ -281,7 +311,12 @@ public class EmptyItem: IItemBase
     {
 
     }
+
     public SlotType slotType { get { return SlotType.None; } }
+    public void FloatInfo(Vector3 pos)
+    {
+
+    }
 }
 public enum SlotType
 {

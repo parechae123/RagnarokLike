@@ -13,6 +13,8 @@ public class Parser : ScriptableObject
     public DefaultAsset equipNameSheet;
     public DefaultAsset apixNameSheet;
     public DefaultAsset prefixNameSheet;
+    public DefaultAsset uiNameSheet;
+    public DefaultAsset gradeSheet;
     
     public void Parse()
     {
@@ -32,9 +34,11 @@ public class DataParser : Editor
         if (GUILayout.Button("µ•¿Ã≈Õ ∆ƒΩÃ"))
         {
             temp.Parse();
-            temp.nameData.GetEquipSheetValue(new TableConvert().Json(temp.equipNameSheet));
-            temp.nameData.GetApixSheetValue(new TableConvert().Json(temp.apixNameSheet));
-            temp.nameData.GetLevelPrefixSheetValue(new TableConvert().Json(temp.prefixNameSheet));
+            temp.nameData.GetSheetValues(new TableConvert().Json(temp.equipNameSheet), nameDataType.equipName);
+            temp.nameData.GetSheetValues(new TableConvert().Json(temp.apixNameSheet), nameDataType.apixName);
+            temp.nameData.GetSheetValues(new TableConvert().Json(temp.prefixNameSheet),nameDataType.levelName);
+            temp.nameData.GetSheetValues(new TableConvert().Json(temp.uiNameSheet),nameDataType.uiNames);
+            temp.nameData.GetSheetValues(new TableConvert().Json(temp.gradeSheet),nameDataType.gradeData);
         }
     }
 }

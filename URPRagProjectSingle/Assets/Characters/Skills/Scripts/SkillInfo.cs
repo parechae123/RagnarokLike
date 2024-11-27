@@ -324,6 +324,10 @@ public class SkillInfoInGame : IItemBase
     {
         quickSlotFuncs = null;
     }
+    public void FloatInfo(Vector3 vec)
+    {
+        UIManager.GetInstance().SlotInfo.SetText(this,vec);
+    }
 }
 [System.Serializable]
 public class BuffSkillInfoInGame : SkillInfoInGame

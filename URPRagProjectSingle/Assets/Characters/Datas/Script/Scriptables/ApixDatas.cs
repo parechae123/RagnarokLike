@@ -29,7 +29,7 @@ public class ApixDatas : ScriptableObject
         for (byte i = 0; i< items.Length; i++)
         {
             items[i] = new ApixesData();
-            items[i].level = (byte)(levelMulti * i);
+            items[i].level = (byte)((levelMulti * i)+1);
             items[i].weaponMinValue = items[i].level * 4;
             items[i].weaponMaxValue = items[i].level * 6;
             items[i].armorMinValue = items[i].level * 6;
@@ -144,6 +144,7 @@ public class ApixDatas : ScriptableObject
                 items[i].statApixes[j].minValue = 1;
                 items[i].statApixes[j].maxValue = Mathf.Ceil(i * 0.8f);
             }
+            items[i].level = (byte)(items[i].level-1);
         }
         EditorUtility.SetDirty(this);
 

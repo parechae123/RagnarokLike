@@ -1,0 +1,86 @@
+[
+{
+"eng_Name": "Str",
+"lo_Name": "힘"
+},
+{
+"eng_Name": "AGI",
+"lo_Name": "민첩"
+},
+{
+"eng_Name": "Vit",
+"lo_Name": "체력"
+},
+{
+"eng_Name": "Int",
+"lo_Name": "지능"
+},
+{
+"eng_Name": "Dex",
+"lo_Name": "손재주"
+},
+{
+"eng_Name": "Luk",
+"lo_Name": "행운"
+},
+{
+"eng_Name": "CriticalDMG",
+"lo_Name": "치명타 데미지"
+},
+{
+"eng_Name": "CriticalChance",
+"lo_Name": "치명타 확률"
+},
+{
+"eng_Name": "ATK",
+"lo_Name": "근접 공격력"
+},
+{
+"eng_Name": "MATK",
+"lo_Name": "마법 공격력"
+},
+{
+"eng_Name": "AttackSpeed",
+"lo_Name": "공격속도"
+},
+{
+"eng_Name": "CastingSpeed",
+"lo_Name": "캐스팅 속도"
+},
+{
+"eng_Name": "MaxHp",
+"lo_Name": "최대 체력"
+},
+{
+"eng_Name": "Accuracy",
+"lo_Name": "적중력"
+},
+{
+"eng_Name": "MaxMana",
+"lo_Name": "최대 마나"
+},
+{
+"eng_Name": "ManaRegen",
+"lo_Name": "마나 재생"
+},
+{
+"eng_Name": "HpRegen",
+"lo_Name": "체력 재생"
+},
+{
+"eng_Name": "MoveSpeed",
+"lo_Name": "이동 속도"
+},
+{
+"eng_Name": "deff",
+"lo_Name": "방어력"
+},
+{
+"eng_Name": "Evasion",
+"lo_Name": "회피율"
+},
+{
+"eng_Name": "magicDeff",
+"lo_Name": "마법 저항력"
+}
+]

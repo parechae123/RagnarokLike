@@ -135,7 +135,7 @@ public class DropManaging
             name += ResourceManager.GetInstance().NameSheet.GetLevelNameValue(itemLevel) + ' ';
             name += ResourceManager.GetInstance().NameSheet.GetEquipNameValue(armorType.ToString() + itemPart.ToString());
             Debug.Log(name);
-            return new Armors(armorType.ToString(), name, ResourceManager.GetInstance().ItemIconAtlas.GetSprite(itemPart.ToString()),jobs ,  level, level * 800f, itemPart,
+            return new Armors(armorType.ToString() + itemPart.ToString(), name, ResourceManager.GetInstance().ItemIconAtlas.GetSprite(itemPart.ToString()),jobs ,  level, level * 800f, itemPart,
                 Random(ResourceManager.GetInstance().ApixDatas.items[itemLevel].armorMinValue, ResourceManager.GetInstance().ApixDatas.items[itemLevel].armorMaxValue),
                   apix, armorType, armorType == ArmorMat.Cloth);
         }

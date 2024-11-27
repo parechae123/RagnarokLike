@@ -497,6 +497,7 @@ public class SlotInfo
             return tr;
         }
     }
+    
     private Image outLine;
     public Image OutLine
     { 
@@ -548,18 +549,33 @@ public class SlotInfo
             return typeText;
         }
     }
-    private TextMeshProUGUI valueText;
-    public TextMeshProUGUI ValueText
+   
+    private TextMeshProUGUI uniqueText;
+    public TextMeshProUGUI UniqueText
     {
         get
         {
-            if (valueText == null)
+            if (uniqueText == null)
             {
-                valueText = TR.Find("ValueText").GetComponent<TextMeshProUGUI>();
+                uniqueText = TR.Find("UniqueText").GetComponent<TextMeshProUGUI>();
             }
-            return valueText;
+            return uniqueText;
         }
     }
+   
+    private TextMeshProUGUI uniqueValueText;
+    public TextMeshProUGUI UniqueValueText
+    {
+        get
+        {
+            if (uniqueValueText == null)
+            {
+                uniqueValueText = TR.Find("UniqueValueText").GetComponent<TextMeshProUGUI>();
+            }
+            return uniqueValueText;
+        }
+    }
+   
     private TextMeshProUGUI apixText;
     public TextMeshProUGUI ApixText
     {
@@ -572,6 +588,7 @@ public class SlotInfo
             return apixText;
         }
     }
+    
     private TextMeshProUGUI apixValueText;
     public TextMeshProUGUI ApixValueText
     {
@@ -584,6 +601,7 @@ public class SlotInfo
             return apixValueText;
         }
     }
+    
     private TextMeshProUGUI priceText;
     public TextMeshProUGUI PriceText
     {
@@ -596,6 +614,7 @@ public class SlotInfo
             return priceText;
         }
     }
+    
     private TextMeshProUGUI flavorText;
     public TextMeshProUGUI FlavorText
     {
@@ -609,58 +628,62 @@ public class SlotInfo
         }
     }
 
-    public void SetText(Consumables consumables)
+    public void SetText(Consumables consumables,Vector3 screenPoint)
     {
         
     }
-    public void SetText(Equips equips,int apixCount)
+    public void SetText(Equips equips,Vector3 screenPoint)
     {
-        Color itemColor = Color.white;
-        switch (apixCount)
-        {
-            case 0:
-                itemColor = Color.white;
-                RankText.text = "일반";
-                RankText.color = itemColor;
-                break;
-            case 1:
-                itemColor = Color.blue;
-                RankText.text = "고급";
-                RankText.color = itemColor;
-                break;
-            case 2:
-                itemColor = Color.yellow;
-                RankText.text = "희귀";
-                RankText.color = itemColor;
-                break;
-            case 3:
-                itemColor = new Color32(243, 115, 33, 255);
-                RankText.text = "전설";
-                RankText.color = itemColor;
-                break;
-            default:
-                RankText.text = "알 수 없음";
-                RankText.color = itemColor;
-                break;
-        }
+        TR.position = screenPoint;
+        TR.gameObject.SetActive(true);
+        (string, Color32) gradeInfo = ResourceManager.GetInstance().NameSheet.GetGradeNameValue(equips.gradeLevel);
+        
+        OutLine.color = gradeInfo.Item2;
+        RankText.text = gradeInfo.Item1;
+        RankText.color = gradeInfo.Item2;
         NameText.text = equips.itemName;
         if(equips.GetPart == EquipPart.LeftHand|| equips.GetPart == EquipPart.RightHand|| equips.GetPart == EquipPart.TwoHanded)
         {
-            TypeText.text = $"무기({ResourceManager.GetInstance().NameSheet.GetEquipNameValue(((Weapons)equips).WeaponType.ToString())})";
+            Weapons temp = (Weapons)equips;
+            UniqueText.text = temp.IsMATKWeapon ? "주문력" : "공격력";
+            UniqueValueText.text = temp.ValueOne.ToString("N0");
+            UniqueText.text += $"\n{ResourceManager.GetInstance().NameSheet.GetUINameValue(temp.apixList.statLine.Item1.ToString())}";
+            UniqueValueText.text += temp.apixList.statLine.Item2.ToString();
+            TypeText.text = $"무기({(equips.GetPart == EquipPart.TwoHanded ? "양손" : (equips.GetPart == EquipPart.RightHand ? "오른손" : "왼손")) + ResourceManager.GetInstance().NameSheet.GetEquipNameValue(temp.itemCode)})";
+            ApixText.text = string.Empty;
+            ApixValueText.text = string.Empty;
+            for (int i = 0; i < temp.apixList.abilityApixes.Length; i++)
+            {
+                ApixText.text += ("+" + ResourceManager.GetInstance().NameSheet.GetUINameValue(temp.apixList.abilityApixes[i].Item1.ToString()) + "\n");
+                ApixValueText.text += temp.apixList.abilityApixes[i].Item2.ToString("N4") + "\n";
+            }
         }
         else
         {
-            TypeText.text = $"방어구({ResourceManager.GetInstance().NameSheet.GetEquipNameValue(((Weapons)equips).WeaponType.ToString())})";
+            Armors temp = (Armors)equips;
+            UniqueText.text = temp.magicDeff? "마법 저항력" : "방어력";
+            UniqueValueText.text = temp.ValueOne.ToString("N0");
+            UniqueText.text += $"\n{ResourceManager.GetInstance().NameSheet.GetUINameValue(temp.apixList.statLine.Item1.ToString())}";
+            UniqueValueText.text += temp.apixList.statLine.Item2.ToString();
+            TypeText.text = $"방어구({ResourceManager.GetInstance().NameSheet.GetEquipNameValue(equips.itemCode)})";
+            ApixText.text = string.Empty;
+            ApixValueText.text = string.Empty;
+            for (int i = 0; i < temp.apixList.abilityApixes.Length; i++)
+            {
+                ApixText.text += ("+" + ResourceManager.GetInstance().NameSheet.GetUINameValue(temp.apixList.abilityApixes[i].Item1.ToString()) + "\n");
+                ApixValueText.text += temp.apixList.abilityApixes[i].Item2.ToString("N4") + "\n";
+            }
         }
+
+        PriceText.text = equips.SellValue.ToString()+ 'G';
         FlavorText.text = string.Empty;
         //TODO : 어픽스와 골드만 하면됨
-        
     }
-    public void SetText(Miscs miscs)
+    public void SetText(Miscs miscs,Vector3 pos)
     {
 
     }
-    public void SetText(SkillInfoInGame skill)
+    public void SetText(SkillInfoInGame skill,Vector3 pos)
     {
 
     }

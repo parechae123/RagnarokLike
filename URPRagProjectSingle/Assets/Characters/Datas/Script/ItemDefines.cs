@@ -2,6 +2,7 @@ using PlayerDefines.Stat;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
@@ -123,7 +124,10 @@ public class InventoryItemBase : IItemBase
         get { return goldValue / 10f; }
     }
     protected float goldValue;
-
+    private int gradeLevel
+    {
+        get;
+    }
 
     public virtual string slotNumberInfo
     {
@@ -158,6 +162,10 @@ public class InventoryItemBase : IItemBase
         
         itemSprite = ResourceManager.GetInstance().ItemIconAtlas.GetSprite("Empty");
     }
+    public virtual void FloatInfo(Vector3 vec)
+    {
+        
+    }
 }
 public class Equips : InventoryItemBase
 {
@@ -170,7 +178,10 @@ public class Equips : InventoryItemBase
     public override bool isStackAble => false;
 
     protected BaseJobType[] equipAbleJobs;
-
+    public virtual int gradeLevel
+    {
+        get;
+    }
 
     protected byte equipLevel;
     public bool isItemUseAble
@@ -279,6 +290,7 @@ public class Armors : Equips
         this.part = part;
         this.matType = ArmorMat.None;
     }
+    
     public WeaponApixType GetValueType
     {
         get
@@ -331,6 +343,10 @@ public class Armors : Equips
             return 0;
         }
     }
+    public override int gradeLevel
+    {
+        get { return apixList.abilityApixes.Length; }
+    }
     public float GetMatValue
     {
         get { return TypeValue; }
@@ -376,6 +392,10 @@ public class Armors : Equips
             }
         }
     }
+    public override void FloatInfo(Vector3 pos)
+    {
+        UIManager.GetInstance().SlotInfo.SetText(this,pos);
+    }
 }
 
 
@@ -418,7 +438,10 @@ public class Weapons : Equips
             return 1;
         }
     }
-    
+    public override int gradeLevel
+    {
+        get { return apixList.abilityApixes.Length; }
+    }
     public Weapons(string itemCode,string itemName, Sprite itemSprite, BaseJobType[] equipJobs, byte equipLevel, float goldValue, EquipPart part, float valueOne, bool isMATKWeapon,WeaponType weaponType, IApixBase<WeaponApixType> apix) : base(itemCode,itemName, itemSprite,equipJobs, equipLevel, goldValue,part,valueOne)
     {
         this.itemCode = itemCode;
@@ -466,6 +489,10 @@ public class Weapons : Equips
             }
         }
     }
+    public override void FloatInfo(Vector3 vec)
+    {
+        UIManager.GetInstance().SlotInfo.SetText(this,vec);
+    }
 }
 public class Miscs : InventoryItemBase
 {
@@ -477,6 +504,10 @@ public class Miscs : InventoryItemBase
         this.itemSprite = itemSprite;
         this.goldValue = goldValue;
         ResetEvent();
+    }
+    public override void FloatInfo(Vector3 pos)
+    {
+        UIManager.GetInstance().SlotInfo.SetText(this,pos);
     }
 }
 
@@ -490,6 +521,10 @@ public class Consumables : InventoryItemBase
     public override string slotNumberInfo
     {
         get { return Amount.ToString(); }
+    }
+    public override void FloatInfo(Vector3 vec)
+    {
+        UIManager.GetInstance().SlotInfo.SetText(this,vec);
     }
 }
 public class Potions : Consumables
@@ -539,15 +574,26 @@ public class Potions : Consumables
         base.ResetEvent();
         UIManager.GetInstance().consumeInven.RemoveItem(this);
     }
-    
+
+    public override void FloatInfo(Vector3 vec)
+    {
+        UIManager.GetInstance().SlotInfo.SetText(this, vec);
+    }
 }
 public class foods : Consumables
 {
-
+    public override void FloatInfo(Vector3 pos)
+    {
+        UIManager.GetInstance().SlotInfo.SetText(this,pos);
+    }
 }
 public class buffItems : Consumables
 {
     //타이머로 계산
+    public override void FloatInfo(Vector3 vec)
+    {
+        UIManager.GetInstance().SlotInfo.SetText(this, vec);
+    }
 }
 
 

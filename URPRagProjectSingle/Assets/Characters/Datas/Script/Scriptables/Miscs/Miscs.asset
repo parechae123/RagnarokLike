@@ -18,6 +18,18 @@ MonoBehaviour:
     goldValue: 7
     iconName: jelly
   - itemCode: 30002
-    itemName: "\uAE30\uBB18\uCC0C"
-    goldValue: 7
-    iconName: gimotti
+    itemName: "\uAE43\uD138"
+    goldValue: 4
+    iconName: feathers
+  - itemCode: 30003
+    itemName: "\uC5EC\uC6B0\uC758 \uC1A1\uACF3\uB2C8"
+    goldValue: 9
+    iconName: canine
+  - itemCode: 30004
+    itemName: "\uBFCC\uB9AC"
+    goldValue: 10
+    iconName: root
+  - itemCode: 30005
+    itemName: "\uB3CC\uC870\uAC01"
+    goldValue: 9
+    iconName: stone

@@ -145,3 +145,67 @@ MonoBehaviour:
     lo_Name: "\uAC08\uACE0 \uB2E6\uC740"
   - eng_Name: Glorious
     lo_Name: "\uC601\uAD11\uC2A4\uB7EC\uC6B4"
+  uiNames:
+  - eng_Name: Str
+    lo_Name: "\uD798"
+  - eng_Name: AGI
+    lo_Name: "\uBBFC\uCCA9"
+  - eng_Name: Vit
+    lo_Name: "\uCCB4\uB825"
+  - eng_Name: Int
+    lo_Name: "\uC9C0\uB2A5"
+  - eng_Name: Dex
+    lo_Name: "\uC190\uC7AC\uC8FC"
+  - eng_Name: Luk
+    lo_Name: "\uD589\uC6B4"
+  - eng_Name: CriticalDMG
+    lo_Name: "\uCE58\uBA85\uD0C0 \uB370\uBBF8\uC9C0"
+  - eng_Name: CriticalChance
+    lo_Name: "\uCE58\uBA85\uD0C0 \uD655\uB960"
+  - eng_Name: ATK
+    lo_Name: "\uADFC\uC811 \uACF5\uACA9\uB825"
+  - eng_Name: MATK
+    lo_Name: "\uB9C8\uBC95 \uACF5\uACA9\uB825"
+  - eng_Name: AttackSpeed
+    lo_Name: "\uACF5\uACA9\uC18D\uB3C4"
+  - eng_Name: CastingSpeed
+    lo_Name: "\uCE90\uC2A4\uD305 \uC18D\uB3C4"
+  - eng_Name: MaxHp
+    lo_Name: "\uCD5C\uB300 \uCCB4\uB825"
+  - eng_Name: Accuracy
+    lo_Name: "\uC801\uC911\uB825"
+  - eng_Name: MaxMana
+    lo_Name: "\uCD5C\uB300 \uB9C8\uB098"
+  - eng_Name: ManaRegen
+    lo_Name: "\uB9C8\uB098 \uC7AC\uC0DD"
+  - eng_Name: HpRegen
+    lo_Name: "\uCCB4\uB825 \uC7AC\uC0DD"
+  - eng_Name: MoveSpeed
+    lo_Name: "\uC774\uB3D9 \uC18D\uB3C4"
+  - eng_Name: deff
+    lo_Name: "\uBC29\uC5B4\uB825"
+  - eng_Name: Evasion
+    lo_Name: "\uD68C\uD53C\uC728"
+  - eng_Name: magicDeff
+    lo_Name: "\uB9C8\uBC95 \uC800\uD56D\uB825"
+  gradeData:
+  - eng_Name: Normal
+    lo_Name: "\uC77C\uBC18"
+    gradeColor:
+      serializedVersion: 2
+      rgba: 4294967295
+  - eng_Name: Superior
+    lo_Name: "\uC6B0\uC218"
+    gradeColor:
+      serializedVersion: 2
+      rgba: 4294901760
+  - eng_Name: Rare
+    lo_Name: "\uD76C\uADC0"
+    gradeColor:
+      serializedVersion: 2
+      rgba: 4278255615
+  - eng_Name: Legendry
+    lo_Name: "\uC804\uC124"
+    gradeColor:
+      serializedVersion: 2
+      rgba: 4280382451

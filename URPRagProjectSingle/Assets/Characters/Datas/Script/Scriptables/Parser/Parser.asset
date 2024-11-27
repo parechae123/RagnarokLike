@@ -22,3 +22,5 @@ MonoBehaviour:
   equipNameSheet: {fileID: 102900000, guid: 903b5946f6c90bd4a9a44b22fbf3ccee, type: 3}
   apixNameSheet: {fileID: 102900000, guid: 982b5b92892188a44846d288c75dcb13, type: 3}
   prefixNameSheet: {fileID: 102900000, guid: ebadf2744ecd82f4cadab04058066abc, type: 3}
+  uiNameSheet: {fileID: 102900000, guid: 3c4cb406f7cfefa4aa1c3f25135b4f06, type: 3}
+  gradeSheet: {fileID: 102900000, guid: 27b19d930fd33234bbe929f4c90ec479, type: 3}

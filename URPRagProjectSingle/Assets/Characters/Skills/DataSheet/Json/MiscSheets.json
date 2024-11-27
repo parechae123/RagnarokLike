@@ -7,8 +7,26 @@
 },
 {
 "itemCode": "30002",
-"itemName": "기묘찌",
-"goldValue": "7",
-"iconName": "gimotti"
+"itemName": "깃털",
+"goldValue": "4",
+"iconName": "feathers"
+},
+{
+"itemCode": "30003",
+"itemName": "여우의 송곳니",
+"goldValue": "9",
+"iconName": "canine"
+},
+{
+"itemCode": "30004",
+"itemName": "뿌리",
+"goldValue": "10",
+"iconName": "root"
+},
+{
+"itemCode": "30005",
+"itemName": "돌조각",
+"goldValue": "9",
+"iconName": "stone"
 }
 ]
