@@ -1,0 +1,34 @@
+[
+{
+"questType": "Conversation",
+"parentQuestName": "helloWorld",
+"targetCode": "NPC_roras",
+"arr": "0",
+"valueOne": "1",
+"flavorText": "경비병 로라스와 대화하십시오"
+},
+{
+"questType": "Conversation",
+"parentQuestName": "troubleMaker",
+"targetCode": "NPC_roras",
+"arr": "0",
+"valueOne": "1",
+"flavorText": "경비병 로라스와 대화하십시오"
+},
+{
+"questType": "Hunting",
+"parentQuestName": "troubleMaker",
+"targetCode": "NPC_roras",
+"arr": "1",
+"valueOne": "10",
+"flavorText": "슬라임들이 말썽을 부리고 있습니다. 슬라임들을 처치하십시오"
+},
+{
+"questType": "Conversation",
+"parentQuestName": "troubleMaker",
+"targetCode": "NPC_roras",
+"arr": "2",
+"valueOne": "1",
+"flavorText": "로라스의 요구대로 슬라임들을 처치했습니다. 로라스에게 보고하십시오"
+}
+]

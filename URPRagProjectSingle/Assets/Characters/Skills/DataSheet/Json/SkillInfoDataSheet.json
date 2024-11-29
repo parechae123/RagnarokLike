@@ -5,7 +5,8 @@
 "jobName": "Novice",
 "skillType": "Active",
 "objectiveType": "OnlyTarget",
-"skillPosition": "self"
+"skillPosition": "self",
+"flavorText": "즉시 치료합니다"
 },
 {
 "skillName": "deadActing",
@@ -13,7 +14,8 @@
 "jobName": "Novice",
 "skillType": "buff",
 "objectiveType": "OnlyTarget",
-"skillPosition": "self"
+"skillPosition": "self",
+"flavorText": ""
 },
 {
 "skillName": "bash",
@@ -21,7 +23,8 @@
 "jobName": "SwordMan",
 "skillType": "Active",
 "objectiveType": "OnlyTarget",
-"skillPosition": "cursor"
+"skillPosition": "cursor",
+"flavorText": "잠깐의 준비동작 후 적을 빠르게 내려칩니다."
 },
 {
 "skillName": "magnum break",
@@ -29,7 +32,8 @@
 "jobName": "SwordMan",
 "skillType": "Active",
 "objectiveType": "Bounded",
-"skillPosition": "self"
+"skillPosition": "self",
+"flavorText": "땅의 진동을 이용해 주변의 적을 공격합니다."
 },
 {
 "skillName": "bless",
@@ -37,6 +41,7 @@
 "jobName": "SwordMan",
 "skillType": "buff",
 "objectiveType": "OnlyTarget",
-"skillPosition": "cursor"
+"skillPosition": "cursor",
+"flavorText": "일정시간 힘,손재주,행운을 증가시킵니다."
 }
 ]

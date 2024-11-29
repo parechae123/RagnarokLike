@@ -188,6 +188,32 @@ MonoBehaviour:
     lo_Name: "\uD68C\uD53C\uC728"
   - eng_Name: magicDeff
     lo_Name: "\uB9C8\uBC95 \uC800\uD56D\uB825"
+  - eng_Name: Passive
+    lo_Name: "\uD328\uC2DC\uBE0C"
+  - eng_Name: Active
+    lo_Name: "\uC561\uD2F0\uBE0C"
+  - eng_Name: buff
+    lo_Name: "\uBC84\uD504"
+  - eng_Name: self
+    lo_Name: "\uC790\uAE30 \uC790\uC2E0"
+  - eng_Name: cursor
+    lo_Name: "\uB9C8\uC6B0\uC2A4"
+  - eng_Name: None
+    lo_Name: "\uC815\uC758\uB418\uC9C0 \uC54A\uC74C"
+  - eng_Name: OnlyTarget
+    lo_Name: "\uB2E8\uC77C"
+  - eng_Name: Bounded
+    lo_Name: "\uAD11\uC5ED"
+  - eng_Name: Physical
+    lo_Name: "\uBB3C\uB9AC"
+  - eng_Name: Magic
+    lo_Name: "\uC8FC\uBB38"
+  - eng_Name: Heal
+    lo_Name: "\uD68C\uBCF5"
+  - eng_Name: PhysicalRange
+    lo_Name: "\uC6D0\uAC70\uB9AC"
+  - eng_Name: TrueDamage
+    lo_Name: "\uACE0\uC815"
   gradeData:
   - eng_Name: Normal
     lo_Name: "\uC77C\uBC18"

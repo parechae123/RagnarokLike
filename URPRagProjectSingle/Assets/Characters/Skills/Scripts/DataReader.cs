@@ -229,6 +229,7 @@ public class SkillInfoObjectOnly
     public SkillType skillType;
     public ObjectiveType objectiveType;
     public SkillPosition skillPosition;
+    public string flavorText;
 }
 
 #endif

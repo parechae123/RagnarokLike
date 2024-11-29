@@ -275,23 +275,7 @@ public interface ICameraTracker
     void UnRegistCameraAction();
     void FollowCamera();
 }
-public class Positions : ItemInfo
-{
-    private Sprite itemIcon;
-    protected Sprite ItemIcon
-    {
-        get { return itemIcon; }
-    }
-    private int amount;
-    protected int ItemAmount
-    {
-        get { return amount; }
-    }
-    public void UseItem()
-    {
 
-    }
-}
 public interface ItemInfo
 {
     protected virtual Sprite ItemIcon
@@ -630,14 +614,40 @@ public class SlotInfo
 
     public void SetText(Consumables consumables,Vector3 screenPoint)
     {
-        
+        TR.position = screenPoint;
+        RsetTexts();
+
+        //TODO : 소모품 등급이 상정되지 않음
+        (string, Color32) gradeInfo = ResourceManager.GetInstance().NameSheet.GetGradeNameValue(0);
+        OutLine.color = gradeInfo.Item2;
+        RankText.color = gradeInfo.Item2;
+        RankText.text = "일반";
+        NameText.text = consumables.itemName;
+        switch (consumables.consumType)
+        {
+            case ConsumType.none:
+                break;
+            case ConsumType.posion:
+                UniqueText.text = consumables.effectInHP ?"즉시 체력 회복":"즉시 마나 회복";
+                UniqueValueText.text = consumables.effectValue.ToString();
+                break;
+            case ConsumType.buffItem:
+                break;
+            case ConsumType.food:
+                break;
+            default:
+                break;
+        }
+        PriceText.text = $"{consumables.SellValue}G";
+        //FlavorText.text
+        TR.gameObject.SetActive(true);
     }
     public void SetText(Equips equips,Vector3 screenPoint)
     {
         TR.position = screenPoint;
-        TR.gameObject.SetActive(true);
+        RsetTexts();
         (string, Color32) gradeInfo = ResourceManager.GetInstance().NameSheet.GetGradeNameValue(equips.gradeLevel);
-        
+
         OutLine.color = gradeInfo.Item2;
         RankText.text = gradeInfo.Item1;
         RankText.color = gradeInfo.Item2;
@@ -648,7 +658,7 @@ public class SlotInfo
             UniqueText.text = temp.IsMATKWeapon ? "주문력" : "공격력";
             UniqueValueText.text = temp.ValueOne.ToString("N0");
             UniqueText.text += $"\n{ResourceManager.GetInstance().NameSheet.GetUINameValue(temp.apixList.statLine.Item1.ToString())}";
-            UniqueValueText.text += temp.apixList.statLine.Item2.ToString();
+            UniqueValueText.text += $"\n{temp.apixList.statLine.Item2}";
             TypeText.text = $"무기({(equips.GetPart == EquipPart.TwoHanded ? "양손" : (equips.GetPart == EquipPart.RightHand ? "오른손" : "왼손")) + ResourceManager.GetInstance().NameSheet.GetEquipNameValue(temp.itemCode)})";
             ApixText.text = string.Empty;
             ApixValueText.text = string.Empty;
@@ -664,7 +674,7 @@ public class SlotInfo
             UniqueText.text = temp.magicDeff? "마법 저항력" : "방어력";
             UniqueValueText.text = temp.ValueOne.ToString("N0");
             UniqueText.text += $"\n{ResourceManager.GetInstance().NameSheet.GetUINameValue(temp.apixList.statLine.Item1.ToString())}";
-            UniqueValueText.text += temp.apixList.statLine.Item2.ToString();
+            UniqueValueText.text += $"\n{temp.apixList.statLine.Item2}";
             TypeText.text = $"방어구({ResourceManager.GetInstance().NameSheet.GetEquipNameValue(equips.itemCode)})";
             ApixText.text = string.Empty;
             ApixValueText.text = string.Empty;
@@ -677,14 +687,78 @@ public class SlotInfo
 
         PriceText.text = equips.SellValue.ToString()+ 'G';
         FlavorText.text = string.Empty;
-        //TODO : 어픽스와 골드만 하면됨
+        TR.gameObject.SetActive(true);
     }
+
     public void SetText(Miscs miscs,Vector3 pos)
     {
+        TR.position = pos;
+        RsetTexts();
+        NameText.text = miscs.itemName;
+        PriceText.text = miscs.SellValue.ToString();
 
+        TR.gameObject.SetActive(true);
     }
     public void SetText(SkillInfoInGame skill,Vector3 pos)
     {
+        if (skill.nowSkillLevel <= 0) return;
+        RsetTexts();
+        TR.position = pos;
+        NameText.text = skill.skillName+ $"{skill.nowSkillLevel}/{skill.maxSkillLevel}";
+        RankText.text = $"기본 시전 시간 : {skill.skill[skill.CastingSkillLevel].defaultCastingTime.ToString("N2")}";
+        UniqueText.text = "스킬 종류 : ";
+        UniqueValueText.text = ResourceManager.GetInstance().NameSheet.GetUINameValue(skill.skillType.ToString());
 
+        UniqueText.text += $"\n기본 수치 : ";
+        UniqueValueText.text += $"\n{skill.skill[skill.CastingSkillLevel].defaultValue.ToString("N0")}";
+
+        ApixText.text += $"\n사거리 : ";
+        ApixValueText.text += $"\n{skill.skill[skill.CastingSkillLevel].skillRange}";
+
+        ApixText.text += $"\n시전 범위 : ";
+        ApixValueText.text += $"\n{ResourceManager.GetInstance().NameSheet.GetUINameValue(skill.objectiveType.ToString())}" +
+            (skill.objectiveType == ObjectiveType.Bounded ? skill.skill[skill.CastingSkillLevel].SkillBound.ToString() : string.Empty);
+        string coefficType = string.Empty;
+        switch (skill.skill[skill.CastingSkillLevel].coefficientType)
+        {
+            case ValueType.Physical:
+                coefficType = "근접 공격력";
+                break;
+            case ValueType.Magic:
+                coefficType = "주문력";
+                break;
+            case ValueType.PhysicalRange:
+                coefficType = "원거리 공격력";
+                break;
+        }
+
+        PriceText.text = $"{ResourceManager.GetInstance().NameSheet.GetUINameValue(skill.skill[skill.CastingSkillLevel].damageType.ToString())}," +
+            coefficType +
+            $"({skill.skill[skill.CastingSkillLevel].coefficient.ToString("N1")})";
+
+
+
+        
+        FlavorText.text = $"{skill.flavorText}";
+
+        TR.gameObject.SetActive(true);
     }
+    public void RsetTexts()
+    {
+        NameText.text = string.Empty;
+        RankText.text = string.Empty;
+        TypeText.text = string.Empty;
+        OutLine.color = Color.white;
+        RankText.color = Color.white;
+        UniqueText.text = string.Empty;
+        UniqueValueText.text = string.Empty;
+        ApixText.text= string.Empty;
+        ApixValueText.text= string.Empty;
+        PriceText.text= string.Empty;
+        FlavorText.text= string.Empty;
+    }
+}
+public enum ConsumType
+{
+    none,posion,buffItem,food
 }

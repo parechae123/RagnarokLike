@@ -8,6 +8,7 @@ public class Parser : ScriptableObject
 {
     public ScriptableObject[] datas;
     public DefaultAsset[] assets;
+    public QuestDatas questData;
 
     public NameDatas nameData;
     public DefaultAsset equipNameSheet;
@@ -15,12 +16,24 @@ public class Parser : ScriptableObject
     public DefaultAsset prefixNameSheet;
     public DefaultAsset uiNameSheet;
     public DefaultAsset gradeSheet;
-    
+
+    public DefaultAsset questInfoSheet;
+    public DefaultAsset questInfoDetailCondition;
+
     public void Parse()
     {
         for (int i = 0; i < datas.Length; i++)
         {
             ((IDataFunc)datas[i]).GetSheetValue(new TableConvert().Json(assets[i]));
+        }
+        if(!questInfoSheet|| !questInfoDetailCondition||!questData)
+        {
+            Debug.LogError("퀘스트 데이터가 없습니다 시트 혹은 스크립터블 오브젝트를 확인하여 주십시오.");
+            return;
+        }
+        else
+        {
+            ((QuestDatas)questData).GetSheetValue(new TableConvert().Json(questInfoSheet), new TableConvert().Json(questInfoDetailCondition));
         }
     }
 }

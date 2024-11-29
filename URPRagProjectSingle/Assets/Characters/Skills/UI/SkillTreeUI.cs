@@ -91,8 +91,16 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
             (int,int) btnArray = (targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.x/100, targetSkillTreeBase.skillIconsInSkilltree[i].positionOnSkillTree.y /100);
             if (skillInfos[i].isSkillLearned)
             {
-                if (skillInfos[i].maxSkillLevel <= skillInfos[i].nowSkillLevel || Player.Instance.playerLevelInfo.LeftSkillPoint <= 0) skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = colored;
-                else if (skillInfos[i].maxSkillLevel > skillInfos[i].nowSkillLevel && Player.Instance.playerLevelInfo.LeftSkillPoint > 0) skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = blueScaled;
+                if (skillInfos[i].maxSkillLevel <= skillInfos[i].nowSkillLevel || Player.Instance.playerLevelInfo.LeftSkillPoint <= 0)
+                {
+                    skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.image.raycastTarget = false;
+                    skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = colored;
+                }
+                else if (skillInfos[i].maxSkillLevel > skillInfos[i].nowSkillLevel && Player.Instance.playerLevelInfo.LeftSkillPoint > 0)
+                {
+                    skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.image.raycastTarget = true;
+                    skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = blueScaled;
+                }
                 continue;
             }
             bool[] tempBool = Player.Instance.playerLevelInfo.isLearnAble(i, targetSkillTreeBase.GetJobPhase,targetSkillTreeBase.skillIconsInSkilltree);
@@ -104,6 +112,7 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
                 { 
                     isEscape = true;
                     skillInfos[i].skillStatus = SkillStatus.noneLearnAble;
+                    skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.image.raycastTarget = false;
                     skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = greyScaled;
                     break; 
                 }
@@ -115,11 +124,13 @@ public class SkillTreeUI : MonoBehaviour , IuiInterface
                 if (Player.Instance.playerLevelInfo.LeftSkillPoint > 0)
                 {
                     skillInfos[i].skillStatus = SkillStatus.learnAble;
+                    skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.image.raycastTarget = true;
                     skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = blueScaled;
                 }
                 else
                 {
                     skillInfos[i].skillStatus = SkillStatus.noneLearnAble;
+                    skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.image.raycastTarget = false;
                     skillBtns[btnArray.Item1, btnArray.Item2].skillBTN.targetGraphic.material = greyScaled;
 
                 }

@@ -517,7 +517,18 @@ public class Consumables : InventoryItemBase
     {
         get { return SlotType.ConsumableItem; }
     }
-
+    public virtual ConsumType consumType
+    {
+        get;
+    }
+    public virtual bool effectInHP
+    {
+        get;
+    }
+    public virtual float effectValue
+    {
+        get;
+    }
     public override string slotNumberInfo
     {
         get { return Amount.ToString(); }
@@ -532,7 +543,10 @@ public class Potions : Consumables
     //Amount ==0일시 아이템 제거되도록 구현 필요
     public PotionType potionType;
     public float valueOne;
+    public override float effectValue => valueOne;
+    public override bool effectInHP => potionType == PotionType.HP;
     public int invenIndex;
+    public override ConsumType consumType => ConsumType.posion;
     public Potions(string itemCode,string itemName, Sprite itemSprite, float goldValue, PotionType potionType, float valueOne)
     {
         this.itemCode = itemCode;

@@ -45,6 +45,7 @@ public interface IQuestConditions
 
     string GetDescription();        //조건 설명 반환 메서드
 }
+[System.Serializable]
 public class HuntingCondition : IQuestConditions
 {
     public string targetCode;
@@ -73,6 +74,7 @@ public class HuntingCondition : IQuestConditions
         return string.Empty;
     }
 }
+[System.Serializable]
 public class CollectionCondition : IQuestConditions
 {
     public string itemCode;
@@ -100,6 +102,7 @@ public class CollectionCondition : IQuestConditions
         return string.Empty;
     }
 }
+[System.Serializable]
 public class InteractionCondition : IQuestConditions
 {
     public string interactCode;
@@ -127,6 +130,7 @@ public class InteractionCondition : IQuestConditions
         return string.Empty;
     }
 }
+[System.Serializable]
 public class ConversationCondition : IQuestConditions
 {
     public string npcCode;

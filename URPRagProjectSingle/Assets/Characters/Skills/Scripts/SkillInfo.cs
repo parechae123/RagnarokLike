@@ -31,6 +31,7 @@ public class SkillInfo : ScriptableObject
     public byte maxSkillLevel;
     public byte nowSkillLeve;
     public byte castingSkillLevel;
+    public string flavorText;
 
     public bool isSkillLearned
     {
@@ -49,6 +50,7 @@ public class SkillInfo : ScriptableObject
         skillType = basedObject.skillType;
         objectiveType = basedObject.objectiveType;
         skillPosition = basedObject.skillPosition;
+        flavorText = basedObject.flavorText;
     }
     /// <summary>
     /// 해당 스크립트에 스킬배열에 스킬을 레벨순서로 넣어줌
@@ -67,6 +69,7 @@ public class SkillInfo : ScriptableObject
         skillType = lastestInfo.skillType;
         objectiveType = lastestInfo.objectiveType;
         skillPosition = lastestInfo.skillPosition;
+        flavorText = lastestInfo.flavorText;
         SetSkillAsset(lastestInfo.skillIcon,lastestInfo.effectOBJPrefab);
     }
     public void SetSkillAsset(Sprite Image, GameObject prefab)
@@ -118,6 +121,7 @@ public class SkillInfoInGame : IItemBase
     public byte nowSkillLevel;
     private byte castingSkillLevel =1;
     public int leftTick;
+    public string flavorText;
     public byte CastingSkillLevel
     {
         get
@@ -169,6 +173,7 @@ public class SkillInfoInGame : IItemBase
         maxSkillLevel = data.maxSkillLevel;
         quickSlotFuncs = null;
         quickSlotFuncs += SetSkillObjectToPlayer;
+        flavorText = data.flavorText;
     }
     public SkillInfoInGame(SkillInfoInGame data)
     {
@@ -185,6 +190,7 @@ public class SkillInfoInGame : IItemBase
         maxSkillLevel = data.maxSkillLevel;
         quickSlotFuncs = null;
         quickSlotFuncs += SetSkillObjectToPlayer;
+        flavorText = data.flavorText;
     }
     private SkillBaseInGameData[] ConvertInGameData(SkillBase[] skills)
     {

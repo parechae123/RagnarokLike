@@ -82,5 +82,57 @@
 {
 "eng_Name": "magicDeff",
 "lo_Name": "마법 저항력"
+},
+{
+"eng_Name": "Passive",
+"lo_Name": "패시브"
+},
+{
+"eng_Name": "Active",
+"lo_Name": "액티브"
+},
+{
+"eng_Name": "buff",
+"lo_Name": "버프"
+},
+{
+"eng_Name": "self",
+"lo_Name": "자기 자신"
+},
+{
+"eng_Name": "cursor",
+"lo_Name": "마우스"
+},
+{
+"eng_Name": "None",
+"lo_Name": "정의되지 않음"
+},
+{
+"eng_Name": "OnlyTarget",
+"lo_Name": "단일"
+},
+{
+"eng_Name": "Bounded",
+"lo_Name": "광역"
+},
+{
+"eng_Name": "Physical",
+"lo_Name": "물리"
+},
+{
+"eng_Name": "Magic",
+"lo_Name": "주문"
+},
+{
+"eng_Name": "Heal",
+"lo_Name": "회복"
+},
+{
+"eng_Name": "PhysicalRange",
+"lo_Name": "원거리"
+},
+{
+"eng_Name": "TrueDamage",
+"lo_Name": "고정"
 }
 ]

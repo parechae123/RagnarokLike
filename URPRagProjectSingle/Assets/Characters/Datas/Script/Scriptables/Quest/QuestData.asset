@@ -13,19 +13,41 @@ MonoBehaviour:
   m_Name: QuestData
   m_EditorClassIdentifier: 
   questData:
-  - questID: 
-    questName: 
-    description: 
+  - questID: helloWorld
+    questName: "\uBAA8\uD5D8 \uC2DC\uC791!"
+    description: "\uACBD\uBE44\uBCD1 \uB85C\uB77C\uC2A4\uC640 \uB300\uD654\uD558\uC790"
     level: 0
     condition:
-    - questType: 0
-      targetCode: 
-      valueOne: 0
-  - questID: 
-    questName: 
-    description: 
-    level: 0
+    - rid: 3747649768233369600
+  - questID: troubleMaker
+    questName: "\uB9D0\uC131\uAFB8\uB7EC\uAE30"
+    description: "\uC2AC\uB77C\uC784\uC744 \uCC98\uCE58\uD558\uC2ED\uC2DC\uC624"
+    level: 1
     condition:
-    - questType: 0
-      targetCode: 
-      valueOne: 0
+    - rid: 3747649768233369601
+    - rid: 3747649768233369602
+    - rid: 3747649768233369603
+  references:
+    version: 2
+    RefIds:
+    - rid: 3747649768233369600
+      type: {class: ConversationCondition, ns: , asm: Assembly-CSharp}
+      data:
+        npcCode: NPC_roras
+        dialogueIndex: 1
+    - rid: 3747649768233369601
+      type: {class: ConversationCondition, ns: , asm: Assembly-CSharp}
+      data:
+        npcCode: NPC_roras
+        dialogueIndex: 1
+    - rid: 3747649768233369602
+      type: {class: HuntingCondition, ns: , asm: Assembly-CSharp}
+      data:
+        targetCode: NPC_roras
+        curr: 0
+        require: 10
+    - rid: 3747649768233369603
+      type: {class: ConversationCondition, ns: , asm: Assembly-CSharp}
+      data:
+        npcCode: NPC_roras
+        dialogueIndex: 1

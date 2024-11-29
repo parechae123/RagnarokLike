@@ -943,7 +943,7 @@ namespace PlayerDefines
                 float temp = 0f;
                 for (byte i = 0; i < weapons.Length; i++)
                 {
-                    temp += weapons[i].IsMATKWeapon == callOnMATK ? armors[i].ValueOne : 0;
+                    temp += weapons[i].IsMATKWeapon == callOnMATK ? weapons[i].ValueOne : 0;
 
                 }
                 return temp;
@@ -978,7 +978,7 @@ namespace PlayerDefines
                     if (armors[i].apixList.abilityApixes == null) continue;
                     for (byte j = 0; j < armors[i].apixList.abilityApixes.Length; j++)
                     {
-                        if (armors[i].apixList.abilityApixes[i].Item1 == targetType) temp += armors[i].apixList.abilityApixes[i].Item2;
+                        if (armors[i].apixList.abilityApixes[j].Item1 == targetType) temp += armors[i].apixList.abilityApixes[j].Item2;
                     }
                 }
                 return temp;
