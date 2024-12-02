@@ -12,6 +12,14 @@ using static UnityEditor.Progress;
 public class QuestDatas : ScriptableObject
 {
     [SerializeField] public ScriptableQuest[] questData;
+    public Quest GetQuest(string questID)
+    {
+        foreach (ScriptableQuest item in questData)
+        {
+            if (questID == item.questID) return new Quest(item);
+        }
+        return null;
+    }
     public void GetSheetValue(string sheetJson,string conditionJson)
     {
         questData = JsonConvert.DeserializeObject<ScriptableQuest[]>(sheetJson);

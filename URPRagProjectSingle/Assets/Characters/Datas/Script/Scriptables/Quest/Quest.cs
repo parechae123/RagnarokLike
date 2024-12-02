@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.TerrainTools;
@@ -11,8 +12,16 @@ public class Quest
     public string questID;
     public string questName;
     public string description;
-    public QuestType questType;
+    public bool isQuestDone;
     public int level;
+    public Quest(ScriptableQuest questInfo)
+    {
+        this.questID = questInfo.questID;
+        this.questName = questInfo.questName;
+        this.description = questInfo.description;
+        this.level = questInfo.level;
+        this.conditions = questInfo.condition.ToList();
+    }
 
     [SerializeField] private List<IQuestConditions> conditions;
 }
@@ -21,7 +30,7 @@ public class Quest
 public enum RewardType //전직퀘스트 구분을 주목적으로 추가
 {
     //장비    ,   소모품,    골드,     전직
-    Equipment, Cosumable, Gold, ClassChange
+    armor,weapon, cosumable, gold, classChange,exp,misc
 }
 public enum QuestType   //퀘스트의 유형
 {   //사냥        수집      상호작용    대화
@@ -35,6 +44,8 @@ public enum QuestStatus
     Failed
 }
 #endregion
+
+
 #region QuestInterfaces
 public interface IQuestConditions
 {
@@ -159,4 +170,58 @@ public class ConversationCondition : IQuestConditions
     }
 }
 
+public interface IRewards
+{
+    
+    void GetReward();
+}
+
+public class WeaponReward : IRewards
+{
+     
+    public void GetReward()
+    {
+
+    }
+}
+public class ArmorReward : IRewards
+{
+     
+    public void GetReward()
+    {
+
+    }
+}
+public class ConsumReward : IRewards
+{
+     
+    public void GetReward()
+    {
+
+    }
+}
+public class MiscReward : IRewards
+{
+     
+    public void GetReward()
+    {
+
+    }
+}
+public class EXPReward : IRewards
+{
+     
+    public void GetReward()
+    {
+
+    }
+}
+public class RewardParsingData
+{
+    
+    sbyte Level;
+    RewardType rewardType;
+
+}
 #endregion
+
