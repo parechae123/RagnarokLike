@@ -18,7 +18,7 @@
 {
 "questType": "Hunting",
 "parentQuestName": "troubleMaker",
-"targetCode": "NPC_roras",
+"targetCode": "MOB_Slime",
 "arr": "1",
 "valueOne": "10",
 "flavorText": "슬라임들이 말썽을 부리고 있습니다. 슬라임들을 처치하십시오"

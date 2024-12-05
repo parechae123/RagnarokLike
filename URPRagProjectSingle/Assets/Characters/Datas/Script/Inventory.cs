@@ -25,14 +25,14 @@ public class Inventory<T> where T : InventoryItemBase
                     invenIndex[i] = value;
                     invenIndex[i].Amount = value.Amount;
                     slotParent.GetChild(i).GetChild(0).GetComponent<InventorySlots>().SlotItem = value;
-                    break;
+                    return;
                 }
                 if (invenIndex[i].IsEmptySlot)
                 {
                     invenIndex[i] = value;
                     invenIndex[i].Amount = value.Amount;
                     slotParent.GetChild(i).GetChild(0).GetComponent<InventorySlots>().SlotItem = value;
-                    break;
+                    return;
                 }
                 else if(invenIndex[i].isStackAble&&value.isStackAble)
                 {
@@ -44,7 +44,7 @@ public class Inventory<T> where T : InventoryItemBase
                         {
                             invenIndex[i].Amount = (sbyte)temp;
                             slotParent.GetChild(i).GetChild(0).GetComponent<InventorySlots>().SlotItem = invenIndex[i];
-                            break;
+                            return;
                         }
                         else
                         {
@@ -53,7 +53,7 @@ public class Inventory<T> where T : InventoryItemBase
                     }
                 }
             }
-            
+            MonsterManager.GetInstance().Drop.JustDropItem(value, Player.Instance.transform.position);
         }
     }
 
@@ -65,7 +65,7 @@ public class Inventory<T> where T : InventoryItemBase
     }
     public void GetItems(T targetItem)
     {
-        if (targetItem.itemName == string.Empty|| targetItem.itemName == null) return;
+        if (targetItem.itemName == string.Empty|| targetItem.itemName == null||targetItem == null) return;
         GetEmptySlot = targetItem;
     }
     public void RemoveItem(T targetItem)

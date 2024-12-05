@@ -19,6 +19,7 @@ public class Parser : ScriptableObject
 
     public DefaultAsset questInfoSheet;
     public DefaultAsset questInfoDetailCondition;
+    public DefaultAsset questRewardSheet;
 
     public void Parse()
     {
@@ -33,7 +34,16 @@ public class Parser : ScriptableObject
         }
         else
         {
-            ((QuestDatas)questData).GetSheetValue(new TableConvert().Json(questInfoSheet), new TableConvert().Json(questInfoDetailCondition));
+            ((QuestDatas)questData).GetSheetConditionValue(new TableConvert().Json(questInfoSheet), new TableConvert().Json(questInfoDetailCondition));
+        }
+        if(!questRewardSheet||!questData)
+        {
+            Debug.LogError("퀘스트 데이터가 없습니다 시트 혹은 스크립터블 오브젝트를 확인하여 주십시오.");
+            return;
+        }
+        else
+        {
+            ((QuestDatas)questData).GetSheetRewardValue( new TableConvert().Json(questRewardSheet));
         }
     }
 }

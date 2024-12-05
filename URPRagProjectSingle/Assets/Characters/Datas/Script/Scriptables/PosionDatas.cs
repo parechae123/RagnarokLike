@@ -8,43 +8,56 @@ using System.Data;
 using System.IO;
 using System;
 using System.Text;
+using static UnityEditor.Progress;
 #region Posion
-    [CreateAssetMenu(fileName = "Cosumes", menuName = "custom/Items/Cosumes", order = 0)]
-    public class PosionDatas : ScriptableObject, IDataFunc
+[CreateAssetMenu(fileName = "Cosumes", menuName = "custom/Items/Cosumes", order = 0)]
+public class PosionDatas : ScriptableObject, IDataFunc
+{
+    [SerializeField] public PosionData[] items;
+    public void GetSheetValue(string json)
     {
-        [SerializeField] public PosionData[] items;
-        public void GetSheetValue(string json)
-        {
-            items = JsonConvert.DeserializeObject<PosionData[]>(json);
-            EditorUtility.SetDirty(this);
+        items = JsonConvert.DeserializeObject<PosionData[]>(json);
+        EditorUtility.SetDirty(this);
 
-            // 프로젝트에 저장
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
+        // 프로젝트에 저장
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
-    public class TableConvert
+    public Potions GetPosion(int itemCode)
     {
-        public string Json(DefaultAsset sheet)
+        foreach (PosionData item in items)
         {
-            if (sheet == null)
+            if(item.itemCode == itemCode) 
             {
-                Debug.LogError("No Excel file assigned.");
-                return string.Empty;
+                return new Potions(item.itemCode.ToString(), item.itemName, ResourceManager.GetInstance().ItemIconAtlas.GetSprite(item.itemName), item.goldValue, item.potionType, item.valueOne);
             }
-            string jsonOutputPath = (Application.dataPath.Replace("/", "\\")) + "\\Characters\\Skills\\DataSheet\\Json";
-            string filePath = AssetDatabase.GetAssetPath(sheet);
-            var json = new StringBuilder();
-            try
-            {
-                using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
-                {
-                    using (var reader = ExcelReaderFactory.CreateReader(stream))
-                    {
-                        var result = reader.AsDataSet();
+        }
+        Debug.Log($"포션 아이템 중 {itemCode}코드가 존재하지 않습니다");
+        return null;
+    }
+}
 
-                        foreach (DataTable table in result.Tables)
-                        {
+public class TableConvert
+{
+    public string Json(DefaultAsset sheet)
+    {
+        if (sheet == null)
+        {
+            Debug.LogError("No Excel file assigned.");
+            return string.Empty;
+        }
+        string jsonOutputPath = (Application.dataPath.Replace("/", "\\")) + "\\Characters\\Skills\\DataSheet\\Json";
+        string filePath = AssetDatabase.GetAssetPath(sheet);
+        var json = new StringBuilder();
+        try
+        {
+            using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    var result = reader.AsDataSet();
+                    foreach (DataTable table in result.Tables)
+                    {
 
                             if (table.Rows.Count <= 0) continue;
                             json.AppendLine("[");

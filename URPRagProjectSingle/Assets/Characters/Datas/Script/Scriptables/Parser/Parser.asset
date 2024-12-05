@@ -28,3 +28,4 @@ MonoBehaviour:
   questInfoSheet: {fileID: 102900000, guid: ac196989af2607e4bbc0bdde84d270c0, type: 3}
   questInfoDetailCondition: {fileID: 102900000, guid: a6c72d84ef0c7a7469bc241faa7969fa,
     type: 3}
+  questRewardSheet: {fileID: 102900000, guid: 572509d5e9d79e04081a5deed21dd0e5, type: 3}

@@ -21,6 +21,20 @@ public class MiscDatas : ScriptableObject, IDataFunc
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
+    public Miscs GetMiscs(int itemCode)
+    {
+        foreach (MiscData item in items)
+        {
+            if (item.itemCode == itemCode)
+            {
+                return new Miscs(item.itemCode.ToString(), item.itemName, ResourceManager.GetInstance().ItemIconAtlas.GetSprite(item.itemName), item.goldValue);
+            }
+        }
+
+        Debug.Log($"기타 아이템 중 {itemCode}코드가 존재하지 않습니다");
+        return null;
+    }
+    
 }
 
 #endregion

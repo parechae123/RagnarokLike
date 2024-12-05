@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -69,16 +70,19 @@ public class DropItems : MonoBehaviour , ICameraTracker
             Transform temp = new GameObject("ItemParent").transform;
             temp.localScale = Vector3.one * 0.4f;
             temp.parent = null;
-            temp.transform.position = worldPos;
             transform.parent = temp;
             transform.localPosition = Vector3.up * 0.4f;
             transform.localScale = Vector3.one;
         }
         else
         {
-            transform.parent.position = worldPos;
+            
             transform.parent.gameObject.SetActive(true);
         }
+        transform.parent.DOKill();
+        transform.parent.position = worldPos + Vector3.up;
+        transform.parent.DOPath(new Vector3[3] { worldPos + Vector3.up, worldPos + (Vector3.up * 0.7f), worldPos }, 0.4f);
+
         RegistCameraAction();
     }
     public void Release()

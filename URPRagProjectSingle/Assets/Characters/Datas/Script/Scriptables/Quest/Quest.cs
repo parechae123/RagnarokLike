@@ -1,8 +1,12 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Build.Pipeline;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.TerrainTools;
 using UnityEngine;
 
@@ -27,7 +31,7 @@ public class Quest
 }
 #region QuestEnums
 
-public enum RewardType //전직퀘스트 구분을 주목적으로 추가
+public enum RewardType 
 {
     //장비    ,   소모품,    골드,     전직
     armor,weapon, cosumable, gold, classChange,exp,misc
@@ -178,50 +182,173 @@ public interface IRewards
 
 public class WeaponReward : IRewards
 {
-     
+    public int amount;
+    public bool twohandedWP;
+    public WeaponType weaponType;
+    public sbyte level;
+    public WeaponReward(RewardParsingData data) 
+    { 
+        amount = data.amount;
+        twohandedWP = data.isTwoHanded;
+        weaponType = data.weaponType;
+        level = data.itemLevel;
+    }
+
     public void GetReward()
     {
-
+        UIManager.GetInstance().equipInven.GetItems(MonsterManager.GetInstance().Drop.GetDefinedWeapon(level,twohandedWP,weaponType));
     }
 }
 public class ArmorReward : IRewards
 {
+    public int amount;
+    public EquipPart part;
+    public ArmorMat mat;
+    public sbyte level;
+    
+
+    public ArmorReward(RewardParsingData data)
+    {
+        amount = data.amount;
+        part = data.armorPart;
+        mat = data.armorMat;
+        level = data.itemLevel;
+    }
      
     public void GetReward()
     {
-
+        UIManager.GetInstance().equipInven.GetItems(MonsterManager.GetInstance().Drop.GetDefinedArmor(level, mat, part));
     }
 }
 public class ConsumReward : IRewards
 {
-     
+    public int itemCode;
+    public int amount;
+    public ConsumReward(RewardParsingData data)
+    {
+        itemCode = data.itemCode;
+        amount = data.amount;
+    }
     public void GetReward()
     {
-
+        Consumables temp = ResourceManager.GetInstance().PosionDatas.GetPosion(itemCode);
+        if(temp == null) return;
+        UIManager.GetInstance().consumeInven.GetItems(temp);
     }
 }
 public class MiscReward : IRewards
 {
-     
+    public int itemCode;
+    public int amount;
+    public MiscReward(RewardParsingData data)
+    {
+        itemCode = data.itemCode;
+        amount = data.amount;
+    }
     public void GetReward()
     {
-
+        Miscs temp = ResourceManager.GetInstance().MiscDatas.GetMiscs(itemCode);
+        if (temp == null) return;
+        UIManager.GetInstance().miscInven.GetItems(temp);
     }
 }
 public class EXPReward : IRewards
 {
-     
+    public bool isJobEXP;
+    public float expValue;
+    public EXPReward(RewardParsingData data)
+    {
+        this.isJobEXP = data.isJobExp;
+        this.expValue = data.expValue;
+    }
+
     public void GetReward()
     {
-
+        if (isJobEXP)
+        {
+            Player.Instance.playerLevelInfo.GetJobEXP(this.expValue);
+        }
+        else
+        {
+            Player.Instance.playerLevelInfo.GetBaseEXP(this.expValue);
+        }
     }
 }
+public class GoldReward : IRewards
+{
+    public int goldValue;
+    public GoldReward(RewardParsingData data)
+    {
+        this.goldValue = data.amount;
+    }
+
+    public void GetReward()
+    {
+        UIManager.GetInstance().PlayerGold += goldValue;
+    }
+}
+public class ClassChangeReward : IRewards
+{
+    public string className;
+    public ClassChangeReward(RewardParsingData data)
+    {
+        this.className = data.className;
+    }
+
+    public void GetReward()
+    {
+        //TODO : PlayerInstance에 Jodata바꿔줘야함
+    }
+}
+[System.Serializable]
 public class RewardParsingData
 {
-    
-    sbyte Level;
-    RewardType rewardType;
+    public RewardType rewardType;
+    public string questCode;
+    public int itemCode;
+    public int amount;
+    public bool isTwoHanded;
+    public WeaponType weaponType;
 
+    public EquipPart armorPart;
+    public ArmorMat armorMat;
+    public sbyte itemLevel;
+    public bool isJobExp;
+    public float expValue;
+    public string className;
+
+
+    public IRewards Converts(RewardParsingData data)
+    {
+        IRewards tempReward = null;
+        switch (data.rewardType)
+        {
+            case RewardType.armor:
+                tempReward = new ArmorReward(data);
+                break;
+            case RewardType.weapon:
+
+                tempReward = new WeaponReward(data);
+                break;
+            case RewardType.cosumable:
+                tempReward = new ConsumReward(data);
+                break;
+            case RewardType.gold:
+                tempReward = new GoldReward(data);
+                break;
+            case RewardType.classChange:
+                tempReward = new ClassChangeReward(data);
+                break;
+            case RewardType.exp:
+                tempReward = new EXPReward(data);
+                break;
+            case RewardType.misc:
+                tempReward = new MiscReward(data);
+                break;
+        }
+
+        return tempReward;
+    }
 }
 #endregion
 

@@ -20,7 +20,7 @@ public class QuestDatas : ScriptableObject
         }
         return null;
     }
-    public void GetSheetValue(string sheetJson,string conditionJson)
+    public void GetSheetConditionValue(string sheetJson,string conditionJson)
     {
         questData = JsonConvert.DeserializeObject<ScriptableQuest[]>(sheetJson);
         Queue<ScriptableQuestCondition> conditions = new Queue<ScriptableQuestCondition>(JsonConvert.DeserializeObject<ScriptableQuestCondition[]>(conditionJson));
@@ -43,6 +43,32 @@ public class QuestDatas : ScriptableObject
                 }
             }
             if(currCondition != null) Debug.LogError($"누락된 컨디션이 있습니다 : {currCondition.parentQuestName}퀘스트 ||{currCondition.arr}번째 컨디션");
+        }
+        EditorUtility.SetDirty(this);
+
+        // 프로젝트에 저장
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
+    public void GetSheetRewardValue(string rewardJson)
+    {
+        Queue<RewardParsingData> rewardData = new Queue<RewardParsingData>(JsonConvert.DeserializeObject<RewardParsingData[]>(rewardJson));
+        while (rewardData.Count > 0)
+        {
+            RewardParsingData currRWdata = rewardData.Dequeue();
+            for (int i = 0; i< questData.Length; i++)
+            {
+                if (questData[i].rewards == null) questData[i].rewards = new IRewards[0];
+
+                if (questData[i].questID == currRWdata.questCode)
+                {
+                    Array.Resize(ref questData[i].rewards, questData[i].rewards.Length + 1);
+                    questData[i].rewards[questData[i].rewards.Length-1] = currRWdata.Converts(currRWdata);
+                    currRWdata = null;
+                    break;
+                }
+            }
+            if(currRWdata != null) Debug.LogError($"누락된 컨디션이 있습니다 : {currRWdata.questCode}퀘스트 ||{currRWdata.rewardType}타입");
         }
         EditorUtility.SetDirty(this);
 
@@ -78,6 +104,8 @@ public class ScriptableQuest
     public string description;
     public int level;
     [SerializeReference]public IQuestConditions[] condition;
+    [SerializeReference]public IRewards[] rewards;
+    
 }
 
 public class ScriptableQuestCondition

@@ -615,8 +615,31 @@ public class UIManager : Manager<UIManager>
     public Inventory<Consumables> consumeInven = new Inventory<Consumables>("CosumeableTab");
     public Inventory<Equips> equipInven = new Inventory<Equips>("EquipTabs");
     public Inventory<Miscs> miscInven = new Inventory<Miscs>("MiscTabs");
-    //public Inventory<Consumable> equipInven = new Inventory<Consumable>("CosumeableTab");
-    //public Inventory<MISC> equipInven = new Inventory<MISC>("MiscTabs");
+    float playerGold;
+    public float PlayerGold
+    {
+        get { return playerGold; } 
+        set 
+        {
+            double result = playerGold + value;
+            if ((result) <= float.MaxValue&&result >= 0) 
+            {
+                playerGold = value;
+            }
+        }
+    }
+    public bool IsEnoughGold(float pay)
+    {
+        if(PlayerGold-pay >= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void UpdateLevel()
     {
         BaseLevelText.text = Player.Instance.playerLevelInfo.baseLevel.ToString();
