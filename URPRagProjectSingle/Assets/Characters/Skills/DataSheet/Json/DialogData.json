@@ -1,0 +1,90 @@
+[
+{
+"type": "greeting",
+"npcName": "NPC_Roras",
+"curArr": "0",
+"title": "반갑네",
+"text": "안녕하신가",
+"questCode": "helloWorld"
+},
+{
+"type": "greeting",
+"npcName": "NPC_Roras",
+"curArr": "1",
+"title": "반갑네",
+"text": "모험은 어떤가",
+"questCode": "helloWorld"
+},
+{
+"type": "quest",
+"npcName": "NPC_Roras",
+"curArr": "0",
+"title": "문제거리 : 슬라임",
+"text": "주변의 슬라임들이 말썽을 일으키고있네",
+"questCode": "troubleMaker"
+},
+{
+"type": "quest",
+"npcName": "NPC_Roras",
+"curArr": "1",
+"title": "문제거리 : 슬라임",
+"text": "이 말썽꾸러기들을 처리 해 주었으면 좋겠네",
+"questCode": "troubleMaker"
+},
+{
+"type": "quest",
+"npcName": "NPC_Roras",
+"curArr": "2",
+"title": "문제거리 : 슬라임",
+"text": "도와준다면 내가 소싯적에 사용하던 장비를 나눠주겠네",
+"questCode": "troubleMaker"
+},
+{
+"type": "quest",
+"npcName": "NPC_Roras",
+"curArr": "3",
+"title": "문제거리 : 슬라임",
+"text": "그렇다면 잘 부탁하네",
+"questCode": "troubleMaker"
+},
+{
+"type": "dialog",
+"npcName": "NPC_Roras",
+"curArr": "0",
+"title": "소싯적",
+"text": "나도 어릴적엔 자네같은 모험가였네",
+"questCode": ""
+},
+{
+"type": "dialog",
+"npcName": "NPC_Roras",
+"curArr": "1",
+"title": "소싯적",
+"text": "무릎에 화살만 맞지 않았어도...",
+"questCode": ""
+},
+{
+"type": "dialog",
+"npcName": "NPC_Roras",
+"curArr": "2",
+"title": "소싯적",
+"text": "(그런거치곤 너무 건강해 보이시는데..)",
+"questCode": ""
+},
+{
+"type": "dialog",
+"npcName": "NPC_Roras",
+"curArr": "0",
+"title": "손자",
+"text": "아마 북쪽 도시로 가면 내 손자를 볼 수 있을걸세",
+"questCode": ""
+},
+{
+"type": "dialog",
+"npcName": "NPC_Roras",
+"curArr": "1",
+"title": "손자",
+"text": "나를 닮아 아주 잘 생겼지..",
+"questCode": ""
+}
+]

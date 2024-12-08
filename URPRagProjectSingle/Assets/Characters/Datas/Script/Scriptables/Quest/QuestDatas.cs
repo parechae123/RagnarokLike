@@ -20,6 +20,14 @@ public class QuestDatas : ScriptableObject
         }
         return null;
     }
+    public int GetQuestArr(string questID)
+    {
+        for (int i = 0; i < questData.Length; i++)
+        {
+            if (questData[i].questID == questID) return i;
+        }
+        return -1;
+    }
     public void GetSheetConditionValue(string sheetJson,string conditionJson)
     {
         questData = JsonConvert.DeserializeObject<ScriptableQuest[]>(sheetJson);

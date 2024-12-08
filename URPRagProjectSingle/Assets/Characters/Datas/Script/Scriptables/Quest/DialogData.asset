@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1a13a9b8ac54e4482320848fbf0aa8, type: 3}
+  m_Name: DialogData
+  m_EditorClassIdentifier: 
+  dialogs:
+  - type: 1
+    npcName: NPC_Roras
+    curArr: 0
+    title: "\uBC18\uAC11\uB124"
+    text: "\uC548\uB155\uD558\uC2E0\uAC00"
+    questCode: helloWorld
+  - type: 1
+    npcName: NPC_Roras
+    curArr: 1
+    title: "\uBC18\uAC11\uB124"
+    text: "\uBAA8\uD5D8\uC740 \uC5B4\uB5A4\uAC00"
+    questCode: helloWorld
+  - type: 3
+    npcName: NPC_Roras
+    curArr: 0
+    title: "\uBB38\uC81C\uAC70\uB9AC : \uC2AC\uB77C\uC784"
+    text: "\uC8FC\uBCC0\uC758 \uC2AC\uB77C\uC784\uB4E4\uC774 \uB9D0\uC37D\uC744 \uC77C\uC73C\uD0A4\uACE0\uC788\uB124"
+    questCode: troubleMaker
+  - type: 3
+    npcName: NPC_Roras
+    curArr: 1
+    title: "\uBB38\uC81C\uAC70\uB9AC : \uC2AC\uB77C\uC784"
+    text: "\uC774 \uB9D0\uC37D\uAFB8\uB7EC\uAE30\uB4E4\uC744 \uCC98\uB9AC \uD574
+      \uC8FC\uC5C8\uC73C\uBA74 \uC88B\uACA0\uB124"
+    questCode: troubleMaker
+  - type: 3
+    npcName: NPC_Roras
+    curArr: 2
+    title: "\uBB38\uC81C\uAC70\uB9AC : \uC2AC\uB77C\uC784"
+    text: "\uB3C4\uC640\uC900\uB2E4\uBA74 \uB0B4\uAC00 \uC18C\uC2EF\uC801\uC5D0 \uC0AC\uC6A9\uD558\uB358
+      \uC7A5\uBE44\uB97C \uB098\uB220\uC8FC\uACA0\uB124"
+    questCode: troubleMaker
+  - type: 3
+    npcName: NPC_Roras
+    curArr: 3
+    title: "\uBB38\uC81C\uAC70\uB9AC : \uC2AC\uB77C\uC784"
+    text: "\uADF8\uB807\uB2E4\uBA74 \uC798 \uBD80\uD0C1\uD558\uB124"
+    questCode: troubleMaker
+  - type: 0
+    npcName: NPC_Roras
+    curArr: 0
+    title: "\uC18C\uC2EF\uC801"
+    text: "\uB098\uB3C4 \uC5B4\uB9B4\uC801\uC5D4 \uC790\uB124\uAC19\uC740 \uBAA8\uD5D8\uAC00\uC600\uB124"
+    questCode: 
+  - type: 0
+    npcName: NPC_Roras
+    curArr: 1
+    title: "\uC18C\uC2EF\uC801"
+    text: "\uBB34\uB98E\uC5D0 \uD654\uC0B4\uB9CC \uB9DE\uC9C0 \uC54A\uC558\uC5B4\uB3C4..."
+    questCode: 
+  - type: 0
+    npcName: NPC_Roras
+    curArr: 2
+    title: "\uC18C\uC2EF\uC801"
+    text: "(\uADF8\uB7F0\uAC70\uCE58\uACE4 \uB108\uBB34 \uAC74\uAC15\uD574 \uBCF4\uC774\uC2DC\uB294\uB370..)"
+    questCode: 
+  - type: 0
+    npcName: NPC_Roras
+    curArr: 0
+    title: "\uC190\uC790"
+    text: "\uC544\uB9C8 \uBD81\uCABD \uB3C4\uC2DC\uB85C \uAC00\uBA74 \uB0B4 \uC190\uC790\uB97C
+      \uBCFC \uC218 \uC788\uC744\uAC78\uC138"
+    questCode: 
+  - type: 0
+    npcName: NPC_Roras
+    curArr: 1
+    title: "\uC190\uC790"
+    text: "\uB098\uB97C \uB2EE\uC544 \uC544\uC8FC \uC798 \uC0DD\uACBC\uC9C0.."
+    questCode: 

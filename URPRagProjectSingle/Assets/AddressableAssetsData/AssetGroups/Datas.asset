@@ -65,6 +65,16 @@ MonoBehaviour:
     m_SerializedLabels:
     - ItemDatas
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17d3a578587937a48b6ff697444d70d2
+    m_Address: DialogData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf5bc83487fab1646888086f5af8f478
+    m_Address: QuestData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b1ab8ed4be16e204fa7da75b33343685, type: 2}
   m_SchemaSet:

@@ -63,6 +63,24 @@ public class ResourceManager : Manager<ResourceManager>
             return miscDatas;
         }
     }
+    private QuestDatas questData;
+    public QuestDatas QuestData
+    {
+        get 
+        { 
+            if (questData == null) LoadAsync<QuestDatas>("QuestData", (QD) => { questData = QD; });
+            return questData;
+        }
+    }
+    private DialogData dialogData;
+    public DialogData DialogData
+    {
+        get 
+        { 
+            if (dialogData == null) LoadAsync<DialogData>("DialogData", (DD) => { dialogData = DD; });
+            return dialogData;
+        }
+    }
 
     public Dictionary<string, UnityEngine.Object> resourceDict;
     private uint loadTaskNum = 0;
@@ -78,6 +96,8 @@ public class ResourceManager : Manager<ResourceManager>
         LoadAsync<NameDatas>("NameData", (data) => { nameSheet= data; allDone.Invoke(true, 3); });
         LoadAsync<PosionDatas>("Posions", (data) => { posionDatas = data; allDone.Invoke(true, 4); });
         LoadAsync<MiscDatas>("Miscs", (data) => { miscDatas = data; allDone.Invoke(true, 5); });
+        LoadAsync<QuestDatas>("QuestData", (data) => { questData = data; allDone.Invoke(true, 5); });
+        LoadAsync<DialogData>("DialogData", (data) => { dialogData = data; allDone.Invoke(true, 5); });
 
     }
 

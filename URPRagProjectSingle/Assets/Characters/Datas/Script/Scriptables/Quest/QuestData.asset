@@ -18,95 +18,95 @@ MonoBehaviour:
     description: "\uACBD\uBE44\uBCD1 \uB85C\uB77C\uC2A4\uC640 \uB300\uD654\uD558\uC790"
     level: 0
     condition:
-    - rid: 7306274678722527328
+    - rid: 7306274750093852732
     rewards:
-    - rid: 7306274678722527332
-    - rid: 7306274678722527333
-    - rid: 7306274678722527334
-    - rid: 7306274678722527335
-    - rid: 7306274678722527336
-    - rid: 7306274678722527337
-    - rid: 7306274678722527338
-    - rid: 7306274678722527339
+    - rid: 7306274750093852736
+    - rid: 7306274750093852737
+    - rid: 7306274750093852738
+    - rid: 7306274750093852739
+    - rid: 7306274750093852740
+    - rid: 7306274750093852741
+    - rid: 7306274750093852742
+    - rid: 7306274750093852743
   - questID: troubleMaker
     questName: "\uB9D0\uC131\uAFB8\uB7EC\uAE30"
     description: "\uC2AC\uB77C\uC784\uC744 \uCC98\uCE58\uD558\uC2ED\uC2DC\uC624"
     level: 1
     condition:
-    - rid: 7306274678722527329
-    - rid: 7306274678722527330
-    - rid: 7306274678722527331
+    - rid: 7306274750093852733
+    - rid: 7306274750093852734
+    - rid: 7306274750093852735
     rewards: []
   references:
     version: 2
     RefIds:
-    - rid: 7306274678722527328
+    - rid: 7306274750093852732
       type: {class: ConversationCondition, ns: , asm: Assembly-CSharp}
       data:
         npcCode: NPC_roras
         dialogueIndex: 1
-    - rid: 7306274678722527329
+    - rid: 7306274750093852733
       type: {class: ConversationCondition, ns: , asm: Assembly-CSharp}
       data:
         npcCode: NPC_roras
         dialogueIndex: 1
-    - rid: 7306274678722527330
+    - rid: 7306274750093852734
       type: {class: HuntingCondition, ns: , asm: Assembly-CSharp}
       data:
         targetCode: MOB_Slime
         curr: 0
         require: 10
-    - rid: 7306274678722527331
+    - rid: 7306274750093852735
       type: {class: ConversationCondition, ns: , asm: Assembly-CSharp}
       data:
         npcCode: NPC_roras
         dialogueIndex: 1
-    - rid: 7306274678722527332
+    - rid: 7306274750093852736
       type: {class: EXPReward, ns: , asm: Assembly-CSharp}
       data:
         isJobEXP: 0
         expValue: 100
-    - rid: 7306274678722527333
+    - rid: 7306274750093852737
       type: {class: EXPReward, ns: , asm: Assembly-CSharp}
       data:
         isJobEXP: 1
         expValue: 100
-    - rid: 7306274678722527334
+    - rid: 7306274750093852738
       type: {class: WeaponReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
         twohandedWP: 0
         weaponType: 5
         level: 0
-    - rid: 7306274678722527335
+    - rid: 7306274750093852739
       type: {class: ArmorReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
         part: 0
         mat: 1
         level: 0
-    - rid: 7306274678722527336
+    - rid: 7306274750093852740
       type: {class: ArmorReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
         part: 1
         mat: 1
         level: 0
-    - rid: 7306274678722527337
+    - rid: 7306274750093852741
       type: {class: ArmorReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
         part: 2
         mat: 1
         level: 0
-    - rid: 7306274678722527338
+    - rid: 7306274750093852742
       type: {class: ArmorReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
         part: 3
         mat: 1
         level: 0
-    - rid: 7306274678722527339
+    - rid: 7306274750093852743
       type: {class: ArmorReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1

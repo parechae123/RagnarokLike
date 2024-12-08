@@ -1045,6 +1045,44 @@ namespace PlayerDefines
                 }
             }
         }
+
+        
+        public class NPCStat : Stats
+        {
+            public override float HP 
+            {
+                get
+                {
+                    return base.hp;
+                }
+                set
+                {
+                    if (defaultMaxHP <= value) base.hp = defaultMaxHP;
+                    else base.hp = value;
+
+                    if (isCharacterDie)
+                    {
+                        dieFunctions?.Invoke();
+                        return;
+                    }
+                }
+            }
+            public override float SP
+            {
+                get { return base.sp; }
+                set
+                {
+                    if (value > defaultMaxHP) sp = base.defaultSP;
+                    else sp = value;
+                }
+            }
+            
+            public NPCStat(Node initializeNode, float hp, float sp, float moveSpeed, float attackSpeed, float attackDamage, byte attackRange, float evasion) : base(initializeNode, hp, sp, moveSpeed, attackSpeed, attackDamage, attackRange, evasion)
+            {
+                SP = sp;
+                HP = hp;
+            }
+        }
     }
     public class PlayerUI
     {
