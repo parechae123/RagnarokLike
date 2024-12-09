@@ -206,7 +206,7 @@ namespace PlayerDefines
                     }
                     else
                     {
-                        Player.Instance.playerLevelInfo.stat.OnClick();
+                        Player.Instance.playerLevelInfo.stat.AttackTarget();
                     }
                     skillTimer = 0;
                 }
@@ -505,7 +505,7 @@ namespace PlayerDefines
                 HP -= value;
                 return value;
             }
-            public virtual void OnClick(Stats target)
+            public virtual void AttackTarget(Stats target)
             {
                 this.target = target;
                 if (target == null) return;
@@ -529,6 +529,10 @@ namespace PlayerDefines
                     return true;
                 }
                 return false;
+            }
+            public virtual void OnClick()
+            {
+
             }
         }
 
@@ -899,7 +903,7 @@ namespace PlayerDefines
                 }
                 return false;
             }
-            public override void OnClick(Stats target = null)
+            public override void AttackTarget(Stats target = null)
             {
                 if (target != null) { this.target = target; }
                 if (this.target == null) return;
@@ -1046,7 +1050,7 @@ namespace PlayerDefines
             }
         }
 
-        
+        [System.Serializable]
         public class NPCStat : Stats
         {
             public override float HP 
@@ -1084,9 +1088,9 @@ namespace PlayerDefines
                 SP = sp;
                 HP = hp;
             }
-            public override void OnClick(Stats target)
+            public override void OnClick()
             {
-                
+                dialogStateMachine.ChangeDialog(DialogType.greeting);
             }
         }
     }

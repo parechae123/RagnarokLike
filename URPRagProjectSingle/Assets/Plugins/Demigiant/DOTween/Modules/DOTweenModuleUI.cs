@@ -13,6 +13,8 @@ using DG.Tweening.Plugins;
 using DG.Tweening.Plugins.Options;
 using Outline = UnityEngine.UI.Outline;
 using Text = UnityEngine.UI.Text;
+using TMPro;
+using DG.Tweening.Plugins.Core;
 
 #pragma warning disable 1591
 namespace DG.Tweening
@@ -564,7 +566,29 @@ namespace DG.Tweening
             }, endValue, duration)
                 .Blendable().SetTarget(target);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="text">목표 텍스트 UI객체</param>
+        /// <param name="targetText">최종 text 내용</param>
+        /// <param name="duration">지속시간</param>
+        /// <returns></returns>
+        public static Tweener DOText(this TextMeshProUGUI text, string targetText, float duration)
+        {
+            // 현재 텍스트를 변수에 저장
+            string startText = text.text;
 
+            // DOTween의 To 메서드를 사용해 텍스트 애니메이션 구현
+            return DOTween.To(
+                () => startText,
+                value => {
+                    text.text = value;
+                    startText = value;
+                },
+                targetText,
+                duration
+            ).SetEase(Ease.Linear); // 선형 애니메이션으로 설정
+        }
         #endregion
 
         #region Image

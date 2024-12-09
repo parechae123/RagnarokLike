@@ -6,12 +6,13 @@ using UnityEngine;
 
 public class NPCBase : MonoBehaviour
 {
-    public NPCStat stat;
+    [SerializeField]public NPCStat stat;
     public string npcName;
 
     // Start is called before the first frame update
     void Start()
     {
+        stat = new NPCStat(GridManager.GetInstance().PositionToNode(transform.position), float.MaxValue, float.MaxValue, 0, 0, 0, 0, 0);
         SettingDialogData(ResourceManager.GetInstance().DialogData.dialogs);
     }
 
@@ -25,20 +26,16 @@ public class NPCBase : MonoBehaviour
             if (lastTitle != tempData[i].title)
             {
                 lastTitle = tempData[i].title;
-                Array.Resize(ref stat.dialogStateMachine.dialogStates, stat.dialogStateMachine.dialogStates.Length+1);
                 Dialog tempDial = new Dialog(Array.FindAll(tempData, item => item.title == lastTitle));
-                stat.dialogStateMachine.dialogStates[stat.dialogStateMachine.dialogStates.Length-1] = new DialogState(tempDial.title,tempDial);
+                if (stat.dialogStateMachine.dialogStates == null) stat.dialogStateMachine.dialogStates = new DialogState[0];
+                Array.Resize(ref stat.dialogStateMachine.dialogStates, stat.dialogStateMachine.dialogStates.Length+1);
+                stat.dialogStateMachine.dialogStates[stat.dialogStateMachine.dialogStates.Length-1] = new DialogState(tempDial);
             }
             else
             {
                 continue;
             }
         }
-        
-    }
-    // Update is called once per frame
-    void Update()
-    {
         
     }
 }
