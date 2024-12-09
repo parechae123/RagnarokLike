@@ -7,6 +7,7 @@ using PlayerDefines;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.IO;
+using TMPro;
 
 /// <summary>
 /// 메니저 템플릿화
@@ -716,6 +717,25 @@ public class UIManager : Manager<UIManager>
         get { return MainCanvas.Find("MonsterHPBar").GetComponent<Slider>(); }
     }
     Queue<Slider> monsterHPBarPool = new Queue<Slider>();
+    
+    public Transform DialogPannel { get { return MainCanvas.Find("Dialog"); } }
+    private TextMeshProUGUI dialogText;
+    public TextMeshProUGUI DialogText
+    {
+        get 
+        { 
+            if (dialogText == null) 
+            {
+                dialogText = DialogPannel.Find("InnterPannel").Find("Context").Find("DialogText").GetComponent<TextMeshProUGUI>(); 
+            } 
+            return dialogText;
+        }
+    }
+    private TextMeshProUGUI nameText;
+    public TextMeshProUGUI NameText
+    {
+        get { if (nameText == null) { nameText = DialogPannel.Find("InnterPannel").Find("NameBar").Find("NPCNameText").GetComponent<TextMeshProUGUI>(); } return nameText; }
+    }
     public void HPBarEnqueue(Slider target)
     {
         target.transform.position = new Vector3(9990, 999, 9999);

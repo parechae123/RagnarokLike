@@ -1,3 +1,4 @@
+using DG.Tweening;
 using PlayerDefines.Stat;
 using System;
 using System.Collections;
@@ -14,6 +15,8 @@ public class NPCBase : MonoBehaviour
     {
         stat = new NPCStat(GridManager.GetInstance().PositionToNode(transform.position), float.MaxValue, float.MaxValue, 0, 0, 0, 0, 0);
         SettingDialogData(ResourceManager.GetInstance().DialogData.dialogs);
+        UIManager.GetInstance().DialogText.text = string.Empty;
+        UIManager.GetInstance().DialogText.DOText("けけけけけけけけ",0.3f);
     }
 
     void SettingDialogData(DialogParseData[] datas)
