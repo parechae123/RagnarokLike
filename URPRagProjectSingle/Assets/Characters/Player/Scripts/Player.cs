@@ -65,6 +65,7 @@ public class Player : MonoBehaviour,ICameraTracker
     }
     private bool isSearchCastTarget = false;
     public bool isMotionBookCancel = false;
+    public bool isMoveAble = true;
     #endregion
     #region 노드
     [SerializeField] public Node targetNode;
@@ -354,7 +355,17 @@ public class Player : MonoBehaviour,ICameraTracker
         {
             stateMachine.SetDirrection(ref playerLookDir,target.position,x);
 
+            
             StateMachine.AnimationChange();
+            if (!isMoveAble)
+            {
+                target.DOKill(false);
+                targetNode = null;
+                SetPlayerPositionToCenterPos();
+                //PlayerMoveOrder(path.wps[path.wpLengths.Length-1]);
+                stateMachine.ChangeState("idleState");
+                return;
+            }
             Node nextNode = GridManager.GetInstance().PositionToNode(x);
             if (null == nextNode.CharacterOnNode|| playerLevelInfo.stat == nextNode.CharacterOnNode)
             {
@@ -579,6 +590,7 @@ public class Player : MonoBehaviour,ICameraTracker
     public void PlayerMoveOrder(Vector3 targetPosition,Action arriveAction,int range = -1)
     {
         range = range != -1 ? range - 1 : range ;
+        if (!isMoveAble) return;
         if (!StateMachine.CurrentState.isCancelableState)
         {
             isMotionBookCancel = true;

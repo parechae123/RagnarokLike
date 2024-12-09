@@ -176,7 +176,7 @@ public class MAttackState : IState
             if (monster.monsterStat.attackSpeed <= timer)
             {
                 if (Player.Instance.playerLevelInfo.stat.isCharacterDie) return;
-                monster.monsterStat.AttackTarget(Player.Instance.playerLevelInfo.stat);
+                monster.monsterStat.OnClick(Player.Instance.playerLevelInfo.stat);
                 timer = 0;
                 monster.ChangeState(new MAttackState(monster));
                 return;

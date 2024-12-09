@@ -206,7 +206,7 @@ namespace PlayerDefines
                     }
                     else
                     {
-                        Player.Instance.playerLevelInfo.stat.AttackTarget();
+                        Player.Instance.playerLevelInfo.stat.OnClick();
                     }
                     skillTimer = 0;
                 }
@@ -290,11 +290,11 @@ namespace PlayerDefines
             {
                 get { return defaultMaxHP > hp; }
             }
-            public Action<Vector3, Action,int> moveFunction;
+            public Action<Vector3, Action, int> moveFunction;
             public Action dieFunctions;//TODO : 사망 연출 등록필요
-            
 
-            public Stats(Node initializeNode, float hp,float sp, float moveSpeed, float attackSpeed, float attackDamage,byte attackRange,float evasion)
+
+            public Stats(Node initializeNode, float hp, float sp, float moveSpeed, float attackSpeed, float attackDamage, byte attackRange, float evasion)
             {
                 standingNode = initializeNode;
                 standingNode.CharacterOnNode = this;
@@ -380,7 +380,7 @@ namespace PlayerDefines
                     else continue;
                 }
                 return true;
-            } 
+            }
             #endregion
             public virtual float TotalAD
             {
@@ -415,11 +415,11 @@ namespace PlayerDefines
                 }
                 set
                 {
-                    Debug.Log((hp- value) +"몬스터 데미지");
+                    Debug.Log((hp - value) + "몬스터 데미지");
                     if (isCharacterDie) return;
 
                     hp = value;
-                    if(isCharacterDie)
+                    if (isCharacterDie)
                     {
                         hp = 0;
                         dieFunctions?.Invoke();
@@ -431,15 +431,15 @@ namespace PlayerDefines
             public virtual float SP
             {
                 get { return sp; }
-                set 
-                { 
-                    if(value>defaultSP) sp = defaultSP;
+                set
+                {
+                    if (value > defaultSP) sp = defaultSP;
                     else sp = value;
 
                 }
             }
             public float moveSpeed;
-            public virtual float MoveSpeed 
+            public virtual float MoveSpeed
             {
                 get { return moveSpeed; }
                 set { moveSpeed = value; }
@@ -452,9 +452,9 @@ namespace PlayerDefines
             public float deff;
             public virtual float Deff
             {
-                get 
+                get
                 {
-                    return deff < 0 ? 0: deff;
+                    return deff < 0 ? 0 : deff;
                 }
             }
             public float magicDeff;
@@ -468,14 +468,14 @@ namespace PlayerDefines
 
             public float attackSpeed;
             public float statTimer;
-            [SerializeField]private byte charactorAttackRange;
+            [SerializeField] private byte charactorAttackRange;
             public byte pureAttackRange
             {
                 get { return charactorAttackRange; }
             }
             public int CharactorAttackRange
             {
-                get { return charactorAttackRange*10; }
+                get { return charactorAttackRange * 10; }
             }
 
 
@@ -493,7 +493,7 @@ namespace PlayerDefines
                         break;
                     case ValueType.Heal:
                         //TODO : 받는 치유량 apix가 생기면 여기에
-                        if(value > 0) value = -value;
+                        if (value > 0) value = -value;
                         break;
                     case ValueType.PhysicalRange:
                         value -= value * (Deff * 0.001f);
@@ -505,7 +505,7 @@ namespace PlayerDefines
                 HP -= value;
                 return value;
             }
-            public virtual void AttackTarget(Stats target)
+            public virtual void OnClick(Stats target)
             {
                 this.target = target;
                 if (target == null) return;
@@ -513,7 +513,7 @@ namespace PlayerDefines
                 //타겟 회피율 계산
                 if (accuracy < target.Evasion)
                 {
-                    if (UnityEngine.Random.Range(1, 101) >  target.Evasion- accuracy)
+                    if (UnityEngine.Random.Range(1, 101) > target.Evasion - accuracy)
                     {
                         UIManager.GetInstance().SpawnFloatText(target.standingNode.worldPos + (Vector3.up * 2), "MISS!", new Color(0.47058f, 0.18039f, 0.45098f, 1), 1);
                         return;
@@ -899,7 +899,7 @@ namespace PlayerDefines
                 }
                 return false;
             }
-            public override void AttackTarget(Stats target = null)
+            public override void OnClick(Stats target = null)
             {
                 if (target != null) { this.target = target; }
                 if (this.target == null) return;
@@ -1076,11 +1076,17 @@ namespace PlayerDefines
                     else sp = value;
                 }
             }
-            
+            [SerializeField] public DialogStateMachine dialogStateMachine;
+            public (int, int) currDiaAddy;
+
             public NPCStat(Node initializeNode, float hp, float sp, float moveSpeed, float attackSpeed, float attackDamage, byte attackRange, float evasion) : base(initializeNode, hp, sp, moveSpeed, attackSpeed, attackDamage, attackRange, evasion)
             {
                 SP = sp;
                 HP = hp;
+            }
+            public override void OnClick(Stats target)
+            {
+                
             }
         }
     }

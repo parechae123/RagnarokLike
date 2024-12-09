@@ -762,3 +762,70 @@ public enum ConsumType
 {
     none,posion,buffItem,food
 }
+public class DialogStateMachine
+{
+    public DialogState curr;
+    public DialogState[] dialogStates;
+    public void InitializeDialog(string stateName, Dialog dialog)
+    {
+        Array.Resize(ref dialogStates,dialogStates.Length+1);
+        dialogStates[dialogStates.Length - 1] = new DialogState(stateName,dialog);
+    }
+    public void ChangeDialog(string stateName,string title)
+    {
+
+        foreach (DialogState item in dialogStates)
+        {
+            if (item.StateName == stateName && item.GetTitle== title)
+            {
+                if(curr != null) curr.Exit();
+                curr = item;
+                curr.Enter();
+                return;
+            }
+        }
+    }
+}
+public class DialogState
+{
+    public string GetTitle
+    {
+        get 
+        {
+            if (data == null) { Debug.LogError("대화 정보가 제대로 입력되지 않았습니다."); return string.Empty; }
+            else if (data.title == string.Empty) Debug.LogError("타이틀이 없어용..");
+
+            return data.title;
+        }
+    }
+    private string stateName;
+    public string StateName
+    {
+        get { return stateName; }
+    }
+    private Dialog data;
+    private Dialog Data
+    {
+        get { return data; }
+    }
+    public DialogState(string stateName,Dialog dialog)
+    {
+        this.stateName = stateName;
+        this.data = dialog;
+    }
+
+
+    public void Enter()
+    {
+        //Player.Instance.playerLevelInfo.
+    }
+    public void Execute(int index)
+    {
+        if (index > data.textData.Length) Exit();
+
+    }
+    public void Exit() 
+    {
+        
+    }
+}
