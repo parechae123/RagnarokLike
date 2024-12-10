@@ -8,21 +8,27 @@ using UnityEngine;
 public class NPCBase : MonoBehaviour
 {
     [SerializeField]public NPCStat stat;
-    public string npcName;
+    public string npcName
+    {
+        get { return stat.dialogStateMachine.npcName; }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         stat = new NPCStat(GridManager.GetInstance().PositionToNode(transform.position), float.MaxValue, float.MaxValue, 0, 0, 0, 0, 0);
         SettingDialogData(ResourceManager.GetInstance().DialogData.dialogs);
-        UIManager.GetInstance().DialogText.text = string.Empty;
-        UIManager.GetInstance().DialogText.DOText("けけけけけけけけ",0.3f);
+        
     }
 
     void SettingDialogData(DialogParseData[] datas)
     {
+        if (stat.dialogStateMachine == null)
+        {
+            stat.dialogStateMachine = new DialogStateMachine();
+            stat.dialogStateMachine.npcName = transform.name;
+        }
         DialogParseData[] tempData = Array.FindAll(datas, item => item.npcName == npcName);
-        if (stat.dialogStateMachine == null) stat.dialogStateMachine = new DialogStateMachine();
         string lastTitle = string.Empty;
         for (int i = 0; i < tempData.Length; i++)
         {
@@ -40,5 +46,7 @@ public class NPCBase : MonoBehaviour
             }
         }
         
+
+
     }
 }

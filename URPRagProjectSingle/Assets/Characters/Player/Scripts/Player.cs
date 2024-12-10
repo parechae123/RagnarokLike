@@ -65,7 +65,7 @@ public class Player : MonoBehaviour,ICameraTracker
     }
     private bool isSearchCastTarget = false;
     public bool isMotionBookCancel = false;
-    public bool isMoveAble = true;
+    public PlaySequence playSequence = PlaySequence.nonCombat;
     #endregion
     #region 노드
     [SerializeField] public Node targetNode;
@@ -84,6 +84,18 @@ public class Player : MonoBehaviour,ICameraTracker
     public LinkedList<Node> nodePreview = new LinkedList<Node>();
     public float arriveTime;
     #endregion
+    private DialogStateMachine currDialog;
+    public DialogStateMachine CurrDialog
+    {
+        get 
+        {
+            if (currDialog == null) playSequence = PlaySequence.nonCombat; 
+            return currDialog; }
+        set 
+        { 
+            if(value== null)playSequence = PlaySequence.nonCombat;
+            currDialog = value; }
+    }
     [SerializeField]
     public PlayerStateMachine stateMachine;
     public PlayerStateMachine StateMachine
@@ -357,7 +369,7 @@ public class Player : MonoBehaviour,ICameraTracker
 
             
             StateMachine.AnimationChange();
-            if (!isMoveAble)
+            if (playSequence == PlaySequence.dialog|| playSequence == PlaySequence.die|| playSequence == PlaySequence.shopping)
             {
                 target.DOKill(false);
                 targetNode = null;
@@ -420,7 +432,8 @@ public class Player : MonoBehaviour,ICameraTracker
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] groundHit = Physics.RaycastAll(ray, 1000f, 8);
-        RaycastHit[] ItemHit = Physics.RaycastAll(ray, 1000f, 128);
+        RaycastHit[] itemHit = Physics.RaycastAll(ray, 1000f, 128);
+        RaycastHit[] npcHit = Physics.RaycastAll(ray, 1000f, 256);
         RaycastHit[] monsterHit = Physics.RaycastAll(ray, 1000f, 64);
 
         if (isSearchCastTarget)
@@ -445,9 +458,8 @@ public class Player : MonoBehaviour,ICameraTracker
         if (EventSystem.current.IsPointerOverGameObject())
         {
             playerCursorState.changeState(cursorState.defaultCurser);
-            return;
         }
-        if (ItemHit.Length > 0)
+        else if (itemHit.Length > 0)
         {
             playerCursorState.changeState(cursorState.itemCursor);
             if (targetCell.gameObject.activeSelf) targetCell.gameObject.SetActive(false);
@@ -476,18 +488,32 @@ public class Player : MonoBehaviour,ICameraTracker
                 playerCursorState.changeState(cursorState.noneClickAbleState);
             }
         }
+
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
-            if(ItemHit.Length > 0)
+            if (playSequence == PlaySequence.dialog)
             {
-                if (GridManager.GetInstance().IsInRange(playerLevelInfo.stat.standingNode, GridManager.GetInstance().PositionToNode(ItemHit[0].transform.position),10)) 
+                currDialog?.NextDialog();
+                return;
+            }
+            if (playSequence == PlaySequence.die || playSequence == PlaySequence.shopping || EventSystem.current.IsPointerOverGameObject()) return;
+
+
+            if (npcHit.Length > 0)
+            {
+                GridManager.GetInstance().PositionToNode(npcHit[0].transform.position).CharacterOnNode.OnClick();
+            }
+
+            if(itemHit.Length > 0)
+            {
+                if (GridManager.GetInstance().IsInRange(playerLevelInfo.stat.standingNode, GridManager.GetInstance().PositionToNode(itemHit[0].transform.position),10)) 
                 {
-                    ItemHit[0].transform.GetComponent<DropItems>().GetItem();
+                    itemHit[0].transform.GetComponent<DropItems>().GetItem();
                 }
                 else
                 {
-                    PlayerMoveOrder(GridManager.GetInstance().PositionToNode(ItemHit[0].transform.position).worldPos, () => { ItemHit[0].transform.GetComponent<DropItems>().GetItem(); });
+                    PlayerMoveOrder(GridManager.GetInstance().PositionToNode(itemHit[0].transform.position).worldPos, () => { itemHit[0].transform.GetComponent<DropItems>().GetItem(); });
                 }
                 
             }
@@ -590,7 +616,7 @@ public class Player : MonoBehaviour,ICameraTracker
     public void PlayerMoveOrder(Vector3 targetPosition,Action arriveAction,int range = -1)
     {
         range = range != -1 ? range - 1 : range ;
-        if (!isMoveAble) return;
+        if (playSequence == PlaySequence.dialog || playSequence == PlaySequence.die || playSequence == PlaySequence.shopping) return;
         if (!StateMachine.CurrentState.isCancelableState)
         {
             isMotionBookCancel = true;

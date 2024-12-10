@@ -1081,7 +1081,7 @@ namespace PlayerDefines
                 }
             }
             [SerializeField] public DialogStateMachine dialogStateMachine;
-            public (int, int) currDiaAddy;
+
 
             public NPCStat(Node initializeNode, float hp, float sp, float moveSpeed, float attackSpeed, float attackDamage, byte attackRange, float evasion) : base(initializeNode, hp, sp, moveSpeed, attackSpeed, attackDamage, attackRange, evasion)
             {

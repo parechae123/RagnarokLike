@@ -767,6 +767,8 @@ public class DialogStateMachine
 {
     public DialogState curr;
     public DialogState[] dialogStates;
+    public int currIndex;
+    public string npcName;
     public void ChangeDialog(string title)
     {
 
@@ -776,7 +778,11 @@ public class DialogStateMachine
             {
                 if(curr != null) curr.Exit();
                 curr = item;
+                UIManager.GetInstance().DialogPannel.gameObject.SetActive(true);
+                UIManager.GetInstance().NameText.text = npcName;
                 curr.Enter();
+                currIndex = 1;
+                Player.Instance.CurrDialog = this;
                 return;
             }
         }
@@ -790,15 +796,80 @@ public class DialogStateMachine
             {
                 if(curr != null) curr.Exit();
                 curr = item;
+                UIManager.GetInstance().DialogPannel.gameObject.SetActive(true);
+                UIManager.GetInstance().NameText.text = npcName.Replace("NPC_",string.Empty);
                 curr.Enter();
+                currIndex = 1;
+                Player.Instance.CurrDialog = this;
                 return;
             }
+        }
+    }
+    public void NextDialog()
+    {
+        
+        if (curr.Execute(currIndex++))
+        {
+            return;
+        }
+        else
+        {
+            if(curr.StateType == DialogType.leaveTalk)
+            {
+                ExitDialog();
+                return;
+            }
+            OptionOnOff(true);
         }
     }
     public void ExitDialog()
     {
         curr.Exit();
+        Player.Instance.CurrDialog = null;
         curr = null;
+    }
+    public void OptionOnOff(bool turnOn)
+    {
+        Button optionBTN = UIManager.GetInstance().DialogPannel.Find("Options").Find("ThemaBTN").GetComponent<Button>();
+        optionBTN.onClick.RemoveAllListeners();
+        DialogState[] tempState = Array.FindAll(dialogStates, item => item.StateType != DialogType.leaveTalk&&item.StateType != DialogType.greeting);
+        for (int i = 0; i < UIManager.GetInstance().DialogPannel.Find("DialogList").childCount; i++)
+        {
+            Button currListBTN = UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).GetComponent<Button>();
+            currListBTN.onClick.RemoveAllListeners();
+            if (tempState.Length <= i)
+            {
+                UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).gameObject.SetActive(false);
+            }
+            else
+            {
+                UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).gameObject.SetActive(true);
+                UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text =  $"{tempState[i].StateType.ToString().ToUpper()[0]}){tempState[i].GetTitle}";
+                string titleName = tempState[i].GetTitle;
+                currListBTN.onClick.AddListener(() => 
+                { 
+                    ChangeDialog(titleName);
+                });
+
+            }
+            
+        }
+
+        optionBTN.onClick.AddListener(() =>
+        {
+            UIManager.GetInstance().DialogPannel.Find("DialogList").transform.DOComplete();
+
+            if (UIManager.GetInstance().isDiaListUp)
+            {
+                UIManager.GetInstance().isDiaListUp = false;
+                UIManager.GetInstance().DialogPannel.Find("DialogList").DOMove(UIManager.GetInstance().DialogPannel.Find("ListDownPoint").position, 0.2f);
+            }
+            else
+            {
+                UIManager.GetInstance().isDiaListUp = true;
+                UIManager.GetInstance().DialogPannel.Find("DialogList").DOMove(UIManager.GetInstance().DialogPannel.Find("ListUpPoint").position, 0.2f);
+            }
+        });
     }
 }
 [System.Serializable]
@@ -831,26 +902,37 @@ public class DialogState
 
     public void Enter()
     {
-        Player.Instance.isMoveAble = false;
+        Player.Instance.playSequence = PlaySequence.dialog;
+        
+        UIManager.GetInstance().DialogText.text = string.Empty;
+        UIManager.GetInstance().DialogText.DOText(data.textData[0].text, 0.3f);
     }
-    public void Execute(int index)
+    public bool Execute(int index)
     {
-        if (index > data.textData.Length) return;
+        if (index >= data.textData.Length)
+        {
+            return false;
+        }
         else
         {
-
-            //TODO : dialog Text를 할당 후 해당 기능 넣어줘야함
-            TextMeshProUGUI temp;
-            
-/*          if(temp) 
-            {
-                
-                temp.DOText(temp, data.textData[index], 10);
-            }*/
+            DialogUpdate(index);
+            if (index == data.textData.Length - 1) return false;
+            return true;
         }
     }
     public void Exit() 
     {
-        Player.Instance.isMoveAble = true;
+        data.isInteractedLog = true;
+        Player.Instance.playSequence = PlaySequence.nonCombat;
     }
+
+    public void DialogUpdate(int num)
+    {
+        UIManager.GetInstance().DialogText.text = string.Empty;
+        UIManager.GetInstance().DialogText.DOText(data.textData[num].text, 0.3f);
+    }
+}
+public enum PlaySequence
+{
+    combat,nonCombat,dialog,shopping,die
 }

@@ -719,6 +719,7 @@ public class UIManager : Manager<UIManager>
     Queue<Slider> monsterHPBarPool = new Queue<Slider>();
     
     public Transform DialogPannel { get { return MainCanvas.Find("Dialog"); } }
+    public bool isDiaListUp;
     private TextMeshProUGUI dialogText;
     public TextMeshProUGUI DialogText
     {
