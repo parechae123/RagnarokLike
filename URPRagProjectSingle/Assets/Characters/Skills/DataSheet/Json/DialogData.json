@@ -86,5 +86,21 @@
 "title": "손자",
 "text": "나를 닮아 아주 잘 생겼지..",
 "questCode": ""
+},
+{
+"type": "leaveTalk",
+"npcName": "NPC_Roras",
+"curArr": "0",
+"title": "작별",
+"text": "이런 내가 너무 오래 잡아둔건가",
+"questCode": ""
+},
+{
+"type": "leaveTalk",
+"npcName": "NPC_Roras",
+"curArr": "1",
+"title": "작별",
+"text": "즐거운 모험 되시게",
+"questCode": ""
 }
 ]

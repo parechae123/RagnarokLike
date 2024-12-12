@@ -454,10 +454,19 @@ public class Player : MonoBehaviour,ICameraTracker
             return;
         }
 
-
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (playSequence == PlaySequence.dialog)
+        {
+            playerCursorState.changeState(cursorState.dialog);
+            if (targetCell.gameObject.activeSelf) targetCell.gameObject.SetActive(false);
+        }
+        else if (EventSystem.current.IsPointerOverGameObject())
         {
             playerCursorState.changeState(cursorState.defaultCurser);
+        }
+        else if (npcHit.Length >0)
+        {
+            playerCursorState.changeState(cursorState.dialog);
+            if (targetCell.gameObject.activeSelf) targetCell.gameObject.SetActive(false);
         }
         else if (itemHit.Length > 0)
         {

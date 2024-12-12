@@ -231,6 +231,7 @@ namespace NeutralDefines
             [SerializeField] private Texture2D itemCursorIMG;
             [SerializeField] private Texture2D attackAbleCursorIMG;
             [SerializeField] private Texture2D skillTargetingCursorIMG;
+            [SerializeField] private Texture2D dialogCursorIMG;
             public cursorState CurrentCursorState
             {
                 get;
@@ -257,13 +258,16 @@ namespace NeutralDefines
                     case cursorState.skillTargeting:
                         Cursor.SetCursor(skillTargetingCursorIMG, Vector2.down, CursorMode.Auto);
                         break;
+                    case cursorState.dialog:
+                        Cursor.SetCursor(dialogCursorIMG,Vector2.zero,CursorMode.Auto);
+                        break;
 
                 }
             }
         }
         public enum cursorState
         {
-            defaultCurser, noneClickAbleState, itemCursor, attackAble, skillTargeting
+            defaultCurser, noneClickAbleState, itemCursor, attackAble, skillTargeting,dialog
         }
 
     }
@@ -781,6 +785,7 @@ public class DialogStateMachine
                 UIManager.GetInstance().DialogPannel.gameObject.SetActive(true);
                 UIManager.GetInstance().NameText.text = npcName;
                 curr.Enter();
+                OptionOnOff(false);
                 currIndex = 1;
                 Player.Instance.CurrDialog = this;
                 return;
@@ -799,10 +804,16 @@ public class DialogStateMachine
                 UIManager.GetInstance().DialogPannel.gameObject.SetActive(true);
                 UIManager.GetInstance().NameText.text = npcName.Replace("NPC_",string.Empty);
                 curr.Enter();
+                OptionOnOff(false);
                 currIndex = 1;
                 Player.Instance.CurrDialog = this;
                 return;
             }
+        }
+
+        if(stateType == DialogType.leaveTalk)
+        {
+            ExitDialog();
         }
     }
     public void NextDialog()
@@ -816,9 +827,14 @@ public class DialogStateMachine
         {
             if(curr.StateType == DialogType.leaveTalk)
             {
+                if(currIndex <= curr.Data.textData.Length)
+                {
+                    return;
+                }
                 ExitDialog();
                 return;
             }
+            curr.IsInteracted = true;
             OptionOnOff(true);
         }
     }
@@ -826,50 +842,76 @@ public class DialogStateMachine
     {
         curr.Exit();
         Player.Instance.CurrDialog = null;
+        UIManager.GetInstance().DialogPannel.gameObject.SetActive(false);
         curr = null;
     }
     public void OptionOnOff(bool turnOn)
     {
         Button optionBTN = UIManager.GetInstance().DialogPannel.Find("Options").Find("ThemaBTN").GetComponent<Button>();
+        Button exitBTN = UIManager.GetInstance().DialogPannel.Find("Options").Find("DialogExitBTN").GetComponent<Button>();
         optionBTN.onClick.RemoveAllListeners();
         DialogState[] tempState = Array.FindAll(dialogStates, item => item.StateType != DialogType.leaveTalk&&item.StateType != DialogType.greeting);
-        for (int i = 0; i < UIManager.GetInstance().DialogPannel.Find("DialogList").childCount; i++)
+        if (turnOn)
         {
-            Button currListBTN = UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).GetComponent<Button>();
-            currListBTN.onClick.RemoveAllListeners();
-            if (tempState.Length <= i)
+            optionBTN.interactable = true;
+            exitBTN.interactable = true;
+            exitBTN.onClick.RemoveAllListeners();
+            exitBTN.onClick.AddListener(() =>
             {
-                UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).gameObject.SetActive(false);
-            }
-            else
-            {
-                UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).gameObject.SetActive(true);
-                UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text =  $"{tempState[i].StateType.ToString().ToUpper()[0]}){tempState[i].GetTitle}";
-                string titleName = tempState[i].GetTitle;
-                currListBTN.onClick.AddListener(() => 
-                { 
-                    ChangeDialog(titleName);
-                });
+                ChangeDialog(DialogType.leaveTalk);
+            });
 
+
+            for (int i = 0; i < UIManager.GetInstance().DialogPannel.Find("DialogList").childCount; i++)
+            {
+                Button currListBTN = UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).GetComponent<Button>();
+                currListBTN.onClick.RemoveAllListeners();
+                if (tempState.Length <= i)
+                {
+                    UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).gameObject.SetActive(false);
+                }
+                else
+                {
+                    UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).gameObject.SetActive(true);
+                    TextMeshProUGUI tempText = UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>();
+                    tempText.text = $"{tempState[i].StateType.ToString().ToUpper()[0]}){tempState[i].GetTitle}";
+                    tempText.color = tempState[i].IsInteracted ? Color.grey : Color.white;
+                    string titleName = tempState[i].GetTitle;
+                    currListBTN.onClick.AddListener(() =>
+                    {
+                        ChangeDialog(titleName);
+                    });
+                }
             }
-            
+
+            optionBTN.onClick.AddListener(() =>
+            {
+                UIManager.GetInstance().DialogPannel.Find("DialogList").transform.DOComplete();
+
+                if (UIManager.GetInstance().isDiaListUp)
+                {
+                    UIManager.GetInstance().isDiaListUp = false;
+                    UIManager.GetInstance().DialogPannel.Find("DialogList").DOMove(UIManager.GetInstance().DialogPannel.Find("ListDownPoint").position, 0.2f);
+                }
+                else
+                {
+                    UIManager.GetInstance().isDiaListUp = true;
+                    UIManager.GetInstance().DialogPannel.Find("DialogList").DOMove(UIManager.GetInstance().DialogPannel.Find("ListUpPoint").position, 0.2f);
+                }
+            });
         }
-
-        optionBTN.onClick.AddListener(() =>
+        else
         {
-            UIManager.GetInstance().DialogPannel.Find("DialogList").transform.DOComplete();
-
-            if (UIManager.GetInstance().isDiaListUp)
+            optionBTN.interactable = false;
+            exitBTN.interactable = false;
+            exitBTN.onClick.RemoveAllListeners();
+            UIManager.GetInstance().isDiaListUp = false;
+            UIManager.GetInstance().DialogPannel.Find("DialogList").DOMove(UIManager.GetInstance().DialogPannel.Find("ListDownPoint").position, 0.2f);
+            for (int i = 0; i < UIManager.GetInstance().DialogPannel.Find("DialogList").childCount; i++)
             {
-                UIManager.GetInstance().isDiaListUp = false;
-                UIManager.GetInstance().DialogPannel.Find("DialogList").DOMove(UIManager.GetInstance().DialogPannel.Find("ListDownPoint").position, 0.2f);
+                UIManager.GetInstance().DialogPannel.Find("DialogList").GetChild(i).GetComponent<Button>().onClick.RemoveAllListeners();
             }
-            else
-            {
-                UIManager.GetInstance().isDiaListUp = true;
-                UIManager.GetInstance().DialogPannel.Find("DialogList").DOMove(UIManager.GetInstance().DialogPannel.Find("ListUpPoint").position, 0.2f);
-            }
-        });
+        }
     }
 }
 [System.Serializable]
@@ -890,9 +932,14 @@ public class DialogState
         get { return data.type; }
     }
     [SerializeField]private Dialog data;
-    private Dialog Data
+    public Dialog Data
     {
         get { return data; }
+    }
+    public bool IsInteracted
+    {
+        get { return data.isInteractedLog; }
+        set { data.isInteractedLog = value;}
     }
     public DialogState(Dialog dialog)
     {
@@ -922,7 +969,7 @@ public class DialogState
     }
     public void Exit() 
     {
-        data.isInteractedLog = true;
+        IsInteracted = true;
         Player.Instance.playSequence = PlaySequence.nonCombat;
     }
 
