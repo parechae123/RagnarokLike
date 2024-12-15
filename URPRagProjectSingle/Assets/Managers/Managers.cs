@@ -564,6 +564,22 @@ public class UIManager : Manager<UIManager>
             return outerCastBar;
         }
     }
+
+    public Transform questNoti
+    {
+        get
+        {
+            return MainCanvas.Find("QuestNotific");
+        }
+    }
+    public TextMeshProUGUI questNotiText
+    {
+        get
+        {
+            return questNoti.Find("notificText").GetComponent<TextMeshProUGUI>();
+        }
+    }
+
     private Image playerHPBar;
     private Image PlayerHPBar
     {
@@ -1041,6 +1057,28 @@ public class MonsterManager : Manager<MonsterManager>
 
                 break;
             }
+        }
+    }
+
+}
+public class QuestManager : Manager<QuestManager>
+{
+    private List<Quest> acceptedQuests;
+    public List<Quest> AcceptedQuests
+    {
+        get
+        {
+            if (acceptedQuests == null) acceptedQuests = new List<Quest>();
+            return acceptedQuests;
+        }
+    }
+    private List<Quest> clearedQuests;
+    public List<Quest> ClearedQuests
+    {
+        get
+        {
+            if (clearedQuests == null) clearedQuests = new List<Quest>();
+            return clearedQuests;
         }
     }
 

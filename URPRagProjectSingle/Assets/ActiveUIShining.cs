@@ -14,8 +14,8 @@ public class ActiveUIShining : MonoBehaviour
     private void OnEnable()
     {
         material.SetFloat("_Timer", 0);
-        ((RectTransform)transform).sizeDelta= new Vector3(400, 100, 1);
-        ((RectTransform)transform).DOSizeDelta(new Vector3(400,250,1), 0.3f);
+        ((RectTransform)transform).sizeDelta= new Vector3(600, 100, 1);
+        ((RectTransform)transform).DOSizeDelta(new Vector3(600,300,1), 0.3f);
         timer = -0.3f;
     }
     private void Update()
