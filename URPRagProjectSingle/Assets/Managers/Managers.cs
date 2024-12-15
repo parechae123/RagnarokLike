@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.IO;
 using TMPro;
+using Unity.VisualScripting;
 
 /// <summary>
 /// 메니저 템플릿화
@@ -1081,5 +1082,25 @@ public class QuestManager : Manager<QuestManager>
             return clearedQuests;
         }
     }
+    public Action<string> huntEvent;
+    public Action<string> collectEvent;
+    public Action<string> conversationEvent;
+    public Action<string> interactiveEvent;
 
+    public void AcceptQuest(Quest quest)
+    {
+        AcceptedQuests.Add(quest);
+    }
+    public void ClearQuest(Quest quest)
+    {
+        int tempNum = acceptedQuests.IndexOf(quest);
+        if (tempNum == -1) return;
+        ClearedQuests.Add(AcceptedQuests[tempNum]);
+        AcceptedQuests[tempNum].QuestClear();
+        AcceptedQuests.RemoveAt(tempNum);
+    }
+    public void ConditionCheck()
+    {
+
+    }
 }

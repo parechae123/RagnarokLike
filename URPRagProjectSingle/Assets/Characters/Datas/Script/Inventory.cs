@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Inventory<T> where T : InventoryItemBase
 {
@@ -80,5 +83,31 @@ public class Inventory<T> where T : InventoryItemBase
                 return;
             }
         }
+    }
+    public bool RemoveItem(string itemCode,sbyte amount)
+    {
+        T[] tempArray = Array.FindAll(invenIndex, inven => inven.itemCode == itemCode);
+        if (tempArray.Sum(item => item.Amount) < amount) return false;
+        for(int i = 0; i< tempArray.Length; i++)
+        {
+            if (tempArray[i].Amount < amount)
+            {
+                amount -= tempArray[i].Amount;
+                invenIndex[i] = null;
+                continue;
+            }
+            else
+            {
+                tempArray[i].Amount -= amount;
+                if (tempArray[i].Amount <= 0) invenIndex[i] = null;
+                return true;
+            }
+        }
+        return false;
+    }
+    public int GetAmount(string itemCode)
+    {
+        //동일한 아이템 코드를 찾은 뒤 슬롯의 Amount의 합을 리턴해줌
+        return Array.FindAll(invenIndex,inven => inven.itemCode == itemCode).Sum((amount) => amount.Amount);
     }
 }

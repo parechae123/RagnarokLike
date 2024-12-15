@@ -1,4 +1,6 @@
 using JetBrains.Annotations;
+using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,8 @@ using UnityEditor.Build.Pipeline;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.TerrainTools;
 using UnityEngine;
+using UnityEngine.Android;
+using UnityEngine.Rendering;
 
 [System.Serializable]
 public class Quest
@@ -25,9 +29,67 @@ public class Quest
         this.description = questInfo.description;
         this.level = questInfo.level;
         this.conditions = questInfo.condition.ToList();
+        rewards = questInfo.rewards;
+    }
+    public void QuestClear()
+    {
+        isQuestDone = true;
+        for (int i = 0; i < rewards.Length; i++)
+        {
+            rewards[i].GetReward();
+        }
+    }
+    [SerializeField] private List<IQuestConditions> conditions;
+    [SerializeField] public List<IQuestConditions> Conditions
+    {
+        get { return conditions; }
     }
 
-    [SerializeField] private List<IQuestConditions> conditions;
+    private IRewards[] rewards;
+    public int GetCurrCondition()
+    {
+        for (int i = 0; i < Conditions.Count; i++)
+        {
+            if (Conditions[i].IsMet()) return i;
+        }
+        return 0;
+    }
+    public void ConditionUpdate()
+    {
+        IQuestConditions[] tempConditions = Conditions.FindAll(c => !c.IsMet()).ToArray();
+        if (tempConditions.Length > 0) return;
+        if (tempConditions[0].GetType() != typeof(CollectionCondition))
+        {
+            tempConditions[0]?.Intialize();
+        }
+        else
+        {
+            for (int i = 0; i < tempConditions.Length; i++)
+            {
+                if(tempConditions[i].GetType() == typeof(CollectionCondition))
+                {
+                    tempConditions[i]?.Intialize();
+                    continue;
+                }
+                else if(tempConditions[i].GetType() == typeof(ConversationCondition))
+                {
+                    tempConditions[i]?.Intialize();
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+    }
+    public IQuestConditions[] SubmitCollection(ConversationCondition conversationCondition)
+    {
+        int tempNum = Conditions.IndexOf(conversationCondition);
+        if (tempNum < 0) return null;
+
+        return Conditions.GetRange(0, tempNum + 1).FindAll((c)=> c.GetType() ==typeof(CollectionCondition)).ToArray();
+    }
 }
 #region QuestEnums
 
@@ -59,6 +121,9 @@ public interface IQuestConditions
     float GetProgress();            //조건 충족도
 
     string GetDescription();        //조건 설명 반환 메서드
+
+    void RegistAction();
+    void RemoveAction();
 }
 [System.Serializable]
 public class HuntingCondition : IQuestConditions
@@ -70,51 +135,67 @@ public class HuntingCondition : IQuestConditions
     {
         this.targetCode = targetCode;
         this.require = require;
+        
     }
 
-    public bool IsMet()
-    {
-        return true;
-    }
+    public bool IsMet()=>curr >= require;
     public void Intialize()
     {
-
+        
+        RegistAction();
+        curr = 0;
     }
-    public float GetProgress() 
+    public void RegistAction()
     {
-        return 0f;
+        QuestManager.GetInstance().huntEvent += Hunt;
+        //TODO : 여기에 UI 업데이트 함수로 huntEvent에 같이 등록해줘야 할듯?
     }
-    public string GetDescription()
+    public void RemoveAction()
     {
-        return string.Empty;
+        if (!IsMet()) return;
+        QuestManager.GetInstance().huntEvent -= Hunt;
+    }
+    public float GetProgress() => (float)curr / require;
+    public string GetDescription() => $"Slay {targetCode} {curr}/{require}";
+    public void Hunt(string mobCode)
+    {
+        if (mobCode != targetCode) return;
+        curr++;
+        if(IsMet()) RemoveAction();
     }
 }
 [System.Serializable]
 public class CollectionCondition : IQuestConditions
 {
     public string itemCode;
-    public int require;
-    public int curr = 0;
+    public sbyte require;
+    public sbyte curr = 0;
     public CollectionCondition(string itemCode,int require) 
     {
+        
         this.itemCode = itemCode;
-        this.require = require;
+        this.require = (sbyte)require;
     }
-    public bool IsMet()
-    {
-        return true;
-    }
-    public void Intialize()
-    {
 
-    }
-    public float GetProgress()
+    public bool IsMet() => curr >= require;
+    public void Intialize()=> curr = 0;
+    public float GetProgress() => (float)curr / require;
+    public string GetDescription() => $"Collect {itemCode}s {curr}/{require}";
+
+    public void RemoveAction()
     {
-        return 0f;
+        if (!IsMet()) return;
+        QuestManager.GetInstance().collectEvent -= Collect;
+        UIManager.GetInstance().consumeInven.RemoveItem(itemCode, require);
     }
-    public string GetDescription()
+    public void RegistAction()
     {
-        return string.Empty;
+        QuestManager.GetInstance().collectEvent += Collect;
+    }
+    public void Collect(string itemCode)
+    {
+        int itemAmount = UIManager.GetInstance().consumeInven.GetAmount(itemCode);
+        curr = itemAmount > sbyte.MaxValue? sbyte.MaxValue : (sbyte)itemAmount;
     }
 }
 [System.Serializable]
@@ -128,21 +209,28 @@ public class InteractionCondition : IQuestConditions
         interactCode = itemCode;
         this.require = require;
     }
-    public bool IsMet()
-    {
-        return true;
-    }
+
+    public bool IsMet() => curr >= require;
     public void Intialize()
     {
-
+        
+        curr = 0;
     }
-    public float GetProgress()
+    public void RegistAction()
     {
-        return 0f;
+        QuestManager.GetInstance().interactiveEvent += interact;
     }
-    public string GetDescription()
+    public void RemoveAction()
     {
-        return string.Empty;
+        QuestManager.GetInstance().interactiveEvent -= interact;
+    }
+    public float GetProgress() => (float)curr / require;
+    public string GetDescription() => $"interact {interactCode} {require} times";
+    public void interact(string objCode)
+    {
+        if (objCode != interactCode) return;
+        curr++;
+        if(IsMet()) RemoveAction();
     }
 }
 [System.Serializable]
@@ -151,26 +239,44 @@ public class ConversationCondition : IQuestConditions
     public string npcCode;
     public int dialogueIndex;
     private bool isDone;
-    public ConversationCondition(string npcCode,int dialogueIndex)
+    public string questName;
+    public ConversationCondition(string npcCode,int dialogueIndex,string questName)
     {
         this.npcCode = npcCode;
         this.dialogueIndex = dialogueIndex;
+        this.questName = questName;
     }
-    public bool IsMet()
-    {
-        return isDone;
-    }
+
+    public bool IsMet() => isDone;
     public void Intialize()
     {
-
+        isDone = false;
+        RegistAction();
     }
-    public float GetProgress()
+    public float GetProgress() => isDone ? 1:0;
+    public string GetDescription() => $"convasation with {npcCode}";
+    public void RegistAction()
     {
-        return 0f;
+        QuestManager.GetInstance().conversationEvent += CheckCondition;
     }
-    public string GetDescription()
+    public void RemoveAction()
     {
-        return string.Empty;
+        QuestManager.GetInstance().conversationEvent -= CheckCondition;
+    }
+    public void CheckCondition(string npcName)
+    {
+        if (npcName == npcCode) return;
+        IQuestConditions[] tempCondition = QuestManager.GetInstance().AcceptedQuests.Find(q=> q.questName == questName).SubmitCollection(this);
+        if (tempCondition.All(c => c.IsMet()))
+        {
+            for (int i = 0; i < tempCondition.Length; i++)
+            {
+                tempCondition[i].RemoveAction();
+            }
+        }
+        else return;
+        isDone = true;
+        RemoveAction();
     }
 }
 

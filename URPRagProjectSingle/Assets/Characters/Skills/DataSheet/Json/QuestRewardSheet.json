@@ -29,7 +29,7 @@
 },
 {
 "rewardType": "weapon",
-"questCode": "helloWorld",
+"questCode": "troubleMaker",
 "itemCode": "0",
 "amount": "1",
 "isTwoHanded": "False",
@@ -43,7 +43,7 @@
 },
 {
 "rewardType": "armor",
-"questCode": "helloWorld",
+"questCode": "troubleMaker",
 "itemCode": "0",
 "amount": "1",
 "isTwoHanded": "False",
@@ -57,7 +57,7 @@
 },
 {
 "rewardType": "armor",
-"questCode": "helloWorld",
+"questCode": "troubleMaker",
 "itemCode": "0",
 "amount": "1",
 "isTwoHanded": "False",
@@ -71,7 +71,7 @@
 },
 {
 "rewardType": "armor",
-"questCode": "helloWorld",
+"questCode": "troubleMaker",
 "itemCode": "0",
 "amount": "1",
 "isTwoHanded": "False",
@@ -85,7 +85,7 @@
 },
 {
 "rewardType": "armor",
-"questCode": "helloWorld",
+"questCode": "troubleMaker",
 "itemCode": "0",
 "amount": "1",
 "isTwoHanded": "False",
@@ -99,7 +99,7 @@
 },
 {
 "rewardType": "armor",
-"questCode": "helloWorld",
+"questCode": "troubleMaker",
 "itemCode": "0",
 "amount": "1",
 "isTwoHanded": "False",

@@ -136,7 +136,7 @@ public class ScriptableQuestCondition
                 return new InteractionCondition(targetCode, valueOne);
 
             case QuestType.Conversation:
-                return new ConversationCondition(targetCode, valueOne);
+                return new ConversationCondition(targetCode, valueOne,parentQuestName);
         }
         Debug.LogError("파일을 못 불러왔습니다.");
         return null;
