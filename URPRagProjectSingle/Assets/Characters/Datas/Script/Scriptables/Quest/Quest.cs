@@ -20,7 +20,11 @@ public class Quest
     public string questID;
     public string questName;
     public string description;
-    public bool isQuestDone;
+    public bool isQuestDone
+    {
+        get { return conditions.All(c => c.IsMet()); }
+    }
+
     public int level;
     public Quest(ScriptableQuest questInfo)
     {
@@ -28,12 +32,16 @@ public class Quest
         this.questName = questInfo.questName;
         this.description = questInfo.description;
         this.level = questInfo.level;
-        this.conditions = questInfo.condition.ToList();
+        conditions = new List<IQuestConditions>();
+        for (int i = 0; i < questInfo.condition.Length; i++)
+        {
+            this.conditions.Add(questInfo.condition[i].Clone(this));
+        }
         rewards = questInfo.rewards;
     }
     public void QuestClear()
     {
-        isQuestDone = true;
+        
         for (int i = 0; i < rewards.Length; i++)
         {
             rewards[i].GetReward();
@@ -50,14 +58,14 @@ public class Quest
     {
         for (int i = 0; i < Conditions.Count; i++)
         {
-            if (Conditions[i].IsMet()) return i;
+            if (!Conditions[i].IsMet()) return i;
         }
-        return 0;
+        return -1;
     }
     public void ConditionUpdate()
     {
         IQuestConditions[] tempConditions = Conditions.FindAll(c => !c.IsMet()).ToArray();
-        if (tempConditions.Length > 0) return;
+        if (tempConditions.Length <= 0) return;
         if (tempConditions[0].GetType() != typeof(CollectionCondition))
         {
             tempConditions[0]?.Intialize();
@@ -115,6 +123,7 @@ public enum QuestStatus
 #region QuestInterfaces
 public interface IQuestConditions
 {
+    Quest parentQuest { get; set; }
     bool IsMet();                   //조건이 충족되었는지 여부 반환
     void Intialize();               //조건을 초기화하는 메서드
 
@@ -124,18 +133,21 @@ public interface IQuestConditions
 
     void RegistAction();
     void RemoveAction();
+    IQuestConditions Clone(Quest parentQuest);
 }
 [System.Serializable]
 public class HuntingCondition : IQuestConditions
 {
+    public Quest parentQuest { get; set; }
     public string targetCode;
     public int curr = 0;
     public int require;
-    public HuntingCondition(string targetCode,int require)
+    public HuntingCondition(string targetCode,int require,Quest quest)
     {
         this.targetCode = targetCode;
         this.require = require;
-        
+
+        parentQuest = quest;
     }
 
     public bool IsMet()=>curr >= require;
@@ -162,19 +174,27 @@ public class HuntingCondition : IQuestConditions
         if (mobCode != targetCode) return;
         curr++;
         if(IsMet()) RemoveAction();
+
+        if (parentQuest.isQuestDone) QuestManager.GetInstance().ClearQuest(parentQuest);
+    }
+    public IQuestConditions Clone(Quest parentQuest)
+    {
+        return new HuntingCondition(targetCode,require,parentQuest);
     }
 }
 [System.Serializable]
 public class CollectionCondition : IQuestConditions
 {
+    public Quest parentQuest { get; set; }
     public string itemCode;
     public sbyte require;
     public sbyte curr = 0;
-    public CollectionCondition(string itemCode,int require) 
+    public CollectionCondition(string itemCode,int require,Quest quest) 
     {
         
         this.itemCode = itemCode;
         this.require = (sbyte)require;
+        parentQuest = quest;
     }
 
     public bool IsMet() => curr >= require;
@@ -196,18 +216,28 @@ public class CollectionCondition : IQuestConditions
     {
         int itemAmount = UIManager.GetInstance().consumeInven.GetAmount(itemCode);
         curr = itemAmount > sbyte.MaxValue? sbyte.MaxValue : (sbyte)itemAmount;
+
+        if (parentQuest.isQuestDone) QuestManager.GetInstance().ClearQuest(parentQuest);
+    }
+
+    public IQuestConditions Clone(Quest parentQuest)
+    {
+        return new CollectionCondition(itemCode, require, parentQuest);
     }
 }
 [System.Serializable]
 public class InteractionCondition : IQuestConditions
 {
+    public Quest parentQuest{get; set;}
+
     public string interactCode;
     public int require;
     public int curr = 0;
-    public InteractionCondition(string itemCode,int require) 
+    public InteractionCondition(string itemCode,int require,Quest quest) 
     { 
         interactCode = itemCode;
         this.require = require;
+        parentQuest = quest;
     }
 
     public bool IsMet() => curr >= require;
@@ -231,20 +261,28 @@ public class InteractionCondition : IQuestConditions
         if (objCode != interactCode) return;
         curr++;
         if(IsMet()) RemoveAction();
+
+        if (parentQuest.isQuestDone) QuestManager.GetInstance().ClearQuest(parentQuest);
+    }
+    public IQuestConditions Clone(Quest parentQuest)
+    {
+        return new InteractionCondition(interactCode, require, parentQuest);
     }
 }
 [System.Serializable]
 public class ConversationCondition : IQuestConditions
 {
+    public Quest parentQuest { get; set; }
     public string npcCode;
     public int dialogueIndex;
     private bool isDone;
-    public string questName;
-    public ConversationCondition(string npcCode,int dialogueIndex,string questName)
+    public string questID;
+    public ConversationCondition(string npcCode,int dialogueIndex,string questID,Quest quest)
     {
         this.npcCode = npcCode;
         this.dialogueIndex = dialogueIndex;
-        this.questName = questName;
+        this.questID = questID;
+        parentQuest = quest;
     }
 
     public bool IsMet() => isDone;
@@ -265,8 +303,8 @@ public class ConversationCondition : IQuestConditions
     }
     public void CheckCondition(string npcName)
     {
-        if (npcName == npcCode) return;
-        IQuestConditions[] tempCondition = QuestManager.GetInstance().AcceptedQuests.Find(q=> q.questName == questName).SubmitCollection(this);
+        if (npcName != npcCode) return;
+        IQuestConditions[] tempCondition = parentQuest.SubmitCollection(this);
         if (tempCondition.All(c => c.IsMet()))
         {
             for (int i = 0; i < tempCondition.Length; i++)
@@ -277,6 +315,12 @@ public class ConversationCondition : IQuestConditions
         else return;
         isDone = true;
         RemoveAction();
+        if (parentQuest.isQuestDone) QuestManager.GetInstance().ClearQuest(parentQuest);
+    }
+
+    public IQuestConditions Clone(Quest parentQuest)
+    {
+        return new ConversationCondition(npcCode, dialogueIndex, questID, parentQuest);
     }
 }
 

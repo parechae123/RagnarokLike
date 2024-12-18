@@ -142,7 +142,11 @@ public class Player : MonoBehaviour,ICameraTracker
     public void Awake()
     {
         instance = this;
-        if (playerLevelInfo.stat == null) playerLevelInfo.stat = new PlayerStat(currentNode, 100, 100, 3, 1, 10, 1, 100);
+        if (playerLevelInfo.stat == null)
+        {
+            playerLevelInfo.stat = new PlayerStat(currentNode, 100, 100, 3, 1, 10, 1, 100);
+            QuestManager.GetInstance().AcceptQuest(0);
+        }
         playerSR = GetComponent<SpriteRenderer>();
         playerLevelInfo.baseLevelUP += playerLevelInfo.BaseLevelUP;
         playerLevelInfo.jobLevelUP += playerLevelInfo.JobLevelUP;

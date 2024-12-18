@@ -5,7 +5,7 @@
 "curArr": "0",
 "title": "반갑네",
 "text": "안녕하신가",
-"questCode": "helloWorld"
+"questCode": ""
 },
 {
 "type": "greeting",
@@ -13,7 +13,7 @@
 "curArr": "1",
 "title": "반갑네",
 "text": "모험은 어떤가",
-"questCode": "helloWorld"
+"questCode": ""
 },
 {
 "type": "quest",
@@ -102,5 +102,13 @@
 "title": "작별",
 "text": "즐거운 모험 되시게",
 "questCode": ""
+},
+{
+"type": "leaveTalk",
+"npcName": "System",
+"curArr": "0",
+"title": "모험 시작",
+"text": "roras와 대화 하십시오",
+"questCode": "helloWorld"
 }
 ]

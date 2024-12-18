@@ -2,7 +2,7 @@
 {
 "questType": "Conversation",
 "parentQuestName": "helloWorld",
-"targetCode": "NPC_roras",
+"targetCode": "NPC_Roras",
 "arr": "0",
 "valueOne": "1",
 "flavorText": "경비병 로라스와 대화하십시오"
@@ -10,7 +10,7 @@
 {
 "questType": "Conversation",
 "parentQuestName": "troubleMaker",
-"targetCode": "NPC_roras",
+"targetCode": "NPC_Roras",
 "arr": "0",
 "valueOne": "1",
 "flavorText": "경비병 로라스와 대화하십시오"
@@ -26,7 +26,7 @@
 {
 "questType": "Conversation",
 "parentQuestName": "troubleMaker",
-"targetCode": "NPC_roras",
+"targetCode": "NPC_Roras",
 "arr": "2",
 "valueOne": "1",
 "flavorText": "로라스의 요구대로 슬라임들을 처치했습니다. 로라스에게 보고하십시오"

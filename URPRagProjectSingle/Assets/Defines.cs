@@ -1,4 +1,5 @@
 using DG.Tweening;
+using JetBrains.Annotations;
 using PlayerDefines.Stat;
 using PlayerDefines.States;
 using System;
@@ -799,7 +800,7 @@ public class DialogStateMachine
         {
             if (item.StateType == stateType)
             {
-                if(curr != null) curr.Exit();
+                curr?.Exit();
                 curr = item;
                 UIManager.GetInstance().DialogPannel.gameObject.SetActive(true);
                 UIManager.GetInstance().NameText.text = npcName.Replace("NPC_",string.Empty);
@@ -834,7 +835,8 @@ public class DialogStateMachine
                 ExitDialog();
                 return;
             }
-            curr.IsInteracted = true;
+            curr.Exit();
+            //curr.IsInteracted = true;
             OptionOnOff(true);
         }
     }
@@ -963,12 +965,16 @@ public class DialogState
         else
         {
             DialogUpdate(index);
-            if (index == data.textData.Length - 1) return false;
+            if (index < data.textData.Length ) return false;
             return true;
         }
     }
     public void Exit() 
     {
+        if(data.questArr != -1 && !IsInteracted)
+        {
+            QuestManager.GetInstance().AcceptQuest(data.questArr);
+        }
         IsInteracted = true;
         Player.Instance.playSequence = PlaySequence.nonCombat;
     }

@@ -1087,15 +1087,52 @@ public class QuestManager : Manager<QuestManager>
     public Action<string> conversationEvent;
     public Action<string> interactiveEvent;
 
-    public void AcceptQuest(Quest quest)
+    public void AcceptQuest(int quest)
     {
-        AcceptedQuests.Add(quest);
+        Quest tempQuest = ResourceManager.GetInstance().QuestData.GetQuest(quest);
+        if(tempQuest == null)
+        {
+            Debug.LogError("존재하지 않는 배열의 퀘스트입니다. 퀘스트 arr : " + quest);
+        }
+        else
+        {
+            foreach (Quest item in AcceptedQuests)
+            {
+                if (item.questName == tempQuest.questName)
+                {
+
+                    Debug.LogError("이미 수락한 퀘스트입니다, 퀘스트 이름 : " + item.questName);
+                    return;
+                }
+            }
+            foreach (Quest item in AcceptedQuests)
+            {
+                if (item.questName == tempQuest.questName)
+                {
+                    Debug.LogError("이미 완료한 퀘스트입니다, 퀘스트 이름 : " + item.questName);
+                    return;
+                }
+            }
+        }
+        PopUpQuestInfo(tempQuest.questName, tempQuest.description);
+        tempQuest.ConditionUpdate();
+        AcceptedQuests.Add(tempQuest);
+        
     }
+    
+    public void PopUpQuestInfo(string questName,string questDescription)
+    {
+        UIManager.GetInstance().questNotiText.text = $"{questName}\n\n {questDescription}";
+        UIManager.GetInstance().questNoti.gameObject.SetActive(false);
+        UIManager.GetInstance().questNoti.gameObject.SetActive(true);
+    }
+
     public void ClearQuest(Quest quest)
     {
         int tempNum = acceptedQuests.IndexOf(quest);
         if (tempNum == -1) return;
         ClearedQuests.Add(AcceptedQuests[tempNum]);
+        //TODO : 퀘스트 완료 UI 출력해주어야함
         AcceptedQuests[tempNum].QuestClear();
         AcceptedQuests.RemoveAt(tempNum);
     }

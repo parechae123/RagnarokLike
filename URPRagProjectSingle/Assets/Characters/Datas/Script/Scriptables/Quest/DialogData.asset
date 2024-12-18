@@ -18,13 +18,13 @@ MonoBehaviour:
     curArr: 0
     title: "\uBC18\uAC11\uB124"
     text: "\uC548\uB155\uD558\uC2E0\uAC00"
-    questCode: helloWorld
+    questCode: 
   - type: 1
     npcName: NPC_Roras
     curArr: 1
     title: "\uBC18\uAC11\uB124"
     text: "\uBAA8\uD5D8\uC740 \uC5B4\uB5A4\uAC00"
-    questCode: helloWorld
+    questCode: 
   - type: 3
     npcName: NPC_Roras
     curArr: 0
@@ -94,3 +94,9 @@ MonoBehaviour:
     title: "\uC791\uBCC4"
     text: "\uC990\uAC70\uC6B4 \uBAA8\uD5D8 \uB418\uC2DC\uAC8C"
     questCode: 
+  - type: 2
+    npcName: System
+    curArr: 0
+    title: "\uBAA8\uD5D8 \uC2DC\uC791"
+    text: "roras\uC640 \uB300\uD654 \uD558\uC2ED\uC2DC\uC624"
+    questCode: helloWorld

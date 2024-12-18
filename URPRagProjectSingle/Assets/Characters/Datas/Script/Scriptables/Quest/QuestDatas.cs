@@ -12,6 +12,10 @@ using static UnityEditor.Progress;
 public class QuestDatas : ScriptableObject
 {
     [SerializeField] public ScriptableQuest[] questData;
+    public Quest GetQuest(int questArr)
+    {
+        return new Quest(questData[questArr]);
+    }
     public Quest GetQuest(string questID)
     {
         foreach (ScriptableQuest item in questData)
@@ -129,14 +133,14 @@ public class ScriptableQuestCondition
         switch (questType)
         {
             case QuestType.Hunting:
-                return new HuntingCondition(targetCode, valueOne);
+                return new HuntingCondition(targetCode, valueOne,null);
             case QuestType.Collection:
-                return new CollectionCondition(targetCode, valueOne);
+                return new CollectionCondition(targetCode, valueOne,null);
             case QuestType.Interaction:
-                return new InteractionCondition(targetCode, valueOne);
+                return new InteractionCondition(targetCode, valueOne,null);
 
             case QuestType.Conversation:
-                return new ConversationCondition(targetCode, valueOne,parentQuestName);
+                return new ConversationCondition(targetCode, valueOne,parentQuestName,null);
         }
         Debug.LogError("파일을 못 불러왔습니다.");
         return null;

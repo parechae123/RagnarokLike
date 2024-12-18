@@ -1091,6 +1091,7 @@ namespace PlayerDefines
             public override void OnClick()
             {
                 dialogStateMachine.ChangeDialog(DialogType.greeting);
+                QuestManager.GetInstance().conversationEvent?.Invoke(dialogStateMachine.npcName);
             }
         }
     }
