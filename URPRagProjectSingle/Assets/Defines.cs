@@ -989,3 +989,7 @@ public enum PlaySequence
 {
     combat,nonCombat,dialog,shopping,die
 }
+public enum Localization
+{
+    lo_en,lo_ko
+}

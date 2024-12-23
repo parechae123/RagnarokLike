@@ -14,102 +14,91 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questData:
   - questID: helloWorld
-    questName: "\uBAA8\uD5D8 \uC2DC\uC791!"
     description: "\uACBD\uBE44\uBCD1 \uB85C\uB77C\uC2A4\uC640 \uB300\uD654\uD558\uC790"
     level: 0
     condition:
-    - rid: 7306274975038308452
+    - rid: 7306275087443034255
     rewards:
-    - rid: 7306274975038308456
-    - rid: 7306274975038308457
+    - rid: 7306275087443034258
+    - rid: 7306275087443034259
   - questID: troubleMaker
-    questName: "\uB9D0\uC131\uAFB8\uB7EC\uAE30"
     description: "\uC2AC\uB77C\uC784\uC744 \uCC98\uCE58\uD558\uC2ED\uC2DC\uC624"
     level: 1
     condition:
-    - rid: 7306274975038308453
-    - rid: 7306274975038308454
-    - rid: 7306274975038308455
+    - rid: 7306275087443034256
+    - rid: 7306275087443034257
     rewards:
-    - rid: 7306274975038308458
-    - rid: 7306274975038308459
-    - rid: 7306274975038308460
-    - rid: 7306274975038308461
-    - rid: 7306274975038308462
-    - rid: 7306274975038308463
+    - rid: 7306275087443034260
+    - rid: 7306275087443034261
+    - rid: 7306275087443034262
+    - rid: 7306275087443034263
+    - rid: 7306275087443034264
+    - rid: 7306275087443034265
   references:
     version: 2
     RefIds:
-    - rid: 7306274975038308452
+    - rid: 7306275087443034255
       type: {class: ConversationCondition, ns: , asm: Assembly-CSharp}
       data:
         npcCode: NPC_Roras
         dialogueIndex: 1
-        questID: helloWorld
-    - rid: 7306274975038308453
-      type: {class: ConversationCondition, ns: , asm: Assembly-CSharp}
-      data:
-        npcCode: NPC_Roras
-        dialogueIndex: 1
-        questID: troubleMaker
-    - rid: 7306274975038308454
+    - rid: 7306275087443034256
       type: {class: HuntingCondition, ns: , asm: Assembly-CSharp}
       data:
         targetCode: MOB_Slime
         curr: 0
         require: 10
-    - rid: 7306274975038308455
+    - rid: 7306275087443034257
       type: {class: ConversationCondition, ns: , asm: Assembly-CSharp}
       data:
         npcCode: NPC_Roras
         dialogueIndex: 1
-        questID: troubleMaker
-    - rid: 7306274975038308456
+    - rid: 7306275087443034258
       type: {class: EXPReward, ns: , asm: Assembly-CSharp}
       data:
         isJobEXP: 0
         expValue: 100
-    - rid: 7306274975038308457
+    - rid: 7306275087443034259
       type: {class: EXPReward, ns: , asm: Assembly-CSharp}
       data:
         isJobEXP: 1
         expValue: 100
-    - rid: 7306274975038308458
+    - rid: 7306275087443034260
       type: {class: WeaponReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
         twohandedWP: 0
         weaponType: 5
         level: 0
-    - rid: 7306274975038308459
+    - rid: 7306275087443034261
       type: {class: ArmorReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
         part: 0
         mat: 1
         level: 0
-    - rid: 7306274975038308460
+    - rid: 7306275087443034262
       type: {class: ArmorReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
         part: 1
         mat: 1
         level: 0
-    - rid: 7306274975038308461
+    - rid: 7306275087443034263
       type: {class: ArmorReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
         part: 2
         mat: 1
         level: 0
-    - rid: 7306274975038308462
+    - rid: 7306275087443034264
       type: {class: ArmorReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1
         part: 3
         mat: 1
         level: 0
-    - rid: 7306274975038308463
+    - rid: 7306275087443034265
       type: {class: ArmorReward, ns: , asm: Assembly-CSharp}
       data:
         amount: 1

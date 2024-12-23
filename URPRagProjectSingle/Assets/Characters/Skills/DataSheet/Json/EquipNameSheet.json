@@ -1,98 +1,98 @@
 [
 {
 "eng_Name": "LeatherHead",
-"lo_Name": "가죽 모자"
+"lo_ko": "가죽 모자"
 },
 {
 "eng_Name": "LeatherChest",
-"lo_Name": "가죽 흉갑"
+"lo_ko": "가죽 흉갑"
 },
 {
 "eng_Name": "LeatherPants",
-"lo_Name": "가죽 경갑"
+"lo_ko": "가죽 경갑"
 },
 {
 "eng_Name": "LeatherBoots",
-"lo_Name": "가죽 군화"
+"lo_ko": "가죽 군화"
 },
 {
 "eng_Name": "LeatherGauntlet",
-"lo_Name": "가죽 장갑"
+"lo_ko": "가죽 장갑"
 },
 {
 "eng_Name": "ClothHead",
-"lo_Name": "천 머리띠"
+"lo_ko": "천 머리띠"
 },
 {
 "eng_Name": "ClothChest",
-"lo_Name": "천 상의"
+"lo_ko": "천 상의"
 },
 {
 "eng_Name": "ClothPants",
-"lo_Name": "천 바지"
+"lo_ko": "천 바지"
 },
 {
 "eng_Name": "ClothBoots",
-"lo_Name": "천 신발"
+"lo_ko": "천 신발"
 },
 {
 "eng_Name": "ClothGauntlet",
-"lo_Name": "천 장갑"
+"lo_ko": "천 장갑"
 },
 {
 "eng_Name": "PlateArmorHead",
-"lo_Name": "판금 헬멧"
+"lo_ko": "판금 헬멧"
 },
 {
 "eng_Name": "PlateArmorChest",
-"lo_Name": "판금 갑옷"
+"lo_ko": "판금 갑옷"
 },
 {
 "eng_Name": "PlateArmorPants",
-"lo_Name": "판금 경갑"
+"lo_ko": "판금 경갑"
 },
 {
 "eng_Name": "PlateArmorBoots",
-"lo_Name": "판금 장화"
+"lo_ko": "판금 장화"
 },
 {
 "eng_Name": "PlateArmorGauntlet",
-"lo_Name": "판금 건틀렛"
+"lo_ko": "판금 건틀렛"
 },
 {
 "eng_Name": "Shield",
-"lo_Name": "방패"
+"lo_ko": "방패"
 },
 {
 "eng_Name": "Sword",
-"lo_Name": "검"
+"lo_ko": "검"
 },
 {
 "eng_Name": "Bow",
-"lo_Name": "활"
+"lo_ko": "활"
 },
 {
 "eng_Name": "Cane",
-"lo_Name": "지팡이"
+"lo_ko": "지팡이"
 },
 {
 "eng_Name": "BluntWeapon",
-"lo_Name": "둔기"
+"lo_ko": "둔기"
 },
 {
 "eng_Name": "Dagger",
-"lo_Name": "단검"
+"lo_ko": "단검"
 },
 {
 "eng_Name": "TwoHanded",
-"lo_Name": "양손"
+"lo_ko": "양손"
 },
 {
 "eng_Name": "LeftHand",
-"lo_Name": "왼손"
+"lo_ko": "왼손"
 },
 {
 "eng_Name": "RightHand",
-"lo_Name": "오른손"
+"lo_ko": "오른손"
 }
 ]

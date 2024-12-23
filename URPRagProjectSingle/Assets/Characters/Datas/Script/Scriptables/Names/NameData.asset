@@ -14,224 +14,250 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipNames:
   - eng_Name: LeatherHead
-    lo_Name: "\uAC00\uC8FD \uBAA8\uC790"
+    lo_ko: "\uAC00\uC8FD \uBAA8\uC790"
   - eng_Name: LeatherChest
-    lo_Name: "\uAC00\uC8FD \uD749\uAC11"
+    lo_ko: "\uAC00\uC8FD \uD749\uAC11"
   - eng_Name: LeatherPants
-    lo_Name: "\uAC00\uC8FD \uACBD\uAC11"
+    lo_ko: "\uAC00\uC8FD \uACBD\uAC11"
   - eng_Name: LeatherBoots
-    lo_Name: "\uAC00\uC8FD \uAD70\uD654"
+    lo_ko: "\uAC00\uC8FD \uAD70\uD654"
   - eng_Name: LeatherGauntlet
-    lo_Name: "\uAC00\uC8FD \uC7A5\uAC11"
+    lo_ko: "\uAC00\uC8FD \uC7A5\uAC11"
   - eng_Name: ClothHead
-    lo_Name: "\uCC9C \uBA38\uB9AC\uB760"
+    lo_ko: "\uCC9C \uBA38\uB9AC\uB760"
   - eng_Name: ClothChest
-    lo_Name: "\uCC9C \uC0C1\uC758"
+    lo_ko: "\uCC9C \uC0C1\uC758"
   - eng_Name: ClothPants
-    lo_Name: "\uCC9C \uBC14\uC9C0"
+    lo_ko: "\uCC9C \uBC14\uC9C0"
   - eng_Name: ClothBoots
-    lo_Name: "\uCC9C \uC2E0\uBC1C"
+    lo_ko: "\uCC9C \uC2E0\uBC1C"
   - eng_Name: ClothGauntlet
-    lo_Name: "\uCC9C \uC7A5\uAC11"
+    lo_ko: "\uCC9C \uC7A5\uAC11"
   - eng_Name: PlateArmorHead
-    lo_Name: "\uD310\uAE08 \uD5EC\uBA67"
+    lo_ko: "\uD310\uAE08 \uD5EC\uBA67"
   - eng_Name: PlateArmorChest
-    lo_Name: "\uD310\uAE08 \uAC11\uC637"
+    lo_ko: "\uD310\uAE08 \uAC11\uC637"
   - eng_Name: PlateArmorPants
-    lo_Name: "\uD310\uAE08 \uACBD\uAC11"
+    lo_ko: "\uD310\uAE08 \uACBD\uAC11"
   - eng_Name: PlateArmorBoots
-    lo_Name: "\uD310\uAE08 \uC7A5\uD654"
+    lo_ko: "\uD310\uAE08 \uC7A5\uD654"
   - eng_Name: PlateArmorGauntlet
-    lo_Name: "\uD310\uAE08 \uAC74\uD2C0\uB81B"
+    lo_ko: "\uD310\uAE08 \uAC74\uD2C0\uB81B"
   - eng_Name: Shield
-    lo_Name: "\uBC29\uD328"
+    lo_ko: "\uBC29\uD328"
   - eng_Name: Sword
-    lo_Name: "\uAC80"
+    lo_ko: "\uAC80"
   - eng_Name: Bow
-    lo_Name: "\uD65C"
+    lo_ko: "\uD65C"
   - eng_Name: Cane
-    lo_Name: "\uC9C0\uD321\uC774"
+    lo_ko: "\uC9C0\uD321\uC774"
   - eng_Name: BluntWeapon
-    lo_Name: "\uB454\uAE30"
+    lo_ko: "\uB454\uAE30"
   - eng_Name: Dagger
-    lo_Name: "\uB2E8\uAC80"
+    lo_ko: "\uB2E8\uAC80"
   - eng_Name: TwoHanded
-    lo_Name: "\uC591\uC190"
+    lo_ko: "\uC591\uC190"
   - eng_Name: LeftHand
-    lo_Name: "\uC67C\uC190"
+    lo_ko: "\uC67C\uC190"
   - eng_Name: RightHand
-    lo_Name: "\uC624\uB978\uC190"
+    lo_ko: "\uC624\uB978\uC190"
   apixNames:
   - eng_Name: Str
-    lo_Name: "\uD798\uC758"
+    lo_ko: "\uD798\uC758"
   - eng_Name: AGI
-    lo_Name: "\uBBFC\uCCA9\uC758"
+    lo_ko: "\uBBFC\uCCA9\uC758"
   - eng_Name: Vit
-    lo_Name: "\uAC15\uC778\uC758"
+    lo_ko: "\uAC15\uC778\uC758"
   - eng_Name: Int
-    lo_Name: "\uC9C0\uB2A5\uC758"
+    lo_ko: "\uC9C0\uB2A5\uC758"
   - eng_Name: Dex
-    lo_Name: "\uC190\uC7AC\uC8FC\uC758"
+    lo_ko: "\uC190\uC7AC\uC8FC\uC758"
   - eng_Name: Luk
-    lo_Name: "\uD589\uC6B4\uC758"
+    lo_ko: "\uD589\uC6B4\uC758"
   - eng_Name: CriticalDMG
-    lo_Name: "\uCE58\uBA85\uC801\uC778"
+    lo_ko: "\uCE58\uBA85\uC801\uC778"
   - eng_Name: CriticalChance
-    lo_Name: "\uB0A0\uCE74\uB85C\uC6B4"
+    lo_ko: "\uB0A0\uCE74\uB85C\uC6B4"
   - eng_Name: ATK
-    lo_Name: "\uC704\uB825\uC801\uC778"
+    lo_ko: "\uC704\uB825\uC801\uC778"
   - eng_Name: MATK
-    lo_Name: "\uC2E0\uBE44\uB85C\uC6B4"
+    lo_ko: "\uC2E0\uBE44\uB85C\uC6B4"
   - eng_Name: AttackSpeed
-    lo_Name: "\uAE30\uBBFC\uD55C"
+    lo_ko: "\uAE30\uBBFC\uD55C"
   - eng_Name: CastingSpeed
-    lo_Name: "\uC2E0\uC18D\uD55C"
+    lo_ko: "\uC2E0\uC18D\uD55C"
   - eng_Name: MaxHp
-    lo_Name: "\uBC84\uD2F0\uB294"
+    lo_ko: "\uBC84\uD2F0\uB294"
   - eng_Name: Accuracy
-    lo_Name: "\uC815\uD655\uD55C"
+    lo_ko: "\uC815\uD655\uD55C"
   - eng_Name: MaxMana
-    lo_Name: "\uCD08\uC6D4\uC801\uC778"
+    lo_ko: "\uCD08\uC6D4\uC801\uC778"
   - eng_Name: ManaRegen
-    lo_Name: "\uC601\uAC10\uBC1B\uC740"
+    lo_ko: "\uC601\uAC10\uBC1B\uC740"
   - eng_Name: HpRegen
-    lo_Name: "\uC2F1\uADF8\uB7EC\uC6B4"
+    lo_ko: "\uC2F1\uADF8\uB7EC\uC6B4"
   - eng_Name: MoveSpeed
-    lo_Name: "\uBC1C\uBE60\uB978"
+    lo_ko: "\uBC1C\uBE60\uB978"
   - eng_Name: deff
-    lo_Name: "\uB2E8\uB2E8\uD55C"
+    lo_ko: "\uB2E8\uB2E8\uD55C"
   - eng_Name: Evasion
-    lo_Name: "\uBC18\uC751\uD558\uB294"
+    lo_ko: "\uBC18\uC751\uD558\uB294"
   - eng_Name: magicDeff
-    lo_Name: "\uC800\uD56D\uD558\uB294"
+    lo_ko: "\uC800\uD56D\uD558\uB294"
   levelNames:
   - eng_Name: Rusty
-    lo_Name: "\uB179\uC2A8"
+    lo_ko: "\uB179\uC2A8"
   - eng_Name: Worn
-    lo_Name: "\uB0A1\uC740"
+    lo_ko: "\uB0A1\uC740"
   - eng_Name: Basic
-    lo_Name: "\uAE30\uBCF8\uC801\uC778"
+    lo_ko: "\uAE30\uBCF8\uC801\uC778"
   - eng_Name: Simple
-    lo_Name: "\uB2E8\uC21C\uD55C"
+    lo_ko: "\uB2E8\uC21C\uD55C"
   - eng_Name: Cracked
-    lo_Name: "\uAE08\uC774 \uAC04"
+    lo_ko: "\uAE08\uC774 \uAC04"
   - eng_Name: Fine
-    lo_Name: "\uC138\uB828\uB41C"
+    lo_ko: "\uC138\uB828\uB41C"
   - eng_Name: Sturdy
-    lo_Name: "\uD2BC\uD2BC\uD55C"
+    lo_ko: "\uD2BC\uD2BC\uD55C"
   - eng_Name: Polished
-    lo_Name: "\uC724\uC774 \uB098\uB294"
+    lo_ko: "\uC724\uC774 \uB098\uB294"
   - eng_Name: Gleaming
-    lo_Name: "\uBC18\uC9DD\uC774\uB294"
+    lo_ko: "\uBC18\uC9DD\uC774\uB294"
   - eng_Name: Reinforced
-    lo_Name: "\uAC15\uD654\uB41C"
+    lo_ko: "\uAC15\uD654\uB41C"
   - eng_Name: Sharp
-    lo_Name: "\uB0A0\uCE74\uB85C\uC6B4"
+    lo_ko: "\uB0A0\uCE74\uB85C\uC6B4"
   - eng_Name: Tempered
-    lo_Name: "\uB2E8\uB828\uB41C"
+    lo_ko: "\uB2E8\uB828\uB41C"
   - eng_Name: Shining
-    lo_Name: "\uBE5B\uB098\uB294"
+    lo_ko: "\uBE5B\uB098\uB294"
   - eng_Name: Hardened
-    lo_Name: "\uB2E8\uB2E8\uD574\uC9C4"
+    lo_ko: "\uB2E8\uB2E8\uD574\uC9C4"
   - eng_Name: Balanced
-    lo_Name: "\uADE0\uD615 \uC7A1\uD78C"
+    lo_ko: "\uADE0\uD615 \uC7A1\uD78C"
   - eng_Name: Exquisite
-    lo_Name: "\uC815\uAD50\uD55C"
+    lo_ko: "\uC815\uAD50\uD55C"
   - eng_Name: Refined
-    lo_Name: "\uC815\uC81C\uB41C"
+    lo_ko: "\uC815\uC81C\uB41C"
   - eng_Name: Radiant
-    lo_Name: "\uB208\uBD80\uC2E0"
+    lo_ko: "\uB208\uBD80\uC2E0"
   - eng_Name: Honed
-    lo_Name: "\uAC08\uACE0 \uB2E6\uC740"
+    lo_ko: "\uAC08\uACE0 \uB2E6\uC740"
   - eng_Name: Glorious
-    lo_Name: "\uC601\uAD11\uC2A4\uB7EC\uC6B4"
+    lo_ko: "\uC601\uAD11\uC2A4\uB7EC\uC6B4"
   uiNames:
   - eng_Name: Str
-    lo_Name: "\uD798"
+    lo_ko: "\uD798"
   - eng_Name: AGI
-    lo_Name: "\uBBFC\uCCA9"
+    lo_ko: "\uBBFC\uCCA9"
   - eng_Name: Vit
-    lo_Name: "\uCCB4\uB825"
+    lo_ko: "\uCCB4\uB825"
   - eng_Name: Int
-    lo_Name: "\uC9C0\uB2A5"
+    lo_ko: "\uC9C0\uB2A5"
   - eng_Name: Dex
-    lo_Name: "\uC190\uC7AC\uC8FC"
+    lo_ko: "\uC190\uC7AC\uC8FC"
   - eng_Name: Luk
-    lo_Name: "\uD589\uC6B4"
+    lo_ko: "\uD589\uC6B4"
   - eng_Name: CriticalDMG
-    lo_Name: "\uCE58\uBA85\uD0C0 \uB370\uBBF8\uC9C0"
+    lo_ko: "\uCE58\uBA85\uD0C0 \uB370\uBBF8\uC9C0"
   - eng_Name: CriticalChance
-    lo_Name: "\uCE58\uBA85\uD0C0 \uD655\uB960"
+    lo_ko: "\uCE58\uBA85\uD0C0 \uD655\uB960"
   - eng_Name: ATK
-    lo_Name: "\uADFC\uC811 \uACF5\uACA9\uB825"
+    lo_ko: "\uADFC\uC811 \uACF5\uACA9\uB825"
   - eng_Name: MATK
-    lo_Name: "\uB9C8\uBC95 \uACF5\uACA9\uB825"
+    lo_ko: "\uB9C8\uBC95 \uACF5\uACA9\uB825"
   - eng_Name: AttackSpeed
-    lo_Name: "\uACF5\uACA9\uC18D\uB3C4"
+    lo_ko: "\uACF5\uACA9\uC18D\uB3C4"
   - eng_Name: CastingSpeed
-    lo_Name: "\uCE90\uC2A4\uD305 \uC18D\uB3C4"
+    lo_ko: "\uCE90\uC2A4\uD305 \uC18D\uB3C4"
   - eng_Name: MaxHp
-    lo_Name: "\uCD5C\uB300 \uCCB4\uB825"
+    lo_ko: "\uCD5C\uB300 \uCCB4\uB825"
   - eng_Name: Accuracy
-    lo_Name: "\uC801\uC911\uB825"
+    lo_ko: "\uC801\uC911\uB825"
   - eng_Name: MaxMana
-    lo_Name: "\uCD5C\uB300 \uB9C8\uB098"
+    lo_ko: "\uCD5C\uB300 \uB9C8\uB098"
   - eng_Name: ManaRegen
-    lo_Name: "\uB9C8\uB098 \uC7AC\uC0DD"
+    lo_ko: "\uB9C8\uB098 \uC7AC\uC0DD"
   - eng_Name: HpRegen
-    lo_Name: "\uCCB4\uB825 \uC7AC\uC0DD"
+    lo_ko: "\uCCB4\uB825 \uC7AC\uC0DD"
   - eng_Name: MoveSpeed
-    lo_Name: "\uC774\uB3D9 \uC18D\uB3C4"
+    lo_ko: "\uC774\uB3D9 \uC18D\uB3C4"
   - eng_Name: deff
-    lo_Name: "\uBC29\uC5B4\uB825"
+    lo_ko: "\uBC29\uC5B4\uB825"
   - eng_Name: Evasion
-    lo_Name: "\uD68C\uD53C\uC728"
+    lo_ko: "\uD68C\uD53C\uC728"
   - eng_Name: magicDeff
-    lo_Name: "\uB9C8\uBC95 \uC800\uD56D\uB825"
+    lo_ko: "\uB9C8\uBC95 \uC800\uD56D\uB825"
   - eng_Name: Passive
-    lo_Name: "\uD328\uC2DC\uBE0C"
+    lo_ko: "\uD328\uC2DC\uBE0C"
   - eng_Name: Active
-    lo_Name: "\uC561\uD2F0\uBE0C"
+    lo_ko: "\uC561\uD2F0\uBE0C"
   - eng_Name: buff
-    lo_Name: "\uBC84\uD504"
+    lo_ko: "\uBC84\uD504"
   - eng_Name: self
-    lo_Name: "\uC790\uAE30 \uC790\uC2E0"
+    lo_ko: "\uC790\uAE30 \uC790\uC2E0"
   - eng_Name: cursor
-    lo_Name: "\uB9C8\uC6B0\uC2A4"
+    lo_ko: "\uB9C8\uC6B0\uC2A4"
   - eng_Name: None
-    lo_Name: "\uC815\uC758\uB418\uC9C0 \uC54A\uC74C"
+    lo_ko: "\uC815\uC758\uB418\uC9C0 \uC54A\uC74C"
   - eng_Name: OnlyTarget
-    lo_Name: "\uB2E8\uC77C"
+    lo_ko: "\uB2E8\uC77C"
   - eng_Name: Bounded
-    lo_Name: "\uAD11\uC5ED"
+    lo_ko: "\uAD11\uC5ED"
   - eng_Name: Physical
-    lo_Name: "\uBB3C\uB9AC"
+    lo_ko: "\uBB3C\uB9AC"
   - eng_Name: Magic
-    lo_Name: "\uC8FC\uBB38"
+    lo_ko: "\uC8FC\uBB38"
   - eng_Name: Heal
-    lo_Name: "\uD68C\uBCF5"
+    lo_ko: "\uD68C\uBCF5"
   - eng_Name: PhysicalRange
-    lo_Name: "\uC6D0\uAC70\uB9AC"
+    lo_ko: "\uC6D0\uAC70\uB9AC"
   - eng_Name: TrueDamage
-    lo_Name: "\uACE0\uC815"
+    lo_ko: "\uACE0\uC815"
+  - eng_Name: Slay
+    lo_ko: "\uCC98\uCE58\uD558\uC138\uC694"
+  - eng_Name: Collect
+    lo_ko: "\uC218\uC9D1\uD558\uC138\uC694"
+  - eng_Name: interact
+    lo_ko: "\uC0C1\uD638\uC791\uC6A9 \uD558\uC138\uC694"
+  - eng_Name: times
+    lo_ko: "\uD68C"
+  - eng_Name: convasation with
+    lo_ko: "\uD574\uB2F9 NPC\uC640 \uB300\uD654\uD558\uC138\uC694 : "
+  - eng_Name: Clear
+    lo_ko: "\uC644\uB8CC"
+  - eng_Name: Done
+    lo_ko: "\uC870\uAC74 \uC644\uB8CC"
+  - eng_Name: helloWorld
+    lo_ko: "\uBAA8\uD5D8 \uC2DC\uC791"
+  - eng_Name: troubleMaker
+    lo_ko: "\uB9D0\uC37D\uAFB8\uB7EC\uAE30"
+  - eng_Name: MOB_Slime
+    lo_ko: "\uC2AC\uB77C\uC784"
+  - eng_Name: NPC_Roras
+    lo_ko: "\uB85C\uB77C\uC2A4"
+  - eng_Name: JobEXP
+    lo_ko: "\uC9C1\uC5C5 \uACBD\uD5D8\uCE58"
+  - eng_Name: BaseEXP
+    lo_ko: "\uACBD\uD5D8\uCE58"
   gradeData:
   - eng_Name: Normal
-    lo_Name: "\uC77C\uBC18"
+    lo_ko: "\uC77C\uBC18"
     gradeColor:
       serializedVersion: 2
       rgba: 4294967295
   - eng_Name: Superior
-    lo_Name: "\uC6B0\uC218"
+    lo_ko: "\uC6B0\uC218"
     gradeColor:
       serializedVersion: 2
       rgba: 4294901760
   - eng_Name: Rare
-    lo_Name: "\uD76C\uADC0"
+    lo_ko: "\uD76C\uADC0"
     gradeColor:
       serializedVersion: 2
       rgba: 4278255615
   - eng_Name: Legendry
-    lo_Name: "\uC804\uC124"
+    lo_ko: "\uC804\uC124"
     gradeColor:
       serializedVersion: 2
       rgba: 4280382451

@@ -1,13 +1,11 @@
 [
 {
 "questID": "helloWorld",
-"questName": "모험 시작!",
 "description": "경비병 로라스와 대화하자",
 "level": "0"
 },
 {
 "questID": "troubleMaker",
-"questName": "말성꾸러기",
 "description": "슬라임을 처치하십시오",
 "level": "1"
 }

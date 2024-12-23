@@ -1,38 +1,22 @@
 [
 {
 "eng_Name": "Normal",
-"lo_Name": "일반",
-"gradeColor": "255, 255, 255, 255",
-"r": "",
-"g": "",
-"b": "",
-"a": ""
+"lo_ko": "일반",
+"gradeColor": "255, 255, 255, 255"
 },
 {
 "eng_Name": "Superior",
-"lo_Name": "우수",
-"gradeColor": "0, 0, 255, 255",
-"r": "",
-"g": "",
-"b": "",
-"a": ""
+"lo_ko": "우수",
+"gradeColor": "0, 0, 255, 255"
 },
 {
 "eng_Name": "Rare",
-"lo_Name": "희귀",
-"gradeColor": "255, 255, 0, 255",
-"r": "",
-"g": "",
-"b": "",
-"a": ""
+"lo_ko": "희귀",
+"gradeColor": "255, 255, 0, 255"
 },
 {
 "eng_Name": "Legendry",
-"lo_Name": "전설",
-"gradeColor": "243, 115, 33, 255",
-"r": "",
-"g": "",
-"b": "",
-"a": ""
+"lo_ko": "전설",
+"gradeColor": "243, 115, 33, 255"
 }
 ]

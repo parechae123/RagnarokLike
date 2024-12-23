@@ -17,22 +17,26 @@ public class NameDatas : ScriptableObject
     public class NameData
     {
         public string eng_Name;
-        public string lo_Name;
+        public string lo_ko;
     }
     [System.Serializable]
     public class GradeData
     {
         public string eng_Name;
-        public string lo_Name;
+        public string lo_ko;
         public Color32 gradeColor;
     }
     public string GetEquipNameValue(string equipName)
     {
         foreach (NameData item in equipNames)
         {
-            if(item.eng_Name == equipName)
+            if(item.eng_Name == equipName&&UIManager.GetInstance().languege == Localization.lo_ko)
             {
-                return item.lo_Name;
+                return item.lo_ko;
+            }
+            else if(item.eng_Name == equipName&&UIManager.GetInstance().languege == Localization.lo_en)
+            {
+                return item.eng_Name;
             }
         }
         Debug.LogError("이름이 없졍" + equipName);
@@ -47,9 +51,13 @@ public class NameDatas : ScriptableObject
     {
         foreach (NameData item in apixNames)
         {
-            if(item.eng_Name == apixName)
+            if (item.eng_Name == apixName && UIManager.GetInstance().languege == Localization.lo_ko)
             {
-                return item.lo_Name;
+                return item.lo_ko;
+            }
+            else if (item.eng_Name == apixName && UIManager.GetInstance().languege == Localization.lo_en)
+            {
+                return item.eng_Name;
             }
         }
         Debug.LogError("이름이 없졍"+apixName);
@@ -57,15 +65,30 @@ public class NameDatas : ScriptableObject
     }
     public string GetLevelNameValue(int level)
     {
-        return levelNames[level].lo_Name;
+        switch (UIManager.GetInstance().languege)
+        {
+            case Localization.lo_en:
+                return levelNames[level].eng_Name;
+            case Localization.lo_ko:
+                return levelNames[level].lo_ko;
+            default:
+                return levelNames[level].eng_Name;
+        }
+        
     }
     public string GetUINameValue(string apixName)
     {
         foreach (NameData item in uiNames)
         {
-            if (item.eng_Name == apixName)
+            if (apixName != item.eng_Name) continue;
+
+            if (item.eng_Name == apixName && UIManager.GetInstance().languege == Localization.lo_ko)
             {
-                return item.lo_Name;
+                return item.lo_ko;
+            }
+            else if (item.eng_Name == apixName && UIManager.GetInstance().languege == Localization.lo_en)
+            {
+                return item.eng_Name;
             }
         }
         Debug.LogError("이름이 없졍" + apixName);
@@ -73,8 +96,20 @@ public class NameDatas : ScriptableObject
     }
     public (string,Color32) GetGradeNameValue(int gradeLevel)
     {
+        string returnText = string.Empty;
         if (gradeLevel >= gradeData.Length) return ("알 수 없음", new Color32(255, 255, 255, 255));
-        return (gradeData[gradeLevel].lo_Name, gradeData[gradeLevel].gradeColor);
+        switch (UIManager.GetInstance().languege)
+        {
+            case Localization.lo_en:
+                returnText = gradeData[gradeLevel].eng_Name;
+                break;
+            case Localization.lo_ko:
+                returnText = gradeData[gradeLevel].lo_ko;
+                break;
+            default:
+                break;
+        }
+        return (returnText, gradeData[gradeLevel].gradeColor);
     }
     public void GetSheetValues(string json,nameDataType type)
     {
@@ -99,7 +134,7 @@ public class NameDatas : ScriptableObject
                 {
                     gradeData[i] = new GradeData();
                     gradeData[i].eng_Name = temp[i].eng_Name;
-                    gradeData[i].lo_Name = temp[i].lo_Name;
+                    gradeData[i].lo_ko = temp[i].lo_ko;
                     byte r = byte.Parse(temp[i].gradeColor.Substring(0, temp[i].gradeColor.IndexOf(',')));
                     temp[i].gradeColor = temp[i].gradeColor.Remove(0, temp[i].gradeColor.IndexOf(',') + 1);
                     byte g = byte.Parse(temp[i].gradeColor.Substring(0, temp[i].gradeColor.IndexOf(',')));
@@ -125,6 +160,6 @@ public enum nameDataType
 public class TempParseData
 {
     public string eng_Name;
-    public string lo_Name;
+    public string lo_ko;
     public string gradeColor;
 }

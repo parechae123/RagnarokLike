@@ -112,7 +112,6 @@ public class CheckQuestCondition : Editor
 public class ScriptableQuest
 {
     public string questID;
-    public string questName;
     public string description;
     public int level;
     [SerializeReference]public IQuestConditions[] condition;

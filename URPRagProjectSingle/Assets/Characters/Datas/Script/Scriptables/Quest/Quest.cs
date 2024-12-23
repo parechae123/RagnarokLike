@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Build.Pipeline;
@@ -18,18 +19,16 @@ using UnityEngine.Rendering;
 public class Quest
 {
     public string questID;
-    public string questName;
     public string description;
     public bool isQuestDone
     {
-        get { return conditions.All(c => c.IsMet()); }
+        get => conditions.All(c => c.IsMet());
     }
 
     public int level;
     public Quest(ScriptableQuest questInfo)
     {
         this.questID = questInfo.questID;
-        this.questName = questInfo.questName;
         this.description = questInfo.description;
         this.level = questInfo.level;
         conditions = new List<IQuestConditions>();
@@ -61,6 +60,20 @@ public class Quest
             if (!Conditions[i].IsMet()) return i;
         }
         return -1;
+    }
+    public string GetRewardText()
+    {
+        string tempText = string.Empty; 
+        for (int i = 0; i < rewards.Length; i++)
+        {
+            tempText += rewards[i].GetDescription();
+        }
+
+        if(tempText.Length > 2)
+        {
+            tempText = tempText.Remove(0, 1);
+        }
+        return tempText;
     }
     public void ConditionUpdate()
     {
@@ -153,9 +166,9 @@ public class HuntingCondition : IQuestConditions
     public bool IsMet()=>curr >= require;
     public void Intialize()
     {
-        
         RegistAction();
         curr = 0;
+        QuestManager.GetInstance().PopUpQuestInfo(ResourceManager.GetInstance().NameSheet.GetUINameValue(parentQuest.questID), GetDescription());
     }
     public void RegistAction()
     {
@@ -168,12 +181,18 @@ public class HuntingCondition : IQuestConditions
         QuestManager.GetInstance().huntEvent -= Hunt;
     }
     public float GetProgress() => (float)curr / require;
-    public string GetDescription() => $"Slay {targetCode} {curr}/{require}";
+    public string GetDescription() => $"{ResourceManager.GetInstance().NameSheet.GetUINameValue("Slay")} {ResourceManager.GetInstance().NameSheet.GetUINameValue(targetCode)} {curr}/{require}";
     public void Hunt(string mobCode)
     {
         if (mobCode != targetCode) return;
         curr++;
-        if(IsMet()) RemoveAction();
+        QuestManager.GetInstance().PopUpQuestInfo(ResourceManager.GetInstance().NameSheet.GetUINameValue(parentQuest.questID), GetDescription());
+
+        if (IsMet())
+        {
+            parentQuest.ConditionUpdate();
+            RemoveAction();
+        }
 
         if (parentQuest.isQuestDone) QuestManager.GetInstance().ClearQuest(parentQuest);
     }
@@ -198,9 +217,14 @@ public class CollectionCondition : IQuestConditions
     }
 
     public bool IsMet() => curr >= require;
-    public void Intialize()=> curr = 0;
+    public void Intialize()
+    {
+        RegistAction();
+        curr = 0;
+        QuestManager.GetInstance().PopUpQuestInfo(ResourceManager.GetInstance().NameSheet.GetUINameValue(parentQuest.questID), GetDescription());
+    } 
     public float GetProgress() => (float)curr / require;
-    public string GetDescription() => $"Collect {itemCode}s {curr}/{require}";
+    public string GetDescription() => $"{ResourceManager.GetInstance().NameSheet.GetUINameValue("Slay")} {itemCode}s {curr}/{require}";
 
     public void RemoveAction()
     {
@@ -216,6 +240,8 @@ public class CollectionCondition : IQuestConditions
     {
         int itemAmount = UIManager.GetInstance().consumeInven.GetAmount(itemCode);
         curr = itemAmount > sbyte.MaxValue? sbyte.MaxValue : (sbyte)itemAmount;
+
+
 
         if (parentQuest.isQuestDone) QuestManager.GetInstance().ClearQuest(parentQuest);
     }
@@ -243,8 +269,9 @@ public class InteractionCondition : IQuestConditions
     public bool IsMet() => curr >= require;
     public void Intialize()
     {
-        
+        RegistAction();
         curr = 0;
+        QuestManager.GetInstance().PopUpQuestInfo(ResourceManager.GetInstance().NameSheet.GetUINameValue(parentQuest.questID), GetDescription());
     }
     public void RegistAction()
     {
@@ -255,12 +282,16 @@ public class InteractionCondition : IQuestConditions
         QuestManager.GetInstance().interactiveEvent -= interact;
     }
     public float GetProgress() => (float)curr / require;
-    public string GetDescription() => $"interact {interactCode} {require} times";
+    public string GetDescription() => $"{ResourceManager.GetInstance().NameSheet.GetUINameValue("interact")} {interactCode} {require} times";
     public void interact(string objCode)
     {
         if (objCode != interactCode) return;
         curr++;
-        if(IsMet()) RemoveAction();
+        if (IsMet()) 
+        {
+            parentQuest.ConditionUpdate();
+            RemoveAction();
+        }
 
         if (parentQuest.isQuestDone) QuestManager.GetInstance().ClearQuest(parentQuest);
     }
@@ -276,12 +307,10 @@ public class ConversationCondition : IQuestConditions
     public string npcCode;
     public int dialogueIndex;
     private bool isDone;
-    public string questID;
     public ConversationCondition(string npcCode,int dialogueIndex,string questID,Quest quest)
     {
         this.npcCode = npcCode;
         this.dialogueIndex = dialogueIndex;
-        this.questID = questID;
         parentQuest = quest;
     }
 
@@ -290,16 +319,17 @@ public class ConversationCondition : IQuestConditions
     {
         isDone = false;
         RegistAction();
+        QuestManager.GetInstance().PopUpQuestInfo(ResourceManager.GetInstance().NameSheet.GetUINameValue(parentQuest.questID), GetDescription());
     }
     public float GetProgress() => isDone ? 1:0;
-    public string GetDescription() => $"convasation with {npcCode}";
+    public string GetDescription() => $"{ResourceManager.GetInstance().NameSheet.GetUINameValue("convasation with")} {ResourceManager.GetInstance().NameSheet.GetUINameValue(npcCode)}";
     public void RegistAction()
     {
-        QuestManager.GetInstance().conversationEvent += CheckCondition;
+        QuestManager.GetInstance().conversationEvent += this.CheckCondition;
     }
     public void RemoveAction()
     {
-        QuestManager.GetInstance().conversationEvent -= CheckCondition;
+        QuestManager.GetInstance().conversationEvent -= this.CheckCondition;
     }
     public void CheckCondition(string npcName)
     {
@@ -313,14 +343,20 @@ public class ConversationCondition : IQuestConditions
             }
         }
         else return;
-        isDone = true;
-        RemoveAction();
+        QuestManager.GetInstance().PopUpQuestInfo(ResourceManager.GetInstance().NameSheet.GetUINameValue(parentQuest.questID) + $"({ResourceManager.GetInstance().NameSheet.GetUINameValue("Done")})", GetDescription());
+        isDone = true; 
+        if (IsMet())
+        {
+            parentQuest.ConditionUpdate();
+            RemoveAction();
+        }
+
         if (parentQuest.isQuestDone) QuestManager.GetInstance().ClearQuest(parentQuest);
     }
 
     public IQuestConditions Clone(Quest parentQuest)
     {
-        return new ConversationCondition(npcCode, dialogueIndex, questID, parentQuest);
+        return new ConversationCondition(npcCode, dialogueIndex, parentQuest.questID, parentQuest);
     }
 }
 
@@ -328,6 +364,7 @@ public interface IRewards
 {
     
     void GetReward();
+    string GetDescription();
 }
 
 public class WeaponReward : IRewards
@@ -343,7 +380,7 @@ public class WeaponReward : IRewards
         weaponType = data.weaponType;
         level = data.itemLevel;
     }
-
+    public string GetDescription() => $"\nLV {level} {(twohandedWP? ResourceManager.GetInstance().NameSheet.GetEquipNameValue("TwoHanded") : string.Empty)} {ResourceManager.GetInstance().NameSheet.GetEquipNameValue(weaponType.ToString())} Amount : {amount}";
     public void GetReward()
     {
         UIManager.GetInstance().equipInven.GetItems(MonsterManager.GetInstance().Drop.GetDefinedWeapon(level,twohandedWP,weaponType));
@@ -355,8 +392,9 @@ public class ArmorReward : IRewards
     public EquipPart part;
     public ArmorMat mat;
     public sbyte level;
-    
+    public string armorName => mat.ToString()+part.ToString();
 
+    public string GetDescription() => $"\nLV {level} {ResourceManager.GetInstance().NameSheet.GetEquipNameValue(armorName)} Amount : {amount}";
     public ArmorReward(RewardParsingData data)
     {
         amount = data.amount;
@@ -374,6 +412,8 @@ public class ConsumReward : IRewards
 {
     public int itemCode;
     public int amount;
+
+    public string GetDescription() => $"\n{ResourceManager.GetInstance().PosionDatas.GetPosion(itemCode).itemName} Amount : {amount}";
     public ConsumReward(RewardParsingData data)
     {
         itemCode = data.itemCode;
@@ -390,6 +430,9 @@ public class MiscReward : IRewards
 {
     public int itemCode;
     public int amount;
+
+    public string GetDescription() => $"\n{ResourceManager.GetInstance().MiscDatas.GetMiscs(itemCode).itemName} Amount : {amount}";
+
     public MiscReward(RewardParsingData data)
     {
         itemCode = data.itemCode;
@@ -406,6 +449,8 @@ public class EXPReward : IRewards
 {
     public bool isJobEXP;
     public float expValue;
+
+    public string GetDescription() => $"\n{(isJobEXP ? ResourceManager.GetInstance().NameSheet.GetUINameValue("JobEXP") : ResourceManager.GetInstance().NameSheet.GetUINameValue("BaseEXP"))} : {expValue}";
     public EXPReward(RewardParsingData data)
     {
         this.isJobEXP = data.isJobExp;
@@ -427,6 +472,7 @@ public class EXPReward : IRewards
 public class GoldReward : IRewards
 {
     public int goldValue;
+    public string GetDescription() => $"\n{ResourceManager.GetInstance().NameSheet.GetUINameValue("Gold")} : {goldValue}";
     public GoldReward(RewardParsingData data)
     {
         this.goldValue = data.amount;
@@ -440,6 +486,7 @@ public class GoldReward : IRewards
 public class ClassChangeReward : IRewards
 {
     public string className;
+    public string GetDescription() => $"\n{ResourceManager.GetInstance().NameSheet.GetUINameValue("Class Change")} : " + className;
     public ClassChangeReward(RewardParsingData data)
     {
         this.className = data.className;

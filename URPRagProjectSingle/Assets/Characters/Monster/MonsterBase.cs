@@ -11,6 +11,7 @@ using DG.Tweening;
 using DG.Tweening.Plugins.Core.PathCore;
 using System;
 using PlayerDefines.States;
+using JetBrains.Annotations;
 
 public class MonsterBase : MonoBehaviour, ICameraTracker
 {
@@ -44,6 +45,7 @@ public class MonsterBase : MonoBehaviour, ICameraTracker
     }
     public bool isMonsterMoving = false;
     private Node lastNode;
+    public string mobName;
     public Node blockingNode;
     private SpriteRenderer monsterSR;
 
@@ -175,6 +177,7 @@ public class MonsterBase : MonoBehaviour, ICameraTracker
         ChangeState(new MDieState(this));
         Player.Instance.playerLevelInfo.GetBaseEXP(baseEXP);
         Player.Instance.playerLevelInfo.GetJobEXP(jobEXP);
+        QuestManager.GetInstance().huntEvent?.Invoke(mobName);
         ItemDrop();
 
     }

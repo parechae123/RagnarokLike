@@ -34,7 +34,7 @@ public class Parser : ScriptableObject
         }
         else
         {
-            ((QuestDatas)questData).GetSheetConditionValue(new TableConvert().Json(questInfoSheet), new TableConvert().Json(questInfoDetailCondition));
+            (questData).GetSheetConditionValue(new TableConvert().Json(questInfoSheet), new TableConvert().Json(questInfoDetailCondition));
         }
         if(!questRewardSheet||!questData)
         {

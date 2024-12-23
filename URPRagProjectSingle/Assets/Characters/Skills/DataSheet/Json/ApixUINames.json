@@ -1,138 +1,190 @@
 [
 {
 "eng_Name": "Str",
-"lo_Name": "힘"
+"lo_ko": "힘"
 },
 {
 "eng_Name": "AGI",
-"lo_Name": "민첩"
+"lo_ko": "민첩"
 },
 {
 "eng_Name": "Vit",
-"lo_Name": "체력"
+"lo_ko": "체력"
 },
 {
 "eng_Name": "Int",
-"lo_Name": "지능"
+"lo_ko": "지능"
 },
 {
 "eng_Name": "Dex",
-"lo_Name": "손재주"
+"lo_ko": "손재주"
 },
 {
 "eng_Name": "Luk",
-"lo_Name": "행운"
+"lo_ko": "행운"
 },
 {
 "eng_Name": "CriticalDMG",
-"lo_Name": "치명타 데미지"
+"lo_ko": "치명타 데미지"
 },
 {
 "eng_Name": "CriticalChance",
-"lo_Name": "치명타 확률"
+"lo_ko": "치명타 확률"
 },
 {
 "eng_Name": "ATK",
-"lo_Name": "근접 공격력"
+"lo_ko": "근접 공격력"
 },
 {
 "eng_Name": "MATK",
-"lo_Name": "마법 공격력"
+"lo_ko": "마법 공격력"
 },
 {
 "eng_Name": "AttackSpeed",
-"lo_Name": "공격속도"
+"lo_ko": "공격속도"
 },
 {
 "eng_Name": "CastingSpeed",
-"lo_Name": "캐스팅 속도"
+"lo_ko": "캐스팅 속도"
 },
 {
 "eng_Name": "MaxHp",
-"lo_Name": "최대 체력"
+"lo_ko": "최대 체력"
 },
 {
 "eng_Name": "Accuracy",
-"lo_Name": "적중력"
+"lo_ko": "적중력"
 },
 {
 "eng_Name": "MaxMana",
-"lo_Name": "최대 마나"
+"lo_ko": "최대 마나"
 },
 {
 "eng_Name": "ManaRegen",
-"lo_Name": "마나 재생"
+"lo_ko": "마나 재생"
 },
 {
 "eng_Name": "HpRegen",
-"lo_Name": "체력 재생"
+"lo_ko": "체력 재생"
 },
 {
 "eng_Name": "MoveSpeed",
-"lo_Name": "이동 속도"
+"lo_ko": "이동 속도"
 },
 {
 "eng_Name": "deff",
-"lo_Name": "방어력"
+"lo_ko": "방어력"
 },
 {
 "eng_Name": "Evasion",
-"lo_Name": "회피율"
+"lo_ko": "회피율"
 },
 {
 "eng_Name": "magicDeff",
-"lo_Name": "마법 저항력"
+"lo_ko": "마법 저항력"
 },
 {
 "eng_Name": "Passive",
-"lo_Name": "패시브"
+"lo_ko": "패시브"
 },
 {
 "eng_Name": "Active",
-"lo_Name": "액티브"
+"lo_ko": "액티브"
 },
 {
 "eng_Name": "buff",
-"lo_Name": "버프"
+"lo_ko": "버프"
 },
 {
 "eng_Name": "self",
-"lo_Name": "자기 자신"
+"lo_ko": "자기 자신"
 },
 {
 "eng_Name": "cursor",
-"lo_Name": "마우스"
+"lo_ko": "마우스"
 },
 {
 "eng_Name": "None",
-"lo_Name": "정의되지 않음"
+"lo_ko": "정의되지 않음"
 },
 {
 "eng_Name": "OnlyTarget",
-"lo_Name": "단일"
+"lo_ko": "단일"
 },
 {
 "eng_Name": "Bounded",
-"lo_Name": "광역"
+"lo_ko": "광역"
 },
 {
 "eng_Name": "Physical",
-"lo_Name": "물리"
+"lo_ko": "물리"
 },
 {
 "eng_Name": "Magic",
-"lo_Name": "주문"
+"lo_ko": "주문"
 },
 {
 "eng_Name": "Heal",
-"lo_Name": "회복"
+"lo_ko": "회복"
 },
 {
 "eng_Name": "PhysicalRange",
-"lo_Name": "원거리"
+"lo_ko": "원거리"
 },
 {
 "eng_Name": "TrueDamage",
-"lo_Name": "고정"
+"lo_ko": "고정"
+},
+{
+"eng_Name": "Slay",
+"lo_ko": "처치하세요"
+},
+{
+"eng_Name": "Collect",
+"lo_ko": "수집하세요"
+},
+{
+"eng_Name": "interact",
+"lo_ko": "상호작용 하세요"
+},
+{
+"eng_Name": "times",
+"lo_ko": "회"
+},
+{
+"eng_Name": "convasation with",
+"lo_ko": "해당 NPC와 대화하세요 : "
+},
+{
+"eng_Name": "Clear",
+"lo_ko": "완료"
+},
+{
+"eng_Name": "Done",
+"lo_ko": "조건 완료"
+},
+{
+"eng_Name": "helloWorld",
+"lo_ko": "모험 시작"
+},
+{
+"eng_Name": "troubleMaker",
+"lo_ko": "말썽꾸러기"
+},
+{
+"eng_Name": "MOB_Slime",
+"lo_ko": "슬라임"
+},
+{
+"eng_Name": "NPC_Roras",
+"lo_ko": "로라스"
+},
+{
+"eng_Name": "JobEXP",
+"lo_ko": "직업 경험치"
+},
+{
+"eng_Name": "BaseEXP",
+"lo_ko": "경험치"
 }
 ]

@@ -518,6 +518,7 @@ public class GridManager : Manager<GridManager>
 }
 public class UIManager : Manager<UIManager>
 {
+    public Localization languege = Localization.lo_ko;
     public PlayerUI playerUI;
     private RectTransform mainCanvas;
     public RectTransform MainCanvas
@@ -1098,23 +1099,23 @@ public class QuestManager : Manager<QuestManager>
         {
             foreach (Quest item in AcceptedQuests)
             {
-                if (item.questName == tempQuest.questName)
+                if (item.questID == tempQuest.questID)
                 {
 
-                    Debug.LogError("이미 수락한 퀘스트입니다, 퀘스트 이름 : " + item.questName);
+                    Debug.LogError("이미 수락한 퀘스트입니다, 퀘스트 이름 : " + item.questID);
                     return;
                 }
             }
             foreach (Quest item in AcceptedQuests)
             {
-                if (item.questName == tempQuest.questName)
+                if (item.questID == tempQuest.questID)
                 {
-                    Debug.LogError("이미 완료한 퀘스트입니다, 퀘스트 이름 : " + item.questName);
+                    Debug.LogError("이미 완료한 퀘스트입니다, 퀘스트 이름 : " + item.questID);
                     return;
                 }
             }
         }
-        PopUpQuestInfo(tempQuest.questName, tempQuest.description);
+        PopUpQuestInfo(tempQuest.questID, tempQuest.description);
         tempQuest.ConditionUpdate();
         AcceptedQuests.Add(tempQuest);
         
@@ -1122,7 +1123,7 @@ public class QuestManager : Manager<QuestManager>
     
     public void PopUpQuestInfo(string questName,string questDescription)
     {
-        UIManager.GetInstance().questNotiText.text = $"{questName}\n\n {questDescription}";
+        UIManager.GetInstance().questNotiText.text = $"{questName}\n{questDescription}";
         UIManager.GetInstance().questNoti.gameObject.SetActive(false);
         UIManager.GetInstance().questNoti.gameObject.SetActive(true);
     }
@@ -1134,6 +1135,7 @@ public class QuestManager : Manager<QuestManager>
         ClearedQuests.Add(AcceptedQuests[tempNum]);
         //TODO : 퀘스트 완료 UI 출력해주어야함
         AcceptedQuests[tempNum].QuestClear();
+        PopUpQuestInfo(ResourceManager.GetInstance().NameSheet.GetUINameValue(quest.questID) + $"({ResourceManager.GetInstance().NameSheet.GetUINameValue("Clear")})", quest.GetRewardText());
         AcceptedQuests.RemoveAt(tempNum);
     }
     public void ConditionCheck()
