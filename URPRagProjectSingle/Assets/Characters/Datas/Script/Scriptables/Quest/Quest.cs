@@ -38,6 +38,26 @@ public class Quest
         }
         rewards = questInfo.rewards;
     }
+
+    public string GetAllDescriptions()
+    {
+        string tempDescription = string.Empty;
+        bool isPassedCurrCon = false;
+        for (int i = 0;i< Conditions.Count; i++)
+        {
+
+            if (!isPassedCurrCon) 
+            {
+                tempDescription += $"<color=#{(Conditions[i].IsMet() ? Color.grey.ToHexString() : Color.cyan.ToHexString())}>{Conditions[i].GetDescription()}\n</color>";
+                isPassedCurrCon = !Conditions[i].IsMet();
+            }
+            else
+            {
+                tempDescription += $"<color=#{Color.clear.ToHexString()}>{Conditions[i].GetDescription()}\n</color>";
+            }
+        }
+        return tempDescription;
+    }
     public void QuestClear()
     {
         

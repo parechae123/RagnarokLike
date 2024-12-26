@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -78,21 +79,34 @@ public class NameDatas : ScriptableObject
     }
     public string GetUINameValue(string apixName)
     {
-        foreach (NameData item in uiNames)
+        NameData tempQuest = Array.Find(uiNames, (a) => a.eng_Name == apixName);
+        if(tempQuest != null)
         {
-            if (apixName != item.eng_Name) continue;
-
-            if (item.eng_Name == apixName && UIManager.GetInstance().languege == Localization.lo_ko)
+            switch (UIManager.GetInstance().languege)
             {
-                return item.lo_ko;
-            }
-            else if (item.eng_Name == apixName && UIManager.GetInstance().languege == Localization.lo_en)
-            {
-                return item.eng_Name;
+                case Localization.lo_en:
+                    return tempQuest.eng_Name;
+                case Localization.lo_ko:
+                    return tempQuest.lo_ko;
             }
         }
-        Debug.LogError("이름이 없졍" + apixName);
+
+        Debug.LogError("해당하는 데이터 혹은 Localization이 설정되지 않았음" + apixName);
         return string.Empty;
+    }
+    public string GetUIOriginValue(string name)
+    {
+        string tempName = string.Empty;
+        switch (UIManager.GetInstance().languege)
+        {
+            case Localization.lo_en:
+                tempName = name;
+                break;
+            case Localization.lo_ko:
+                tempName = Array.Find(uiNames, (a) => a.lo_ko == name).eng_Name;
+                break;
+        }
+        return tempName;
     }
     public (string,Color32) GetGradeNameValue(int gradeLevel)
     {

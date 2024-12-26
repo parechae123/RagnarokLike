@@ -20,5 +20,5 @@ public class OptionTab : MonoBehaviour,IPointerDownHandler
 }
 public enum OptionType
 {
-    SoundOption,KeyMappingOption
+    SoundOption,KeyMappingOption,QuestProgress,QuestDone
 }

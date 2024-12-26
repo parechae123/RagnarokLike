@@ -567,20 +567,32 @@ public class UIManager : Manager<UIManager>
         }
     }
 
-    public Transform questNoti
+    public Transform QuestNoti
     {
         get
         {
             return MainCanvas.Find("QuestNotific");
         }
     }
-    public TextMeshProUGUI questNotiText
+    public TextMeshProUGUI QuestNotiText
     {
         get
         {
-            return questNoti.Find("notificText").GetComponent<TextMeshProUGUI>();
+            return QuestNoti.Find("notificText").GetComponent<TextMeshProUGUI>();
         }
     }
+    public Transform QuestWindow
+    {
+        get { return MainCanvas.Find("QuestWindow"); }
+    }
+    public TextMeshProUGUI QuestInfo
+    {
+        get
+        {
+            return QuestWindow.Find("QuestInfo").GetComponent<TextMeshProUGUI>();
+        }
+    }
+
 
     private Image playerHPBar;
     private Image PlayerHPBar
@@ -658,7 +670,24 @@ public class UIManager : Manager<UIManager>
             return false;
         }
     }
-
+    public void UpdateQuestList()
+    {
+        QuestInfo.text = string.Empty;
+        Transform acceptedContent = QuestWindow.Find("ProgressQuests").Find("Scroll View").Find("Viewport").Find("Content");
+        QuestWindow.Find("ClearedQuests").Find("Scroll View").Find("Viewport").Find("Content").GetChild(0).GetComponent<TextMeshProUGUI>().text = QuestManager.GetInstance().GetCleardQuestNames();
+        int acceptedQuestCount = QuestManager.GetInstance().AcceptedQuests.Count;
+        int questTitleCount = acceptedContent.childCount;
+        for (int i = 0; i < (acceptedQuestCount>questTitleCount? acceptedQuestCount: questTitleCount); i++)
+        {
+            if (questTitleCount <= i)
+            {
+                RectTransform currRT = (RectTransform)(GameObject.Instantiate(acceptedContent.GetChild(i), QuestWindow).transform);
+                currRT.anchoredPosition = -(((RectTransform)(acceptedContent.GetChild(i - 1))).rect.height * Vector2.up);
+            }
+            //추가작업 필요
+            
+        }
+    }
     public void UpdateLevel()
     {
         BaseLevelText.text = Player.Instance.playerLevelInfo.baseLevel.ToString();
@@ -1120,12 +1149,15 @@ public class QuestManager : Manager<QuestManager>
         AcceptedQuests.Add(tempQuest);
         
     }
-    
+    public Quest FIndQuest(string name)
+    {
+        return AcceptedQuests.Find((aa)=> aa.questID == name);
+    }
     public void PopUpQuestInfo(string questName,string questDescription)
     {
-        UIManager.GetInstance().questNotiText.text = $"{questName}\n{questDescription}";
-        UIManager.GetInstance().questNoti.gameObject.SetActive(false);
-        UIManager.GetInstance().questNoti.gameObject.SetActive(true);
+        UIManager.GetInstance().QuestNotiText.text = $"{questName}\n{questDescription}";
+        UIManager.GetInstance().QuestNoti.gameObject.SetActive(false);
+        UIManager.GetInstance().QuestNoti.gameObject.SetActive(true);
     }
 
     public void ClearQuest(Quest quest)
@@ -1137,6 +1169,15 @@ public class QuestManager : Manager<QuestManager>
         AcceptedQuests[tempNum].QuestClear();
         PopUpQuestInfo(ResourceManager.GetInstance().NameSheet.GetUINameValue(quest.questID) + $"({ResourceManager.GetInstance().NameSheet.GetUINameValue("Clear")})", quest.GetRewardText());
         AcceptedQuests.RemoveAt(tempNum);
+    }
+    public string GetCleardQuestNames()
+    {
+        string tempNames = string.Empty;
+        for (int i = 0; i < ClearedQuests.Count; i++)
+        {
+            tempNames += ResourceManager.GetInstance().NameSheet.GetUINameValue(ClearedQuests[i].questID)+'\n';
+        }
+        return tempNames;
     }
     public void ConditionCheck()
     {
