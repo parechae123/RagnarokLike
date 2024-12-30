@@ -670,24 +670,6 @@ public class UIManager : Manager<UIManager>
             return false;
         }
     }
-    public void UpdateQuestList()
-    {
-        QuestInfo.text = string.Empty;
-        Transform acceptedContent = QuestWindow.Find("ProgressQuests").Find("Scroll View").Find("Viewport").Find("Content");
-        QuestWindow.Find("ClearedQuests").Find("Scroll View").Find("Viewport").Find("Content").GetChild(0).GetComponent<TextMeshProUGUI>().text = QuestManager.GetInstance().GetCleardQuestNames();
-        int acceptedQuestCount = QuestManager.GetInstance().AcceptedQuests.Count;
-        int questTitleCount = acceptedContent.childCount;
-        for (int i = 0; i < (acceptedQuestCount>questTitleCount? acceptedQuestCount: questTitleCount); i++)
-        {
-            if (questTitleCount <= i)
-            {
-                RectTransform currRT = (RectTransform)(GameObject.Instantiate(acceptedContent.GetChild(i), QuestWindow).transform);
-                currRT.anchoredPosition = -(((RectTransform)(acceptedContent.GetChild(i - 1))).rect.height * Vector2.up);
-            }
-            //추가작업 필요
-            
-        }
-    }
     public void UpdateLevel()
     {
         BaseLevelText.text = Player.Instance.playerLevelInfo.baseLevel.ToString();

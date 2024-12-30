@@ -47,7 +47,7 @@ MonoBehaviour:
       data:
         targetCode: MOB_Slime
         curr: 0
-        require: 10
+        require: 2
     - rid: 7306275087443034257
       type: {class: ConversationCondition, ns: , asm: Assembly-CSharp}
       data:

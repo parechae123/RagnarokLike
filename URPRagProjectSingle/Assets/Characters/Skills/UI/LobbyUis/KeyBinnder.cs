@@ -57,6 +57,9 @@ public class KeyBinnder : MonoBehaviour, IPointerDownHandler
             case "½ºÅÝÃ¢":
                 types = UITypes.StatusWindow;
                 break;
+            case "Äù½ºÆ® ¸ñ·Ï":
+                types = UITypes.QuestWindow;
+                break;
             case "Äü½½·Ô1":
                 types = UITypes.QuickSlotOne;
                 break;

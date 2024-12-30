@@ -8,5 +8,5 @@ public interface IuiInterface
 }
 public enum UITypes
 { 
-    none,CombKey,SkillTreeWindow,StatusWindow,InventoryWindow,EquipmentWindow,QuickSlotOne, QuickSlotTwo, QuickSlotThree, QuickSlotFour, QuickSlotFive, QuickSlotSix, QuickSlotSeven, QuickSlotEight,QuickSlotNine
+    none,CombKey,SkillTreeWindow,StatusWindow, QuestWindow, InventoryWindow,EquipmentWindow,QuickSlotOne, QuickSlotTwo, QuickSlotThree, QuickSlotFour, QuickSlotFive, QuickSlotSix, QuickSlotSeven, QuickSlotEight,QuickSlotNine
 }
