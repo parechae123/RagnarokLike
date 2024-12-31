@@ -326,6 +326,7 @@ public class SkillInfoInGame : IItemBase
         }
         return outPutStats;
     }
+  
     public void ResetAction()
     {
         quickSlotFuncs = null;

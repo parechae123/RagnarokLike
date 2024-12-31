@@ -7,60 +7,48 @@ using static UnityEditor.Progress;
 
 public class QuestWindow : MonoBehaviour
 {
-    private List<QuestTitle> acceptedTitleList = new List<QuestTitle>();
-    private TextMeshProUGUI ClearText { get { return transform.Find("ClearedQuests").Find("Cleared").GetComponent<TextMeshProUGUI>(); } }
+    [SerializeField]private List<QuestTitle> acceptedTitleList = new List<QuestTitle>();
+    [SerializeField]private List<QuestTitle> clearedTitleList = new List<QuestTitle>();
+    [SerializeField]private TextMeshProUGUI ClearText { get { return transform.Find("ClearedQuests").Find("Cleared").GetComponent<TextMeshProUGUI>(); } }
+
     void Start()
     {
         RegistGameOBJ();
         //기본적으로 세팅되어 있는 오브젝트를 첫번째 배열로 넣음
         acceptedTitleList.Add(transform.Find("ProgressQuests").Find("Scroll View").Find("Viewport").Find("Content").GetChild(0).GetComponent<QuestTitle>());
+        clearedTitleList.Add(transform.Find("ClearedQuests").Find("Scroll View").Find("Viewport").Find("Content").GetChild(0).GetComponent<QuestTitle>());
     }
 
 
     public void OnEnable()
     {
-        if(acceptedTitleList.Count>0)SetAcceptedQuests();
-        SetClearQuests();
+        if(acceptedTitleList.Count>0)SetQuests(acceptedTitleList,true);
+        if(clearedTitleList.Count>0)SetQuests(clearedTitleList,false);
     }
-    public void ResetTitles()
+    public void ResetTitles(List<QuestTitle> list, bool isProgress)
     {
-        QuestTitle[] requireReset = acceptedTitleList.FindAll(Item => !Item.IsEmptyText).ToArray();
+        QuestTitle[] requireReset = list.FindAll(Item => !Item.IsEmptyText).ToArray();
         UIManager.GetInstance().QuestInfo.text = string.Empty;
         for (int i = 0; i < requireReset.Length; i++)
         {
             requireReset[i].SetQuestTitle(string.Empty);
         }
     }
-    public void SetAcceptedQuests()
+    public void SetQuests(List<QuestTitle> list,bool isProgress)
     {
 
-/*        QuestInfo.text = string.Empty;
-        Transform acceptedContent = QuestWindow.Find("ProgressQuests").Find("Scroll View").Find("Viewport").Find("Content");
-        QuestWindow.Find("ClearedQuests").Find("Scroll View").Find("Viewport").Find("Content").GetChild(0).GetComponent<TextMeshProUGUI>().text = QuestManager.GetInstance().GetCleardQuestNames();
-        int acceptedQuestCount = QuestManager.GetInstance().AcceptedQuests.Count;
-        int questTitleCount = acceptedContent.childCount;
-        for (int i = 0; i < (acceptedQuestCount > questTitleCount ? acceptedQuestCount : questTitleCount); i++)
+        ResetTitles(list,isProgress);
+        for (int i = 0; i < (isProgress ? QuestManager.GetInstance().AcceptedQuests.Count : QuestManager.GetInstance().ClearedQuests.Count); i++)
         {
-            if (questTitleCount <= i)
+            if(i>= list.Count ) 
             {
-                RectTransform currRT = (RectTransform)(GameObject.Instantiate(acceptedContent.GetChild(i), QuestWindow).transform);
-                currRT.anchoredPosition = -(((RectTransform)(acceptedContent.GetChild(i - 1))).rect.height * Vector2.up);
+                QuestTitle temp = GameObject.Instantiate(list[0].gameObject, list[0].transform.parent).GetComponent<QuestTitle>();
+                temp.transform.localPosition = list[i - 1].transform.localPosition - new Vector3(0f, ((RectTransform)list[0].transform).sizeDelta.y, 0f);
+                list.Add(temp);
             }
-            //TODO : 해당 코드에서 height 늘려주는 방식을 참고해서 Content 오브젝트 유지보수하여 추가작성 필요
-
-        }*/
-
-        ResetTitles();
-        for (int i = 0; i < QuestManager.GetInstance().AcceptedQuests.Count; i++)
-        {
-            if(i< acceptedTitleList.Count - 1) { acceptedTitleList.Add(GameObject.Instantiate(acceptedTitleList[0].gameObject, acceptedTitleList[0].transform.parent).GetComponent<QuestTitle>()); }
-            acceptedTitleList[i].SetQuestTitle(QuestManager.GetInstance().AcceptedQuests[i].questID);
+            list[i].SetQuestTitle(isProgress ? QuestManager.GetInstance().AcceptedQuests[i].questID : QuestManager.GetInstance().ClearedQuests[i].questID);
         }
-    }
-    public void SetClearQuests()
-    {
-        ClearText.text = QuestManager.GetInstance().GetCleardQuestNames();
-
+        ((RectTransform)list[0].transform.parent).sizeDelta = new Vector2(0, list.Count * ((RectTransform)list[0].transform).sizeDelta.y);
     }
 
     public void RegistGameOBJ()

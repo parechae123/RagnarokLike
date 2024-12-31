@@ -9,7 +9,7 @@ public class QuestTitle : MonoBehaviour,IPointerClickHandler
 {
     TextMeshProUGUI titleText;
     TextMeshProUGUI TitleText { get { if (titleText == null){ titleText = GetComponent<TextMeshProUGUI>(); } return titleText; } }
-
+    [SerializeField] private bool isProgress;
     public bool IsEmptyText=> TitleText.text == string.Empty;
 
     public void SetQuestTitle(string title)
@@ -36,13 +36,12 @@ public class QuestTitle : MonoBehaviour,IPointerClickHandler
         tempText = TitleText?.text;
         if (tempText != string.Empty)
         {
-            Quest tempQuest = QuestManager.GetInstance().FIndQuest(ResourceManager.GetInstance().NameSheet.GetUIOriginValue(tempText));
+            Quest tempQuest = QuestManager.GetInstance().FIndQuest(ResourceManager.GetInstance().NameSheet.GetUIOriginValue(tempText),isProgress);
             
             if(tempQuest != null)
             {
                 UIManager.GetInstance().QuestInfo.text = $"<size=25>{tempText}</size>"+'\n'+tempQuest.GetAllDescriptions();
             }
         }
-
     }
 }

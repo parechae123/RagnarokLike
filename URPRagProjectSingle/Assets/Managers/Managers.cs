@@ -1131,9 +1131,9 @@ public class QuestManager : Manager<QuestManager>
         AcceptedQuests.Add(tempQuest);
         
     }
-    public Quest FIndQuest(string name)
+    public Quest FIndQuest(string name,bool isAcceptedQuest)
     {
-        return AcceptedQuests.Find((aa)=> aa.questID == name);
+        return isAcceptedQuest? AcceptedQuests.Find((aa) => aa.questID == name) : ClearedQuests.Find((aa) => aa.questID == name);
     }
     public void PopUpQuestInfo(string questName,string questDescription)
     {

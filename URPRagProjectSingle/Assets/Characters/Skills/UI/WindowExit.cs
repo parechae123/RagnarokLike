@@ -6,9 +6,8 @@ using UnityEngine.EventSystems;
 
 public class WindowExit : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] Transform target;
     public void OnPointerClick(PointerEventData data)
     {
-        target.gameObject.SetActive(false);
+        transform.parent.parent.parent.gameObject.SetActive(!transform.parent.parent.parent.gameObject.activeSelf);
     }
 }
