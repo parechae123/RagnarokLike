@@ -32,8 +32,6 @@ Shader "Custom/InteractionShader"
             struct v2f
             {
                 float4 pos : SV_POSITION;
-                float4 projPos : TEXCOORD1;   // 클립 공간 위치
-                float2 uv : TEXCOORD0;       // UV 좌표
             };
 
             // 버텍스 셰이더
@@ -42,27 +40,16 @@ Shader "Custom/InteractionShader"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.projPos = ComputeScreenPos(o.pos);  // 화면 공간 좌표 계산
-                o.uv = v.uv;
+                
                 return o;
             }
-            sampler2D _CameraDepthTexture;
             uniform float4 _Color;
 
             // 프래그먼트 셰이더
             //최종적으로 반환해야 할 색상 데이터를 출력
             half4 frag(v2f i) : SV_Target
             {    
-                float tempDepth = LinearEyeDepth(i.pos.z);
-                if(tempDepth > 2.5f)
-                {
-                    return _Color;  // 기본 색상
-                    
-                }
-                else
-                {
-                    return half4(0,0,0,0);
-                }
+                return _Color;  // 기본 색상
             }
             ENDCG
         }

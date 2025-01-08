@@ -2,8 +2,8 @@ Shader "Custom/ColorScale"
 {
     Properties
     {
-        _MainTex ("Main Texture", 2D) = "white" {}        // Ç¥½ÃÇÒ ÁÖ ÅØ½ºÃ³
-        _ColorTint ("Color Tint", Color) = (1, 1, 1, 1)   // »ö»ó Á¶Á¤
+        _MainTex ("Main Texture", 2D) = "white" {}        // Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ø½ï¿½Ã³
+        _ColorTint ("Color Tint", Color) = (1, 1, 1, 1)   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     SubShader
@@ -11,7 +11,7 @@ Shader "Custom/ColorScale"
         Tags { "Queue" = "Overlay" "RenderType" = "Transparent" }
         LOD 100
 
-        // ¾ËÆÄ ºí·»µù ¼³Á¤ (Åõ¸íµµ Àû¿ë)
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
@@ -22,7 +22,7 @@ Shader "Custom/ColorScale"
 
             #include "UnityCG.cginc"
 
-            // ÅØ½ºÃ³ »ùÇÃ·¯
+            // ï¿½Ø½ï¿½Ã³ ï¿½ï¿½ï¿½Ã·ï¿½
             sampler2D _MainTex;
             float4 _ColorTint;
 
@@ -32,33 +32,33 @@ Shader "Custom/ColorScale"
                 float2 uv : TEXCOORD0;
             };
 
-            // Á¤Á¡ ¼ÎÀÌ´õ
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½
             v2f vert(appdata_base v)
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.uv = v.texcoord.xy; // ÅØ½ºÃ³ UV ÁÂÇ¥
+                o.uv = v.texcoord.xy; // ï¿½Ø½ï¿½Ã³ UV ï¿½ï¿½Ç¥
                 return o;
             }
 
-            // ÇÈ¼¿ ¼ÎÀÌ´õ
+            // ï¿½È¼ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½
             fixed4 frag(v2f i) : SV_Target
             {
-                // 1. ¸ÞÀÎ ÅØ½ºÃ³¿¡¼­ »ö»ó »ùÇÃ¸µ
+                // 1. ï¿½ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¸ï¿½
                 fixed4 col = tex2D(_MainTex, i.uv);
 
-                // 2. ±×·¹ÀÌ½ºÄÉÀÏ °ª °è»ê
-                float grey = dot(col.rgb, float3(0.299, 0.587, 0.114)); // ¹à±â °è»ê (±×·¹ÀÌ½ºÄÉÀÏ)
-                fixed4 grayColor = fixed4(grey, grey, grey, col.a); // ±×·¹ÀÌ½ºÄÉÀÏ »ö»ó
+                // 2. ï¿½×·ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
+                float grey = dot(col.rgb, float3(0.299, 0.587, 0.114)); // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½×·ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½)
+                fixed4 grayColor = fixed4(grey, grey, grey, col.a); // ï¿½×·ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-                // 3. _ColorTint¸¦ »ç¿ëÇÏ¿© »ö»ó Á¶Á¤
+                // 3. _ColorTintï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 fixed4 tintedColor = lerp(grayColor, grayColor * _ColorTint, _ColorTint.a);
 
-                // 4. ¸¶½ºÅ© ÅØ½ºÃ³¿¡¼­ ¾ËÆÄ °ªÀ» »ùÇÃ¸µ
+                // 4. ï¿½ï¿½ï¿½ï¿½Å© ï¿½Ø½ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¸ï¿½
 
-                // 5. ¸¶½ºÅ©ÀÇ ¾ËÆÄ °ªÀ¸·Î ¸¶½ºÅ© Ã³¸® (¸¶½ºÅ© ¾ËÆÄ°¡ 0ÀÌ¸é ¿ÏÀü Åõ¸í, 1ÀÌ¸é ºÒÅõ¸í)
+                // 5. ï¿½ï¿½ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å© Ã³ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½ï¿½Ä°ï¿½ 0ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, 1ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 
-                return tintedColor; // ÃÖÁ¾ »ö»ó ¹ÝÈ¯
+                return tintedColor; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
             }
 
             ENDCG

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MeshTest : MonoBehaviour
@@ -7,45 +8,19 @@ public class MeshTest : MonoBehaviour
     MeshFilter meshFilter;
     public Vector3[] vertices = new Vector3[]
     {
-        // 앞면
-        new Vector3(0, 0, 0), // 0
-        new Vector3(1, 0, 0), // 1
-        new Vector3(1, 1, 0), // 2
-        new Vector3(0, 1, 0), // 3
+        // 윗면만 만들어주면 됨
+        new Vector3(-0.5f , 0 , -0.5f),
+        new Vector3(0.5f , 0 , -0.5f),
+        new Vector3(-0.5f , 0 , 0.5f),
+        new Vector3(-0.5f , 0 , -0.5f),
 
-        // 뒷면
-        new Vector3(0, 0, 1), // 4
-        new Vector3(1, 0, 1), // 5
-        new Vector3(1, 1, 1), // 6
-        new Vector3(0, 1, 1)  // 7
+        new Vector3(0.5f , 0 , 0.5f),
+        new Vector3(0.5f , 0 , -0.5f),
+        new Vector3(-0.5f , 0 , 0.5f),
+        new Vector3(0.5f , 0 , 0.5f),
     };
+    public Vector3[] centerPositions;
 
-    public int[] triangles = new int[]
-    {
-        // 앞면
-        0, 2, 1,
-        0, 3, 2,
-
-        // 뒷면
-        4, 5, 6,
-        4, 6, 7,
-
-        // 윗면
-        3, 7, 6,
-        3, 6, 2,
-
-        // 아랫면
-        0, 1, 5,
-        0, 5, 4,
-
-        // 왼쪽면
-        0, 4, 7,
-        0, 7, 3,
-
-        // 오른쪽면
-        1, 2, 6,
-        1, 6, 5
-    };
     // Start is called before the first frame update
     void Start()
     {
@@ -58,8 +33,24 @@ public class MeshTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             Mesh mesh = new Mesh();
-            mesh.vertices = vertices;
-            mesh.triangles = triangles;
+            HashSet<Vector3> boundaryVert = new HashSet<Vector3>();
+            Queue<int> currTriangles = new Queue<int>();
+            //i 는 정사각형의 갯수
+            for (int i = 0; i < centerPositions.Length; i++)
+            {
+                //j vertices 의 갯수만큼 정점을 찍는다
+                for (int j = 0; j < vertices.Length; j++)
+                {
+                    //정점수집
+                    currTriangles.Enqueue(boundaryVert.Count);
+                    boundaryVert.Add(vertices[j] + centerPositions[i]);
+                    //삼각형 두개를 수립시켜야함
+                }
+                //내려가면서 생각해보자
+
+            }
+            mesh.vertices = boundaryVert.ToArray<Vector3>();
+            mesh.triangles = currTriangles.ToArray();
             meshFilter.mesh = mesh;
             
         }
