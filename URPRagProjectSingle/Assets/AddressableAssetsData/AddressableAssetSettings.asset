@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 81512bbf6450be2449a02c8044c67cd9
   m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: 5dc6f0f6265ceff5d800e48598e2d3be
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -92,6 +92,7 @@ MonoBehaviour:
     - SkillInfo
     - SpriteAtlas
     - ItemDatas
+    - ShaterMat
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 3e0d6b2a105e5804c8fa0ad16e94480c, type: 2}

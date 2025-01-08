@@ -233,6 +233,7 @@ namespace PlayerDefines
             public override void Enter()
             {
                 skillTimer = 0;
+                Player.Instance.transform.DOKill(false);
             }
             public override void Execute()
             {
@@ -250,6 +251,7 @@ namespace PlayerDefines
             public override void Exit()
             {
                 UIManager.GetInstance().CastingBarOnOff(false);
+                Player.Instance.skillIndicator.OnOff(false);
                 skillTimer = 0;
             }
         }
@@ -343,6 +345,7 @@ namespace PlayerDefines
                         SkillManager.GetInstance().RegistBuffTimer(tempTimer);
                         buffs.Add(tempTimer);
                         buffHash.Add(target.buffName);
+
                     }
                     else
                     {

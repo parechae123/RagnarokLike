@@ -905,7 +905,7 @@ public class SkillManager : Manager<SkillManager>
             if(iconIndex >= 0)
             {
                 GetInstance().buffIconMap.Remove(iconIndex);
-                icon.transform.parent.gameObject.SetActive(false);
+                icon?.transform.parent.gameObject.SetActive(false);
             }
             GetInstance().buffTimer.Remove(this);
         }

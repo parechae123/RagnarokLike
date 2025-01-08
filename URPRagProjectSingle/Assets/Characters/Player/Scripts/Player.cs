@@ -46,6 +46,7 @@ public class Player : MonoBehaviour,ICameraTracker
             {
                 isSearchCastTarget = false;
                 playerCursorState.changeState(cursorState.defaultCurser);
+                skillIndicator.OnOff(false);
                 return;
             }
 
@@ -55,10 +56,13 @@ public class Player : MonoBehaviour,ICameraTracker
                     SkillObj,
                     null,
                     playerLevelInfo.stat.standingNode.worldPos);
+                skillIndicator.SetBoundary(value.GetBoundary());
+                skillIndicator.tr.position = CurrentNode.worldPos;
             }
             else if(value.skillPosition == SkillPosition.cursor)
             {
                 playerCursorState.changeState(cursorState.skillTargeting);
+                skillIndicator.SetBoundary(value.GetBoundary());
                 isSearchCastTarget = true;
             }
         }
@@ -109,6 +113,7 @@ public class Player : MonoBehaviour,ICameraTracker
     [SerializeField]Vector2Int playerLookDir;
     public KeyCode[] boundedKeys = new KeyCode[0];
     public KeyCode combKey;
+    public SkillIndicator skillIndicator;
     [System.Serializable]
     public class playerEffects
     {
@@ -147,6 +152,7 @@ public class Player : MonoBehaviour,ICameraTracker
             playerLevelInfo.stat = new PlayerStat(currentNode, 100, 100, 3, 1, 10, 1, 100);
             QuestManager.GetInstance().AcceptQuest(0);
         }
+        if(skillIndicator == null) skillIndicator = new SkillIndicator();
         playerSR = GetComponent<SpriteRenderer>();
         playerLevelInfo.baseLevelUP += playerLevelInfo.BaseLevelUP;
         playerLevelInfo.jobLevelUP += playerLevelInfo.JobLevelUP;
@@ -442,16 +448,19 @@ public class Player : MonoBehaviour,ICameraTracker
 
         if (isSearchCastTarget)
         {
+            
             if (targetCell.gameObject.activeSelf) targetCell.gameObject.SetActive(false);
             if ( groundHit.Length == 0) return;
             if(monsterHit.Length> 0)
             {
+                skillIndicator.tr.position = GridManager.GetInstance().PositionToNode(monsterHit[0].point).worldPos;
                 GetCastingTarget(GridManager.GetInstance().PositionToNode(monsterHit[0].point).nodeCenterPosition);
             }
             else
             {
                 Node tempNode = GridManager.GetInstance().PositionToNode(groundHit[0].point);
                 if (tempNode == null) return;
+                skillIndicator.tr.position = tempNode.worldPos;
                 GetCastingTarget(tempNode.nodeCenterPosition);
             }
             

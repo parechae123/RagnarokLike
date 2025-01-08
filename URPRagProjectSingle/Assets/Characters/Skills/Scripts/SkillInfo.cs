@@ -282,10 +282,10 @@ public class SkillInfoInGame : IItemBase
             angle *= Mathf.Rad2Deg;
             angle -= 90f;
         }
-        if (!SkillManager.GetInstance().SkillEffect(castingPos, skill[castingSkillLevel].SkillBound, skillName, angle))
+        if (!SkillManager.GetInstance().SkillEffect(castingPos, skill[CastingSkillLevel].SkillBound, skillName, angle))
         {
             SkillManager.GetInstance().RegistVFXDict(skillName, effectOBJPrefab);
-            SkillManager.GetInstance().SkillEffect(castingPos, skill[castingSkillLevel].SkillBound, skillName, angle);
+            SkillManager.GetInstance().SkillEffect(castingPos, skill[CastingSkillLevel].SkillBound, skillName, angle);
         }
 
         SkillManager.GetInstance().SetSkillCoolTime(skillName, skill[CastingSkillLevel].coolTimeTick);
@@ -325,6 +325,33 @@ public class SkillInfoInGame : IItemBase
             }
         }
         return outPutStats;
+    }
+    public virtual Vector3[] GetBoundary()
+    {
+        Vector3[] boundaryPos = new Vector3[0];
+        int boundMax = skill[CastingSkillLevel].SkillBound;
+        for (int i = -boundMax; i <= boundMax; i++)
+        {
+            for (int j = -boundMax; j <= boundMax; j++)
+            {
+                if ((i*i) + (j*j) <= boundMax * boundMax)
+                {
+                    Vector2Int tempVec = new Vector2Int(i, j);
+                    if (GridManager.GetInstance().grids.ContainsKey(tempVec))
+                    {
+                        Array.Resize(ref boundaryPos, boundaryPos.Length + 1);
+                        boundaryPos[boundaryPos.Length - 1] = GridManager.GetInstance().grids[tempVec].worldPos;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else continue;
+
+            }
+        }
+        return boundaryPos;
     }
   
     public void ResetAction()
@@ -411,10 +438,10 @@ public class BuffSkillInfoInGame : SkillInfoInGame
                 }
                 break;
         }
-        if (!SkillManager.GetInstance().SkillEffect(castingPos, skill[castingSkillLevel].SkillBound, skillName, 0))
+        if (!SkillManager.GetInstance().SkillEffect(castingPos, skill[CastingSkillLevel].SkillBound, skillName, 0))
         {
             SkillManager.GetInstance().RegistVFXDict(skillName, effectOBJPrefab);
-            SkillManager.GetInstance().SkillEffect(castingPos, skill[castingSkillLevel].SkillBound, skillName, 0);
+            SkillManager.GetInstance().SkillEffect(castingPos, skill[CastingSkillLevel].SkillBound, skillName, 0);
         }
         SkillManager.GetInstance().SetSkillCoolTime(skillName, skill[CastingSkillLevel].coolTimeTick);
         Debug.Log("카운팅 시작");
@@ -463,19 +490,35 @@ public struct BuffOBJ
     public int leftTick;
     public byte buffLevel;
     public Stats buffTargets;
+    bool[] appliedBuffs;
     public void ApplyBuffs()
     {
+        appliedBuffs = new bool[buffs.Length];
         for (sbyte i = 0; i < buffs.Length; i++)
         {
-            buffs[i].SetTarget(buffTargets);
-            buffs[i].ApplyBuff();
+            if (buffs[i].SetTarget(buffTargets))
+            {
+                buffs[i].ApplyBuff();
+                appliedBuffs[i] = true;
+            }
+            else
+            {
+                appliedBuffs[i] = false;
+            }
         }
     }
     public void RemoveBuffs()
     {
         for (sbyte i = 0; i < buffs.Length; i++)
         {
-            buffs[i].RemoveBuff();
+            if (appliedBuffs[i]) 
+            { 
+                buffs[i].RemoveBuff();
+            }
+            else
+            {
+                continue;
+            }
         }
     }
 }
@@ -706,10 +749,12 @@ public class StatBuff : IBuffs
     }
     public void ApplyBuff()
     {
+        if (target == null) return;
         target.BasicStatus.SetChangeAbleStatus(buffType, (int)buffValue);
     }
     public void RemoveBuff()
     {
+        if (target == null) return;
         target.BasicStatus.SetChangeAbleStatus(buffType, (int)-buffValue);
     }
 }
