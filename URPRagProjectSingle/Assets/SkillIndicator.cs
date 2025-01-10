@@ -3,19 +3,74 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SkillIndicator
+public class SkillIndicators
+{
+    public SkillProjector boundProjector = new SkillProjector(Color.cyan);
+    public SkillProjector rangeProjector = new SkillProjector(Color.green);
+    /// <summary>
+    /// rangeProjector인지 boundProjector인지 판별
+    /// </summary>
+    /// <param name="isRangeProjector"></param>
+    public void SetBoundary(bool isRangeProjector,Vector3[] boundary)
+    {
+        switch (isRangeProjector)
+        {
+            case true:
+                rangeProjector.SetBoundary(boundary);
+                break;
+            case false:
+                boundProjector.SetBoundary(boundary);
+                break;
+        }
+    }
+    public void SetPosition(bool isRangeProjector, Vector3 pos)
+    {
+        switch (isRangeProjector)
+        {
+            case true:
+                rangeProjector.tr.position = pos;
+                break;
+            case false:
+                boundProjector.tr.position = pos;
+                break;
+        }
+    }
+    public void OnOff(bool isRangeProjector, bool onOff)
+    {
+        switch (isRangeProjector)
+        {
+            case true:
+                rangeProjector.tr.gameObject.SetActive(onOff);
+                break;
+            case false:
+                boundProjector.tr.gameObject.SetActive(onOff);
+                break;
+        }
+    }
+
+}
+public class SkillProjector
 {
     public Transform tr;
     MeshFilter meshFilter;
 
-    public SkillIndicator()
+    public SkillProjector(Color effColor)
     {
         GameObject indicatorOBJ = new GameObject("SkillIndicator");
         meshFilter = indicatorOBJ.AddComponent<MeshFilter>();
         tr = indicatorOBJ.transform;
-        ResourceManager.GetInstance().LoadAsync<Material>("HLTest", (mat) => { tr.gameObject.AddComponent<MeshRenderer>().material = mat; });
+        tr.localPosition = Vector3.zero;
+        effColor.a = 0.2f;
+        ResourceManager.GetInstance().LoadAsync<Material>("HLTest", (mat) => 
+        {
+            MeshRenderer tempMR = tr.gameObject.AddComponent<MeshRenderer>();
+            tempMR.material = mat;
+            tempMR.material.SetColor("_Color", effColor);
+            
+        }
+        );
     }
-    public void OnOff(bool isOn)
+    private void OnOff(bool isOn)
     {
         tr.gameObject.SetActive(isOn);
     }
@@ -39,7 +94,7 @@ public class SkillIndicator
         //i 는 정사각형의 갯수
         for (int i = 0; i < centerPos.Length; i++)
         {
-            //j vertices 의 갯수만큼 정점을 찍는다
+            //j 미리 선언해둔 vertices 의 갯수만큼 정점을 찍는다
             for (int j = 0; j < vertices.Length; j++)
             {
                 //정점수집
@@ -52,9 +107,6 @@ public class SkillIndicator
                     currTriangles.Enqueue(vertDict.Count);
                     vertDict.Add(vertices[j] + centerPos[i], vertDict.Count);
                 }
-
-
-                //삼각형 두개를 수립시켜야함
             }
 
         }

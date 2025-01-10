@@ -234,6 +234,7 @@ namespace PlayerDefines
             {
                 skillTimer = 0;
                 Player.Instance.transform.DOKill(false);
+                Player.Instance.skillIndicator.OnOff(true, false);
             }
             public override void Execute()
             {
@@ -251,7 +252,8 @@ namespace PlayerDefines
             public override void Exit()
             {
                 UIManager.GetInstance().CastingBarOnOff(false);
-                Player.Instance.skillIndicator.OnOff(false);
+                Player.Instance.skillIndicator.OnOff(false,false);
+                Player.Instance.skillIndicator.OnOff(true,false);
                 skillTimer = 0;
             }
         }

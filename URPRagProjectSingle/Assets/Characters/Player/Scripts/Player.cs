@@ -46,7 +46,8 @@ public class Player : MonoBehaviour,ICameraTracker
             {
                 isSearchCastTarget = false;
                 playerCursorState.changeState(cursorState.defaultCurser);
-                skillIndicator.OnOff(false);
+                skillIndicator.OnOff(false,false);
+                skillIndicator.OnOff(true,false);
                 return;
             }
 
@@ -56,13 +57,15 @@ public class Player : MonoBehaviour,ICameraTracker
                     SkillObj,
                     null,
                     playerLevelInfo.stat.standingNode.worldPos);
-                skillIndicator.SetBoundary(value.GetBoundary());
-                skillIndicator.tr.position = CurrentNode.worldPos;
+                skillIndicator.SetBoundary(false,value.GetBoundary());
+                skillIndicator.SetPosition(false,CurrentNode.worldPos);
             }
             else if(value.skillPosition == SkillPosition.cursor)
             {
                 playerCursorState.changeState(cursorState.skillTargeting);
-                skillIndicator.SetBoundary(value.GetBoundary());
+                skillIndicator.SetBoundary(true, value.GetRangeBoundary());
+                skillIndicator.OnOff(true, true);
+                skillIndicator.SetBoundary(false,value.GetBoundary());
                 isSearchCastTarget = true;
             }
         }
@@ -82,6 +85,7 @@ public class Player : MonoBehaviour,ICameraTracker
             playerLevelInfo.stat.standingNode.CharacterOnNode = playerLevelInfo.stat.standingNode.CharacterOnNode == playerLevelInfo.stat ? null : playerLevelInfo.stat.standingNode.CharacterOnNode;
             playerLevelInfo.stat.standingNode = value;
             playerLevelInfo.stat.standingNode.CharacterOnNode = playerLevelInfo.stat;
+            skillIndicator.SetPosition(true, value.worldPos);
             currentNode = value;
         }
     }
@@ -113,7 +117,7 @@ public class Player : MonoBehaviour,ICameraTracker
     [SerializeField]Vector2Int playerLookDir;
     public KeyCode[] boundedKeys = new KeyCode[0];
     public KeyCode combKey;
-    public SkillIndicator skillIndicator;
+    public SkillIndicators skillIndicator;
     [System.Serializable]
     public class playerEffects
     {
@@ -152,7 +156,7 @@ public class Player : MonoBehaviour,ICameraTracker
             playerLevelInfo.stat = new PlayerStat(currentNode, 100, 100, 3, 1, 10, 1, 100);
             QuestManager.GetInstance().AcceptQuest(0);
         }
-        if(skillIndicator == null) skillIndicator = new SkillIndicator();
+        if(skillIndicator == null) skillIndicator = new SkillIndicators();
         playerSR = GetComponent<SpriteRenderer>();
         playerLevelInfo.baseLevelUP += playerLevelInfo.BaseLevelUP;
         playerLevelInfo.jobLevelUP += playerLevelInfo.JobLevelUP;
@@ -453,14 +457,14 @@ public class Player : MonoBehaviour,ICameraTracker
             if ( groundHit.Length == 0) return;
             if(monsterHit.Length> 0)
             {
-                skillIndicator.tr.position = GridManager.GetInstance().PositionToNode(monsterHit[0].point).worldPos;
+                skillIndicator.SetPosition(false, GridManager.GetInstance().PositionToNode(monsterHit[0].point).worldPos);
                 GetCastingTarget(GridManager.GetInstance().PositionToNode(monsterHit[0].point).nodeCenterPosition);
             }
             else
             {
                 Node tempNode = GridManager.GetInstance().PositionToNode(groundHit[0].point);
                 if (tempNode == null) return;
-                skillIndicator.tr.position = tempNode.worldPos;
+                skillIndicator.SetPosition(false, tempNode.worldPos);
                 GetCastingTarget(tempNode.nodeCenterPosition);
             }
             

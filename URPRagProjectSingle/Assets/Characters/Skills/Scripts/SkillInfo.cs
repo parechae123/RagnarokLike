@@ -353,6 +353,33 @@ public class SkillInfoInGame : IItemBase
         }
         return boundaryPos;
     }
+    public virtual Vector3[] GetRangeBoundary()
+    {
+        Vector3[] boundaryPos = new Vector3[0];
+        int boundMax = skill[CastingSkillLevel].skillRange;
+        for (int i = -boundMax; i <= boundMax; i++)
+        {
+            for (int j = -boundMax; j <= boundMax; j++)
+            {
+                if ((i*i) + (j*j) <= boundMax * boundMax)
+                {
+                    Vector2Int tempVec = new Vector2Int(i, j);
+                    if (GridManager.GetInstance().grids.ContainsKey(tempVec))
+                    {
+                        Array.Resize(ref boundaryPos, boundaryPos.Length + 1);
+                        boundaryPos[boundaryPos.Length - 1] = GridManager.GetInstance().grids[tempVec].worldPos;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else continue;
+
+            }
+        }
+        return boundaryPos;
+    }
   
     public void ResetAction()
     {
